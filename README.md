@@ -1,6 +1,7 @@
 # GradeGlow
 
-GradeGlow is an AI-powered study assistant that transforms notes, PDFs, and recordings into summaries, flashcards, quizzes, and personalized tutoring. Stay organized, track progress, and learn smarter with AI-powered tools designed to help students succeed.
+GradeGlow is an AI-powered study assistant that helps students learn smarter. It turns notes, PDFs, and recordings into summaries, flashcards, quizzes, and personalized tutoring. GradeGlow helps students stay organized, track their progress, and improve their learning with AI-powered tools.
+
 
 ## Setup
 
