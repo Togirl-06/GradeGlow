@@ -16,6 +16,10 @@ class ApiErrorInfo {
 class ApiErrorMessages {
   static ApiErrorInfo fromException(Object error) {
     final String raw = error.toString().replaceFirst('Exception: ', '').trim();
+    final String? network = friendlyNetworkMessage(raw);
+    if (network != null) {
+      return ApiErrorInfo(title: 'No connection', message: network);
+    }
     if (raw.toLowerCase().contains('quota') || raw.toLowerCase().contains('insufficient_quota')) {
       return quotaExceeded;
     }
@@ -26,6 +30,29 @@ class ApiErrorMessages {
       return missingApiKey;
     }
     return ApiErrorInfo(title: 'Something went wrong', message: raw);
+  }
+
+  /// Maps socket/DNS failures to a short user-facing message.
+  static String? friendlyNetworkMessage(String raw) {
+    final String lower = raw.toLowerCase();
+    final bool isNetwork = lower.contains('clientexception') ||
+        lower.contains('socketexception') ||
+        lower.contains('socketfailed') ||
+        lower.contains('host lookup') ||
+        lower.contains('failed host lookup') ||
+        lower.contains('no address associated with hostname') ||
+        lower.contains('network is unreachable') ||
+        lower.contains('connection refused') ||
+        lower.contains('connection timed out') ||
+        lower.contains('failed to connect') ||
+        lower.contains('connection reset') ||
+        lower.contains('software caused connection abort');
+    if (!isNetwork) return null;
+
+    if (lower.contains('api.openai.com') || lower.contains('openai')) {
+      return 'Could not reach OpenAI. Check your internet connection and try again.';
+    }
+    return 'No internet connection. Check Wi‑Fi or mobile data and try again.';
   }
 
   static ApiErrorInfo fromOpenAiResponse(int statusCode, String body) {

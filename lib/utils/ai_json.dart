@@ -68,7 +68,7 @@ String repairJsonStringLiterals(String json) {
         }
       }
 
-      if (next == '\\' || '"\/bfnrt'.contains(next)) {
+      if (next == '\\' || '"/bfnrt'.contains(next)) {
         out.write('\\');
         out.write(next);
         i += 1;

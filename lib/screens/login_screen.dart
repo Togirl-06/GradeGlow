@@ -7,8 +7,8 @@ import '../config/app_branding.dart';
 import '../config/app_config.dart';
 import '../services/auth_service.dart';
 import '../theme/study_theme.dart';
-import '../utils/apple_auth.dart';
 import '../widgets/gradeglow_logo.dart';
+import 'reset_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.onSignedIn});
@@ -47,14 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
       signedUp = wasSignUp;
       await widget.onSignedIn();
     } catch (error) {
-      setState(() => _error = error.toString().replaceFirst('Exception: ', ''));
+      setState(() => _error = _formatAuthError(error));
     } finally {
       if (mounted) {
         if (signedUp) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                'Account created. Check your .edu inbox to verify your email.',
+                'Account created. Check your inbox for the verification email.',
               ),
               duration: Duration(seconds: 5),
             ),
@@ -63,6 +63,26 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() => _isLoading = false);
       }
     }
+  }
+
+  String _formatAuthError(Object error) {
+    String message = error.toString();
+    if (message.startsWith('Exception: ')) {
+      message = message.substring('Exception: '.length);
+    }
+    if (message.startsWith('PlatformException(')) {
+      final int close = message.lastIndexOf(')');
+      if (close > 18) {
+        message = message.substring(18, close);
+      }
+    }
+    final List<String> parts = message.split(', ');
+    if (parts.length >= 2 && parts.last == 'null') {
+      message = parts.sublist(1, parts.length - 1).join(', ');
+    } else if (parts.length >= 2) {
+      message = parts.sublist(1).join(', ');
+    }
+    return message.trim();
   }
 
   @override
@@ -180,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 keyboardType: TextInputType.emailAddress,
                                 enabled: !_isLoading,
                                 decoration: InputDecoration(
-                                  labelText: _isSignUp ? 'School email (.edu)' : 'Email',
+                                  labelText: 'Email',
                                   prefixIcon: const Icon(Icons.email_outlined),
                                   filled: true,
                                   fillColor: StudyColors.background(brightness),
@@ -189,8 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (value == null || value.trim().isEmpty) {
                                     return 'Enter your email';
                                   }
-                                  if (_isSignUp && !isEduEmail(value)) {
-                                    return 'Use your school email ending in .edu';
+                                  if (!value.contains('@')) {
+                                    return 'Enter a valid email address';
                                   }
                                   return null;
                                 },
@@ -221,6 +241,31 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return null;
                                 },
                               ),
+                              if (!_isSignUp) ...<Widget>[
+                                const SizedBox(height: 6),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton(
+                                    onPressed: _isLoading
+                                        ? null
+                                        : () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute<void>(
+                                                builder: (_) => ResetPasswordScreen(
+                                                  initialEmail: _emailController.text.trim(),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                                      minimumSize: Size.zero,
+                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    ),
+                                    child: const Text('Forgot Password?'),
+                                  ),
+                                ),
+                              ],
                               const SizedBox(height: 22),
                               SizedBox(
                                 width: double.infinity,
@@ -331,7 +376,7 @@ class _LoginHero extends StatelessWidget {
                   borderRadius: BorderRadius.circular(22),
                   border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
                 ),
-                child: const GradeGlowLogo(height: 64, width: 64),
+                child: const GradeGlowLogo(height: 64),
               ),
               const SizedBox(height: 18),
               ShaderMask(
@@ -371,7 +416,7 @@ class _LoginHero extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 isSignUp
-                    ? 'Use your .edu email to get started.'
+                    ? 'Create an account with any email.'
                     : 'Pick up where you left off.',
                 textAlign: TextAlign.center,
                 style: TextStyle(

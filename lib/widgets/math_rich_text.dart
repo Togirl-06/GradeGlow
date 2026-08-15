@@ -3,6 +3,24 @@ import 'package:flutter_math_fork/flutter_math.dart';
 
 import '../theme/study_theme.dart';
 
+/// Normalizes common LaTeX delimiter styles to `$...$` / `$$...$$`.
+class MathDelimiter {
+  MathDelimiter._();
+
+  static String normalize(String input) {
+    var text = input;
+    text = text.replaceAllMapped(
+      RegExp(r'\\\[(.+?)\\\]', dotAll: true),
+      (Match m) => '\$\$${m.group(1)!.trim()}\$\$',
+    );
+    text = text.replaceAllMapped(
+      RegExp(r'\\\((.+?)\\\)', dotAll: true),
+      (Match m) => '\$${m.group(1)!.trim()}\$',
+    );
+    return text;
+  }
+}
+
 /// Renders text with inline `$...$` and display `$$...$$` LaTeX math.
 class MathRichText extends StatelessWidget {
   const MathRichText({
@@ -27,10 +45,11 @@ class MathRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Brightness brightness = Theme.of(context).brightness;
+    final String normalized = MathDelimiter.normalize(text);
 
-    if (text.contains(r'$$')) {
+    if (normalized.contains(r'$$')) {
       return _DisplayMixedColumn(
-        text: text,
+        text: normalized,
         color: color,
         fontSize: fontSize,
         fontWeight: fontWeight,
@@ -40,9 +59,9 @@ class MathRichText extends StatelessWidget {
       );
     }
 
-    if (!_containsMath(text) && !text.contains('**') && !text.contains('`')) {
+    if (!_containsMath(normalized) && !normalized.contains('**') && !normalized.contains('`')) {
       return Text(
-        text,
+        normalized,
         textAlign: textAlign,
         style: TextStyle(
           color: color,
@@ -55,7 +74,7 @@ class MathRichText extends StatelessWidget {
     }
 
     return MathMarkdown.inlineWidget(
-      text,
+      normalized,
       color: color,
       brightness: brightness,
       fontSize: fontSize,
@@ -66,7 +85,8 @@ class MathRichText extends StatelessWidget {
     );
   }
 
-  static bool _containsMath(String value) => value.contains(r'$');
+  static bool _containsMath(String value) =>
+      value.contains(r'$') || value.contains(r'\(') || value.contains(r'\[');
 }
 
 /// Inline markdown + LaTeX as a wrapping row (avoids RenderFlex overflow).
@@ -279,22 +299,31 @@ class MathDisplayBlock extends StatelessWidget {
     super.key,
     required this.latex,
     required this.color,
+    this.fontSize = 18,
+    this.compact = false,
   });
 
   final String latex;
   final Color color;
+  final double fontSize;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: compact ? 2 : 10),
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: constraints.maxWidth),
-              child: _MathChip(latex: latex, color: color, fontSize: 18, display: true),
+          final double maxWidth = constraints.maxWidth.isFinite && constraints.maxWidth > 0
+              ? constraints.maxWidth
+              : MediaQuery.sizeOf(context).width - 32;
+
+          return SizedBox(
+            width: maxWidth,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.center,
+              child: _MathChip(latex: latex, color: color, fontSize: fontSize, display: true),
             ),
           );
         },
@@ -318,21 +347,29 @@ class _MathChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Math.tex(
-      latex,
-      mathStyle: display ? MathStyle.display : MathStyle.text,
-      textStyle: TextStyle(color: color, fontSize: fontSize),
-      settings: const TexParserSettings(strict: Strict.ignore),
-      onErrorFallback: (FlutterMathException error) {
-        return Text(
-          display ? '\$\$$latex\$\$' : '\$$latex\$',
-          style: TextStyle(
-            color: StudyColors.textSecondary(Theme.of(context).brightness),
-            fontFamily: 'monospace',
-            fontSize: fontSize,
-          ),
-        );
-      },
+    try {
+      return Math.tex(
+        MathDelimiter.normalize(latex),
+        mathStyle: display ? MathStyle.display : MathStyle.text,
+        textStyle: TextStyle(color: color, fontSize: fontSize),
+        settings: const TexParserSettings(strict: Strict.ignore),
+        onErrorFallback: (FlutterMathException error) {
+          return _fallback(context);
+        },
+      );
+    } catch (_) {
+      return _fallback(context);
+    }
+  }
+
+  Widget _fallback(BuildContext context) {
+    return Text(
+      display ? '\$\$$latex\$\$' : '\$$latex\$',
+      style: TextStyle(
+        color: StudyColors.textSecondary(Theme.of(context).brightness),
+        fontFamily: 'monospace',
+        fontSize: fontSize,
+      ),
     );
   }
 }

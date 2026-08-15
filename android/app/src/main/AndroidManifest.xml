@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR"/>
+    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
     <application
         android:label="GradeGlow"
         android:name="${applicationName}"
@@ -54,6 +56,7 @@
         <service
             android:name="com.llfbandit.record.service.AudioRecordingService"
             android:foregroundServiceType="microphone"
+            android:stopWithTask="false"
             android:exported="false" />
     </application>
     <!-- Required to query activities that can process text, see:
@@ -72,6 +75,10 @@
         </intent>
         <intent>
             <action android:name="android.speech.action.RECOGNIZE_SPEECH"/>
+        </intent>
+        <!-- Required so flutter_tts can discover a TTS engine on Android 11+ -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE"/>
         </intent>
         <!-- Google Sign-In / Play Services (Android 11+ package visibility) -->
         <package android:name="com.google.android.gms"/>

@@ -5,6 +5,7 @@ import '../models/study_summary.dart';
 import '../theme/study_theme.dart';
 import '../utils/speech_text.dart';
 import '../widgets/math_rich_text.dart';
+import '../widgets/modern_quiz_view.dart';
 import '../widgets/read_aloud_button.dart';
 import '../widgets/study_surface.dart';
 
@@ -138,7 +139,9 @@ class SummaryQuizScreen extends StatefulWidget {
 
 class _SummaryQuizScreenState extends State<SummaryQuizScreen> {
   final List<int?> _answers = <int?>[];
-  bool _submitted = false;
+  int _index = 0;
+  bool _finished = false;
+  bool _endedEarly = false;
 
   List<QuizQuestion> get _questions {
     return widget.summary.quizQuestions
@@ -153,20 +156,27 @@ class _SummaryQuizScreenState extends State<SummaryQuizScreen> {
     _answers.addAll(List<int?>.filled(_questions.length, null));
   }
 
-  void _submit() {
-    setState(() => _submitted = true);
+  int get _score {
     int score = 0;
     for (int i = 0; i < _questions.length; i++) {
       if (_answers[i] == _questions[i].correctIndex) score++;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Score: $score / ${_questions.length}')),
-    );
+    return score;
+  }
+
+  void _retry() {
+    setState(() {
+      _index = 0;
+      _finished = false;
+      _endedEarly = false;
+      for (int i = 0; i < _answers.length; i++) {
+        _answers[i] = null;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final Color textSecondary = StudyColors.textSecondary(Theme.of(context).brightness);
     final List<QuizQuestion> questions = _questions;
 
     if (questions.isEmpty) {
@@ -176,78 +186,60 @@ class _SummaryQuizScreenState extends State<SummaryQuizScreen> {
       );
     }
 
+    if (_finished) {
+      return Scaffold(
+        body: ModernQuizResultsView(
+          title: widget.summary.title,
+          score: _score,
+          total: questions.length,
+          answeredCount: _answers.where((int? a) => a != null).length,
+          endedEarly: _endedEarly,
+          onDone: () => Navigator.pop(context),
+          onRetry: _retry,
+        ),
+      );
+    }
+
+    final QuizQuestion current = questions[_index];
+    final int? selected = _index < _answers.length ? _answers[_index] : null;
+    final bool isLast = _index >= questions.length - 1;
+
     return Scaffold(
-      appBar: AppBar(title: Text('Quiz · ${widget.summary.title}')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          Text(
-            '${questions.length} AI-generated questions',
-            style: TextStyle(color: textSecondary, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 12),
-          ...List<Widget>.generate(questions.length, (int i) {
-            final QuizQuestion q = questions[i];
-            final int? selected = i < _answers.length ? _answers[i] : null;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: StudySurfaceCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('${i + 1}. ', style: const TextStyle(fontWeight: FontWeight.w600, height: 1.35)),
-                        Expanded(
-                          child: MathRichText(
-                            text: q.prompt,
-                            color: StudyColors.textPrimary(Theme.of(context).brightness),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            height: 1.35,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ...List<Widget>.generate(q.options.length, (int o) {
-                      final bool isCorrect = o == q.correctIndex;
-                      final bool isSelected = selected == o;
-                      Color? tileColor;
-                      if (_submitted && isCorrect) tileColor = StudyColors.success.withValues(alpha: 0.15);
-                      if (_submitted && isSelected && !isCorrect) {
-                        tileColor = StudyColors.danger.withValues(alpha: 0.12);
-                      }
-                      return ListTile(
-                        dense: true,
-                        tileColor: tileColor,
-                        title: MathRichText(
-                          text: q.options[o],
-                          color: StudyColors.textPrimary(Theme.of(context).brightness),
-                          fontSize: 15,
-                          height: 1.35,
-                        ),
-                        leading: Radio<int>(
-                          value: o,
-                          groupValue: selected,
-                          onChanged: _submitted
-                              ? null
-                              : (int? v) => setState(() => _answers[i] = v),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ),
-            );
-          }),
-          if (!_submitted)
-            FilledButton(
-              onPressed: _answers.every((int? a) => a != null) ? _submit : null,
-              child: const Text('Submit & grade'),
-            ),
-        ],
+      body: ModernQuizView(
+        title: widget.summary.title,
+        questionNumber: _index + 1,
+        totalQuestions: questions.length,
+        prompt: current.prompt,
+        options: current.options,
+        selectedIndex: selected,
+        revealed: selected != null,
+        correctIndex: current.correctIndex,
+        useMath: true,
+        onSelect: (int option) => setState(() => _answers[_index] = option),
+        onBack: () {
+          if (_index > 0) {
+            setState(() => _index -= 1);
+          } else {
+            Navigator.pop(context);
+          }
+        },
+        onNext: () {
+          if (isLast) {
+            setState(() => _finished = true);
+          } else {
+            setState(() => _index += 1);
+          }
+        },
+        onEndExam: () async {
+          if (!await confirmEndExam(context)) return;
+          if (!mounted) return;
+          setState(() {
+            _endedEarly = true;
+            _finished = true;
+          });
+        },
+        nextLabel: isLast ? 'Finish' : 'Next',
+        nextEnabled: selected != null,
       ),
     );
   }

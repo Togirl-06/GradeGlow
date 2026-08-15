@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/binned_recording.dart';
+import '../utils/test_environment.dart';
 
 /// Keeps recently deleted recordings for restore (mobile/desktop).
 class RecordingBinService extends ChangeNotifier {
@@ -19,7 +19,7 @@ class RecordingBinService extends ChangeNotifier {
 
   Future<void> ensureLoaded() async {
     if (_loaded) return;
-    if (kIsWeb) {
+    if (kIsWeb || isFlutterTest) {
       _loaded = true;
       return;
     }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/study_theme.dart';
-
 /// Studley-style Upload / Paste / Record input cards.
 class StudyInputCards extends StatelessWidget {
   const StudyInputCards({
@@ -22,7 +20,7 @@ class StudyInputCards extends StatelessWidget {
     final _InputCard upload = _InputCard(
       icon: Icons.upload_rounded,
       title: 'Upload',
-      subtitle: 'PDF, slides, media (multi)',
+      subtitle: 'Image, file, audio, video',
       onTap: enabled ? onUpload : null,
     );
     final _InputCard paste = _InputCard(
@@ -38,32 +36,15 @@ class StudyInputCards extends StatelessWidget {
       onTap: enabled ? onRecord : null,
     );
 
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth < 520) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              upload,
-              const SizedBox(height: 10),
-              paste,
-              const SizedBox(height: 10),
-              record,
-            ],
-          );
-        }
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(child: upload),
-            const SizedBox(width: 10),
-            Expanded(child: paste),
-            const SizedBox(width: 10),
-            Expanded(child: record),
-          ],
-        );
-      },
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(child: upload),
+        const SizedBox(width: 8),
+        Expanded(child: paste),
+        const SizedBox(width: 8),
+        Expanded(child: record),
+      ],
     );
   }
 }
@@ -83,40 +64,44 @@ class _InputCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Brightness brightness = Theme.of(context).brightness;
-    final Color bg = brightness == Brightness.dark ? const Color(0xFF1C1C1E) : StudyColors.surface(brightness);
-    final Color border = StudyColors.border(brightness);
-    final Color textSecondary = StudyColors.textSecondary(brightness);
+    final ColorScheme scheme = Theme.of(context).colorScheme;
 
     return Material(
-      color: bg,
-      borderRadius: BorderRadius.circular(16),
+      color: scheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(22),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(22),
         child: Container(
-          constraints: const BoxConstraints(minHeight: 100),
-          padding: const EdgeInsets.all(12),
+          height: 132,
+          padding: const EdgeInsets.fromLTRB(13, 14, 10, 12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: border),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: scheme.outlineVariant),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Icon(icon, size: 22, color: StudyColors.textPrimary(brightness)),
-              const SizedBox(height: 12),
+              Icon(icon, size: 25, color: scheme.primary),
+              const Spacer(),
               Text(
                 title,
-                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+                style: TextStyle(
+                  color: scheme.onSurface,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 13,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 5),
               Text(
                 subtitle,
-                style: TextStyle(color: textSecondary, fontSize: 10, height: 1.25),
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
+                  fontSize: 8.5,
+                  height: 1.3,
+                ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

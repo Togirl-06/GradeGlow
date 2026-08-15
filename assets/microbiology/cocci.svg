@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#1B4332"/>
+  <circle cx="200" cy="125" r="118" fill="#0D2818" stroke="#2D6A4F" stroke-width="3"/>
+  <circle cx="155" cy="95" r="14" fill="#74C69D" stroke="#40916C" stroke-width="1.5"/>
+  <circle cx="190" cy="118" r="13" fill="#95D5B2" stroke="#52B788" stroke-width="1.5"/>
+  <circle cx="225" cy="102" r="14" fill="#74C69D" stroke="#40916C" stroke-width="1.5"/>
+  <circle cx="175" cy="145" r="12" fill="#B7E4C7" stroke="#52B788" stroke-width="1.5"/>
+  <circle cx="215" cy="152" r="13" fill="#95D5B2" stroke="#40916C" stroke-width="1.5"/>
+  <circle cx="245" cy="130" r="12" fill="#74C69D" stroke="#2D6A4F" stroke-width="1.5"/>
+  <text x="200" y="24" text-anchor="middle" fill="#D8F3DC" font-family="Arial,sans-serif" font-size="12">Cocci clusters (400�)</text>
+</svg>

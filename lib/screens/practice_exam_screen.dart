@@ -134,25 +134,29 @@ class _PracticeExamScreenState extends State<PracticeExamScreen> {
                     children: <Widget>[
                       Text('${i + 1}. ${q.prompt}', style: const TextStyle(fontWeight: FontWeight.w600, height: 1.35)),
                       const SizedBox(height: 10),
-                      ...List<Widget>.generate(q.options.length, (int o) {
-                        final bool isCorrect = o == q.correctIndex;
-                        final bool isSelected = selected == o;
-                        Color? tileColor;
-                        if (_submitted && isCorrect) tileColor = StudyColors.success.withValues(alpha: 0.15);
-                        if (_submitted && isSelected && !isCorrect) tileColor = StudyColors.danger.withValues(alpha: 0.12);
-                        return ListTile(
-                          dense: true,
-                          tileColor: tileColor,
-                          title: Text(q.options[o]),
-                          leading: Radio<int>(
-                            value: o,
-                            groupValue: selected,
-                            onChanged: _submitted
-                                ? null
-                                : (int? v) => setState(() => _answers[i] = v),
-                          ),
-                        );
-                      }),
+                      RadioGroup<int?>(
+                        groupValue: selected,
+                        onChanged: (int? v) {
+                          if (_submitted) return;
+                          setState(() => _answers[i] = v);
+                        },
+                        child: Column(
+                          children: List<Widget>.generate(q.options.length, (int o) {
+                            final bool isCorrect = o == q.correctIndex;
+                            final bool isSelected = selected == o;
+                            Color? tileColor;
+                            if (_submitted && isCorrect) tileColor = StudyColors.success.withValues(alpha: 0.15);
+                            if (_submitted && isSelected && !isCorrect) tileColor = StudyColors.danger.withValues(alpha: 0.12);
+                            return ListTile(
+                              dense: true,
+                              tileColor: tileColor,
+                              title: Text(q.options[o]),
+                              leading: Radio<int>(value: o),
+                              onTap: _submitted ? null : () => setState(() => _answers[i] = o),
+                            );
+                          }),
+                        ),
+                      ),
                     ],
                   ),
                 ),

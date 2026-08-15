@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
@@ -71,7 +70,7 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
   final MicCaptureService _mic = MicCaptureService.instance;
   AudioPlayer? _player;
   bool _playerBound = false;
-  bool _playbackSourceReady = false;
+  String? _playbackTempPath;
   StreamSubscription<Duration>? _positionSub;
   StreamSubscription<Duration>? _durationSub;
   StreamSubscription<PlayerState>? _stateSub;
@@ -89,7 +88,11 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
   bool _playing = false;
   double _playbackVolume = 0.8;
   bool _loadingTranscript = false;
+  bool _actionBusy = false;
+  String? _inlineMessage;
+  bool _inlineIsError = false;
   String? _transcript;
+  final TextEditingController _transcriptController = TextEditingController();
   List<TranscriptSegment> _segments = <TranscriptSegment>[];
   List<double> _waveHeights = AudioWaveform.seededHeights(42);
   int _waveSeed = 42;
@@ -122,9 +125,7 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     final AudioPlayer player = AudioPlayer();
     _player = player;
     _bindPlayer();
-    if (!kIsWeb) {
-      await _initPlayer();
-    }
+    await _initPlayer();
     return player;
   }
 
@@ -190,7 +191,9 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     }
   }
 
-  AudioContext get _playbackAudioContext => AudioContext(
+  AudioContext get _playbackAudioContext {
+    if (kIsWeb) {
+      return AudioContext(
         iOS: AudioContextIOS(
           category: AVAudioSessionCategory.playAndRecord,
           options: <AVAudioSessionOptions>{
@@ -207,8 +210,29 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
           audioFocus: AndroidAudioFocus.gain,
         ),
       );
+    }
+
+    return AudioContext(
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: <AVAudioSessionOptions>{
+          AVAudioSessionOptions.mixWithOthers,
+        },
+      ),
+      android: const AudioContextAndroid(
+        isSpeakerphoneOn: true,
+        audioMode: AndroidAudioMode.normal,
+        contentType: AndroidContentType.music,
+        usageType: AndroidUsageType.media,
+        audioFocus: AndroidAudioFocus.gain,
+      ),
+    );
+  }
 
   Future<void> _prepareForPlayback() async {
+    if (!kIsWeb) {
+      await _mic.prepareForPlayback();
+    }
     final AudioPlayer player = await _ensurePlayer();
     await AudioPlayer.global.setAudioContext(_playbackAudioContext);
     await player.setAudioContext(_playbackAudioContext);
@@ -310,11 +334,43 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
 
   Future<bool> _recordingSourceReady() async {
     final Uint8List? bytes = _recordingBytes ?? _mic.lastWavBytes;
-    if (bytes != null && bytes.isNotEmpty) return true;
+    if (bytes != null && bytes.length > 44) return true;
     final String? path = _filePath;
     if (path == null) return false;
-    if (kIsWeb) return false;
+    if (kIsWeb) return bytes != null && bytes.isNotEmpty;
     return File(path).exists();
+  }
+
+  void _clearInlineMessage() {
+    if (_inlineMessage == null) return;
+    setState(() {
+      _inlineMessage = null;
+      _inlineIsError = false;
+    });
+  }
+
+  void _showError(String message) {
+    if (!mounted) return;
+    setState(() {
+      _inlineMessage = message;
+      _inlineIsError = true;
+    });
+    final ScaffoldMessengerState? messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger != null) {
+      StudyMessenger.showError(context, message);
+    }
+  }
+
+  void _showInfo(String message) {
+    if (!mounted) return;
+    setState(() {
+      _inlineMessage = message;
+      _inlineIsError = false;
+    });
+    final ScaffoldMessengerState? messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger != null) {
+      StudyMessenger.showInfo(context, message);
+    }
   }
 
   Future<bool> _finalizeRecording() async {
@@ -372,10 +428,12 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     _durationSub?.cancel();
     _stateSub?.cancel();
     _completeSub?.cancel();
+    _transcriptController.dispose();
     final AudioPlayer? player = _player;
     if (player != null) {
       unawaited(player.dispose());
     }
+    unawaited(_deletePlaybackTempFile());
     super.dispose();
   }
 
@@ -414,9 +472,61 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     }
     _player = null;
     _playerBound = false;
-    _playbackSourceReady = false;
     _playing = false;
     _playbackPosition = Duration.zero;
+    await _deletePlaybackTempFile();
+  }
+
+  Future<void> _deletePlaybackTempFile() async {
+    final String? tmp = _playbackTempPath;
+    _playbackTempPath = null;
+    if (tmp == null || kIsWeb) return;
+    try {
+      final File file = File(tmp);
+      if (await file.exists()) await file.delete();
+    } catch (_) {}
+  }
+
+  /// Native playback is most reliable from a rebuilt temp file on disk.
+  Future<Source?> _resolvePlaybackSource() async {
+    final String? path = _filePath;
+    if (path == null) return null;
+
+    final Uint8List? bytes = await _readRecordingBytes();
+
+    if (kIsWeb) {
+      if (bytes != null && bytes.isNotEmpty) {
+        return BytesSource(bytes);
+      }
+      if (path.startsWith('blob:') || path.startsWith('http')) {
+        return UrlSource(path);
+      }
+      return null;
+    }
+
+    if (bytes == null || bytes.length <= 44) return null;
+
+    final Uint8List rebuilt = rebuildWavBytes(bytes, sampleRate: lectureRecordingSampleRate());
+    await _deletePlaybackTempFile();
+    final Directory dir = await getTemporaryDirectory();
+    final String tmpPath = '${dir.path}/lecture_playback_${DateTime.now().millisecondsSinceEpoch}.wav';
+    await File(tmpPath).writeAsBytes(rebuilt, flush: true);
+    _playbackTempPath = tmpPath;
+    return DeviceFileSource(tmpPath);
+  }
+
+  Future<bool> _playSource(Source source, {Duration? position}) async {
+    final AudioPlayer player = await _ensurePlayer();
+    await _prepareForPlayback();
+    await player.stop();
+    await player.setVolume(_playbackVolume);
+    if (position != null && position > Duration.zero) {
+      await player.play(source, position: position);
+    } else {
+      await player.play(source);
+    }
+    unawaited(_waitForPlayerDuration(player, minimum: _recordedDuration));
+    return _waitForPlaybackStarted();
   }
 
   Future<void> _startRecording() async {
@@ -538,20 +648,17 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
       _waveHeights = AudioWaveform.seededHeights(_waveSeed + recordedDuration.inSeconds);
       _playbackPosition = Duration.zero;
       _playing = false;
-      _playbackSourceReady = false;
     });
 
-    unawaited(_preloadReviewAudio());
+    if (!kIsWeb) {
+      await _mic.prepareForPlayback();
+      await Future<void>.delayed(const Duration(milliseconds: 150));
+    }
 
     if (reachedTimeLimit && mounted) {
-      StudyMessenger.showInfo(
-        context,
-        '4-hour recording limit reached. Playback is ready.',
-      );
+      _showInfo('4-hour recording limit reached. Playback is ready.');
     }
   }
-
-  static const int _maxInMemoryPlaybackBytes = 96 * 1024 * 1024;
 
   Future<bool> _waitForPlayerDuration(AudioPlayer player, {Duration? minimum}) async {
     Duration? best;
@@ -576,83 +683,12 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     return false;
   }
 
-  Future<bool> _loadPlaybackSource(AudioPlayer player) async {
-    final String? path = _filePath;
-    if (path == null) return false;
-
-    final Duration minimumDuration = _recordedDuration;
-    final Uint8List? bytes = await _readRecordingBytes();
-
-    if (bytes != null && bytes.isNotEmpty) {
-      if (bytes.length <= _maxInMemoryPlaybackBytes) {
-        await player.setSource(BytesSource(bytes));
-      } else if (!kIsWeb && path.isNotEmpty) {
-        await player.setSource(DeviceFileSource(File(path).absolute.path));
-      } else {
-        await player.setSource(BytesSource(bytes));
-      }
-    } else if (kIsWeb && (path.startsWith('blob:') || path.startsWith('http'))) {
-      await player.setSource(UrlSource(path));
-    } else if (!kIsWeb) {
-      final File file = File(path);
-      if (!await file.exists() || await file.length() <= 0) return false;
-      await player.setSource(DeviceFileSource(file.absolute.path));
-    } else {
-      return false;
-    }
-
-    _playbackSourceReady = true;
-    final bool hasDuration = await _waitForPlayerDuration(player, minimum: minimumDuration);
-    if (!hasDuration) {
-      final Duration? fromWav = bytes == null
-          ? await durationFromWavPath(path, sampleRate: lectureRecordingSampleRate())
-          : durationFromWavBytes(bytes, sampleRate: lectureRecordingSampleRate());
-      if (fromWav != null && fromWav > Duration.zero && mounted) {
-        setState(() => _recordedDuration = fromWav);
-        return true;
-      }
-    }
-    return hasDuration;
-  }
-
-  Future<void> _preloadReviewAudio() async {
-    try {
-      final AudioPlayer player = await _ensurePlayer();
-      await _prepareForPlayback();
-      await _loadPlaybackSource(player);
-    } catch (error) {
-      debugPrint('Review audio preload failed: $error');
-    }
-  }
-
-  Future<bool> _startPlayback({Duration? seekTo}) async {
-    final AudioPlayer player = await _ensurePlayer();
-    if (_filePath == null) return false;
-
-    try {
-      await _prepareForPlayback();
-
-      if (!_playbackSourceReady || player.state == PlayerState.completed) {
-        final bool loaded = await _loadPlaybackSource(player);
-        if (!loaded) return false;
-      }
-
-      if (seekTo != null && seekTo > Duration.zero) {
-        await player.seek(seekTo);
-      }
-
-      await player.setVolume(_playbackVolume);
-      await player.resume();
-      return await _waitForPlaybackStarted();
-    } catch (error) {
-      debugPrint('Recording playback failed: $error');
-      return false;
-    }
-  }
-
   Future<void> _discardRecording() async {
+    if (_actionBusy) return;
+
     final bool? confirmed = await showDialog<bool>(
       context: context,
+      useRootNavigator: true,
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Move to bin?'),
         content: const Text(
@@ -669,37 +705,53 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     );
     if (confirmed != true || !mounted) return;
 
+    setState(() => _actionBusy = true);
     try {
-      await (await _ensurePlayer()).stop();
-    } catch (_) {}
-    final String? path = _filePath;
-    final Uint8List? bytes = await _readRecordingBytes();
-    await context.read<RecordingBinService>().moveToBin(
-          sourcePath: path ?? '',
-          duration: _recordedDuration,
-          label: 'Lecture recording',
-          bytes: bytes ?? _recordingBytes,
-        );
+      try {
+        await (await _ensurePlayer()).stop();
+      } catch (_) {}
+      final String? path = _filePath;
+      final Uint8List? bytes = await _readRecordingBytes();
+      if (!mounted) return;
+      await context.read<RecordingBinService>().moveToBin(
+            sourcePath: path ?? '',
+            duration: _recordedDuration,
+            label: 'Lecture recording',
+            bytes: bytes ?? _recordingBytes,
+          );
 
-    if (!mounted) return;
-    setState(() {
-      _step = _RecordStep.ready;
-      _filePath = null;
-      _recordingBytes = null;
-      _recordedDuration = Duration.zero;
-      _playbackPosition = Duration.zero;
-      _transcript = null;
-      _segments = <TranscriptSegment>[];
-      _playing = false;
-    });
-    StudyMessenger.showInfo(context, 'Recording moved to bin');
+      if (!mounted) return;
+      setState(() {
+        _step = _RecordStep.ready;
+        _filePath = null;
+        _recordingBytes = null;
+        _recordedDuration = Duration.zero;
+        _playbackPosition = Duration.zero;
+        _transcript = null;
+        _transcriptController.clear();
+        _segments = <TranscriptSegment>[];
+        _playing = false;
+        _inlineMessage = null;
+        _inlineIsError = false;
+      });
+      _showInfo('Recording moved to bin');
+    } catch (error) {
+      if (!mounted) return;
+      _showError('Could not move recording to bin. ${StudyMessenger.clean(error)}');
+    } finally {
+      if (mounted) setState(() => _actionBusy = false);
+    }
   }
 
   Future<void> _togglePlayback() async {
+    if (_actionBusy) return;
     if (!await _recordingSourceReady()) {
       _showError('Recording was not saved. Record again and wait a moment after stopping.');
       return;
     }
+
+    _clearInlineMessage();
+    setState(() => _actionBusy = true);
 
     try {
       final AudioPlayer player = await _ensurePlayer();
@@ -708,28 +760,26 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
         return;
       }
 
-      await _prepareForPlayback();
-
       if (player.state == PlayerState.paused &&
           _playbackPosition > Duration.zero &&
           _playbackPosition < _recordedDuration) {
+        await _prepareForPlayback();
         await player.setVolume(_playbackVolume);
         await player.resume();
         if (await _waitForPlaybackStarted()) return;
-      }
-
-      if (player.state == PlayerState.completed) {
-        await player.seek(Duration.zero);
-        await player.setVolume(_playbackVolume);
-        await player.resume();
-        if (await _waitForPlaybackStarted()) return;
-        if (mounted) setState(() => _playing = false);
-        _showError(_playbackFailedMessage());
-        return;
       }
 
       if (mounted) setState(() => _playbackPosition = Duration.zero);
-      final bool started = await _startPlayback();
+      if (!kIsWeb) {
+        await _releasePlayer();
+      }
+      final Source? source = await _resolvePlaybackSource();
+      if (source == null) {
+        _showError('Recording file not found. Tap Next to transcribe without preview.');
+        return;
+      }
+
+      final bool started = await _playSource(source);
       if (!started && mounted) {
         setState(() => _playing = false);
         _showError(_playbackFailedMessage());
@@ -737,23 +787,50 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     } catch (error) {
       if (mounted) setState(() => _playing = false);
       _showError(_playbackFailedMessage(error));
+    } finally {
+      if (mounted) setState(() => _actionBusy = false);
     }
   }
 
-  Future<void> _seekTo(Duration position) async {
-    final String? path = _filePath;
-    if (path == null) return;
+  void _setTranscriptText(String text) {
+    _transcript = text;
+    _transcriptController.text = text;
+    _segments = _buildSegments(text, _recordedDuration);
+  }
 
+  Future<void> _seekTo(Duration position) async {
+    if (_filePath == null) return;
+
+    _clearInlineMessage();
     try {
-      final AudioPlayer player = await _ensurePlayer();
-      if (!_playbackSourceReady || player.state == PlayerState.completed) {
-        await _prepareForPlayback();
-        await _loadPlaybackSource(player);
+      if (!kIsWeb && !_playing) {
+        await _releasePlayer();
       }
-      await player.seek(position);
-      await player.setVolume(_playbackVolume);
-      if (mounted) setState(() => _playbackPosition = position);
-    } catch (_) {}
+
+      final AudioPlayer player = await _ensurePlayer();
+      if (_playing) {
+        await player.seek(position);
+        await player.setVolume(_playbackVolume);
+        if (mounted) setState(() => _playbackPosition = position);
+        return;
+      }
+
+      final Source? source = await _resolvePlaybackSource();
+      if (source == null) {
+        _showError('Recording file not found.');
+        return;
+      }
+
+      final bool started = await _playSource(source, position: position);
+      if (!mounted) return;
+      setState(() {
+        _playbackPosition = position;
+        if (started) _playing = true;
+      });
+      if (!started) _showError(_playbackFailedMessage());
+    } catch (error) {
+      if (mounted) _showError(_playbackFailedMessage(error));
+    }
   }
 
   Future<void> _seekRelative(int seconds) async {
@@ -785,33 +862,17 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
   }
 
   Future<void> _goToTranscript() async {
+    if (_actionBusy) return;
+
     final String? path = _filePath;
     if (path == null) {
       _showError('Recording was not saved. Try recording again.');
       return;
     }
 
-    if (kIsWeb) {
-      final Uint8List? bytes = await _readRecordingBytes(requireTranscriptLength: true);
-      if (bytes == null) {
-        _showError('Recording too short. Speak longer and try again.');
-        return;
-      }
-    } else {
-      final File file = File(path);
-      if (!await file.exists() || await file.length() < 500) {
-        _showError('Recording too short. Speak longer and try again.');
-        return;
-      }
-      try {
-        await rebuildWavFile(path, sampleRate: lectureRecordingSampleRate());
-      } catch (_) {}
-    }
-
-    try {
-      await (await _ensurePlayer()).stop();
-    } catch (_) {}
+    _clearInlineMessage();
     setState(() {
+      _actionBusy = true;
       _step = _RecordStep.transcript;
       _loadingTranscript = true;
       _playing = false;
@@ -819,23 +880,40 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
     });
 
     try {
-      final String text = kIsWeb
-          ? await OpenAiWhisperService().transcribeBytes(
-              (await _readRecordingBytes(requireTranscriptLength: true))!,
-              fileName: 'lecture.$_recordingExtension',
-            )
-          : await OpenAiWhisperService().transcribeFile(path);
+      final Uint8List? bytes = await _readRecordingBytes(requireTranscriptLength: true);
+      if (bytes == null) {
+        throw Exception('Recording too short. Speak longer and try again.');
+      }
+
+      if (!kIsWeb) {
+        final Uint8List rebuilt = rebuildWavBytes(bytes, sampleRate: lectureRecordingSampleRate());
+        final File file = File(path);
+        if (await file.exists()) {
+          await file.writeAsBytes(rebuilt, flush: true);
+        }
+        _recordingBytes = rebuilt;
+      }
+
+      try {
+        await (await _ensurePlayer()).stop();
+      } catch (_) {}
+
+      final String text = await OpenAiWhisperService().transcribeBytes(
+        kIsWeb ? bytes : rebuildWavBytes(bytes, sampleRate: lectureRecordingSampleRate()),
+        fileName: 'lecture.$_recordingExtension',
+      );
       if (!mounted) return;
       setState(() {
-        _transcript = text;
-        _segments = _buildSegments(text, _recordedDuration);
         _loadingTranscript = false;
+        _actionBusy = false;
       });
+      _setTranscriptText(text);
     } catch (error) {
       if (!mounted) return;
       setState(() {
         _step = _RecordStep.review;
         _loadingTranscript = false;
+        _actionBusy = false;
       });
       _showError(StudyMessenger.clean(error));
     }
@@ -843,8 +921,9 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
 
   Future<void> _finish() async {
     final String? path = _filePath;
-    final String? transcript = _transcript;
-    if (path == null || transcript == null || transcript.isEmpty) return;
+    final String transcript = _transcriptController.text.trim();
+    if (path == null || transcript.isEmpty) return;
+    _transcript = transcript;
 
     setState(() => _step = _RecordStep.summarizing);
     try {
@@ -856,8 +935,6 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
       _showError(StudyMessenger.clean(error));
     }
   }
-
-  void _showError(String message) => StudyMessenger.showError(context, message);
 
   Future<void> _close() async {
     if (_step == _RecordStep.summarizing) return;
@@ -918,7 +995,7 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
               Align(
                 alignment: Alignment.centerRight,
                 child: FilledButton(
-                  onPressed: _nextEnabled ? _onNext : null,
+                  onPressed: _nextEnabled ? () => unawaited(_onNext()) : null,
                   style: FilledButton.styleFrom(
                     backgroundColor: accent,
                     foregroundColor: Colors.white,
@@ -927,10 +1004,16 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
                     padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                   ),
-                  child: Text(
-                    _step == _RecordStep.transcript ? 'Next' : 'Next',
-                    style: const TextStyle(fontWeight: FontWeight.w800),
-                  ),
+                  child: _actionBusy && _step == _RecordStep.review
+                      ? const SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Text(
+                          'Next',
+                          style: TextStyle(fontWeight: FontWeight.w800),
+                        ),
                 ),
               ),
             ],
@@ -941,16 +1024,19 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
   }
 
   bool get _nextEnabled {
-    if (_step == _RecordStep.ready || _step == _RecordStep.summarizing || _loadingTranscript) {
+    if (_actionBusy || _step == _RecordStep.ready || _step == _RecordStep.summarizing || _loadingTranscript) {
       return false;
     }
     if (_step == _RecordStep.recording) return false;
     if (_step == _RecordStep.review) return _filePath != null;
-    if (_step == _RecordStep.transcript) return _transcript != null && _transcript!.isNotEmpty;
+    if (_step == _RecordStep.transcript) {
+      return _transcriptController.text.trim().isNotEmpty;
+    }
     return false;
   }
 
   Future<void> _onNext() async {
+    if (_actionBusy) return;
     if (_step == _RecordStep.review) {
       await _goToTranscript();
     } else if (_step == _RecordStep.transcript) {
@@ -1050,11 +1136,14 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               _ControlChip(
-                label: _playing ? 'Pause' : 'Play',
-                icon: _playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                label: _actionBusy ? 'Loading…' : (_playing ? 'Pause' : 'Play'),
+                icon: _actionBusy
+                    ? Icons.hourglass_top_rounded
+                    : (_playing ? Icons.pause_rounded : Icons.play_arrow_rounded),
                 background: Colors.white,
                 foreground: Colors.black,
-                onTap: _togglePlayback,
+                enabled: !_actionBusy,
+                onTap: () => unawaited(_togglePlayback()),
               ),
               const SizedBox(width: 12),
               _ControlChip(
@@ -1062,10 +1151,23 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
                 icon: Icons.delete_outline_rounded,
                 background: _pauseBg,
                 foreground: Colors.white,
-                onTap: _discardRecording,
+                enabled: !_actionBusy,
+                onTap: () => unawaited(_discardRecording()),
               ),
             ],
           ),
+          if (_inlineMessage != null) ...<Widget>[
+            const SizedBox(height: 12),
+            Text(
+              _inlineMessage!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: _inlineIsError ? const Color(0xFFFCA5A5) : Colors.white.withValues(alpha: 0.65),
+                fontSize: 12,
+                height: 1.35,
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           Text(
             'Tap Next to transcribe this recording',
@@ -1211,7 +1313,7 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
               onPressed: _transcript == null
                   ? null
                   : () {
-                      Clipboard.setData(ClipboardData(text: _transcript!));
+                      Clipboard.setData(ClipboardData(text: _transcriptController.text.trim()));
                       StudyMessenger.showInfo(context, 'Transcript copied');
                     },
               icon: Icon(Icons.copy_rounded, color: Colors.white.withValues(alpha: 0.45), size: 18),
@@ -1220,48 +1322,58 @@ class _RecordAudioSummarizeDialogState extends State<RecordAudioSummarizeDialog>
           ],
         ),
         const SizedBox(height: 8),
-        ..._segments.map(
-          (TranscriptSegment segment) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: _inner,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () => _seekTo(segment.start),
-                    borderRadius: BorderRadius.circular(8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(Icons.play_circle_outline, color: Colors.white.withValues(alpha: 0.45), size: 16),
-                        const SizedBox(width: 6),
-                        Text(
-                          _formatDuration(segment.start),
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.45),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    segment.text,
-                    style: const TextStyle(color: Colors.white, height: 1.45, fontSize: 14),
-                  ),
-                ],
-              ),
+        TextField(
+          controller: _transcriptController,
+          minLines: 3,
+          maxLines: 8,
+          style: const TextStyle(color: Colors.white, height: 1.45, fontSize: 14),
+          decoration: InputDecoration(
+            hintText: 'Edit transcript if it missed anything you said',
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.35)),
+            filled: true,
+            fillColor: _inner,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: accent.withValues(alpha: 0.65)),
+            ),
+            contentPadding: const EdgeInsets.all(14),
+          ),
+          onChanged: (String value) {
+            _transcript = value.trim();
+            _segments = _buildSegments(value.trim(), _recordedDuration);
+          },
+        ),
+        if (_segments.length > 1) ...<Widget>[
+          const SizedBox(height: 12),
+          Text(
+            'Jump to section',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.45),
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ),
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _segments
+                .map(
+                  (TranscriptSegment segment) => ActionChip(
+                    label: Text(_formatDuration(segment.start)),
+                    avatar: const Icon(Icons.play_arrow_rounded, size: 16),
+                    onPressed: () => unawaited(_seekTo(segment.start)),
+                    backgroundColor: _inner,
+                    labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.75), fontSize: 12),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
       ],
     );
   }
@@ -1343,6 +1455,7 @@ class _ControlChip extends StatelessWidget {
     required this.background,
     required this.foreground,
     required this.onTap,
+    this.enabled = true,
   });
 
   final String label;
@@ -1350,27 +1463,22 @@ class _ControlChip extends StatelessWidget {
   final Color background;
   final Color foreground;
   final VoidCallback onTap;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: background,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(icon, color: foreground, size: 18),
-              const SizedBox(width: 8),
-              Text(label, style: TextStyle(color: foreground, fontWeight: FontWeight.w700)),
-            ],
-          ),
-        ),
+    return FilledButton.icon(
+      onPressed: enabled ? onTap : null,
+      style: FilledButton.styleFrom(
+        backgroundColor: background,
+        foregroundColor: foreground,
+        disabledBackgroundColor: background.withValues(alpha: 0.45),
+        disabledForegroundColor: foreground.withValues(alpha: 0.55),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
+      icon: Icon(icon, size: 18),
+      label: Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
     );
   }
 }

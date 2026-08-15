@@ -1,3 +1,4 @@
+import '../utils/practice_lab_limits.dart';
 import '../utils/study_limits.dart';
 
 class PlanFeature {
@@ -33,7 +34,7 @@ class MembershipPlans {
 
   static final MembershipPlanDetails free = MembershipPlanDetails(
     name: 'Free',
-    tagline: 'Everything you need to get started.',
+    tagline: 'Start learning by doing.',
     priceAmount: '0',
     priceSuffix: '/ month',
     features: <PlanFeature>[
@@ -45,6 +46,9 @@ class MembershipPlans {
       PlanFeature('Up to ${StudyLimits.freeStudySetsPerCourse} study sets per course'),
       PlanFeature('Up to ${StudyLimits.freeFlashcardsPerCourse} flashcards per course'),
       PlanFeature('Up to ${StudyLimits.freeQuizQuestionsPerCourse} quiz questions per course'),
+      PlanFeature(
+        '${PracticeLabLimits.freeSimulationsPerMonth} Virtual University sessions per month',
+      ),
       PlanFeature('Study planner & reminders'),
       PlanFeature('Progress tracking'),
       PlanFeature('Daily study streaks'),
@@ -54,13 +58,14 @@ class MembershipPlans {
 
   static final MembershipPlanDetails premium = MembershipPlanDetails(
     name: 'Premium',
-    tagline: 'Study without limits.',
+    tagline: 'Unlimited hands-on practice for every subject.',
     priceAmount: '7.99',
     priceSuffix: '/ month',
     strikethroughPrice: premiumRegularPrice,
     promoLabel: 'LIMITED TIME',
     features: <PlanFeature>[
       PlanFeature('Everything in Free'),
+      PlanFeature('Unlimited Virtual University simulations'),
       PlanFeature('Unlimited AI Tutor Chat'),
       PlanFeature('Live voice conversations with AI Tutor'),
       PlanFeature('Unlimited study sets'),

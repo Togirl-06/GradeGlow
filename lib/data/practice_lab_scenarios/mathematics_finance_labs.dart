@@ -1,0 +1,228 @@
+import '../../models/practice_lab.dart';
+
+const Map<String, List<PracticeLabType>> mathematicsFinanceLabs = <String, List<PracticeLabType>>{
+  'mathematics': <PracticeLabType>[
+    PracticeLabType(
+      id: 'math_explain_eigenvectors',
+      title: 'Explain Eigenvectors Clearly',
+      subtitle: 'Help a confused student finally grasp what eigenvectors and eigenvalues really mean.',
+      style: SimulationStyle.classroom,
+      aiRole: 'Confused Student',
+      difficulty: 'Beginner',
+      studentTasks: <String>[
+        'Define eigenvectors and eigenvalues in plain language',
+        'Give a geometric intuition using a simple transformation',
+        'Check the student\'s understanding with a quick example',
+      ],
+      evaluationCriteria: <String>[
+        'Clarity and accuracy of the explanation',
+        'Quality of analogies and worked examples',
+        'Responsiveness to the student\'s confusion',
+      ],
+    ),
+    PracticeLabType(
+      id: 'math_proof_viva',
+      title: 'Real Analysis Proof Viva',
+      subtitle: 'Defend a delta-epsilon continuity proof under live questioning from a professor.',
+      style: SimulationStyle.classroom,
+      aiRole: 'Mathematics Professor',
+      difficulty: 'Intermediate',
+      studentTasks: <String>[
+        'State the theorem and assumptions precisely',
+        'Walk through each step of the proof logically',
+        'Justify any nontrivial inequalities when challenged',
+      ],
+      evaluationCriteria: <String>[
+        'Logical rigor and correctness of each step',
+        'Precision of mathematical language used',
+        'Ability to defend claims under questioning',
+      ],
+    ),
+    PracticeLabType(
+      id: 'math_applied_modeling',
+      title: 'Applied Modeling Discussion',
+      subtitle: 'Discuss building a differential equation model for population dynamics with a research client.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Research Client',
+      difficulty: 'Advanced',
+      studentTasks: <String>[
+        'Translate the real-world problem into equations',
+        'Justify chosen assumptions and parameters',
+        'Explain limitations and validation of the model',
+      ],
+      evaluationCriteria: <String>[
+        'Appropriateness of the modeling approach',
+        'Clear justification of assumptions',
+        'Honest discussion of model limitations',
+      ],
+    ),
+  ],
+  'statistics': <PracticeLabType>[
+    PracticeLabType(
+      id: 'stats_consulting_session',
+      title: 'Statistical Consulting Session',
+      subtitle: 'Advise a biologist on the right test for their messy experimental dataset.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Research Client',
+      difficulty: 'Beginner',
+      studentTasks: <String>[
+        'Clarify the research question and data structure',
+        'Recommend an appropriate statistical test',
+        'Explain assumptions in non-technical terms',
+      ],
+      evaluationCriteria: <String>[
+        'Correctness of the recommended method',
+        'Clarity of communication to a non-statistician',
+        'Attention to data assumptions and pitfalls',
+      ],
+    ),
+    PracticeLabType(
+      id: 'stats_ab_design',
+      title: 'Design An A-B Test',
+      subtitle: 'Plan a rigorous A-B experiment for a product manager wanting to test a new feature.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Product Manager',
+      difficulty: 'Intermediate',
+      studentTasks: <String>[
+        'Define the hypothesis and success metric',
+        'Calculate sample size and test duration',
+        'Address randomization and confounding risks',
+      ],
+      evaluationCriteria: <String>[
+        'Soundness of the experimental design',
+        'Correct power and sample size reasoning',
+        'Handling of bias and confounders',
+      ],
+    ),
+    PracticeLabType(
+      id: 'stats_present_caveats',
+      title: 'Present Analysis With Caveats',
+      subtitle: 'Brief an executive on regression findings while honestly conveying uncertainty and caveats.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Portfolio Manager',
+      difficulty: 'Advanced',
+      studentTasks: <String>[
+        'Summarize key findings and effect sizes',
+        'Communicate confidence intervals and uncertainty',
+        'Warn against overinterpreting correlations as causes',
+      ],
+      evaluationCriteria: <String>[
+        'Accuracy of the reported results',
+        'Honest framing of uncertainty and limits',
+        'Avoidance of causal overreach',
+      ],
+    ),
+  ],
+  'actuarial_science': <PracticeLabType>[
+    PracticeLabType(
+      id: 'actuarial_pricing_reserving',
+      title: 'Pricing And Reserving Briefing',
+      subtitle: 'Brief the chief actuary on premium pricing and loss reserves for a new auto product.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Chief Actuary',
+      difficulty: 'Beginner',
+      studentTasks: <String>[
+        'Explain the proposed premium pricing basis',
+        'Outline the loss reserving methodology used',
+        'Highlight key data and credibility concerns',
+      ],
+      evaluationCriteria: <String>[
+        'Soundness of pricing and reserving logic',
+        'Appropriate use of actuarial methods',
+        'Clarity of the briefing to leadership',
+      ],
+    ),
+    PracticeLabType(
+      id: 'actuarial_risk_review',
+      title: 'Risk Assessment Review',
+      subtitle: 'Defend a mortality and lapse risk assessment in review with the chief actuary.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Chief Actuary',
+      difficulty: 'Intermediate',
+      studentTasks: <String>[
+        'Present the identified key risk drivers',
+        'Justify mortality and lapse assumptions',
+        'Propose mitigation and capital implications',
+      ],
+      evaluationCriteria: <String>[
+        'Thoroughness of the risk identification',
+        'Defensibility of the chosen assumptions',
+        'Practicality of mitigation proposals',
+      ],
+    ),
+    PracticeLabType(
+      id: 'actuarial_explain_assumptions',
+      title: 'Explain Assumptions To Leadership',
+      subtitle: 'Help non-technical leadership understand why discount rate assumptions drive reserve volatility.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Chief Actuary',
+      difficulty: 'Advanced',
+      studentTasks: <String>[
+        'Explain how discount rates affect reserves',
+        'Translate technical assumptions into business impact',
+        'Address leadership concerns about volatility',
+      ],
+      evaluationCriteria: <String>[
+        'Accuracy of the technical explanation',
+        'Effectiveness translating jargon for executives',
+        'Responsiveness to leadership questions',
+      ],
+    ),
+  ],
+  'quantitative_finance': <PracticeLabType>[
+    PracticeLabType(
+      id: 'quant_strategy_review',
+      title: 'Quant Strategy Review',
+      subtitle: 'Present a momentum trading strategy and its backtest to a skeptical portfolio manager.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Portfolio Manager',
+      difficulty: 'Beginner',
+      studentTasks: <String>[
+        'Describe the strategy signal and logic',
+        'Present backtest performance and key metrics',
+        'Address overfitting and transaction cost concerns',
+      ],
+      evaluationCriteria: <String>[
+        'Soundness of the strategy rationale',
+        'Rigor of the backtest interpretation',
+        'Awareness of overfitting and costs',
+      ],
+    ),
+    PracticeLabType(
+      id: 'quant_derivatives_interview',
+      title: 'Derivatives Pricing Interview',
+      subtitle: 'Answer a quant interviewer\'s questions on Black-Scholes and option Greeks under pressure.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Quant Interviewer',
+      difficulty: 'Intermediate',
+      studentTasks: <String>[
+        'Derive or explain the Black-Scholes intuition',
+        'Interpret the main option Greeks correctly',
+        'Solve a follow-up pricing problem aloud',
+      ],
+      evaluationCriteria: <String>[
+        'Correctness of pricing concepts',
+        'Clarity of reasoning under pressure',
+        'Depth of understanding of the Greeks',
+      ],
+    ),
+    PracticeLabType(
+      id: 'quant_risk_model_defense',
+      title: 'Risk Model Defense',
+      subtitle: 'Defend a Value-at-Risk model\'s assumptions and backtesting to a risk committee.',
+      style: SimulationStyle.customerScenario,
+      aiRole: 'Portfolio Manager',
+      difficulty: 'Advanced',
+      studentTasks: <String>[
+        'Explain the VaR methodology and assumptions',
+        'Present backtesting and breach analysis',
+        'Defend model limits and stress scenarios',
+      ],
+      evaluationCriteria: <String>[
+        'Rigor of the risk methodology',
+        'Quality of backtesting evidence',
+        'Honesty about model limitations',
+      ],
+    ),
+  ],
+};

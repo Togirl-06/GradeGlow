@@ -433,6 +433,7 @@ class ChatService extends ChangeNotifier {
         displayText,
         courseContext: _tutorContext.context.toSystemPrompt(),
         imageFilePaths: visionPaths,
+        premium: _subscription.isPremium,
       );
 
       _lastAssistantReply = reply;
@@ -755,6 +756,7 @@ class ChatService extends ChangeNotifier {
         trimmed,
         courseContext: _tutorContext.context.toSystemPrompt(),
         imageFilePaths: const <String>[],
+        premium: _subscription.isPremium,
       );
 
       _lastAssistantReply = reply;
@@ -860,6 +862,7 @@ class ChatService extends ChangeNotifier {
         userMessage.text,
         courseContext: _tutorContext.context.toSystemPrompt(),
         imageFilePaths: const <String>[],
+        premium: _subscription.isPremium,
       );
 
       _lastAssistantReply = reply;

@@ -427,6 +427,7 @@ class NotesSummarizerService extends ChangeNotifier {
         flashcardCount: budget.flashcardCount,
         quizCount: budget.quizCount,
         includeStudyMaterials: budget.flashcardCount > 0 || budget.quizCount > 0,
+        premium: _subscription.isPremium,
       );
 
       return _saveSummary(
@@ -477,6 +478,7 @@ class NotesSummarizerService extends ChangeNotifier {
         flashcardCount: budget.flashcardCount,
         quizCount: budget.quizCount,
         includeStudyMaterials: budget.flashcardCount > 0 || budget.quizCount > 0,
+        premium: _subscription.isPremium,
       );
 
       return _saveSummary(
@@ -556,6 +558,7 @@ class NotesSummarizerService extends ChangeNotifier {
         flashcardCount: budget.flashcardCount,
         quizCount: budget.quizCount,
         includeStudyMaterials: budget.flashcardCount > 0 || budget.quizCount > 0,
+        premium: _subscription.isPremium,
       );
 
       return _saveSummary(
@@ -613,6 +616,7 @@ class NotesSummarizerService extends ChangeNotifier {
         flashcardCount: budget.flashcardCount,
         quizCount: budget.quizCount,
         includeStudyMaterials: budget.flashcardCount > 0 || budget.quizCount > 0,
+        premium: _subscription.isPremium,
       );
 
       return _saveSummary(
@@ -904,6 +908,7 @@ class NotesSummarizerService extends ChangeNotifier {
         flashcardCount: budget.flashcardCount,
         quizCount: budget.quizCount,
         includeStudyMaterials: budget.flashcardCount > 0 || budget.quizCount > 0,
+        premium: _subscription.isPremium,
       );
 
       final StudySummary updated = summary.copyWithMaterials(

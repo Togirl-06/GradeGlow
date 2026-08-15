@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +41,9 @@ class OpenAiWhisperService {
 
   Uint8List _prepareAudioBytes(Uint8List bytes) {
     if (bytes.length < 44) return bytes;
-    return rebuildWavBytes(bytes, sampleRate: lectureRecordingSampleRate());
+    final Uint8List rebuilt = rebuildWavBytes(bytes, sampleRate: lectureRecordingSampleRate());
+    if (kIsWeb) return rebuilt;
+    return boostWavForSpeech(rebuilt, sampleRate: lectureRecordingSampleRate());
   }
 
   Future<String> _transcribeAudioBytes(Uint8List bytes, {required String fileName}) async {
@@ -90,7 +91,8 @@ class OpenAiWhisperService {
     final http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(_url));
     request.headers['Authorization'] = 'Bearer ${AppConfig.openAiApiKey}';
     request.fields['model'] = 'whisper-1';
-    request.fields['language'] = 'en';
+    request.fields['prompt'] = 'Lecture recording, class notes, educational content.';
+    request.fields['temperature'] = '0';
     request.files.add(http.MultipartFile.fromBytes(
       'file',
       prepared,

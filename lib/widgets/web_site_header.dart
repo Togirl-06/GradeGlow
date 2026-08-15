@@ -15,7 +15,7 @@ class WebSiteHeader extends StatelessWidget {
 
   static const List<_WebNavItem> _items = <_WebNavItem>[
     _WebNavItem(label: 'Home', index: 0),
-    _WebNavItem(label: 'Study sets', index: 1),
+    _WebNavItem(label: 'Progress', index: 1),
     _WebNavItem(label: 'Planner', index: 2),
     _WebNavItem(label: 'Tutor', index: 3),
     _WebNavItem(label: 'Profile', index: 4),
@@ -29,7 +29,9 @@ class WebSiteHeader extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: border.withValues(alpha: 0.65))),
+        border: Border(
+          bottom: BorderSide(color: border.withValues(alpha: 0.65)),
+        ),
       ),
       child: Center(
         child: ConstrainedBox(
@@ -49,14 +51,23 @@ class WebSiteHeader extends StatelessWidget {
                     return TextButton(
                       onPressed: () => onChanged(item.index),
                       style: TextButton.styleFrom(
-                        foregroundColor: selected ? StudyColors.primary : textSecondary,
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        foregroundColor: selected
+                            ? StudyColors.primary
+                            : textSecondary,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                       child: Text(
                         item.label,
                         style: TextStyle(
-                          fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                          fontWeight: selected
+                              ? FontWeight.w700
+                              : FontWeight.w600,
                           fontSize: 14,
                         ),
                       ),

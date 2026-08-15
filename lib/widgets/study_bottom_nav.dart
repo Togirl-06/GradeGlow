@@ -14,7 +14,7 @@ class StudyBottomNav extends StatelessWidget {
 
   static const List<_NavTab> _tabs = <_NavTab>[
     _NavTab(icon: Icons.home_rounded, label: 'Home'),
-    _NavTab(icon: Icons.collections_bookmark_outlined, label: 'Progress'),
+    _NavTab(icon: Icons.insights_rounded, label: 'Progress'),
     _NavTab(icon: Icons.checklist_rounded, label: 'Planner'),
     _NavTab(icon: Icons.smart_toy_outlined, label: 'Tutor'),
     _NavTab(icon: Icons.person_rounded, label: 'Profile'),
@@ -86,7 +86,9 @@ class _NavItem extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
-                color: selected ? StudyColors.primaryTint(brightness) : Colors.transparent,
+                color: selected
+                    ? StudyColors.primaryTint(brightness)
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(

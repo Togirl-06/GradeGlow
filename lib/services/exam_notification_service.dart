@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
@@ -45,6 +46,13 @@ class ExamNotificationService {
 
   Future<void> initialize() async {
     if (_ready) return;
+
+    // Local notifications + timezone plugins hang on web — skip entirely.
+    if (kIsWeb) {
+      _permissionGranted = false;
+      _ready = true;
+      return;
+    }
 
     tz_data.initializeTimeZones();
     await _configureLocalTimeZone();

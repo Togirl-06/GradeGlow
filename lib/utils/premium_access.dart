@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../models/subscription_plan.dart';
+import 'plan_features.dart';
+import 'practice_lab_limits.dart';
+import 'ai_practice_limits.dart';
 import '../screens/membership_screen.dart';
 import '../services/subscription_service.dart';
 import 'api_error_messages.dart';
+import 'virtual_university_premium.dart';
 
 /// Premium-only capabilities from the membership catalog.
 enum PremiumFeature {
@@ -15,16 +19,45 @@ enum PremiumFeature {
   advancedAnalytics,
   gradePredictor,
   exportContent,
+  practiceLabs,
+  aiPracticeMode,
   unlimitedChat,
+  vuAiProfessor,
+  vuLectureTts,
+  vuAdvancedSims,
 }
 
 class PremiumAccess {
   PremiumAccess._();
 
-  static bool isPremium(SubscriptionPlan plan) => plan.isPaid;
+  static bool isPremium(SubscriptionPlan plan) => PlanFeatures.isPremium(plan);
 
-  static void requirePremium(SubscriptionPlan plan, {PremiumFeature feature = PremiumFeature.unlimitedChat}) {
-    if (plan.isPaid) return;
+  static bool canUse(SubscriptionPlan plan, PremiumFeature feature) {
+    return switch (feature) {
+      PremiumFeature.voiceTutor => PlanFeatures.liveVoiceTutor(plan),
+      PremiumFeature.homeworkHelp => PlanFeatures.studyGuidesExamReviews(plan),
+      PremiumFeature.studyGuides => PlanFeatures.regenerateStudySets(plan),
+      PremiumFeature.practiceExams => PlanFeatures.practiceExams(plan),
+      PremiumFeature.studyPlans => PlanFeatures.personalizedStudyPlans(plan),
+      PremiumFeature.advancedAnalytics => PlanFeatures.advancedAnalytics(plan),
+      PremiumFeature.gradePredictor => PlanFeatures.gradePredictor(plan),
+      PremiumFeature.exportContent => PlanFeatures.exportContent(plan),
+      PremiumFeature.practiceLabs => PlanFeatures.unlimitedPracticeLabs(plan),
+      PremiumFeature.aiPracticeMode => PlanFeatures.unlimitedAiPracticeMode(
+        plan,
+      ),
+      PremiumFeature.unlimitedChat => PlanFeatures.unlimitedTutorMedia(plan),
+      PremiumFeature.vuAiProfessor => PlanFeatures.isPremium(plan),
+      PremiumFeature.vuLectureTts => PlanFeatures.liveVoiceTutor(plan),
+      PremiumFeature.vuAdvancedSims => PlanFeatures.unlimitedPracticeLabs(plan),
+    };
+  }
+
+  static void requirePremium(
+    SubscriptionPlan plan, {
+    PremiumFeature feature = PremiumFeature.unlimitedChat,
+  }) {
+    if (canUse(plan, feature)) return;
     throw PremiumRequiredException(forFeature(feature));
   }
 
@@ -38,7 +71,14 @@ class PremiumAccess {
       PremiumFeature.advancedAnalytics => advancedAnalyticsRequired,
       PremiumFeature.gradePredictor => gradePredictorRequired,
       PremiumFeature.exportContent => exportRequired,
+      PremiumFeature.practiceLabs => PracticeLabLimits.monthlyLimitReached,
+      PremiumFeature.aiPracticeMode => AiPracticeLimits.monthlyLimitReached,
       PremiumFeature.unlimitedChat => upgradeRequired,
+      PremiumFeature.vuAiProfessor =>
+        VirtualUniversityPremium.dailyAiLimitReached,
+      PremiumFeature.vuLectureTts =>
+        VirtualUniversityPremium.dailyTtsLimitReached,
+      PremiumFeature.vuAdvancedSims => PracticeLabLimits.monthlyLimitReached,
     };
   }
 
@@ -50,7 +90,8 @@ class PremiumAccess {
 
   static const ApiErrorInfo voiceTutorRequired = ApiErrorInfo(
     title: 'Live voice is Premium',
-    message: 'Hands-free live voice conversations with the AI tutor require Premium.',
+    message:
+        'Hands-free live voice conversations with the AI tutor require Premium.',
     steps: <String>['Upgrade to Premium for live voice mode'],
   );
 
@@ -62,7 +103,8 @@ class PremiumAccess {
 
   static const ApiErrorInfo studyGuidesRequired = ApiErrorInfo(
     title: 'Study guides are Premium',
-    message: 'AI-generated study guides, exam reviews, and regenerating summaries require Premium.',
+    message:
+        'AI-generated study guides, exam reviews, and regenerating summaries require Premium.',
     steps: <String>['Upgrade to Premium for study guides & exam reviews'],
   );
 
@@ -80,8 +122,11 @@ class PremiumAccess {
 
   static const ApiErrorInfo advancedAnalyticsRequired = ApiErrorInfo(
     title: 'Advanced analytics are Premium',
-    message: 'AI focus topics, grade predictions, and advanced analytics require Premium.',
-    steps: <String>['Upgrade to Premium for Grade Predictor & advanced insights'],
+    message:
+        'AI focus topics, grade predictions, and advanced analytics require Premium.',
+    steps: <String>[
+      'Upgrade to Premium for Grade Predictor & advanced insights',
+    ],
   );
 
   static const ApiErrorInfo gradePredictorRequired = ApiErrorInfo(
@@ -92,7 +137,8 @@ class PremiumAccess {
 
   static const ApiErrorInfo exportRequired = ApiErrorInfo(
     title: 'Export is Premium',
-    message: 'Downloading and exporting notes, recordings, and study materials requires Premium.',
+    message:
+        'Downloading and exporting notes, recordings, and study materials requires Premium.',
     steps: <String>['Upgrade to Premium to export your study content'],
   );
 
@@ -102,7 +148,7 @@ class PremiumAccess {
     SubscriptionService subs, {
     PremiumFeature feature = PremiumFeature.unlimitedChat,
   }) async {
-    if (subs.isPremium) return true;
+    if (canUse(subs.plan, feature)) return true;
     await showUpgradeDialog(context, feature: feature);
     return false;
   }
@@ -118,15 +164,21 @@ class PremiumAccess {
         title: Text(info.title),
         content: Text(info.message),
         actions: <Widget>[
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Not now')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Upgrade')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Not now'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Upgrade'),
+          ),
         ],
       ),
     );
     if (upgrade == true && context.mounted) {
-      await Navigator.of(context).push(
-        MaterialPageRoute<void>(builder: (_) => const MembershipScreen()),
-      );
+      await Navigator.of(
+        context,
+      ).push(MaterialPageRoute<void>(builder: (_) => const MembershipScreen()));
     }
   }
 }

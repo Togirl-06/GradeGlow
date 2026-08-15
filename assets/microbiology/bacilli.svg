@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#1B4332"/>
+  <circle cx="200" cy="125" r="118" fill="#0D2818" stroke="#2D6A4F" stroke-width="3"/>
+  <rect x="70" y="108" width="22" height="68" rx="8" fill="#52B788" stroke="#2D6A4F" stroke-width="1.5" transform="rotate(-12 81 142)"/>
+  <rect x="115" y="98" width="20" height="72" rx="8" fill="#74C69D" stroke="#40916C" stroke-width="1.5" transform="rotate(8 125 134)"/>
+  <rect x="165" y="105" width="22" height="70" rx="8" fill="#95D5B2" stroke="#52B788" stroke-width="1.5"/>
+  <rect x="215" y="100" width="20" height="74" rx="8" fill="#74C69D" stroke="#40916C" stroke-width="1.5" transform="rotate(-6 225 137)"/>
+  <rect x="265" y="110" width="22" height="66" rx="8" fill="#52B788" stroke="#2D6A4F" stroke-width="1.5" transform="rotate(10 276 143)"/>
+  <text x="200" y="24" text-anchor="middle" fill="#D8F3DC" font-family="Arial,sans-serif" font-size="12">Bacilli rods (400�)</text>
+</svg>

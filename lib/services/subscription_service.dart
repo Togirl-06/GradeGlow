@@ -6,7 +6,10 @@ import '../models/subscription_plan.dart';
 import 'auth_service.dart';
 
 /// Subscription state stored on `users/{uid}.plan`.
-/// Real billing (Stripe / App Store / Play) hooks in here later.
+///
+/// Client apps may **read** plan and restore to free locally for testing only
+/// when Firebase is off. Paid upgrades must come from store billing / backend —
+/// the UI no longer free-unlocks Premium.
 class SubscriptionService extends ChangeNotifier {
   SubscriptionService(this._auth);
 
@@ -15,6 +18,9 @@ class SubscriptionService extends ChangeNotifier {
   SubscriptionPlan _plan = SubscriptionPlan.free;
   SubscriptionPlan get plan => _plan;
   bool get isPremium => _plan.isPaid;
+
+  /// True when real IAP / Play Billing is wired. Until then, upgrade CTAs explain waitlist.
+  static const bool billingLive = false;
 
   void syncFromPlanString(String? value) {
     _plan = SubscriptionPlan.fromString(value);
@@ -34,6 +40,7 @@ class SubscriptionService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Internal / backend-only plan write. UI must not call this to fake Premium.
   Future<void> setPlan(SubscriptionPlan plan) async {
     final String? uid = _auth.uid;
     if (uid == null) throw Exception('Sign in to manage subscription.');
@@ -55,12 +62,31 @@ class SubscriptionService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Demo / future webhook handler after payment succeeds.
+  /// Called after a verified store purchase (when billing is live).
   Future<void> activateAfterPayment(SubscriptionPlan plan) => setPlan(plan);
 
-  Future<void> purchasePremium() => activateAfterPayment(SubscriptionPlan.premium);
+  /// Purchase Premium via store — not available until [billingLive].
+  Future<bool> purchasePremium() async {
+    if (!billingLive) {
+      debugPrint('Premium purchase blocked — billing not live yet.');
+      return false;
+    }
+    await activateAfterPayment(SubscriptionPlan.premium);
+    return true;
+  }
 
-  Future<void> purchasePremiumPlus() => activateAfterPayment(SubscriptionPlan.premiumPlus);
+  Future<bool> purchasePremiumPlus() async {
+    if (!billingLive) return false;
+    await activateAfterPayment(SubscriptionPlan.premiumPlus);
+    return true;
+  }
 
   Future<void> restoreFree() => setPlan(SubscriptionPlan.free);
+
+  /// Restore purchases from the store (stub until IAP is connected).
+  Future<bool> restorePurchases() async {
+    if (!billingLive) return false;
+    await loadPlan();
+    return isPremium;
+  }
 }

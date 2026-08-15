@@ -122,7 +122,8 @@ class MaterialService extends ChangeNotifier {
       final String materialId = DateTime.now().millisecondsSinceEpoch.toString();
       String downloadUrl = '';
       if (AppConfig.hasFirebase) {
-        final Reference ref = FirebaseStorage.instance.ref('materials/$materialId-$fileName');
+        final Reference ref = FirebaseStorage.instance
+            .ref('users/$uid/materials/$materialId-$fileName');
         await ref.putData(bytes, SettableMetadata(contentType: mimeType));
         downloadUrl = await ref.getDownloadURL();
       }

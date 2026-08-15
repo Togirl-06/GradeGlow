@@ -1,1 +1,41 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"ai-studybuddy-1fad1","appId":"1:118727197700:android:b9ade7a71d102ae3a42151","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ai-studybuddy-1fad1","configurations":{"android":"1:118727197700:android:b9ade7a71d102ae3a42151","ios":"1:118727197700:ios:0d2fb7a3e3471d4ca42151","macos":"1:118727197700:ios:0d2fb7a3e3471d4ca42151","web":"1:118727197700:web:a3888d1d384bf3bca42151","windows":"1:118727197700:web:fd42863e82cec398a42151"}}}}}}
+{
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "GradeGlow",
+        "supportEmail": "tomachiegere@gmail.com"
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ai-studybuddy-1fad1",
+          "appId": "1:118727197700:android:b9ade7a71d102ae3a42151",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ai-studybuddy-1fad1",
+          "configurations": {
+            "android": "1:118727197700:android:b9ade7a71d102ae3a42151",
+            "ios": "1:118727197700:ios:0d2fb7a3e3471d4ca42151",
+            "macos": "1:118727197700:ios:0d2fb7a3e3471d4ca42151",
+            "web": "1:118727197700:web:4396664c5bf09ddba42151",
+            "windows": "1:118727197700:web:fd42863e82cec398a42151"
+          }
+        }
+      }
+    }
+  }
+}

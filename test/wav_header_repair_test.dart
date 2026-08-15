@@ -34,6 +34,32 @@ void main() {
     expect(repairWavHeaderBytes(wav), isFalse);
     expect(durationFromWavBytes(wav), const Duration(seconds: 5));
   });
+
+  test('boostWavForSpeech raises quiet recordings', () {
+    const int pcmBytes = 44100 * 2;
+    final Uint8List wav = _syntheticWav(
+      pcmBytes: pcmBytes,
+      declaredPcmBytes: pcmBytes,
+      sampleRate: 44100,
+      sampleRateInHeader: 44100,
+    );
+    ByteData.sublistView(wav).setInt16(44, 250, Endian.little);
+
+    final Uint8List boosted = boostWavForSpeech(wav, sampleRate: 44100);
+    expect(peakPcmLevel(boosted), greaterThan(5000));
+  });
+
+  test('boostWavForSpeech rejects silent recordings', () {
+    const int pcmBytes = 44100 * 2;
+    final Uint8List wav = _syntheticWav(
+      pcmBytes: pcmBytes,
+      declaredPcmBytes: pcmBytes,
+      sampleRate: 44100,
+      sampleRateInHeader: 44100,
+    );
+
+    expect(() => boostWavForSpeech(wav, sampleRate: 44100), throwsException);
+  });
 }
 
 Uint8List _syntheticWav({

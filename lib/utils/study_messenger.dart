@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/study_theme.dart';
+import '../utils/api_error_messages.dart';
 import '../utils/premium_access.dart';
 
 /// High-contrast snackbars so errors and messages stay readable everywhere.
@@ -17,7 +18,7 @@ class StudyMessenger {
     if (raw.startsWith('type ') && raw.contains(' is not a subtype of type ')) {
       return 'We could not read the AI response. Try again.';
     }
-    return raw;
+    return ApiErrorMessages.friendlyNetworkMessage(raw) ?? raw;
   }
 
   static void showError(

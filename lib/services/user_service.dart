@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
+import '../models/account_deletion_status.dart';
 import '../models/course_schedule.dart';
 import '../models/parsed_question.dart';
 import '../models/study_progress.dart';
@@ -15,6 +16,7 @@ import '../utils/study_limits.dart';
 import '../utils/tutor_limits.dart';
 import '../models/subscription_plan.dart';
 import 'auth_service.dart';
+import 'account_deletion_service.dart';
 
 class UserService extends ChangeNotifier {
   UserService(this._auth);
@@ -129,7 +131,78 @@ class UserService extends ChangeNotifier {
     );
   }
 
-  Future<void> deleteAccount() async {
+  Future<AccountDeletionStatus?> fetchDeletionStatus() async {
+    final String? uid = _auth.uid;
+    if (uid == null || _auth.isDemoMode || !AppConfig.hasFirebase) return null;
+
+    final DocumentSnapshot<Map<String, dynamic>> doc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    return AccountDeletionStatus.fromMap(doc.data());
+  }
+
+  /// Schedules permanent deletion after the 30-day recovery window, then signs out.
+  Future<void> scheduleAccountDeletion({String? password}) async {
+    final String? uid = _auth.uid;
+    if (uid == null) throw Exception('Sign in to delete your account.');
+
+    if (_auth.isDemoMode) {
+      _demoProfile = null;
+      await _auth.signOut();
+      return;
+    }
+
+    await _auth.reauthenticateForDeletion(password: password);
+    await ensureUserDocument();
+
+    final DateTime deleteAt = DateTime.now().add(AccountDeletionConfig.recoveryWindow);
+    await FirebaseFirestore.instance.collection('users').doc(uid).set(
+      <String, dynamic>{
+        'accountStatus': AccountDeletionConfig.scheduledStatus,
+        'deleteAt': deleteAt.toIso8601String(),
+        'scheduledDeletionAt': DateTime.now().toIso8601String(),
+      },
+      SetOptions(merge: true),
+    );
+
+    await _auth.signOut();
+  }
+
+  Future<void> cancelScheduledDeletion() async {
+    final String? uid = _auth.uid;
+    if (uid == null || _auth.isDemoMode || !AppConfig.hasFirebase) return;
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).set(
+      <String, dynamic>{
+        'accountStatus': FieldValue.delete(),
+        'deleteAt': FieldValue.delete(),
+        'scheduledDeletionAt': FieldValue.delete(),
+      },
+      SetOptions(merge: true),
+    );
+    notifyListeners();
+  }
+
+  /// Permanently deletes the account when the recovery window has passed.
+  /// Returns true when the Firebase Auth user was removed.
+  Future<bool> finalizeDeletionIfDue() async {
+    final AccountDeletionStatus? status = await fetchDeletionStatus();
+    if (status == null || !status.isDue) return false;
+
+    final String? uid = _auth.uid;
+    if (uid == null) return false;
+
+    if (AppConfig.hasFirebase) {
+      try {
+        await AccountDeletionService.wipeUserData(uid);
+      } catch (_) {}
+    }
+
+    await _auth.deleteAccount();
+    return true;
+  }
+
+  /// Immediate permanent deletion (used by tests/admin flows).
+  Future<void> deleteAccount({String? password}) async {
     final String? uid = _auth.uid;
     if (uid == null) return;
 
@@ -139,9 +212,14 @@ class UserService extends ChangeNotifier {
       return;
     }
 
+    await _auth.reauthenticateForDeletion(password: password);
+
     if (AppConfig.hasFirebase) {
-      await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+      try {
+        await AccountDeletionService.wipeUserData(uid);
+      } catch (_) {}
     }
+
     await _auth.deleteAccount();
   }
 

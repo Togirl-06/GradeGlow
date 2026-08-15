@@ -13,6 +13,7 @@ class ExamDate {
   final String id;
   final String courseCode;
   final String examType;
+
   /// Full date + time when the exam starts.
   final DateTime date;
   final bool completed;
@@ -61,26 +62,35 @@ class ExamDate {
   }
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'courseCode': courseCode,
-        'examType': examType,
-        'date': date.toIso8601String(),
-        'completed': completed,
-        'reminderId': reminderId,
-      };
+    'courseCode': courseCode,
+    'examType': examType,
+    'date': date.toIso8601String(),
+    'completed': completed,
+    'reminderId': reminderId,
+  };
 }
 
-/// Preset exam types for the planner dropdown.
+/// Preset calendar event types for the planner dropdown.
+///
+/// Covers everything a student inputs on the calendar — recurring classes as
+/// well as one-off assessments — so the same storage + reminder pipeline drives
+/// classes, exams, tests, assignments, and study sessions.
 class ExamTypeOption {
   const ExamTypeOption(this.label);
   final String label;
 
   static const List<ExamTypeOption> choices = <ExamTypeOption>[
-    ExamTypeOption('Final'),
+    ExamTypeOption('Class'),
+    ExamTypeOption('Lecture'),
+    ExamTypeOption('Lab'),
+    ExamTypeOption('Exam'),
     ExamTypeOption('Midterm'),
+    ExamTypeOption('Final'),
     ExamTypeOption('Quiz'),
     ExamTypeOption('Test'),
-    ExamTypeOption('Lab practical'),
+    ExamTypeOption('Assignment'),
     ExamTypeOption('Presentation'),
+    ExamTypeOption('Study session'),
   ];
 }
 
@@ -107,9 +117,9 @@ class StudyPlanTask {
   }
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'date': date.toIso8601String(),
-        'title': title,
-        'courseCode': courseCode,
-        'completed': completed,
-      };
+    'date': date.toIso8601String(),
+    'title': title,
+    'courseCode': courseCode,
+    'completed': completed,
+  };
 }

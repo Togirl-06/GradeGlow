@@ -11,7 +11,9 @@ import '../utils/speech_text.dart';
 class OpenAiTtsService {
   static const String _url = 'https://api.openai.com/v1/audio/speech';
 
-  Future<Uint8List> synthesizeBytes(String text) async {
+  /// [speed] is OpenAI's speaking rate (0.25–4.0). Prefer baking speed into
+  /// the audio so playback works even when the platform ignores setPlaybackRate.
+  Future<Uint8List> synthesizeBytes(String text, {double speed = 1}) async {
     if (!AppConfig.hasOpenAi) {
       throw Exception('Add OPENAI_API_KEY to your .env file.');
     }
@@ -32,6 +34,7 @@ class OpenAiTtsService {
         'input': input,
         'voice': 'nova',
         'response_format': 'mp3',
+        'speed': speed.clamp(0.25, 4.0),
       }),
     );
 

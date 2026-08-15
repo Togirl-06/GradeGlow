@@ -51,6 +51,8 @@
 		<true/>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>GradeGlow uses the microphone for lecture recording and the AI tutor.</string>
+		<key>NSCalendarsUsageDescription</key>
+		<string>GradeGlow uses your calendars to show your schedule and keep classes, exams, and study events in sync.</string>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>audio</string>

@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +67,7 @@ class _SummaryNoteScreenState extends State<SummaryNoteScreen> {
 
   Future<void> _regenerate() async {
     final SubscriptionService subs = context.read<SubscriptionService>();
-    if (!subs.isPremium) {
+    if (!PremiumAccess.canUse(subs.plan, PremiumFeature.studyGuides)) {
       await PremiumAccess.showUpgradeDialog(context, feature: PremiumFeature.studyGuides);
       return;
     }
@@ -115,6 +120,57 @@ class _SummaryNoteScreenState extends State<SummaryNoteScreen> {
     return buffer.toString();
   }
 
+  String _exportText() {
+    final StringBuffer buffer = StringBuffer()
+      ..writeln(_summary.title)
+      ..writeln('');
+    if (_summary.courseCode.isNotEmpty) {
+      buffer
+        ..writeln('Course: ${_summary.courseCode}')
+        ..writeln('');
+    }
+    buffer
+      ..writeln('Study notes')
+      ..writeln('------------')
+      ..writeln(_summary.cheatSheet);
+    if (_summary.keyConcepts.isNotEmpty) {
+      buffer
+        ..writeln('')
+        ..writeln('Key concepts')
+        ..writeln('------------')
+        ..writeln(_summary.keyConcepts.map((String c) => '• $c').join('\n'));
+    }
+    return buffer.toString();
+  }
+
+  Future<void> _exportSummary() async {
+    final SubscriptionService subs = context.read<SubscriptionService>();
+    if (!await PremiumAccess.checkAndPrompt(context, subs, feature: PremiumFeature.exportContent)) {
+      return;
+    }
+
+    final String safeName = _summary.title.replaceAll(RegExp(r'[<>:"/\\|?*]'), '_').trim();
+    final String fileName = safeName.isEmpty ? 'study_notes.txt' : '$safeName.txt';
+    final Uint8List bytes = Uint8List.fromList(utf8.encode(_exportText()));
+
+    try {
+      await FilePicker.platform.saveFile(
+        dialogTitle: 'Export study notes',
+        fileName: fileName,
+        bytes: bytes,
+        type: FileType.custom,
+        allowedExtensions: <String>['txt'],
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(kIsWeb ? 'Download started' : 'Notes exported')),
+      );
+    } catch (error) {
+      if (!mounted) return;
+      StudyMessenger.showError(context, error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color textSecondary = StudyColors.textSecondary(Theme.of(context).brightness);
@@ -125,6 +181,11 @@ class _SummaryNoteScreenState extends State<SummaryNoteScreen> {
         title: Text(_summary.title),
         actions: <Widget>[
           ReadAloudButton(textBuilder: _spokenNotes),
+          IconButton(
+            tooltip: 'Export',
+            icon: const Icon(Icons.download_outlined),
+            onPressed: canAct ? _exportSummary : null,
+          ),
           IconButton(
             tooltip: 'Rename',
             icon: const Icon(Icons.edit_outlined),

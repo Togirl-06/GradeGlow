@@ -6,6 +6,7 @@ import '../models/quiz_question.dart';
 import '../services/notes_service.dart';
 import '../services/quiz_service.dart';
 import '../theme/study_theme.dart';
+import '../widgets/modern_quiz_view.dart';
 import '../widgets/study_surface.dart';
 import '../utils/study_messenger.dart';
 
@@ -21,6 +22,9 @@ class _QuizScreenState extends State<QuizScreen> {
   bool _quizGenerated = false;
   int _currentQuestion = 0;
   List<QuizQuestion> _questions = <QuizQuestion>[];
+  final List<int?> _answers = <int?>[];
+  bool _finished = false;
+  bool _endedEarly = false;
 
   Future<void> _generateQuiz(QuizService quiz) async {
     if (_selectedNote == null) {
@@ -43,6 +47,11 @@ class _QuizScreenState extends State<QuizScreen> {
         _questions = questions;
         _quizGenerated = true;
         _currentQuestion = 0;
+        _finished = false;
+        _endedEarly = false;
+        _answers
+          ..clear()
+          ..addAll(List<int?>.filled(questions.length, null));
       });
     } catch (error) {
       if (!mounted) return;
@@ -57,52 +66,72 @@ class _QuizScreenState extends State<QuizScreen> {
     final Color textSecondary = StudyColors.textSecondary(Theme.of(context).brightness);
 
     if (_quizGenerated && _questions.isNotEmpty) {
-      final QuizQuestion question = _questions[_currentQuestion];
-      return ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              IconButton(
-                onPressed: () => setState(() => _quizGenerated = false),
-                icon: const Icon(Icons.arrow_back_rounded),
-              ),
-              Expanded(
-                child: Text(
-                  'Question ${_currentQuestion + 1} of ${_questions.length}',
-                  style: TextStyle(color: textSecondary),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            question.prompt,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 16),
-          ...List<Widget>.generate(question.options.length, (int index) {
-            return StudySurfaceCard(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-              child: Text('${String.fromCharCode(65 + index)}   ${question.options[index]}'),
-            );
+      if (_finished) {
+        int score = 0;
+        for (int i = 0; i < _questions.length; i++) {
+          if (_answers[i] == _questions[i].correctIndex) score++;
+        }
+        return ModernQuizResultsView(
+          title: _selectedNote?.name ?? 'Quiz',
+          score: score,
+          total: _questions.length,
+          answeredCount: _answers.where((int? a) => a != null).length,
+          endedEarly: _endedEarly,
+          onDone: () => setState(() {
+            _quizGenerated = false;
+            _finished = false;
+            _endedEarly = false;
+            _currentQuestion = 0;
           }),
-          const SizedBox(height: 16),
-          if (_currentQuestion < _questions.length - 1)
-            FilledButton(
-              onPressed: () => setState(() => _currentQuestion++),
-              child: const Text('Next question'),
-            )
-          else
-            FilledButton(
-              onPressed: () => setState(() {
-                _quizGenerated = false;
-                _currentQuestion = 0;
-              }),
-              child: const Text('Finish quiz'),
-            ),
-        ],
+          onRetry: () => setState(() {
+            _finished = false;
+            _endedEarly = false;
+            _currentQuestion = 0;
+            for (int i = 0; i < _answers.length; i++) {
+              _answers[i] = null;
+            }
+          }),
+        );
+      }
+
+      final QuizQuestion question = _questions[_currentQuestion];
+      final int? selected = _currentQuestion < _answers.length ? _answers[_currentQuestion] : null;
+      final bool isLast = _currentQuestion >= _questions.length - 1;
+
+      return ModernQuizView(
+        title: _selectedNote?.name ?? 'Quiz',
+        questionNumber: _currentQuestion + 1,
+        totalQuestions: _questions.length,
+        prompt: question.prompt,
+        options: question.options,
+        selectedIndex: selected,
+        revealed: selected != null,
+        correctIndex: question.correctIndex,
+        onSelect: (int option) => setState(() => _answers[_currentQuestion] = option),
+        onBack: () {
+          if (_currentQuestion > 0) {
+            setState(() => _currentQuestion -= 1);
+          } else {
+            setState(() => _quizGenerated = false);
+          }
+        },
+        onNext: () {
+          if (isLast) {
+            setState(() => _finished = true);
+          } else {
+            setState(() => _currentQuestion += 1);
+          }
+        },
+        onEndExam: () async {
+          if (!await confirmEndExam(context)) return;
+          if (!mounted) return;
+          setState(() {
+            _endedEarly = true;
+            _finished = true;
+          });
+        },
+        nextLabel: isLast ? 'Finish' : 'Next',
+        nextEnabled: selected != null,
       );
     }
 

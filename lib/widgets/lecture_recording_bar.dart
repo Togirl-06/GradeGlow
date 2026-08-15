@@ -61,7 +61,7 @@ class LectureRecordingBar extends StatelessWidget {
       await recording.stop();
     }
     final String? path = await recording.validatedFilePath();
-    if (path != null) {
+    if (path != null && context.mounted) {
       await context.read<RecordingBinService>().moveToBin(
             sourcePath: path,
             duration: recording.elapsed,

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 400" fill="none">
+  <title>Animal Cell</title>
+  <defs>
+    <radialGradient id="cyto" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#245A78"/>
+      <stop offset="100%" stop-color="#132F45"/>
+    </radialGradient>
+    <radialGradient id="nucGrad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#B39DDB"/>
+      <stop offset="100%" stop-color="#5E35B1"/>
+    </radialGradient>
+    <radialGradient id="mitoGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#FF8A80"/>
+      <stop offset="100%" stop-color="#C62828"/>
+    </radialGradient>
+    <radialGradient id="lysoGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#D7CCC8"/>
+      <stop offset="100%" stop-color="#6D4C41"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="480" height="400" fill="#0B1522"/>
+
+  <!-- Cytoplasm + membrane -->
+  <ellipse id="membrane" cx="240" cy="205" rx="205" ry="168" fill="url(#cyto)" stroke="#64B5F6" stroke-width="4"/>
+  <ellipse cx="240" cy="205" rx="198" ry="161" fill="none" stroke="#90CAF9" stroke-opacity="0.35" stroke-width="1.5"/>
+
+  <!-- Nucleus + nucleolus -->
+  <ellipse id="nucleus" cx="228" cy="185" rx="58" ry="52" fill="url(#nucGrad)" stroke="#E1BEE7" stroke-width="2.5"/>
+  <ellipse cx="228" cy="185" rx="52" ry="46" fill="none" stroke="#CE93D8" stroke-opacity="0.5" stroke-width="1"/>
+  <ellipse id="nucleolus" cx="236" cy="190" rx="16" ry="14" fill="#4527A0" opacity="0.9"/>
+
+  <!-- Rough ER (folded with ribosome dots) -->
+  <g id="rer">
+    <path d="M285 145 C320 130 345 155 335 185 C325 210 295 215 278 198 C265 185 270 158 285 145Z"
+          fill="#FFB74D" fill-opacity="0.85" stroke="#FFA726" stroke-width="1.5"/>
+    <circle cx="292" cy="155" r="3" fill="#26A69A"/>
+    <circle cx="308" cy="148" r="3" fill="#26A69A"/>
+    <circle cx="322" cy="158" r="3" fill="#26A69A"/>
+    <circle cx="316" cy="175" r="3" fill="#26A69A"/>
+    <circle cx="298" cy="182" r="3" fill="#26A69A"/>
+    <circle cx="285" cy="170" r="3" fill="#26A69A"/>
+  </g>
+
+  <!-- Smooth ER -->
+  <g id="ser" stroke="#FFCC80" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M145 145 C120 160 118 190 140 205"/>
+    <path d="M155 150 C135 168 132 195 152 208"/>
+    <path d="M165 148 C148 165 146 192 162 206"/>
+  </g>
+
+  <!-- Mitochondria with cristae -->
+  <g id="mitochondria">
+    <ellipse cx="150" cy="245" rx="38" ry="18" fill="url(#mitoGrad)" stroke="#EF5350" stroke-width="1.8"/>
+    <path d="M128 240 C140 236 155 236 170 240" stroke="#FFCDD2" stroke-width="1.4"/>
+    <path d="M126 248 C142 252 158 252 172 248" stroke="#FFCDD2" stroke-width="1.4"/>
+    <path d="M130 244 C145 244 158 244 168 244" stroke="#FFEBEE" stroke-width="1.1"/>
+  </g>
+  <g id="mitochondria2">
+    <ellipse cx="320" cy="275" rx="32" ry="15" fill="url(#mitoGrad)" stroke="#EF5350" stroke-width="1.6" transform="rotate(25 320 275)"/>
+    <path d="M302 272 C312 268 325 268 336 272" stroke="#FFCDD2" stroke-width="1.2" transform="rotate(25 320 275)"/>
+    <path d="M304 280 C315 283 326 283 335 279" stroke="#FFCDD2" stroke-width="1.2" transform="rotate(25 320 275)"/>
+  </g>
+
+  <!-- Golgi stacks -->
+  <g id="golgi">
+    <ellipse cx="350" cy="200" rx="34" ry="7" fill="#CE93D8" stroke="#7E57C2" stroke-width="1"/>
+    <ellipse cx="352" cy="210" rx="32" ry="7" fill="#B39DDB" stroke="#7E57C2" stroke-width="1"/>
+    <ellipse cx="354" cy="220" rx="30" ry="7" fill="#9575CD" stroke="#7E57C2" stroke-width="1"/>
+    <ellipse cx="355" cy="230" rx="27" ry="6.5" fill="#7E57C2" stroke="#5E35B1" stroke-width="1"/>
+    <ellipse cx="356" cy="239" rx="24" ry="6" fill="#673AB7" stroke="#5E35B1" stroke-width="1"/>
+    <circle cx="378" cy="214" r="5" fill="#B39DDB"/>
+    <circle cx="382" cy="228" r="4.5" fill="#9575CD"/>
+  </g>
+
+  <!-- Lysosome -->
+  <circle id="lysosome" cx="190" cy="300" r="18" fill="url(#lysoGrad)" stroke="#8D6E63" stroke-width="1.8"/>
+  <circle cx="184" cy="294" r="5" fill="#FFFFFF" fill-opacity="0.28"/>
+
+  <!-- Free ribosomes -->
+  <g id="ribosomes" fill="#26A69A">
+    <circle cx="260" cy="255" r="4"/>
+    <circle cx="272" cy="262" r="3.5"/>
+    <circle cx="255" cy="268" r="3.2"/>
+    <circle cx="100" cy="210" r="3.5"/>
+    <circle cx="108" cy="220" r="3"/>
+  </g>
+</svg>

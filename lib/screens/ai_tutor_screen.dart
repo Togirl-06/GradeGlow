@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import '../config/app_branding.dart';
 import '../models/chat_message.dart';
 import '../services/chat_service.dart';
+import '../services/lecture_recording_service.dart';
+import '../services/mic_capture_service.dart';
 import '../services/subscription_service.dart';
 import '../services/tutor_context_service.dart';
 import '../services/tutor_voice_service.dart';
@@ -29,9 +31,16 @@ import '../widgets/tutor_uploads_sheet.dart';
 import '../widgets/voice_note_recorder_bar.dart';
 
 class AiTutorScreen extends StatefulWidget {
-  const AiTutorScreen({super.key, this.initialPrompt});
+  const AiTutorScreen({
+    super.key,
+    this.initialPrompt,
+    this.requireEngagedSession = false,
+  });
 
   final String? initialPrompt;
+
+  /// When true, only pops `true` after the student sends a message and gets a reply.
+  final bool requireEngagedSession;
 
   @override
   State<AiTutorScreen> createState() => _AiTutorScreenState();
@@ -69,13 +78,13 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
   DateTime? _lastSpeechActivityAt;
 
   bool _usingWhisperLive = false;
+  int _consecutiveListenFailures = 0;
 
   static const Duration _liveVoicePauseFor = Duration(milliseconds: 800);
   static const Duration _liveVoiceListenFor = Duration(seconds: 45);
   static const Duration _liveVoiceIdleTimeout = Duration(seconds: 5);
   static const Duration _liveVoiceSessionTimeout = Duration(minutes: 8);
   static const Duration _voiceNoteMaxDuration = Duration(minutes: 2);
-  static const Duration _postSpeakDelay = Duration.zero;
   static const Duration _liveVoiceMinCapture = Duration(milliseconds: 400);
 
   @override
@@ -120,6 +129,25 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
     final UserService users = context.read<UserService>();
     final SubscriptionService subs = context.read<SubscriptionService>();
     await users.refreshTutorUsage(subs.plan);
+  }
+
+  Future<bool> _resolveExitResult() async {
+    if (!widget.requireEngagedSession) return true;
+    final ChatService chat = context.read<ChatService>();
+    final List<ChatMessage> messages = await chat.watchMessages().first;
+    final bool hasUser = messages.any((ChatMessage m) => m.isUser);
+    final bool hasAssistant = messages.any((ChatMessage m) => !m.isUser);
+    return hasUser && hasAssistant;
+  }
+
+  Future<void> _exitTutor() async {
+    final bool complete = await _resolveExitResult();
+    if (!mounted) return;
+    if (widget.requireEngagedSession) {
+      Navigator.of(context).pop(complete);
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
   void _startEditingMessage(ChatMessage message) {
@@ -530,12 +558,21 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
       return;
     }
 
-    if (!await _voice.prepareForVoiceNoteCapture()) {
+    if (!mounted) return;
+    if (context.read<LectureRecordingService>().isActive || MicCaptureService.instance.isCapturing) {
       _showMicPermissionSnackBar(
-        kIsWeb
-            ? 'Allow microphone access when your browser asks.'
-            : (_voiceStatus ?? 'Voice mode needs microphone access.'),
+        'Finish or stop the lecture recording first, then turn on live voice.',
       );
+      return;
+    }
+
+    if (!await _voice.prepareForLiveVoice()) {
+      final String message = _voice.lastListenError ??
+          _voice.statusMessage ??
+          (kIsWeb
+              ? 'Allow microphone access when your browser asks.'
+              : (_voiceStatus ?? 'Voice mode needs microphone access.'));
+      _showMicPermissionSnackBar(message);
       return;
     }
     setState(() {
@@ -544,6 +581,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
       _voiceNoteLevel = 0.12;
       _lastLiveVoiceSent = '';
     });
+    _consecutiveListenFailures = 0;
     _voiceModeStartedAt = DateTime.now();
     _lastSpeechActivityAt = DateTime.now();
     await _beginLiveListening();
@@ -616,12 +654,41 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
         if (!mounted || !_voiceMode) break;
 
         if (answer == null) {
+          if (!await _voice.ensureMicrophoneAccess()) {
+            _showMicPermissionSnackBar(
+              'Microphone unavailable. Allow mic permission for GradeGlow, then try again.',
+            );
+            await _stopVoiceMode();
+            return;
+          }
+
+          _consecutiveListenFailures += 1;
+          if (_consecutiveListenFailures < 4) {
+            if (mounted) {
+              setState(() {
+                _partialTranscript = 'Reconnecting mic...';
+                _voiceNoteLevel = 0.1;
+              });
+            }
+            await _voice.prepareForSpeechInput(
+              settleDelay: kIsWeb
+                  ? const Duration(milliseconds: 700)
+                  : const Duration(milliseconds: 350),
+            );
+            continue;
+          }
+
           _showMicPermissionSnackBar(
-            'Microphone unavailable. Allow mic permission for GradeGlow, then try again.',
+            _voice.lastListenError ??
+                (kIsWeb
+                    ? 'Speech recognition stopped. Refresh the page, allow Microphone, then try live voice again.'
+                    : 'Could not start listening. Close other apps using the mic and try again.'),
           );
           await _stopVoiceMode();
           return;
         }
+
+        _consecutiveListenFailures = 0;
 
         final String trimmed = answer.trim();
         if (trimmed.isNotEmpty) {
@@ -664,7 +731,11 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
     _lastLiveVoiceSent = '';
 
     if (_voiceMode) {
-      await Future<void>.delayed(_postSpeakDelay);
+      await _voice.prepareForSpeechInput(
+        settleDelay: kIsWeb
+            ? const Duration(milliseconds: 700)
+            : const Duration(milliseconds: 250),
+      );
       if (mounted && _voiceMode) {
         _lastSpeechActivityAt = DateTime.now();
       }
@@ -740,7 +811,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
           onCloseDrawer: wide ? null : () => Navigator.of(context).pop(),
         );
 
-        return Scaffold(
+        final Widget content = Scaffold(
           key: _scaffoldKey,
           drawer: wide
               ? null
@@ -771,6 +842,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
                       wide: wide,
                       onMenu: () => _scaffoldKey.currentState?.openDrawer(),
                       subtitle: chat.isInitialized ? 'AI ${AppBranding.name}' : 'Loading...',
+                      onBack: Navigator.canPop(context) ? _exitTutor : null,
                     ),
                     if (tutorContext.context.hasContext)
                       Padding(
@@ -878,6 +950,17 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
             ],
           ),
         );
+
+        if (!widget.requireEngagedSession) return content;
+
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, Object? result) {
+            if (didPop) return;
+            unawaited(_exitTutor());
+          },
+          child: content,
+        );
       },
     );
   }
@@ -962,20 +1045,29 @@ class _TutorTopBar extends StatelessWidget {
     required this.wide,
     required this.onMenu,
     required this.subtitle,
+    this.onBack,
   });
 
   final bool wide;
   final VoidCallback onMenu;
   final String subtitle;
+  final Future<void> Function()? onBack;
 
   @override
   Widget build(BuildContext context) {
     final Color textSecondary = StudyColors.textSecondary(Theme.of(context).brightness);
+    final bool canPop = Navigator.canPop(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
       child: Row(
         children: <Widget>[
-          if (!wide)
+          if (canPop)
+            IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: onBack ?? () => Navigator.of(context).pop(),
+              tooltip: 'Back',
+            )
+          else if (!wide)
             IconButton(
               icon: const Icon(Icons.menu_rounded),
               onPressed: onMenu,

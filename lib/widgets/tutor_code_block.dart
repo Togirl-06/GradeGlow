@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../theme/study_theme.dart';
 import 'tutor_syntax_highlighter.dart';
 
 /// ChatGPT-style fenced code block with language label and copy.
@@ -19,9 +18,10 @@ class TutorCodeBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final Brightness brightness = Theme.of(context).brightness;
     final bool dark = brightness == Brightness.dark;
-    final Color shell = dark ? const Color(0xFF1E1E1E) : const Color(0xFFF3F4F6);
-    final Color header = dark ? const Color(0xFF2D2D2D) : const Color(0xFFE5E7EB);
-    final Color border = dark ? const Color(0xFF3A3A3A) : StudyColors.border(brightness);
+    final Color shell = dark ? const Color(0xFF1E1E1E) : const Color(0xFFF8FAFC);
+    final Color header = dark ? const Color(0xFF2D2D2D) : const Color(0xFFE2E8F0);
+    final Color border = dark ? const Color(0xFF3A3A3A) : const Color(0xFFCBD5E1);
+    final Color codeBg = dark ? const Color(0xFF1E1E1E) : const Color(0xFFFFFFFF);
     final String label = language.isEmpty ? 'code' : language.toLowerCase();
 
     return Container(
@@ -43,9 +43,9 @@ class TutorCodeBlock extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: StudyColors.textSecondary(brightness),
+                    color: dark ? const Color(0xFFCBD5E1) : const Color(0xFF334155),
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const Spacer(),
@@ -57,16 +57,19 @@ class TutorCodeBlock extends StatelessWidget {
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-            child: SelectableText.rich(
-              TutorSyntaxHighlighter.highlight(code, language: language),
-              style: const TextStyle(
-                fontFamily: 'Consolas',
-                fontFamilyFallback: <String>['Courier New', 'monospace'],
-                fontSize: 13.5,
-                height: 1.55,
+          Container(
+            color: codeBg,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+              child: SelectableText.rich(
+                TutorSyntaxHighlighter.highlight(code, language: language, brightness: brightness),
+                style: const TextStyle(
+                  fontFamily: 'Consolas',
+                  fontFamilyFallback: <String>['Courier New', 'monospace'],
+                  fontSize: 14,
+                  height: 1.55,
+                ),
               ),
             ),
           ),
@@ -97,7 +100,7 @@ class _CopyIconButton extends StatelessWidget {
         child: Icon(
           Icons.copy_outlined,
           size: 16,
-          color: StudyColors.textSecondary(brightness),
+          color: brightness == Brightness.dark ? const Color(0xFFCBD5E1) : const Color(0xFF475569),
         ),
       ),
     );

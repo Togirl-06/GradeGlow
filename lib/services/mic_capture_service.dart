@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
 import '../utils/lecture_record_config.dart';
@@ -34,6 +35,33 @@ class MicCaptureService {
   int get streamedPcmBytes => _capture.pcmBytes;
   Duration get capturedDuration => _capture.capturedDuration;
   Uint8List? get lastWavBytes => _lastWavBytes;
+
+  Future<void> prepareForPlayback() async {
+    if (kIsWeb) return;
+    try {
+      await AudioPlayer.global.setAudioContext(
+        AudioContext(
+          iOS: AudioContextIOS(
+            category: AVAudioSessionCategory.playback,
+            options: <AVAudioSessionOptions>{
+              AVAudioSessionOptions.mixWithOthers,
+            },
+          ),
+          android: const AudioContextAndroid(
+            isSpeakerphoneOn: true,
+            audioMode: AndroidAudioMode.normal,
+            contentType: AndroidContentType.music,
+            usageType: AndroidUsageType.media,
+            audioFocus: AndroidAudioFocus.gain,
+          ),
+        ),
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      _sessionPrepared = false;
+    } catch (error) {
+      debugPrint('Playback session prep: $error');
+    }
+  }
 
   Future<void> prepareSession() async {
     if (kIsWeb || _sessionPrepared) return;
@@ -78,6 +106,17 @@ class MicCaptureService {
   }
 
   Future<void> start({required String path}) async {
+    // Android keeps microphone capture alive outside the app through the
+    // recorder's foreground service. Request notification access first so its
+    // required ongoing recording indicator is visible on Android 13+.
+    if (!kIsWeb && Platform.isAndroid) {
+      try {
+        await Permission.notification.request();
+      } catch (error) {
+        debugPrint('Recording notification permission: $error');
+      }
+    }
+
     await prepareSession();
     _bindStateListener();
     _lastWavBytes = null;

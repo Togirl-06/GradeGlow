@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 400" fill="none">
+  <title>Plant Cell</title>
+  <rect width="480" height="400" fill="#0D1B2A"/>
+  <rect id="cell_wall" x="30" y="30" width="420" height="340" rx="20" fill="#3E2723" stroke="#8D6E63" stroke-width="4"/>
+  <ellipse cx="240" cy="200" rx="195" ry="160" fill="#1B4332" stroke="#66BB6A" stroke-width="2"/>
+  <ellipse id="vacuole" cx="298" cy="248" rx="58" ry="52" fill="#4FC3F7" stroke="#29B6F6" stroke-width="2" opacity="0.85"/>
+  <ellipse id="nucleus" cx="264" cy="168" rx="48" ry="42" fill="#7E57C2" stroke="#B39DDB" stroke-width="2"/>
+  <ellipse id="chloroplast" cx="163" cy="220" rx="44" ry="24" fill="#66BB6A" stroke="#43A047" stroke-width="2"/>
+  <ellipse cx="163" cy="220" rx="8" ry="20" fill="#2E7D32" opacity="0.5"/>
+  <ellipse id="mitochondria" cx="201" cy="272" rx="24" ry="12" fill="#E57373" stroke="#EF5350" stroke-width="1.5"/>
+  <text x="240" y="24" text-anchor="middle" fill="#A5D6A7" font-family="Arial,sans-serif" font-size="14" font-weight="bold">Plant Cell</text>
+</svg>

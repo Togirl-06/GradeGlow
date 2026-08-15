@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <title>Water Molecule (H₂O)</title>
+  <rect width="400" height="400" fill="#0A1628"/>
+  <line id="bond_left" x1="200" y1="128" x2="128" y2="248" stroke="#81C784" stroke-width="6" stroke-linecap="round"/>
+  <line id="bond_right" x1="200" y1="128" x2="272" y2="248" stroke="#66BB6A" stroke-width="6" stroke-linecap="round"/>
+  <circle id="oxygen" cx="200" cy="128" r="36" fill="#E53935" stroke="#FF8A80" stroke-width="2"/>
+  <circle id="hydrogen_left" cx="128" cy="248" r="28" fill="#EEEEEE" stroke="#BDBDBD" stroke-width="2"/>
+  <circle id="hydrogen_right" cx="272" cy="248" r="28" fill="#E0E0E0" stroke="#BDBDBD" stroke-width="2"/>
+  <text x="200" y="134" text-anchor="middle" fill="white" font-size="16" font-weight="bold">O</text>
+  <text x="128" y="254" text-anchor="middle" fill="#424242" font-size="14" font-weight="bold">H</text>
+  <text x="272" y="254" text-anchor="middle" fill="#424242" font-size="14" font-weight="bold">H</text>
+  <text x="200" y="28" text-anchor="middle" fill="#90CAF9" font-family="Arial,sans-serif" font-size="14" font-weight="bold">Water Molecule (H₂O)</text>
+</svg>

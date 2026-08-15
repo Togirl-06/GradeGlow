@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/virtual_university.dart';
 import '../models/membership_plans.dart';
 import '../models/subscription_plan.dart';
 import '../services/subscription_service.dart';
@@ -21,12 +22,40 @@ class MembershipScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: <Widget>[
           Text(
-            'Pick the plan that fits your study flow.',
+            VirtualUniversity.companyStatement,
+            style: TextStyle(
+              color: StudyColors.textSecondary(Theme.of(context).brightness),
+              height: 1.45,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Pick the plan that fits your learning journey.',
             style: TextStyle(
               color: StudyColors.textSecondary(Theme.of(context).brightness),
               height: 1.4,
             ),
           ),
+          if (!SubscriptionService.billingLive) ...<Widget>[
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: StudyColors.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                'In-app purchases are not live yet. Enjoy the Free plan — '
+                'Premium will unlock when App Store / Play Billing is connected.',
+                style: TextStyle(
+                  color: StudyColors.textSecondary(Theme.of(context).brightness),
+                  height: 1.4,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 18),
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -52,16 +81,24 @@ class MembershipScreen extends StatelessWidget {
                 plan: MembershipPlans.premium,
                 isCurrent: isPremium,
                 isHighlighted: true,
-                buttonLabel: isPremium ? 'Your current plan' : 'Upgrade to Premium',
-                filledButton: !isPremium,
-                enabled: !isPremium,
-                onPressed: !isPremium
+                buttonLabel: isPremium
+                    ? 'Your current plan'
+                    : SubscriptionService.billingLive
+                        ? 'Upgrade to Premium'
+                        : 'Premium coming soon',
+                filledButton: !isPremium && SubscriptionService.billingLive,
+                enabled: !isPremium && SubscriptionService.billingLive,
+                onPressed: !isPremium && SubscriptionService.billingLive
                     ? () async {
-                        await subs.purchasePremium();
+                        final bool ok = await subs.purchasePremium();
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Premium activated (demo). Connect billing for production.'),
+                            SnackBar(
+                              content: Text(
+                                ok
+                                    ? 'Premium activated'
+                                    : 'Could not complete purchase. Try again.',
+                              ),
                             ),
                           );
                         }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <title>Heart Anatomy</title>
+  <rect width="400" height="400" fill="#1A0A0A"/>
+  <path fill="#B71C1C" stroke="#FF5252" stroke-width="2" opacity="0.3"
+    d="M200 340 C120 260 60 200 80 130 C95 75 145 55 200 90 C255 55 305 75 320 130 C340 200 280 260 200 340 Z"/>
+  <path id="right_atrium" fill="#C62828" stroke="#EF5350" stroke-width="1.2" opacity="0.95"
+    d="M130 130 Q160 100 200 115 Q175 155 140 165 Z"/>
+  <path id="left_atrium" fill="#AD1457" stroke="#F48FB1" stroke-width="1.2" opacity="0.95"
+    d="M270 130 Q240 100 200 115 Q225 155 260 165 Z"/>
+  <path id="right_ventricle" fill="#D32F2F" stroke="#FF7043" stroke-width="1.2"
+    d="M140 170 Q200 200 200 290 Q155 280 130 220 Z"/>
+  <path id="left_ventricle" fill="#B71C1C" stroke="#E53935" stroke-width="1.2"
+    d="M260 170 Q200 200 200 290 Q245 280 270 220 Z"/>
+  <path id="aorta" fill="#EF5350" stroke="#FF8A80" stroke-width="1.5"
+    d="M200 95 L200 55 Q220 40 240 50 L235 75 Q210 70 200 95"/>
+  <path id="pulmonary_artery" fill="#E57373" stroke="#FFAB91" stroke-width="1.5"
+    d="M185 95 L175 60 Q165 45 150 55 L155 78 Q175 72 185 95"/>
+  <path id="pulmonary_veins" fill="#81C784" stroke="#A5D6A7" stroke-width="1.5"
+    d="M215 95 L225 62 Q235 48 250 58 L245 80 Q225 74 215 95"/>
+  <ellipse id="mitral_valve" cx="218" cy="168" rx="14" ry="8" fill="#FFF59D" stroke="#FDD835" stroke-width="1.5"/>
+  <ellipse id="tricuspid_valve" cx="182" cy="168" rx="14" ry="8" fill="#FFF59D" stroke="#FDD835" stroke-width="1.5"/>
+  <text x="200" y="28" text-anchor="middle" fill="#FF8A80" font-family="Arial,sans-serif" font-size="13" font-weight="bold">Heart — Internal Anatomy</text>
+</svg>

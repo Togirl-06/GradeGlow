@@ -76,6 +76,7 @@ class RecordingBinSheet extends StatelessWidget {
                       );
                       if (confirmed == true && context.mounted) {
                         await bin.emptyBin();
+                        if (!context.mounted) return;
                         StudyMessenger.showInfo(context, 'Recording bin emptied');
                       }
                     },
@@ -103,7 +104,7 @@ class RecordingBinSheet extends StatelessWidget {
                 child: ListView.separated(
                   shrinkWrap: true,
                   itemCount: bin.items.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (BuildContext context, int index) {
                     final BinnedRecording item = bin.items[index];
                     return _BinTile(item: item);
@@ -182,6 +183,7 @@ class _BinTile extends StatelessWidget {
                 );
                 if (confirmed == true && context.mounted) {
                   await bin.deletePermanently(item);
+                  if (!context.mounted) return;
                   StudyMessenger.showInfo(context, 'Recording deleted permanently');
                 }
               },

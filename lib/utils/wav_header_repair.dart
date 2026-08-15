@@ -124,6 +124,49 @@ Uint8List rebuildWavBytes(
   return buildCleanWav(pcm, sampleRate: rate, channels: ch, bitsPerSample: bits);
 }
 
+/// Peak absolute PCM sample value in a WAV (0 = silence).
+int peakPcmLevel(Uint8List wavBytes) {
+  final WavHeaderLayout? layout = parseWavHeader(wavBytes);
+  if (layout == null || layout.dataContentStart >= wavBytes.length) return 0;
+
+  final int end = wavBytes.length - (wavBytes.length % 2);
+  int peak = 0;
+  for (int i = layout.dataContentStart; i < end; i += 2) {
+    final int sample = ByteData.sublistView(wavBytes, i, i + 2).getInt16(0, Endian.little);
+    final int abs = sample.abs();
+    if (abs > peak) peak = abs;
+  }
+  return peak;
+}
+
+/// Boost quiet mobile recordings so Whisper can hear speech clearly.
+Uint8List boostWavForSpeech(Uint8List source, {int? sampleRate, int targetPeak = 22000}) {
+  final Uint8List rebuilt = rebuildWavBytes(source, sampleRate: sampleRate);
+  final WavHeaderLayout? layout = parseWavHeader(rebuilt);
+  if (layout == null || layout.dataContentStart >= rebuilt.length) return rebuilt;
+
+  final Uint8List pcm = Uint8List.fromList(rebuilt.sublist(layout.dataContentStart));
+  final int peak = peakPcmLevel(rebuilt);
+  if (peak < 120) {
+    throw Exception('Recording too quiet. Speak louder and closer to the mic, then record again.');
+  }
+  if (peak >= targetPeak ~/ 3) return rebuilt;
+
+  final double gain = targetPeak / peak;
+  final ByteData pcmData = ByteData.sublistView(pcm);
+  for (int i = 0; i < pcm.length - 1; i += 2) {
+    final int sample = pcmData.getInt16(i, Endian.little);
+    pcmData.setInt16(i, (sample * gain).round().clamp(-32768, 32767), Endian.little);
+  }
+
+  return buildCleanWav(
+    pcm,
+    sampleRate: layout.sampleRate,
+    channels: layout.channels,
+    bitsPerSample: layout.bitsPerSample,
+  );
+}
+
 /// Expected PCM byte count for a recording duration at the lecture sample rate.
 int expectedPcmBytesForDuration(Duration duration, {int? sampleRate, int channels = 1}) {
   final int rate = sampleRate ?? lectureRecordingSampleRate();

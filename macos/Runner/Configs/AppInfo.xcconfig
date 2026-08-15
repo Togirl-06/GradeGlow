@@ -11,4 +11,4 @@ PRODUCT_NAME = ai_study_buddy
 PRODUCT_BUNDLE_IDENTIFIER = com.example.aiStudyBuddy
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 com.gradeglow. All rights reserved.

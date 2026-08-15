@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#1B4332"/>
+  <circle cx="200" cy="125" r="118" fill="#0D2818" stroke="#2D6A4F" stroke-width="3"/>
+  <polygon points="200,55 255,95 240,165 160,165 145,95" fill="#CE93D8" stroke="#AB47BC" stroke-width="2" opacity="0.9"/>
+  <polygon points="200,75 230,100 220,145 180,145 170,100" fill="#E1BEE7" opacity="0.55"/>
+  <text x="200" y="24" text-anchor="middle" fill="#D8F3DC" font-family="Arial,sans-serif" font-size="12">Icosahedral virus (400�)</text>
+</svg>

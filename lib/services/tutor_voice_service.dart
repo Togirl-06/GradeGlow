@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
@@ -59,9 +58,20 @@ class TutorVoiceService {
   bool _audioCapturing = false;
   String? _capturePath;
   bool _speaking = false;
+  bool _playbackPaused = false;
+  double _playbackSpeed = 1;
+  /// Speed baked into the current OpenAI MP3 (player rate is relative to this).
+  double _bakedSpeed = 1;
+  Completer<void>? _resumeGate;
+  Completer<void>? _mp3Done;
+  Uint8List? _activeMp3Bytes;
+  String? _activeMp3Text;
+  String? _activeMp3Path;
+  bool _ignoreNextMp3Complete = false;
   VoidCallback? _onListenEnd;
   String? _statusMessage;
   String? _lastSpeakError;
+  String? _lastListenError;
 
   bool get canListen =>
       (AppConfig.hasOpenAi && (kIsWeb || _recorderReady)) || _speechReady;
@@ -72,9 +82,11 @@ class TutorVoiceService {
   /// OpenAI Whisper voice notes — record package on all platforms (incl. web).
   bool get usesWhisperVoiceNotes => AppConfig.hasOpenAi && _recorderReady;
   bool get isSpeaking => _speaking;
+  bool get isPlaybackPaused => _playbackPaused;
   bool get usesOpenAiTts => _useOpenAiTts;
   String? get statusMessage => _statusMessage;
   String? get lastSpeakError => _lastSpeakError;
+  String? get lastListenError => _lastListenError;
 
   Future<VoiceCapabilities> initialize() async {
     _statusMessage = null;
@@ -107,6 +119,9 @@ class TutorVoiceService {
     if (_speechReady) return true;
     if (!kIsWeb && !await _ensurePermissions()) return false;
 
+    // Web Speech API still needs getUserMedia granted in most browsers.
+    if (kIsWeb && !await ensureMicrophoneAccess()) return false;
+
     _speechReady = await _speech.initialize(
       onError: (dynamic error) => debugPrint('Speech error: $error'),
       onStatus: (String status) {
@@ -126,6 +141,30 @@ class TutorVoiceService {
       _statusMessage ??= _platformSpeechHint();
     }
     return _speechReady;
+  }
+
+  /// Ensures the OS / browser has granted microphone access.
+  Future<bool> ensureMicrophoneAccess() async {
+    if (kIsWeb) {
+      await _initRecorder(force: true);
+      if (!_recorderReady) {
+        _statusMessage = 'Allow microphone access when your browser asks.';
+      }
+      return _recorderReady;
+    }
+    return _ensurePermissions();
+  }
+
+  /// Live voice needs both mic access and on-device / browser speech recognition.
+  Future<bool> prepareForLiveVoice() async {
+    _lastListenError = null;
+    await prepareForSpeechInput(settleDelay: Duration.zero);
+    if (!await ensureMicrophoneAccess()) return false;
+    if (!await ensureDeviceSpeechReady()) {
+      _lastListenError = _statusMessage ?? _platformSpeechHint();
+      return false;
+    }
+    return true;
   }
 
   /// Lightweight setup for spoken output only (Listen / read-aloud buttons).
@@ -163,7 +202,10 @@ class TutorVoiceService {
     if (!canListen) return null;
 
     if (preferDeviceSpeech) {
-      if (!await ensureDeviceSpeechReady()) return null;
+      if (!await ensureDeviceSpeechReady()) {
+        _lastListenError = _statusMessage ?? 'Speech recognition is not available.';
+        return null;
+      }
 
       final Completer<String?> completer = Completer<String?>();
       String last = '';
@@ -193,7 +235,10 @@ class TutorVoiceService {
       final String? result = await completer.future;
       if (!shouldContinue()) return null;
       if (result != null && result.isNotEmpty) return result;
-      if (!started) return null;
+      if (!started) {
+        _lastListenError ??= 'Could not open the microphone for speech recognition.';
+        return null;
+      }
       return '';
     }
 
@@ -596,14 +641,104 @@ class TutorVoiceService {
     }
   }
 
-  Future<bool> speak(String text, {bool preferDeviceVoice = false}) async {
+  Future<void> setPlaybackSpeed(double multiplier) async {
+    final double next = multiplier.clamp(0.5, 2.5);
+    final bool changed = (next - _playbackSpeed).abs() > 0.01;
+    _playbackSpeed = next;
+    if (changed) {
+      // Force next TTS chunk to regenerate at the new baked speed.
+      _activeMp3Text = null;
+    }
+    await _applyEffectivePlayerRate(reinforce: true);
+    if (_ttsReady) {
+      try {
+        await _tts.setSpeechRate((0.42 * _playbackSpeed).clamp(0.2, 1.0));
+      } catch (_) {}
+    }
+  }
+
+  /// OpenAI audio is synthesized at [_bakedSpeed]; player rate = desired / baked.
+  Future<void> _applyEffectivePlayerRate({bool reinforce = false}) async {
+    final double baked = _bakedSpeed <= 0 ? 1 : _bakedSpeed;
+    final double effective = (_playbackSpeed / baked).clamp(0.5, 2.5);
+    try {
+      await _player.setPlaybackRate(effective);
+    } catch (e) {
+      debugPrint('AudioPlayer setPlaybackRate failed: $e');
+    }
+    if (!reinforce) return;
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    try {
+      await _player.setPlaybackRate(effective);
+    } catch (_) {}
+  }
+
+  Future<bool> speak(
+    String text, {
+    bool preferDeviceVoice = false,
+    /// When OpenAI TTS is configured, device fallback is off by default so the
+    /// robotic system voice never interrupts a natural lecture/tutor reply.
+    bool allowDeviceFallback = false,
+  }) async {
     final String trimmed = speechTextFromMarkdown(text);
     if (trimmed.isEmpty) return false;
 
     _lastSpeakError = null;
-    await stopSpeaking();
+    final int generation = ++_speakGeneration;
+    _playbackPaused = false;
+    final Completer<void>? gate = _resumeGate;
+    _resumeGate = null;
+    if (gate != null && !gate.isCompleted) {
+      gate.complete();
+    }
+    await _haltPlayback();
 
-    if (preferDeviceVoice) {
+    final List<String> chunks = speechChunksForTts(trimmed);
+    if (chunks.isEmpty) return false;
+
+    bool spokeAny = false;
+    for (final String chunk in chunks) {
+      if (generation != _speakGeneration) break;
+      await _waitWhilePaused(generation);
+      if (generation != _speakGeneration) break;
+      final bool ok = await _speakOneChunk(
+        chunk,
+        preferDeviceVoice: preferDeviceVoice,
+        allowDeviceFallback: allowDeviceFallback,
+      );
+      if (generation != _speakGeneration) break;
+      if (ok) {
+        spokeAny = true;
+      } else if (!spokeAny) {
+        return false;
+      }
+    }
+    return spokeAny && generation == _speakGeneration;
+  }
+
+  Future<void> _waitWhilePaused(int generation) async {
+    while (_playbackPaused && generation == _speakGeneration) {
+      _resumeGate ??= Completer<void>();
+      try {
+        await _resumeGate!.future;
+      } catch (_) {
+        break;
+      }
+    }
+  }
+
+  /// Bumped by [stopSpeaking] so in-flight chunk loops exit.
+  int _speakGeneration = 0;
+
+  Future<bool> _speakOneChunk(
+    String trimmed, {
+    required bool preferDeviceVoice,
+    bool allowDeviceFallback = false,
+  }) async {
+    final bool openAiReady = _useOpenAiTts && AppConfig.hasOpenAi;
+
+    // Explicit device preference (legacy / offline tests only).
+    if (preferDeviceVoice && !openAiReady) {
       if (!_ttsReady) {
         await _initDeviceTts();
       }
@@ -613,17 +748,32 @@ class TutorVoiceService {
       }
     }
 
-    if (_useOpenAiTts && AppConfig.hasOpenAi) {
+    if (openAiReady) {
       try {
-        final Uint8List audio = await _openAiTts.synthesizeBytes(trimmed);
+        Uint8List audio;
+        final String cacheKey = '$trimmed|${_playbackSpeed.toStringAsFixed(2)}';
+        if (_activeMp3Text == cacheKey && _activeMp3Bytes != null) {
+          audio = _activeMp3Bytes!;
+          _bakedSpeed = _playbackSpeed;
+        } else {
+          audio = await _openAiTts.synthesizeBytes(
+            trimmed,
+            speed: _playbackSpeed,
+          );
+          _activeMp3Bytes = audio;
+          _activeMp3Text = cacheKey;
+          _bakedSpeed = _playbackSpeed;
+        }
         final bool played = await _playMp3Bytes(audio);
         if (played) return true;
-        _lastSpeakError = 'Audio player did not start. Trying device voice…';
+        _lastSpeakError = 'Audio player did not start.';
         debugPrint(_lastSpeakError);
       } catch (error) {
         _lastSpeakError = error.toString().replaceFirst('Exception: ', '');
         debugPrint('OpenAI TTS error: $error');
       }
+      // Never switch to the robotic device voice mid-session unless asked.
+      if (!allowDeviceFallback) return false;
     }
 
     if (!_ttsReady) {
@@ -638,61 +788,120 @@ class TutorVoiceService {
     _speaking = true;
     StreamSubscription<PlayerState>? stateSub;
     StreamSubscription<void>? completeSub;
-    String? tmpPath;
+    final int generation = _speakGeneration;
+    final Completer<void> done = Completer<void>();
+    _mp3Done = done;
+    _activeMp3Bytes = bytes;
 
     try {
-      final Source source;
-      if (kIsWeb) {
-        // No filesystem on web — play the bytes directly via a blob URL.
-        source = BytesSource(bytes);
-      } else {
-        // Playing from a temp file is far more reliable on Android than an
-        // in-memory BytesSource (which often reports "playing" but stays silent).
-        final Directory dir = await getTemporaryDirectory();
-        tmpPath = '${dir.path}/tutor_tts_${DateTime.now().millisecondsSinceEpoch}.mp3';
-        await File(tmpPath).writeAsBytes(bytes, flush: true);
-        source = DeviceFileSource(tmpPath);
-      }
+      final Source source = await _sourceForMp3(bytes);
 
       await _player.stop();
       await _player.setVolume(1.0);
+      // Audio is already synthesized at [_bakedSpeed] — start at relative rate 1.
+      await _applyEffectivePlayerRate();
 
-      final Completer<void> done = Completer<void>();
-      completeSub = _player.onPlayerComplete.listen((_) {
-        if (!done.isCompleted) done.complete();
-      });
-      stateSub = _player.onPlayerStateChanged.listen((PlayerState state) {
-        if (state == PlayerState.completed && !done.isCompleted) {
-          done.complete();
+      void maybeComplete() {
+        if (_playbackPaused || done.isCompleted) return;
+        if (_ignoreNextMp3Complete) {
+          _ignoreNextMp3Complete = false;
+          return;
         }
+        done.complete();
+      }
+
+      completeSub = _player.onPlayerComplete.listen((_) => maybeComplete());
+      stateSub = _player.onPlayerStateChanged.listen((PlayerState state) {
+        if (state == PlayerState.completed) maybeComplete();
       });
 
       await _player.play(source);
+      await _applyEffectivePlayerRate(reinforce: true);
 
       // Confirm playback actually started.
-      final bool started = await _waitForPlaying(timeout: const Duration(seconds: 4));
+      final bool started =
+          await _waitForPlaying(timeout: const Duration(seconds: 4));
       if (!started) {
-        debugPrint('OpenAI audio: play() called but player never entered playing state.');
+        debugPrint(
+            'OpenAI audio: play() called but player never entered playing state.');
         return false;
       }
 
-      final int maxMs = (bytes.length / 160).round().clamp(3000, 180000);
-      await done.future.timeout(
-        Duration(milliseconds: maxMs),
-        onTimeout: () => debugPrint('OpenAI audio: completion timeout after ${maxMs}ms'),
+      // Generous upper bound; clock does not advance while soft-paused.
+      // Faster playback finishes sooner — scale timeout by speed.
+      final int maxMs =
+          ((bytes.length / 12) / _playbackSpeed).round().clamp(5000, 600000);
+      await _awaitMp3Done(
+        done: done,
+        generation: generation,
+        maxMs: maxMs,
       );
-      return true;
+      return generation == _speakGeneration;
     } catch (error) {
       debugPrint('MP3 playback error: $error');
       return false;
     } finally {
       await stateSub?.cancel();
       await completeSub?.cancel();
+      if (identical(_mp3Done, done)) {
+        _mp3Done = null;
+      }
+      if (!done.isCompleted) {
+        done.complete();
+      }
       _speaking = false;
-      if (tmpPath != null) {
-        try {
-          await File(tmpPath).delete();
-        } catch (_) {}
+    }
+  }
+
+  Future<Source> _sourceForMp3(Uint8List bytes) async {
+    if (kIsWeb) {
+      return BytesSource(bytes);
+    }
+    if (_activeMp3Path != null &&
+        _activeMp3Bytes != null &&
+        identical(_activeMp3Bytes, bytes)) {
+      final File existing = File(_activeMp3Path!);
+      if (await existing.exists()) {
+        return DeviceFileSource(_activeMp3Path!);
+      }
+    }
+    final Directory dir = await getTemporaryDirectory();
+    final String path =
+        '${dir.path}/tutor_tts_${DateTime.now().millisecondsSinceEpoch}.mp3';
+    await File(path).writeAsBytes(bytes, flush: true);
+    _activeMp3Path = path;
+    return DeviceFileSource(path);
+  }
+
+  /// Wait for MP3 completion without counting soft-pause time toward the timeout.
+  Future<void> _awaitMp3Done({
+    required Completer<void> done,
+    required int generation,
+    required int maxMs,
+  }) async {
+    int activeMs = 0;
+    final Stopwatch slice = Stopwatch();
+    while (!done.isCompleted && generation == _speakGeneration) {
+      if (_playbackPaused) {
+        slice.stop();
+        await _waitWhilePaused(generation);
+        slice
+          ..reset()
+          ..start();
+        continue;
+      }
+      if (!slice.isRunning) slice.start();
+      await Future.any(<Future<void>>[
+        done.future,
+        Future<void>.delayed(const Duration(milliseconds: 80)),
+      ]);
+      activeMs += slice.elapsedMilliseconds;
+      slice
+        ..reset()
+        ..start();
+      if (activeMs >= maxMs) {
+        debugPrint('OpenAI audio: completion timeout after ${maxMs}ms');
+        break;
       }
     }
   }
@@ -729,12 +938,83 @@ class TutorVoiceService {
     }
   }
 
+  /// Freeze audio mid-utterance without cancelling the in-flight [speak] Future.
+  Future<void> pauseSpeaking() async {
+    if (_playbackPaused) return;
+    _playbackPaused = true;
+    try {
+      await _player.pause();
+    } catch (_) {}
+    if (_ttsReady) {
+      try {
+        await _tts.pause();
+      } catch (_) {}
+    }
+  }
+
+  /// Continue after [pauseSpeaking]. Does not restart from the beginning.
+  Future<void> resumeSpeaking() async {
+    if (!_playbackPaused) return;
+    _playbackPaused = false;
+    final Completer<void>? gate = _resumeGate;
+    _resumeGate = null;
+    if (gate != null && !gate.isCompleted) {
+      gate.complete();
+    }
+    try {
+      final PlayerState state = _player.state;
+      if (state == PlayerState.paused) {
+        await _applyEffectivePlayerRate();
+        await _player.resume();
+        return;
+      }
+      // Some platforms drop pause into "stopped" — replay the same buffer
+      // immediately (no network) so unpause is instant.
+      if (state != PlayerState.playing && _activeMp3Bytes != null) {
+        final Source source = await _sourceForMp3(_activeMp3Bytes!);
+        // Ignore the complete/stop event from replacing the player source.
+        _ignoreNextMp3Complete = true;
+        await _player.play(source);
+        await _applyEffectivePlayerRate(reinforce: true);
+      }
+    } catch (e) {
+      debugPrint('Resume playback failed: $e');
+    }
+  }
+
   Future<void> stopSpeaking() async {
+    _speakGeneration++;
+    _playbackPaused = false;
+    final Completer<void>? gate = _resumeGate;
+    _resumeGate = null;
+    if (gate != null && !gate.isCompleted) {
+      gate.complete();
+    }
+    await _haltPlayback();
+    _activeMp3Bytes = null;
+    _activeMp3Text = null;
+    final String? path = _activeMp3Path;
+    _activeMp3Path = null;
+    if (path != null) {
+      try {
+        await File(path).delete();
+      } catch (_) {}
+    }
+  }
+
+  Future<void> _haltPlayback() async {
     try {
       await _player.stop();
     } catch (_) {}
     if (_ttsReady) {
-      await _tts.stop();
+      try {
+        await _tts.stop();
+      } catch (_) {}
+    }
+    final Completer<void>? mp3 = _mp3Done;
+    _mp3Done = null;
+    if (mp3 != null && !mp3.isCompleted) {
+      mp3.complete();
     }
     _speaking = false;
   }
@@ -760,6 +1040,11 @@ class TutorVoiceService {
     await prepareForSpeechInput(
       settleDelay: fastResume ? const Duration(milliseconds: 50) : const Duration(milliseconds: 300),
     );
+
+    if (kIsWeb && !await ensureMicrophoneAccess()) {
+      _lastListenError = _statusMessage ?? 'Microphone access is required.';
+      return false;
+    }
 
     if (!_speechReady) {
       final VoiceCapabilities cap = await initialize();
@@ -810,6 +1095,9 @@ class TutorVoiceService {
       await Future<void>.delayed(const Duration(milliseconds: 250));
     }
 
+    _lastListenError ??= kIsWeb
+        ? 'Speech recognition could not start. Refresh the page, allow Microphone, then try again.'
+        : 'Speech recognition could not start. Close other apps using the mic and try again.';
     return false;
   }
 

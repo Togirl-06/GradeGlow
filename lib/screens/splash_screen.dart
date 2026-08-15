@@ -3,43 +3,32 @@ import 'package:flutter/material.dart';
 import '../config/app_branding.dart';
 import '../widgets/gradeglow_logo.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key, required this.onFinished});
-
-  final VoidCallback onFinished;
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future<void>.delayed(const Duration(seconds: 2), widget.onFinished);
-  }
+/// Minimal launch screen — centered logo, wordmark, and footer tagline (Instagram-style).
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const GradeGlowLogo(height: 160),
-            const SizedBox(height: 20),
-            Text(
-              AppBranding.tagline,
-              style: TextStyle(color: AppBranding.navy.withValues(alpha: 0.65), fontSize: 16),
+            Expanded(
+              child: Center(
+                child: _SplashBrandMark(),
+              ),
             ),
-            const SizedBox(height: 52),
-            SizedBox(
-              width: 28,
-              height: 28,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                color: AppBranding.glowOrange.withValues(alpha: 0.9),
+            Padding(
+              padding: EdgeInsets.only(bottom: 28),
+              child: Text(
+                AppBranding.tagline,
+                style: TextStyle(
+                  color: Color(0x610F172A),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.1,
+                ),
               ),
             ),
           ],
@@ -47,4 +36,43 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+}
+
+class _SplashBrandMark extends StatelessWidget {
+  const _SplashBrandMark();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        const GradeGlowLogo(height: 96),
+        const SizedBox(height: 22),
+        ShaderMask(
+          shaderCallback: _brandGradient,
+          blendMode: BlendMode.srcIn,
+          child: Text(
+            AppBranding.name,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 34,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.8,
+              height: 1.0,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Shader _brandGradient(Rect bounds) {
+  return const LinearGradient(
+    colors: <Color>[
+      AppBranding.glowYellow,
+      AppBranding.glowOrange,
+      AppBranding.glowDeep,
+    ],
+  ).createShader(bounds);
 }

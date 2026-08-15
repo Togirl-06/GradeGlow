@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:record/record.dart';
 /// Shared microphone recording settings for lecture capture.
-  RecordConfig lectureRecordConfig({bool enableAndroidService = !kIsWeb}) {
+RecordConfig lectureRecordConfig({bool enableAndroidService = !kIsWeb}) {
   return RecordConfig(
     encoder: AudioEncoder.wav,
     bitRate: 128000,
-    sampleRate: kIsWeb ? 48000 : 16000,
+    sampleRate: kIsWeb ? 48000 : 44100,
     numChannels: 1,
     audioInterruption: AudioInterruptionMode.none,
     androidConfig: AndroidRecordConfig(
@@ -33,7 +33,7 @@ import 'package:record/record.dart';
 String lectureRecordingExtension() => 'wav';
 
 /// Sample rate used for [lectureRecordConfig] on this platform.
-int lectureRecordingSampleRate() => kIsWeb ? 48000 : 16000;
+int lectureRecordingSampleRate() => kIsWeb ? 48000 : 44100;
 
 /// Stream capture — reliable for long lectures (avoids broken WAV headers from file writer).
 RecordConfig lectureStreamRecordConfig({bool enableAndroidService = !kIsWeb}) {

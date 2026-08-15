@@ -8,7 +8,7 @@ import 'progress_screen.dart';
 import 'flashcards_screen.dart';
 import 'profile_screen.dart';
 import 'quiz_mode_screen.dart';
-import 'homework_scanner_screen.dart';
+import '../vu_v2/vu_v2_app.dart';
 import 'notes_summarizer_screen.dart';
 import 'pomodoro_screen.dart';
 import 'study_planner_screen.dart';
@@ -80,9 +80,9 @@ class _AppShellState extends State<AppShell> {
               MaterialPageRoute<void>(builder: (_) => const PomodoroScreen()),
             );
           },
-          onHomeworkScan: () {
+          onPracticeLabs: () {
             Navigator.of(context).push(
-              MaterialPageRoute<void>(builder: (_) => const HomeworkScannerScreen()),
+              MaterialPageRoute<void>(builder: (_) => const VuV2App()),
             );
           },
         ),

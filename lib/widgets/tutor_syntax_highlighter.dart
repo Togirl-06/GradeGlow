@@ -1,46 +1,51 @@
 import 'package:flutter/material.dart';
 
-/// Lightweight ChatGPT-style syntax colors (no extra packages).
+/// Lightweight syntax colors for tutor/lecture code blocks (light + dark).
 class TutorSyntaxHighlighter {
   TutorSyntaxHighlighter._();
 
-  static TextSpan highlight(String code, {String language = ''}) {
+  static TextSpan highlight(
+    String code, {
+    String language = '',
+    Brightness brightness = Brightness.light,
+  }) {
+    final _Palette palette = brightness == Brightness.dark ? _Palette.dark : _Palette.light;
     final String lang = language.toLowerCase();
     final List<TextSpan> lines = <TextSpan>[];
     final List<String> split = code.split('\n');
 
     for (int i = 0; i < split.length; i++) {
       if (i > 0) lines.add(const TextSpan(text: '\n'));
-      lines.addAll(_highlightLine(split[i], lang));
+      lines.addAll(_highlightLine(split[i], lang, palette));
     }
 
     return TextSpan(children: lines);
   }
 
-  static List<TextSpan> _highlightLine(String line, String lang) {
+  static List<TextSpan> _highlightLine(String line, String lang, _Palette palette) {
     if (line.trimLeft().startsWith('#')) {
       return <TextSpan>[
-        TextSpan(text: line, style: const TextStyle(color: _Colors.comment)),
+        TextSpan(text: line, style: TextStyle(color: palette.comment)),
       ];
     }
     if (line.trimLeft().startsWith('//')) {
       return <TextSpan>[
-        TextSpan(text: line, style: const TextStyle(color: _Colors.comment)),
+        TextSpan(text: line, style: TextStyle(color: palette.comment)),
       ];
     }
 
-    final List<_Token> tokens = _tokenize(line, lang);
+    final List<_Token> tokens = _tokenize(line, lang, palette);
     return tokens
         .map(
           (_Token t) => TextSpan(
             text: t.text,
-            style: TextStyle(color: t.color ?? _Colors.text),
+            style: TextStyle(color: t.color ?? palette.text),
           ),
         )
         .toList();
   }
 
-  static List<_Token> _tokenize(String line, String lang) {
+  static List<_Token> _tokenize(String line, String lang, _Palette palette) {
     final Set<String> keywords = _keywordsFor(lang);
     final RegExp pattern = RegExp(
       r'("(?:\\.|[^"\\])*")'
@@ -55,13 +60,15 @@ class TutorSyntaxHighlighter {
     for (final RegExpMatch m in pattern.allMatches(line)) {
       final String value = m.group(0)!;
       if (value.startsWith('"') || value.startsWith("'") || value.startsWith('`')) {
-        out.add(_Token(value, _Colors.string));
+        out.add(_Token(value, palette.string));
       } else if (RegExp(r'^\d').hasMatch(value)) {
-        out.add(_Token(value, _Colors.number));
+        out.add(_Token(value, palette.number));
       } else if (keywords.contains(value)) {
-        out.add(_Token(value, _Colors.keyword));
+        out.add(_Token(value, palette.keyword));
+      } else if (value.startsWith('<') || value.startsWith('>') || value.contains('/')) {
+        out.add(_Token(value, palette.tag));
       } else {
-        out.add(_Token(value, _Colors.text));
+        out.add(_Token(value, palette.text));
       }
     }
     return out;
@@ -92,6 +99,32 @@ class TutorSyntaxHighlighter {
       'False',
       'None',
     };
+
+    if (lang.contains('html')) {
+      return <String>{
+        'html',
+        'head',
+        'body',
+        'div',
+        'span',
+        'p',
+        'a',
+        'img',
+        'ul',
+        'ol',
+        'li',
+        'table',
+        'form',
+        'input',
+        'button',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+      };
+    }
 
     if (lang.contains('dart') || lang.contains('flutter')) {
       return <String>{
@@ -140,12 +173,40 @@ class TutorSyntaxHighlighter {
   }
 }
 
-class _Colors {
-  static const Color text = Color(0xFFD4D4D4);
-  static const Color keyword = Color(0xFFC586C0);
-  static const Color string = Color(0xFF6A9955);
-  static const Color number = Color(0xFF4FC1FF);
-  static const Color comment = Color(0xFF808080);
+class _Palette {
+  const _Palette({
+    required this.text,
+    required this.keyword,
+    required this.string,
+    required this.number,
+    required this.comment,
+    required this.tag,
+  });
+
+  final Color text;
+  final Color keyword;
+  final Color string;
+  final Color number;
+  final Color comment;
+  final Color tag;
+
+  static const _Palette dark = _Palette(
+    text: Color(0xFFD4D4D4),
+    keyword: Color(0xFFC586C0),
+    string: Color(0xFFCE9178),
+    number: Color(0xFF4FC1FF),
+    comment: Color(0xFF808080),
+    tag: Color(0xFF569CD6),
+  );
+
+  static const _Palette light = _Palette(
+    text: Color(0xFF1F2937),
+    keyword: Color(0xFF7C3AED),
+    string: Color(0xFF047857),
+    number: Color(0xFF1D4ED8),
+    comment: Color(0xFF6B7280),
+    tag: Color(0xFF2563EB),
+  );
 }
 
 class _Token {

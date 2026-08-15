@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -8,17 +8,6 @@ import '../utils/apple_auth.dart';
 import '../utils/network_reachability.dart';
 
 class AuthService extends ChangeNotifier {
-  AuthService() {
-    if (AppConfig.hasFirebase) {
-      _auth = FirebaseAuth.instance;
-      _auth!.authStateChanges().listen((User? user) {
-        _firebaseUser = user;
-        _demoSignedIn = false;
-        notifyListeners();
-      });
-    }
-  }
-
   FirebaseAuth? _auth;
   User? _firebaseUser;
   bool _demoSignedIn = false;
@@ -26,7 +15,7 @@ class AuthService extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
   bool get isAuthenticated => _firebaseUser != null || _demoSignedIn;
-  bool get isDemoMode => _demoSignedIn || !AppConfig.hasFirebase;
+  bool get isDemoMode => _demoSignedIn;
   String? get uid => _demoSignedIn ? 'demo-user' : _firebaseUser?.uid;
   String get email =>
       _demoSignedIn ? 'demo@studybuddy.app' : (_firebaseUser?.email ?? '');
@@ -39,15 +28,39 @@ class AuthService extends ChangeNotifier {
 
   bool get isEmailVerified => _demoSignedIn || (_firebaseUser?.emailVerified ?? false);
 
+  bool get usesEmailPassword => _hasProvider('password');
+
+  bool get usesGoogleSignIn => _hasProvider('google.com');
+
+  bool get usesAppleSignIn => _hasProvider('apple.com');
+
+  bool _hasProvider(String providerId) {
+    if (_demoSignedIn) return false;
+    final User? user = _firebaseUser;
+    if (user == null) return false;
+    return user.providerData.any((UserInfo info) => info.providerId == providerId);
+  }
+
   Future<void> initialize() async {
-    if (!AppConfig.hasFirebase) {
+    try {
+      if (AppConfig.hasFirebase) {
+        _attachFirebaseAuth();
+        _firebaseUser = _auth!.currentUser;
+      }
+    } finally {
       _isLoading = false;
       notifyListeners();
-      return;
     }
-    _firebaseUser = _auth!.currentUser;
-    _isLoading = false;
-    notifyListeners();
+  }
+
+  void _attachFirebaseAuth() {
+    if (_auth != null) return;
+    _auth = FirebaseAuth.instance;
+    _auth!.authStateChanges().listen((User? user) {
+      _firebaseUser = user;
+      _demoSignedIn = false;
+      notifyListeners();
+    });
   }
 
   Future<void> signInWithEmail(String email, String password) async {
@@ -55,12 +68,36 @@ class AuthService extends ChangeNotifier {
     await _auth!.signInWithEmailAndPassword(email: email.trim(), password: password);
   }
 
+  Future<void> sendPasswordResetEmail(String email) async {
+    _requireFirebase();
+    final String trimmed = email.trim();
+    if (trimmed.isEmpty || !trimmed.contains('@')) {
+      throw Exception('Enter a valid email address.');
+    }
+
+    try {
+      await _auth!.sendPasswordResetEmail(email: trimmed);
+    } on FirebaseAuthException catch (error) {
+      throw Exception(_passwordResetErrorMessage(error));
+    }
+  }
+
+  String _passwordResetErrorMessage(FirebaseAuthException error) {
+    switch (error.code) {
+      case 'invalid-email':
+        return 'Enter a valid email address.';
+      case 'user-not-found':
+        return 'No account found for that email.';
+      case 'too-many-requests':
+        return 'Too many attempts. Wait a few minutes and try again.';
+      default:
+        return error.message ?? 'Could not send reset email. Try again.';
+    }
+  }
+
   Future<void> signUpWithEmail(String email, String password) async {
     _requireFirebase();
     final String trimmed = email.trim();
-    if (!isEduEmailCheck(trimmed)) {
-      throw Exception('Sign up requires a school email ending in .edu');
-    }
     final UserCredential result =
         await _auth!.createUserWithEmailAndPassword(email: trimmed, password: password);
     await result.user?.sendEmailVerification();
@@ -78,9 +115,6 @@ class AuthService extends ChangeNotifier {
     _requireFirebase();
     final User? user = _auth!.currentUser;
     if (user == null) throw Exception('Sign in first.');
-    if (!isEduEmail(user.email ?? '')) {
-      throw Exception('Verification is for school emails ending in .edu');
-    }
     await user.sendEmailVerification();
   }
 
@@ -127,10 +161,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> signInWithGoogle() async {
-    if (!AppConfig.hasFirebase) {
-      await signInDemo();
-      return;
-    }
+    _requireFirebase();
 
     try {
       if (kIsWeb) {
@@ -174,6 +205,14 @@ class AuthService extends ChangeNotifier {
           'You can also sign in with email below.',
         );
       }
+      if (message.contains('ApiException: 8') || message.contains('ApiException: 8:')) {
+        throw Exception(
+          'Google Sign-In failed on this device (internal error). '
+          'Try: (1) use an emulator image with Google Play, (2) add your Google account in Settings, '
+          '(3) run .\\scripts\\get_sha1.ps1 and confirm the SHA-1 is in Firebase Console → Project Settings → Android app, '
+          '(4) download a fresh google-services.json and rebuild, or (5) test on a physical phone.',
+        );
+      }
       throw Exception(_googleSignInErrorMessage(message));
     }
   }
@@ -191,22 +230,29 @@ class AuthService extends ChangeNotifier {
     return detail.isEmpty ? 'Google sign-in failed.' : detail;
   }
 
+  /// Test-only bypass — not used in production sign-in flows.
+  @visibleForTesting
   Future<void> signInDemo() async {
     _demoSignedIn = true;
     notifyListeners();
   }
 
   Future<void> signOut() async {
-    if (_demoSignedIn) {
+    try {
+      if (_demoSignedIn) return;
+
+      if (AppConfig.hasFirebase && _auth != null) {
+        if (!kIsWeb) {
+          try {
+            await _googleSignIn().signOut();
+          } catch (_) {}
+        }
+        await _auth!.signOut();
+      }
+    } finally {
+      _firebaseUser = null;
       _demoSignedIn = false;
       notifyListeners();
-      return;
-    }
-    if (AppConfig.hasFirebase) {
-      if (!kIsWeb) {
-        await _googleSignIn().signOut();
-      }
-      await _auth!.signOut();
     }
   }
 
@@ -223,6 +269,71 @@ class AuthService extends ChangeNotifier {
     await reloadUser();
   }
 
+  Future<void> reauthenticateForDeletion({String? password}) async {
+    _requireFirebase();
+    final User? user = _auth!.currentUser;
+    if (user == null) throw Exception('Sign in first.');
+
+    if (usesEmailPassword) {
+      final String? email = user.email;
+      if (email == null || email.isEmpty) {
+        throw Exception('This account has no email address to verify.');
+      }
+      if (password == null || password.isEmpty) {
+        throw Exception('Enter your password to confirm account deletion.');
+      }
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: email, password: password),
+      );
+      return;
+    }
+
+    if (usesGoogleSignIn) {
+      if (kIsWeb) {
+        await _auth!.signInWithPopup(GoogleAuthProvider());
+        return;
+      }
+
+      await ensureGoogleReachable();
+      final GoogleSignIn googleSignIn = _googleSignIn();
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+      if (account == null) {
+        throw Exception('Google sign-in was cancelled.');
+      }
+
+      final GoogleSignInAuthentication googleAuth = await account.authentication;
+      await user.reauthenticateWithCredential(
+        GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        ),
+      );
+      return;
+    }
+
+    if (usesAppleSignIn) {
+      final String rawNonce = generateAppleNonce();
+      final String nonce = sha256ofString(rawNonce);
+      final AuthorizationCredentialAppleID appleCredential =
+          await SignInWithApple.getAppleIDCredential(
+        scopes: <AppleIDAuthorizationScopes>[
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
+      await user.reauthenticateWithCredential(
+        OAuthProvider('apple.com').credential(
+          idToken: appleCredential.identityToken,
+          rawNonce: rawNonce,
+        ),
+      );
+      return;
+    }
+
+    throw Exception('Sign out and sign in again, then try deleting your account.');
+  }
+
   Future<void> deleteAccount() async {
     if (_demoSignedIn) {
       _demoSignedIn = false;
@@ -235,16 +346,22 @@ class AuthService extends ChangeNotifier {
     if (user == null) throw Exception('Sign in first.');
 
     try {
-      if (!kIsWeb) {
-        await _googleSignIn().signOut();
-      }
       await user.delete();
     } on FirebaseAuthException catch (error) {
       if (error.code == 'requires-recent-login') {
-        throw Exception('Sign out and sign in again, then try deleting your account.');
+        throw Exception('Sign in again to confirm, then try deleting your account.');
       }
       throw Exception(error.message ?? 'Could not delete account.');
     }
+
+    if (!kIsWeb) {
+      try {
+        await _googleSignIn().signOut();
+      } catch (_) {
+        // Optional cleanup after the Firebase user is removed.
+      }
+    }
+
     _firebaseUser = null;
     notifyListeners();
   }

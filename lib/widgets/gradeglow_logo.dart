@@ -17,12 +17,18 @@ class GradeGlowLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      AppBranding.logoAsset,
-      height: height,
-      width: width ?? height,
-      fit: fit,
-      filterQuality: FilterQuality.high,
+    final double targetHeight = height;
+    final double targetWidth = width ?? targetHeight * AppBranding.logoAspectRatio;
+
+    return SizedBox(
+      width: targetWidth,
+      height: targetHeight,
+      child: Image.asset(
+        AppBranding.logoAsset,
+        fit: fit,
+        alignment: Alignment.center,
+        filterQuality: FilterQuality.high,
+      ),
     );
   }
 }
@@ -61,7 +67,7 @@ class GradeGlowBrandRow extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        GradeGlowLogo(height: logoSize, width: logoSize),
+        GradeGlowLogo(height: logoSize),
         SizedBox(width: logoSize * 0.35),
         Flexible(
           child: Column(
@@ -142,7 +148,7 @@ class GradeGlowHomeHeader extends StatelessWidget {
       children: <Widget>[
         Expanded(child: greetingBlock),
         const SizedBox(width: 12),
-        const GradeGlowLogo(height: 46, width: 46),
+        const GradeGlowLogo(height: 46),
       ],
     );
   }

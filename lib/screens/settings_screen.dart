@@ -7,7 +7,9 @@ import '../services/auth_service.dart';
 import '../services/user_service.dart';
 import '../theme/study_theme.dart';
 import '../widgets/accent_color_picker_sheet.dart';
+import '../widgets/delete_account_flow.dart';
 import 'edit_profile_screen.dart';
+import 'legal_document_screen.dart';
 import 'membership_screen.dart';
 import '../utils/study_messenger.dart';
 
@@ -129,34 +131,13 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Future<void> _confirmDeleteAccount(BuildContext context) async {
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Delete account?'),
-        content: const Text(
-          'This permanently deletes your account, profile, and study data. This cannot be undone.',
-        ),
-        actions: <Widget>[
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
-          FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: StudyColors.danger),
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete account'),
-          ),
-        ],
-      ),
-    );
+    await DeleteAccountFlow.run(context);
+  }
 
-    if (confirmed != true || !context.mounted) return;
-
-    try {
-      await context.read<UserService>().deleteAccount();
-      if (!context.mounted) return;
-      Navigator.of(context).popUntil((Route<dynamic> route) => route.isFirst);
-    } catch (error) {
-      if (!context.mounted) return;
-      StudyMessenger.showError(context, error);
-    }
+  Future<void> _signOut(BuildContext context) async {
+    await context.read<AuthService>().signOut();
+    if (!context.mounted) return;
+    Navigator.of(context).popUntil((Route<dynamic> route) => route.isFirst);
   }
 
   @override
@@ -226,6 +207,34 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   _SettingsNavRow(
+                    title: 'Privacy Policy',
+                    subtitle: 'How we handle your data',
+                    icon: Icons.privacy_tip_outlined,
+                    iconColor: StudyColors.primary,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (_) => const LegalDocumentScreen(
+                          kind: LegalDocumentKind.privacy,
+                        ),
+                      ),
+                    ),
+                  ),
+                  _SettingsNavRow(
+                    title: 'Terms of Service',
+                    subtitle: 'Rules for using GradeGlow',
+                    icon: Icons.gavel_outlined,
+                    iconColor: StudyColors.primary,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (_) => const LegalDocumentScreen(
+                          kind: LegalDocumentKind.terms,
+                        ),
+                      ),
+                    ),
+                  ),
+                  _SettingsNavRow(
                     title: 'Edit profile',
                     subtitle: 'School, major, courses',
                     icon: Icons.person_outline_rounded,
@@ -258,7 +267,7 @@ class SettingsScreen extends StatelessWidget {
                     iconColor: StudyColors.danger,
                     titleColor: StudyColors.danger,
                     showChevron: false,
-                    onTap: () => context.read<AuthService>().signOut(),
+                    onTap: () => _signOut(context),
                     showDivider: false,
                   ),
                 ],
