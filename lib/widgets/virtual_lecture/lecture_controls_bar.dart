@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/mathematics_degree_theme.dart';
-import '../../theme/study_theme.dart';
-
-/// Classroom interaction bar matching the AI Professor teaching flow.
+/// Mockup lecture controls: I'm confused · Ask · Raise hand · Pause · Full slide notes.
 class LectureControlsBar extends StatelessWidget {
   const LectureControlsBar({
     super.key,
@@ -19,8 +16,11 @@ class LectureControlsBar extends StatelessWidget {
     this.onSummary,
     this.onPrevious,
     this.onForward,
+    this.onResources,
+    this.onAudio,
     this.canPrevious = false,
     this.canForward = false,
+    this.slideLabel,
   });
 
   final bool playing;
@@ -35,26 +35,24 @@ class LectureControlsBar extends StatelessWidget {
   final VoidCallback? onSummary;
   final VoidCallback? onPrevious;
   final VoidCallback? onForward;
+  final VoidCallback? onResources;
+  final VoidCallback? onAudio;
   final bool canPrevious;
   final bool canForward;
+  final String? slideLabel;
+
+  static const Color _navy = Color(0xFF0B1220);
+  static const Color _teal = Color(0xFF0F766E);
+  static const Color _mustard = Color(0xFFD4A017);
+  static const Color _panel = Color(0xFF111827);
 
   @override
   Widget build(BuildContext context) {
-    final MathematicsDegreeColors c = MathematicsDegreeTheme.of(context);
-    final Color accent = StudyColors.primary;
-
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-      decoration: BoxDecoration(
-        color: c.surface,
-        border: Border(top: BorderSide(color: c.border)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, -2),
-          ),
-        ],
+      decoration: const BoxDecoration(
+        color: _panel,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: SafeArea(
         top: false,
@@ -64,43 +62,22 @@ class LectureControlsBar extends StatelessWidget {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: FilledButton.icon(
-                    onPressed: onConfused,
-                    icon: const Icon(Icons.help_outline_rounded, size: 18),
-                    label: const Text("I'm Confused"),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: accent,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
+                  child: _PillButton(
+                    label: "I'm confused",
+                    icon: Icons.help_outline_rounded,
+                    background: const Color(0xFF1F2937),
+                    foreground: Colors.white,
+                    onTap: onConfused,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: FilledButton.icon(
-                    onPressed: onRaiseHand,
-                    icon: const Icon(Icons.chat_bubble_outline_rounded, size: 18),
-                    label: const Text('Ask Question'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: accent.withValues(alpha: 0.85),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Material(
-                  color: accent,
-                  shape: const CircleBorder(),
-                  elevation: 3,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
+                  child: _PillButton(
+                    label: 'Ask a question',
+                    icon: Icons.chat_bubble_outline_rounded,
+                    background: _teal,
+                    foreground: Colors.white,
                     onTap: onRaiseHand,
-                    child: const SizedBox(
-                      width: 52,
-                      height: 52,
-                      child: Icon(Icons.mic_rounded, color: Colors.white),
-                    ),
                   ),
                 ),
               ],
@@ -109,52 +86,57 @@ class LectureControlsBar extends StatelessWidget {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: onPlayPause,
-                    icon: Icon(
-                      playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                      size: 18,
-                    ),
-                    label: Text(playing ? 'Pause Lesson' : 'Resume Lesson'),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
+                  child: _PillButton(
+                    label: playing ? 'Pause lesson' : 'Resume lesson',
+                    icon: playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                    background: _navy,
+                    foreground: Colors.white,
+                    onTap: onPlayPause,
+                    outlined: true,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: FilledButton.tonalIcon(
-                    onPressed: onSummary ?? onNotes,
-                    icon: const Icon(Icons.summarize_outlined, size: 18),
-                    label: const Text('Lesson Summary'),
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
+                  child: _PillButton(
+                    label: 'Full slide notes',
+                    icon: Icons.notes_rounded,
+                    background: _mustard,
+                    foreground: const Color(0xFF1C1917),
+                    onTap: onNotes,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _Mini(icon: Icons.replay_rounded, label: 'Restart', onTap: onRestart),
-                _Mini(
-                  icon: Icons.skip_previous_rounded,
-                  label: 'Back',
-                  onTap: onPrevious,
-                  enabled: canPrevious,
+                TextButton(
+                  onPressed: onRestart,
+                  child: const Text('Restart', style: TextStyle(color: Colors.white54)),
                 ),
-                _Mini(
-                  icon: Icons.skip_next_rounded,
-                  label: 'Next',
-                  onTap: onForward,
-                  enabled: canForward,
+                TextButton(
+                  onPressed: canPrevious ? onPrevious : null,
+                  child: const Text('Back', style: TextStyle(color: Colors.white70)),
                 ),
-                _Mini(icon: Icons.speed_rounded, label: speedLabel, onTap: onSpeed),
+                TextButton(
+                  onPressed: onSpeed,
+                  child: Text(speedLabel, style: const TextStyle(color: Color(0xFF2DD4BF))),
+                ),
+                TextButton(
+                  onPressed: canForward ? onForward : null,
+                  child: const Text('Next', style: TextStyle(color: Colors.white70)),
+                ),
                 if (onQuiz != null)
-                  _Mini(icon: Icons.quiz_outlined, label: 'Practice', onTap: onQuiz),
-                _Mini(icon: Icons.note_alt_outlined, label: 'Notes', onTap: onNotes),
+                  TextButton(
+                    onPressed: onQuiz,
+                    child: const Text('Practice', style: TextStyle(color: Colors.white54)),
+                  ),
+                if (onSummary != null)
+                  TextButton(
+                    onPressed: onSummary,
+                    child: const Text('Summary', style: TextStyle(color: Colors.white54)),
+                  ),
               ],
             ),
           ],
@@ -164,45 +146,57 @@ class LectureControlsBar extends StatelessWidget {
   }
 }
 
-class _Mini extends StatelessWidget {
-  const _Mini({
-    required this.icon,
+class _PillButton extends StatelessWidget {
+  const _PillButton({
     required this.label,
+    required this.icon,
+    required this.background,
+    required this.foreground,
     required this.onTap,
-    this.enabled = true,
+    this.outlined = false,
   });
 
-  final IconData icon;
   final String label;
+  final IconData icon;
+  final Color background;
+  final Color foreground;
   final VoidCallback? onTap;
-  final bool enabled;
+  final bool outlined;
 
   @override
   Widget build(BuildContext context) {
-    final MathematicsDegreeColors c = MathematicsDegreeTheme.of(context);
-    final bool active = enabled && onTap != null;
-    return InkWell(
-      onTap: active ? onTap : null,
-      borderRadius: BorderRadius.circular(10),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 20,
-              color: active ? c.primary : c.textSecondary.withValues(alpha: 0.4),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 9,
-                color: active ? c.textSecondary : c.textSecondary.withValues(alpha: 0.4),
+    return Material(
+      color: outlined ? Colors.transparent : background,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: outlined ? Border.all(color: Colors.white24) : null,
+            color: outlined ? background.withValues(alpha: 0.55) : null,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(icon, size: 18, color: foreground),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: foreground,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

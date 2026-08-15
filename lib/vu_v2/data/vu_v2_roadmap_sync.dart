@@ -70,9 +70,9 @@ class VuV2RoadmapSync {
       'mathematics' => _mathematics(),
       'physics' => _physics(),
       'computer_science' => _computerScience(),
-      'business' => _business(),
-      'law' => _law(),
-      'engineering' => _engineering(),
+      'business' || 'business_administration' => _business(),
+      'law' || 'introduction_to_law' => _law(),
+      'engineering' || 'mechanical_engineering' => _engineering(),
       'nursing' => _health(HealthFaculty.nursing),
       'medicine' => _health(HealthFaculty.medicine),
       'psychology' => _health(HealthFaculty.psychology),
@@ -352,7 +352,7 @@ class VuV2RoadmapSync {
           );
         }
       }
-      final ({int courses, int topics}) stats = PhysicsCatalog.statsForLevel(level);
+      final PhysicsLevelStats stats = PhysicsCatalog.statsForLevel(level);
       return VuV2RoadmapTrack(
         id: level.name,
         title: level.label,

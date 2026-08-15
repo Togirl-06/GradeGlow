@@ -122,31 +122,31 @@ class BiologyStudioData {
     BiologyModelAsset(
       id: 'skeleton',
       title: 'Skeleton',
-      assetPath: 'assets/anatomy/skeleton.svg',
+      assetPath: 'assets/anatomy/skeleton_real.png',
       caption: 'Bones · joints · landmarks',
     ),
     BiologyModelAsset(
       id: 'heart',
       title: 'Heart',
-      assetPath: 'assets/anatomy/heart.svg',
+      assetPath: 'assets/anatomy/heart_real.png',
       caption: 'Chambers · valves · vessels',
     ),
     BiologyModelAsset(
       id: 'neuron',
       title: 'Neuron',
-      assetPath: 'assets/anatomy/neuron.svg',
+      assetPath: 'assets/anatomy/neuron_real.png',
       caption: 'Dendrites · axon · synapse',
     ),
     BiologyModelAsset(
       id: 'respiratory',
       title: 'Respiratory System',
-      assetPath: 'assets/anatomy/respiratory.svg',
+      assetPath: 'assets/anatomy/respiratory_real.png',
       caption: 'Airways · lungs · gas exchange',
     ),
     BiologyModelAsset(
       id: 'organs',
       title: 'Organs',
-      assetPath: 'assets/anatomy/organs.svg',
+      assetPath: 'assets/anatomy/organs_real.png',
       caption: 'Locate major organs',
     ),
   ];

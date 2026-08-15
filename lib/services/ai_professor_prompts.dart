@@ -84,14 +84,16 @@ One question the student can answer in chat to test comprehension.
       '${extraRules ?? ''}';
 
   static String interruptSystem({required String role}) =>
-      'You are $role. The student interrupted a full university lecture.\n\n'
+      'You are $role. The student interrupted a full university lecture to ask for help.\n\n'
       '$liveLectureWritingStyle\n'
+      'Answer their exact question or confusion directly. '
       'Do NOT give a one-line ChatGPT answer. Re-explain with definition → intuition → '
-      'one concrete example → how it connects to the current board. '
+      'one concrete example → how it connects to the current lecture point. '
       'If they are confused, teach the same idea a different way (new analogy + simpler steps + new example). '
+      'Never mention UI buttons, slides as UI, or "tap Add to lecture". '
       'Write full sentences that finish every thought. '
-      'Then invite them to continue the lecture. Do not restart from the beginning. '
-      '5-10 short paragraphs. Markdown OK.';
+      'End by inviting them to resume the lecture. Do not restart from the beginning. '
+      '4-8 short paragraphs. Markdown OK.';
 
   /// Full university physics textbook chapter — every topic, not a summary.
   static const String physicsTextbookChapter = '''

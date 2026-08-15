@@ -16,11 +16,13 @@ class VuV2FacultyScreen extends StatelessWidget {
     required this.session,
     this.progress,
     this.initialFacultyId,
+    this.embedded = false,
   });
 
   final VuV2Session session;
   final VuV2ProgressStore? progress;
   final String? initialFacultyId;
+  final bool embedded;
 
   VuV2ProgressStore? _progressOf(BuildContext context) =>
       progress ?? VuV2Scope.maybeOf(context)?.progress;
@@ -31,7 +33,7 @@ class VuV2FacultyScreen extends StatelessWidget {
     final VuV2ProgressStore? store = _progressOf(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Lecture Halls')),
+      appBar: embedded ? null : AppBar(title: const Text('Lecture Halls')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
         children: <Widget>[
@@ -288,6 +290,10 @@ class VuV2LearnTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return VuV2FacultyScreen(session: session, progress: progress);
+    return VuV2FacultyScreen(
+      session: session,
+      progress: progress,
+      embedded: true,
+    );
   }
 }

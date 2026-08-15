@@ -25,6 +25,7 @@ class VuV2LessonClassroomScreen extends StatefulWidget {
     required this.topicTitle,
     this.topicId,
     this.topicSubtitle,
+    this.notesOnly = false,
   });
 
   final VuV2Session session;
@@ -36,6 +37,9 @@ class VuV2LessonClassroomScreen extends StatefulWidget {
   final String topicTitle;
   final String? topicId;
   final String? topicSubtitle;
+
+  /// When true, finishing the notes beats pops `true` (no embedded quiz lab).
+  final bool notesOnly;
 
   @override
   State<VuV2LessonClassroomScreen> createState() =>
@@ -340,7 +344,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
       }
     }
     if (_beatIndex >= _beats.length - 1) {
-      return 'Finish → quiz';
+      return widget.notesOnly ? 'Finish notes' : 'Finish → quiz';
     }
     return 'Next';
   }
@@ -367,6 +371,10 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
     if (beat == null) return;
 
     if (_beatIndex >= _beats.length - 1) {
+      if (widget.notesOnly) {
+        Navigator.pop(context, true);
+        return;
+      }
       setState(() => _showLab = true);
       return;
     }

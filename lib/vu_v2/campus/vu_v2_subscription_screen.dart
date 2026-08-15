@@ -55,13 +55,24 @@ class VuV2SubscriptionScreen extends StatelessWidget {
             ],
             selected: progress.isPremium,
             accent: true,
-            cta: progress.isPremium ? 'Your current plan' : 'Coming soon',
-            onTap: null,
+            cta: progress.isPremium ? 'Your current plan' : 'Enable Premium (demo)',
+            onTap: progress.isPremium
+                ? null
+                : () async {
+                    await progress.setPremium(true);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Premium unlocked for campus demo'),
+                        ),
+                      );
+                    }
+                  },
           ),
           const SizedBox(height: 16),
           const Text(
-            'When billing goes live, you will upgrade through the App Store or Google Play. '
-            'We no longer offer one-tap demo Premium unlocks.',
+            'Premium can be enabled here for demos so paywalls do not block the '
+            'clinical showcase path. Production billing ships via App Store / Play later.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
           ),
         ],

@@ -4,31 +4,46 @@ import 'package:flutter/material.dart';
 
 import '../../theme/mathematics_degree_theme.dart';
 
-/// Raise-hand interrupt — professor answers, can expand lecture, then resume.
+enum LectureAskMode { ask, confused }
+
+/// Pause overlay — student picks a prompt or writes a question; professor answers.
 class LectureAskOverlay extends StatefulWidget {
   const LectureAskOverlay({
     super.key,
     required this.onSubmit,
     required this.onDismiss,
-    this.onExpandLecture,
+    this.mode = LectureAskMode.ask,
     this.busy = false,
     this.answer,
     this.question,
+    this.topicHint,
+    this.onAskAgain,
   });
 
   final Future<void> Function(String question) onSubmit;
   final VoidCallback onDismiss;
-  final VoidCallback? onExpandLecture;
+  final LectureAskMode mode;
   final bool busy;
   final String? answer;
   final String? question;
+  final String? topicHint;
+  final VoidCallback? onAskAgain;
 
-  static const List<String> quickPrompts = <String>[
+  static const List<String> askPrompts = <String>[
     'Explain this in more detail.',
-    'Show another proof.',
-    'Give five more examples.',
+    'Give me another example.',
     'Explain this visually.',
     'What are common mistakes here?',
+    'Why does this matter?',
+  ];
+
+  static const List<String> confusedPrompts = <String>[
+    'I do not understand the definition.',
+    'The example does not make sense.',
+    'Explain this more simply.',
+    'Give me a new analogy.',
+    'Show a fresh example.',
+    'What am I missing?',
   ];
 
   @override
@@ -39,18 +54,34 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
   final TextEditingController _controller = TextEditingController();
   bool _showAnswer = false;
 
+  bool get _confused => widget.mode == LectureAskMode.confused;
+
+  List<String> get _prompts =>
+      _confused ? LectureAskOverlay.confusedPrompts : LectureAskOverlay.askPrompts;
+
   @override
   void initState() {
     super.initState();
-    _showAnswer = widget.answer != null;
-    if (widget.question != null) _controller.text = widget.question!;
+    _showAnswer = widget.answer != null && widget.answer!.trim().isNotEmpty;
+    if (widget.question != null && widget.question!.trim().isNotEmpty) {
+      _controller.text = widget.question!;
+    }
   }
 
   @override
   void didUpdateWidget(LectureAskOverlay oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.answer != null && oldWidget.answer == null) {
+    final String? answer = widget.answer;
+    if (answer != null &&
+        answer.trim().isNotEmpty &&
+        answer != oldWidget.answer) {
       setState(() => _showAnswer = true);
+    }
+    if (widget.question != oldWidget.question &&
+        widget.question != null &&
+        widget.question!.trim().isNotEmpty &&
+        !widget.busy) {
+      _controller.text = widget.question!;
     }
   }
 
@@ -86,12 +117,20 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Icon(Icons.pan_tool_alt_rounded, color: c.primaryLight, size: 20),
+                    Icon(
+                      _confused
+                          ? Icons.help_outline_rounded
+                          : Icons.chat_bubble_outline_rounded,
+                      color: c.primaryLight,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'Lecture paused — ask or go deeper',
-                        style: TextStyle(
+                        _confused
+                            ? 'What are you confused about?'
+                            : 'Ask the professor',
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
                           fontSize: 16,
@@ -120,27 +159,43 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
   }
 
   Widget _buildQuestionForm(MathematicsDegreeColors c) {
+    final String topic = widget.topicHint?.trim() ?? '';
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          'Ask for more depth — the lecture can expand without restarting.',
+          _confused
+              ? 'Pick a reason below, or write what confuses you. The professor will answer before you resume.'
+              : 'Pick a prompt, or write your own question. The professor will answer before you resume.',
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white.withValues(alpha: 0.8), height: 1.4),
         ),
+        if (topic.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 10),
+          Text(
+            'Current topic: $topic',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: c.primaryLight.withValues(alpha: 0.95),
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
+          ),
+        ],
         const SizedBox(height: 14),
         Wrap(
           spacing: 8,
           runSpacing: 8,
           alignment: WrapAlignment.center,
-          children: LectureAskOverlay.quickPrompts.map((String prompt) {
+          children: _prompts.map((String prompt) {
             return ActionChip(
               label: Text(prompt, style: const TextStyle(fontSize: 12)),
               onPressed: widget.busy
                   ? null
                   : () {
                       _controller.text = prompt;
+                      setState(() {});
                       unawaited(_submit(prompt));
                     },
             );
@@ -151,10 +206,14 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
           controller: _controller,
           autofocus: true,
           enabled: !widget.busy,
-          maxLines: 3,
+          maxLines: 4,
           style: const TextStyle(color: Colors.white),
+          textInputAction: TextInputAction.send,
+          onSubmitted: widget.busy ? null : (String v) => _submit(v),
           decoration: InputDecoration(
-            hintText: 'Or type your own question…',
+            hintText: _confused
+                ? 'Write what confuses you…'
+                : 'Write your question…',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.45)),
             filled: true,
             fillColor: Colors.white.withValues(alpha: 0.1),
@@ -182,7 +241,11 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
                   child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                 )
               : const Icon(Icons.send_rounded),
-          label: Text(widget.busy ? 'Professor is thinking…' : 'Ask Professor'),
+          label: Text(
+            widget.busy
+                ? 'Professor is answering…'
+                : (_confused ? 'Get a clearer explanation' : 'Ask Professor'),
+          ),
         ),
       ],
     );
@@ -193,6 +256,16 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        Text(
+          'Professor\'s answer',
+          style: TextStyle(
+            color: c.primaryLight,
+            fontWeight: FontWeight.w800,
+            fontSize: 12,
+            letterSpacing: 0.6,
+          ),
+        ),
+        const SizedBox(height: 8),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(18),
@@ -206,18 +279,20 @@ class _LectureAskOverlayState extends State<LectureAskOverlay> {
             style: const TextStyle(color: Colors.white, fontSize: 16, height: 1.55),
           ),
         ),
-        const SizedBox(height: 16),
-        if (widget.onExpandLecture != null)
-          OutlinedButton.icon(
-            onPressed: widget.busy ? null : widget.onExpandLecture,
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
-              side: BorderSide(color: c.primaryLight),
-            ),
-            icon: const Icon(Icons.draw_outlined),
-            label: const Text('Add to lecture — teach more on the board'),
+        const SizedBox(height: 12),
+        TextButton(
+          onPressed: widget.busy
+              ? null
+              : () {
+                  widget.onAskAgain?.call();
+                  setState(() => _showAnswer = false);
+                },
+          child: const Text(
+            'Ask another question',
+            style: TextStyle(color: Colors.white70),
           ),
-        const SizedBox(height: 10),
+        ),
+        const SizedBox(height: 4),
         FilledButton.icon(
           onPressed: widget.onDismiss,
           icon: const Icon(Icons.play_arrow_rounded),

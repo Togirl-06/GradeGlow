@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/virtual_lecture.dart';
 import '../../theme/mathematics_degree_theme.dart';
 
-/// Eight-step lecture roadmap — Khan Academy clarity + university structure.
+/// Eight-step lecture roadmap — clear beats + university structure.
 class LecturePhaseRoadmap extends StatelessWidget {
   const LecturePhaseRoadmap({
     super.key,

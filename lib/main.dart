@@ -1,14 +1,16 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'config/app_bootstrap.dart';
 import 'config/app_branding.dart';
-import 'screens/splash_screen.dart';
-import 'widgets/recording_bar_overlay.dart';
 import 'screens/login_screen.dart';
+import 'screens/splash_screen.dart';
+import 'screens/web_landing_screen.dart';
 import 'widgets/authenticated_gate.dart';
+import 'widgets/recording_bar_overlay.dart';
 import 'services/appearance_service.dart';
 import 'services/auth_service.dart';
 import 'services/chat_service.dart';
@@ -92,6 +94,7 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
   late final AppearanceService _appearanceService;
 
   bool _ready = false;
+  bool _webShowLogin = false;
 
   @override
   void initState() {
@@ -343,7 +346,18 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
                   return const SplashScreen();
                 }
                 if (!_authService.isAuthenticated) {
-                  return LoginScreen(onSignedIn: _onSignedIn);
+                  if (kIsWeb && !_webShowLogin) {
+                    return WebLandingScreen(
+                      onSignIn: () => setState(() => _webShowLogin = true),
+                      onGetStarted: () => setState(() => _webShowLogin = true),
+                    );
+                  }
+                  return LoginScreen(
+                    onSignedIn: _onSignedIn,
+                    onBackToSite: kIsWeb
+                        ? () => setState(() => _webShowLogin = false)
+                        : null,
+                  );
                 }
                 return AuthenticatedGate(
                   userService: _userService,

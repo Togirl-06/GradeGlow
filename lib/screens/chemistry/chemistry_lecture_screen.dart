@@ -64,11 +64,12 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
   // In-stage overlays
   LectureKnowledgeCheck? _activeCheck;
   bool _askingProfessor = false;
+  LectureAskMode _askMode = LectureAskMode.ask;
   bool _askBusy = false;
   String? _askAnswer;
   String? _pendingQuestion;
-  String? _lastAskQuestion;
   bool _alive = true;
+  bool _immersive = false;
 
   @override
   void initState() {
@@ -105,15 +106,6 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     super.dispose();
   }
 
-  int _textSegmentSeconds(LectureSegment? segment) {
-    final String speech = segment?.professorSpeech ?? '';
-    final int words = speech.trim().isEmpty ? 0 : speech.trim().split(RegExp(r'\s+')).length;
-    final int fromWords = (words / 2.2 / _speed).round();
-    final int authored = segment?.durationSeconds ?? 90;
-    final int fromMeta = (authored / _speed).round();
-    final int base = fromWords > fromMeta ? fromWords : fromMeta;
-    return base.clamp(30, 180);
-  }
 
   String get _speedLabel {
     final double rounded = (_speed * 100).round() / 100;
@@ -206,16 +198,8 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
 
   void _changeSpeed(double speed) {
     if (!mounted) return;
-    final bool restartSpeech = _playing &&
-        _segment != null &&
-        _activeCheck == null &&
-        !_askingProfessor;
     setState(() => _speed = speed);
     unawaited(_voice.setSpeed(speed));
-    if (restartSpeech) {
-      _pause(hard: true);
-      _play();
-    }
   }
 
   void _play() {
@@ -270,7 +254,7 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
         await _voice.speak(speech, _speed);
       } catch (e) {
         debugPrint('Lecture delivery failed: $e');
-        await Future<void>.delayed(Duration(seconds: _textSegmentSeconds(active)));
+        await Future<void>.delayed(const Duration(milliseconds: 350));
       }
 
       if (!_alive || !mounted || epoch != _deliveryEpoch) {
@@ -278,7 +262,18 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
         return;
       }
 
-      if (!_playing) continue;
+      if (!_playing) {
+        while (_alive &&
+            mounted &&
+            epoch == _deliveryEpoch &&
+            !_playing) {
+          await Future<void>.delayed(const Duration(milliseconds: 32));
+        }
+        if (!_alive || !mounted || epoch != _deliveryEpoch || !_playing) {
+          if (epoch == _deliveryEpoch) _delivering = false;
+          return;
+        }
+      }
       break;
     }
 
@@ -294,12 +289,6 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
       _pause(hard: true);
       setState(() => _activeCheck = check);
       _delivering = false;
-      return;
-    }
-
-    if (!raw.isInteractive && _isInteractivePhase(raw.phase)) {
-      _delivering = false;
-      _scheduleAutoAdvance(active);
       return;
     }
 
@@ -324,21 +313,7 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     _advanceSegment(resumePlayback: resumePlayback);
   }
 
-  bool _isInteractivePhase(LecturePhase phase) {
-    return phase == LecturePhase.studentParticipation ||
-        phase == LecturePhase.guidedExamples;
-  }
-
-  void _scheduleAutoAdvance(LectureSegment segment) {
-    _segmentTimer?.cancel();
-    final int seconds = (_textSegmentSeconds(segment) / 3).round().clamp(5, 18);
-    _segmentTimer = Timer(Duration(seconds: seconds), () {
-      if (!mounted || !_playing) return;
-      _advanceSegment(resumePlayback: true);
-    });
-  }
-
-  void _onCheckAnswered(bool correct) {
+  void _onCheckAnswered(bool correct, {String? tappedRegionId}) {
     setState(() {
       _activeCheck = null;
       _analytics = _analytics.copyWith(
@@ -413,7 +388,7 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     _pause(); // soft pause keeps the current utterance
   }
 
-  /// Scrubber seek — jump only when the section changes; same section resumes audio.
+  /// Scrubber seek — jump only when the section changes; same section seeks voice.
   void _seekToProgress(double progress) {
     if (_script == null || _script!.segments.isEmpty) return;
     final int count = _script!.segments.length;
@@ -421,6 +396,8 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     final int target = pos.floor().clamp(0, count - 1);
 
     if (target == _segmentIndex) {
+      final double fraction = (pos - target).clamp(0.0, 1.0);
+      unawaited(_voice.seekUtterance(fraction));
       if (_delivering) {
         unawaited(_voice.resume());
         if (!_playing) {
@@ -544,8 +521,10 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     if (_askingProfessor) return;
     setState(() {
       _askingProfessor = true;
+      _askMode = LectureAskMode.ask;
       _askAnswer = null;
       _pendingQuestion = null;
+      _askBusy = false;
       _playing = false;
       _speaking = false;
     });
@@ -556,19 +535,13 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     if (_askingProfessor) return;
     setState(() {
       _askingProfessor = true;
+      _askMode = LectureAskMode.confused;
       _askAnswer = null;
-      _pendingQuestion =
-          "I'm confused about this part. Please explain it more simply, "
-          'use a different analogy, and give another short example.';
+      _pendingQuestion = null;
+      _askBusy = false;
       _playing = false;
       _speaking = false;
     });
-    unawaited(
-      _submitQuestion(
-        "I'm confused about this part. Please explain it more simply, "
-        'use a different analogy, and give another short example.',
-      ),
-    );
   }
 
   void _freezeLectureForInterrupt() {
@@ -597,68 +570,56 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
   }
 
   Future<void> _submitQuestion(String question) async {
-    if (_lectureService == null) return;
+    final String trimmed = question.trim();
+    if (trimmed.isEmpty || _lectureService == null) return;
     setState(() {
       _askBusy = true;
-      _pendingQuestion = question;
-      _lastAskQuestion = question;
+      _pendingQuestion = trimmed;
+      _askAnswer = null;
     });
+    final LectureSegment? active = _displaySegment ?? _segment;
+    final String slideContext = <String>[
+      if (active?.whiteboard.title.trim().isNotEmpty == true)
+        'Slide: ${active!.whiteboard.title}',
+      if (active != null && active.whiteboard.keyPoints.isNotEmpty)
+        'Key points: ${active.whiteboard.keyPoints.take(6).join('; ')}',
+      if ((active?.professorSpeech ?? '').trim().isNotEmpty)
+        'Professor was saying: ${active!.professorSpeech}',
+    ].join('\n');
+
+    String answer;
     try {
-      final String answer = await _lectureService!.askChemistryProfessor(
+      answer = await _lectureService!.askChemistryProfessor(
         path: widget.path,
-        currentSpeech: _segment?.professorSpeech ?? '',
-        question: question,
+        currentSpeech: slideContext,
+        question: _askMode == LectureAskMode.confused
+            ? 'Student is confused and asked: $trimmed\n'
+                'Reteach this idea more simply with a new analogy and one fresh example. '
+                'Do not repeat the previous explanation word for word. '
+                'End with one short check question.'
+            : trimmed,
       );
-      if (!mounted) return;
-      setState(() {
-        _askBusy = false;
-        _askAnswer = answer;
-        _analytics = _analytics.copyWith(questionsAsked: _analytics.questionsAsked + 1);
-        _transcript.add('You: $question');
-        _transcript.add('Professor: $answer');
-      });
-      // Text answer only — avoid a second/device TTS voice on interrupt.
     } catch (e) {
       debugPrint('Ask professor failed: $e');
-      if (!mounted) return;
-      setState(() => _askBusy = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not reach the professor right now.')),
-      );
+      answer = '';
     }
+    if (!mounted) return;
+    if (answer.trim().isEmpty) {
+      answer =
+          'Let me clarify this chemistry idea more simply. '
+          'Return to the core definition on the slide, then connect it to one concrete example. '
+          'Ask again if a specific term or step is still unclear.';
+    }
+    setState(() {
+      _askBusy = false;
+      _askAnswer = answer.trim();
+      _analytics = _analytics.copyWith(questionsAsked: _analytics.questionsAsked + 1);
+      _transcript.add('You: $trimmed');
+      _transcript.add('Professor: ${answer.trim()}');
+    });
+    unawaited(_voice.speak(answer.trim(), _speed));
   }
 
-  Future<void> _expandLectureFromAsk() async {
-    if (_lectureService == null || _script == null || _lastAskQuestion == null) {
-      _dismissAsk();
-      return;
-    }
-    setState(() => _askBusy = true);
-    try {
-      final LectureSegment? extra = await _lectureService!.expandChemistryLecture(
-        path: widget.path,
-        currentSpeech: _segment?.professorSpeech ?? '',
-        studentRequest: _lastAskQuestion!,
-      );
-      if (!mounted || extra == null) {
-        if (mounted) setState(() => _askBusy = false);
-        return;
-      }
-      setState(() {
-        _script = _script!.insertSegmentAfter(_segmentIndex, extra);
-        _askBusy = false;
-        _askingProfessor = false;
-        _askAnswer = null;
-        _segmentIndex += 1;
-        _beatIndex = 0;
-        _analytics = _analytics.copyWith(questionsAsked: _analytics.questionsAsked + 1);
-      });
-      _play();
-    } catch (e) {
-      debugPrint('Expand lecture failed: $e');
-      if (mounted) setState(() => _askBusy = false);
-    }
-  }
 
   void _dismissAsk() {
     unawaited(_voice.stop());
@@ -802,6 +763,41 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
     );
   }
 
+  void _pickVoice() {
+    if (!mounted) return;
+    showLectureVoiceSheet(
+      context,
+      currentVoiceId: _voice.voiceId,
+      onSelected: (String id) async {
+        await _voice.setVoice(id);
+        await saveLectureVoicePreference(id);
+        if (!mounted) return;
+        setState(() {});
+        if (_playing || _delivering) {
+          _pause(hard: true);
+          _play();
+        }
+      },
+    );
+  }
+
+  void _openStageSettings() {
+    if (!mounted) return;
+    showLectureSettingsSheet(
+      context,
+      speedLabel: _speedLabel,
+      voiceLabel: _voice.voiceLabel,
+      onSpeed: _pickSpeed,
+      onVoice: _pickVoice,
+      onNotes: _openNotes,
+    );
+  }
+
+  void _toggleImmersive() {
+    if (!mounted) return;
+    setState(() => _immersive = !_immersive);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ChemistryDegreeColors c = ChemistryDegreeTheme.of(context);
@@ -858,10 +854,42 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) {
         if (didPop) return;
+        if (_immersive) {
+          setState(() => _immersive = false);
+          return;
+        }
         _pause(hard: true);
         Navigator.of(context).pop(_finished);
       },
-      child: Scaffold(
+      child: _immersive
+          ? Scaffold(
+              backgroundColor: Colors.black,
+              body: SafeArea(
+                child: LectureStage(
+                  segment: segment,
+                  topicTitle: widget.path.lesson.title,
+                  phaseLabel: segment.phase.label,
+                  isSpeaking: _speaking &&
+                      _activeCheck == null &&
+                      !_askingProfessor,
+                  segmentProgress: _progress,
+                  speed: _speed,
+                  playing: _playing,
+                  onPlayPause: _togglePlay,
+                  onSpeed: _pickSpeed,
+                  onSettings: _openStageSettings,
+                  onFullscreen: _toggleImmersive,
+                  fullscreenActive: true,
+                  onSeek: _seekToProgress,
+                  onScrubStart: _onScrubStart,
+                  speedLabel: _speedLabel,
+                  segmentIndex: _segmentIndex,
+                  segmentCount: _script?.segments.length ?? 1,
+                  utteranceProgress: _voice.utteranceProgress,
+                ),
+              ),
+            )
+          : Scaffold(
         backgroundColor: c.background,
         body: SafeArea(
           child: Column(
@@ -907,11 +935,15 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
                         playing: _playing,
                         onPlayPause: _togglePlay,
                         onSpeed: _pickSpeed,
+                        onSettings: _openStageSettings,
+                        onFullscreen: _toggleImmersive,
+                        fullscreenActive: false,
                         onSeek: _seekToProgress,
                         onScrubStart: _onScrubStart,
                         speedLabel: _speedLabel,
                         segmentIndex: _segmentIndex,
                         segmentCount: _script?.segments.length ?? 1,
+                        utteranceProgress: _voice.utteranceProgress,
                       ),
                       if (_activeCheck != null)
                         LectureCheckOverlay(
@@ -920,13 +952,18 @@ class _ChemistryLectureScreenState extends State<ChemistryLectureScreen> {
                         ),
                       if (_askingProfessor)
                         LectureAskOverlay(
+                          mode: _askMode,
                           busy: _askBusy,
                           answer: _askAnswer,
                           question: _pendingQuestion,
+                          topicHint:
+                              _displaySegment?.whiteboard.title ?? widget.path.lesson.title,
                           onSubmit: _submitQuestion,
                           onDismiss: _dismissAsk,
-                          onExpandLecture:
-                              _askAnswer != null ? _expandLectureFromAsk : null,
+                          onAskAgain: () {
+                            unawaited(_voice.stop());
+                            setState(() => _askAnswer = null);
+                          },
                         ),
                     ],
                   ),

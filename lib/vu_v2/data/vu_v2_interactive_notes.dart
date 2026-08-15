@@ -50,7 +50,7 @@ abstract final class VuV2InteractiveNotes {
 
     for (int i = 0; i < pack.sections.length; i++) {
       final VuV2TextbookSection section = pack.sections[i];
-      final ({String body, String? more}) split = _splitBody(section.body);
+      final _BodySplit split = _splitBody(section.body);
       beats.add(
         VuV2InteractiveBeat(
           kind: VuV2BeatKind.teach,
@@ -92,23 +92,36 @@ abstract final class VuV2InteractiveNotes {
 
   static String _emojiFor(String title) {
     final String t = title.toLowerCase();
-    if (t.contains('definition')) return '🧩';
-    if (t.contains('how it works') || t.contains('deep')) return '🧠';
-    if (t.contains('apply') || t.contains('method')) return '🛠️';
+    if (t.contains('definition') || t.contains('concept')) return '🧩';
+    if (t.contains('principle') ||
+        t.contains('how it works') ||
+        t.contains('deep')) {
+      return '🧠';
+    }
+    if (t.contains('formula') ||
+        t.contains('rule') ||
+        t.contains('apply') ||
+        t.contains('method')) {
+      return '🛠️';
+    }
+    if (t.contains('diagram') || t.contains('illustration') || t.contains('model')) {
+      return '🖼️';
+    }
     if (t.contains('example')) return '🧪';
+    if (t.contains('term') || t.contains('vocabulary')) return '📇';
     if (t.contains('mistake') || t.contains('misconception') || t.contains('avoid')) {
       return '⚠️';
     }
     return '📘';
   }
 
-  static ({String body, String? more}) _splitBody(String raw) {
+  static _BodySplit _splitBody(String raw) {
     final String text = raw.trim();
     if (text.isEmpty) {
-      return (body: 'Continue to the next section.', more: null);
+      return const _BodySplit(body: 'Continue to the next section.');
     }
     if (text.length <= _maxBodyChars) {
-      return (body: text, more: null);
+      return _BodySplit(body: text);
     }
     int cut = text.lastIndexOf('\n\n', _maxBodyChars);
     if (cut < _maxBodyChars ~/ 2) {
@@ -119,8 +132,15 @@ abstract final class VuV2InteractiveNotes {
     final String body = text.substring(0, cut).trim();
     String more = text.substring(cut).trim();
     if (more.length > _maxMoreChars) {
-      more = '${more.substring(0, _maxMoreChars).trim()}…';
+      more = '${more.substring(0, _maxMoreChars).trim()}...';
     }
-    return (body: body, more: more.isEmpty ? null : more);
+    return _BodySplit(body: body, more: more.isEmpty ? null : more);
   }
+}
+
+class _BodySplit {
+  const _BodySplit({required this.body, this.more});
+
+  final String body;
+  final String? more;
 }

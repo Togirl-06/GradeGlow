@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import '../utils/textbook_speech.dart';
+import 'openai_tts_service.dart';
 import 'tutor_voice_service.dart';
 
 /// Safe text-to-speech for lectures — speech output only, no microphone.
@@ -18,6 +19,9 @@ class LectureVoiceController {
   bool get isAvailable => _ready;
 
   bool get isPaused => _voice.isPlaybackPaused;
+
+  /// 0–1 progress through the current spoken utterance (drives slide sync).
+  ValueListenable<double> get utteranceProgress => _voice.utteranceProgress;
 
   Future<bool> ensureReady() async {
     if (_ready) return true;
@@ -47,6 +51,18 @@ class LectureVoiceController {
     }
   }
 
+  /// Warm the next utterance so slide changes do not sit in silence.
+  Future<void> prefetch(String text) async {
+    final String trimmed = text.trim();
+    if (trimmed.isEmpty) return;
+    if (!await ensureReady()) return;
+    try {
+      await _voice.prefetchSpeak(trimmed);
+    } catch (e) {
+      debugPrint('Lecture prefetch failed: $e');
+    }
+  }
+
   /// Apply speed immediately to the current lecture audio.
   Future<void> setSpeed(double speed) async {
     try {
@@ -54,6 +70,19 @@ class LectureVoiceController {
       await _voice.setPlaybackSpeed(speed);
     } catch (e) {
       debugPrint('Lecture setSpeed failed: $e');
+    }
+  }
+
+  String get voiceId => _voice.openAiVoice;
+
+  String get voiceLabel => OpenAiTtsVoices.labelFor(_voice.openAiVoice);
+
+  Future<void> setVoice(String voiceId) async {
+    try {
+      if (!_ready) await ensureReady();
+      await _voice.setOpenAiVoice(voiceId);
+    } catch (e) {
+      debugPrint('Lecture setVoice failed: $e');
     }
   }
 
@@ -117,6 +146,16 @@ class LectureVoiceController {
     try {
       await _voice.stopSpeaking();
     } catch (_) {}
+  }
+
+  /// Seek within the current utterance (0–1) so scrubber and voice stay aligned.
+  Future<void> seekUtterance(double fraction) async {
+    try {
+      if (!_ready) await ensureReady();
+      await _voice.seekUtterance(fraction);
+    } catch (e) {
+      debugPrint('Lecture seekUtterance failed: $e');
+    }
   }
 
   void dispose() {

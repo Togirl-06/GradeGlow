@@ -137,13 +137,7 @@ class BiologyDegreeCatalog {
       1,
       'Foundations',
       <BiologyDegreeCourse>[
-        bioFlatCourse(
-          'general_biology',
-          'General Biology',
-          _topicsFor('biology|general_biology', 'General Biology'),
-          emoji: '🌱',
-          tagline: 'Life · scientific method · macromolecules · cells',
-        ),
+        bio101Course(),
         bioFlatCourse(
           'cell_biology',
           'Cell Biology',

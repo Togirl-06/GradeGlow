@@ -8,22 +8,34 @@ class VuV2PrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
+    this.trailingArrow = false,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
+  final bool trailingArrow;
 
   @override
   Widget build(BuildContext context) {
-    if (icon != null) {
+    final Widget child = trailingArrow
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(label),
+              const SizedBox(width: 8),
+              const Icon(Icons.arrow_forward_rounded, size: 20),
+            ],
+          )
+        : Text(label);
+    if (icon != null && !trailingArrow) {
       return FilledButton.icon(
         onPressed: onPressed,
         icon: Icon(icon),
         label: Text(label),
       );
     }
-    return FilledButton(onPressed: onPressed, child: Text(label));
+    return FilledButton(onPressed: onPressed, child: child);
   }
 }
 
@@ -127,7 +139,7 @@ class VuV2Surface extends StatelessWidget {
       width: double.infinity,
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: VuV2Colors.navyElevated,
+        color: VuV2Colors.card,
         borderRadius: BorderRadius.circular(VuV2Radii.lg),
         border: Border.all(color: VuV2Colors.stroke),
       ),

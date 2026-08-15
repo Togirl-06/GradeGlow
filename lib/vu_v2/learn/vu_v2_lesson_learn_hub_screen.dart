@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/university_learning_engine.dart';
 import '../../data/biology_degree_catalog.dart';
 import '../../data/chemistry_degree_catalog.dart';
+import '../../data/health_faculty_catalog.dart';
 import '../../data/mathematics_degree_catalog.dart';
 import '../../models/biology_degree.dart';
 import '../../models/chemistry_degree.dart';
+import '../../models/health_faculty_program.dart';
 import '../../models/mathematics_degree.dart';
 import '../../screens/ai_professor/ai_professor_classroom_screen.dart';
 import '../../screens/mathematics/mathematics_practice_screen.dart';
@@ -15,17 +18,21 @@ import '../../services/mathematics_progress_service.dart';
 import '../../services/openai_service.dart';
 import '../../theme/study_theme.dart';
 import '../../widgets/virtual_lecture/lecture_professor_badge.dart';
+import '../data/vu_v2_lesson_flow.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_roadmap_models.dart';
 import '../data/vu_v2_scope.dart';
 import '../data/vu_v2_session.dart';
+import '../data/vu_v2_mixed_quiz.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
+import '../labs/university_lab_result.dart';
 import 'vu_v2_assessment_screen.dart';
+import 'vu_v2_lesson_activity_router.dart';
 import 'vu_v2_lesson_classroom_screen.dart';
 
-/// Khan Academy–style hub: AI Professor video lesson (hero) or Notes.
+/// Lesson hub: Professor teaches → professional lab → knowledge check.
 class VuV2LessonLearnHubScreen extends StatelessWidget {
   const VuV2LessonLearnHubScreen({
     super.key,
@@ -37,6 +44,7 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
     required this.trackTitle,
     required this.courseTitle,
     required this.lesson,
+    this.courseLessonIds = const <String>[],
   });
 
   final VuV2Session session;
@@ -47,12 +55,41 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
   final String trackTitle;
   final String courseTitle;
   final VuV2RoadmapLesson lesson;
+  final List<String> courseLessonIds;
 
   VuV2ProgressStore? _store(BuildContext context) =>
       progress ?? VuV2Scope.maybeOf(context)?.progress;
 
+  UniversityLabLink? get _lab => VuV2LessonActivityRouter.linkedLab(
+        subjectId: subjectId,
+        lessonTitle: lesson.title,
+        moduleTitle: courseTitle,
+      );
+
+  bool get _requiresLab => _lab != null;
+
   @override
   Widget build(BuildContext context) {
+    final VuV2ProgressStore? store = _store(context);
+    if (store == null) return _scaffold(context, null);
+    return ListenableBuilder(
+      listenable: store,
+      builder: (BuildContext context, _) => _scaffold(context, store),
+    );
+  }
+
+  Widget _scaffold(BuildContext context, VuV2ProgressStore? store) {
+    final bool lectureDone =
+        store?.isStepComplete(lesson.id, VuV2LessonStep.aiProfessor) ?? false;
+    final bool labDone =
+        store?.isStepComplete(lesson.id, VuV2LessonStep.realWorldLab) ?? false;
+    final bool checkDone =
+        store?.isStepComplete(lesson.id, VuV2LessonStep.knowledgeCheck) ??
+            false;
+    final bool mastered =
+        store?.meetsMastery(lesson.id, requiresLab: _requiresLab) ?? false;
+    final UniversityLabLink? lab = _lab;
+
     return Scaffold(
       appBar: AppBar(title: Text(lesson.title)),
       body: ListView(
@@ -73,9 +110,9 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'HOW DO YOU WANT TO LEARN?',
+                  mastered ? 'SKILL MASTERED' : 'LEARNING LOOP',
                   style: TextStyle(
-                    color: StudyColors.primary,
+                    color: mastered ? VuV2Colors.success : StudyColors.primary,
                     fontWeight: FontWeight.w900,
                     fontSize: 11,
                     letterSpacing: 0.8,
@@ -92,43 +129,67 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Like Khan Academy videos — but your teacher is AI. '
-                  'Watch the chalkboard lesson, pause anytime, ask questions, then practice.',
-                  style: TextStyle(color: VuV2Colors.mute, height: 1.45),
+                Text(
+                  mastered
+                      ? 'You learned it from the professor, used it in the lab, and proved it.'
+                      : 'Professor teaches → interactive visuals → professional lab → '
+                          'decisions have consequences → knowledge check.',
+                  style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
           _PrivateProfessorHero(
+            lectureDone: lectureDone,
             onStart: () => _openAiTutor(context),
           ),
+          if (lab != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _JourneyStepCard(
+              step: 2,
+              emoji: '🔬',
+              title: lab.title,
+              subtitle:
+                  '${lab.purpose} Your choices change the simulation — then the professor debriefs.',
+              cta: labDone ? 'Replay lab' : 'Enter professional lab',
+              status: labDone
+                  ? 'Complete'
+                  : (lectureDone ? 'Ready' : 'Best after the lecture'),
+              done: labDone,
+              onTap: () => _openLab(context, lab),
+            ),
+          ],
           const SizedBox(height: 12),
-          _LearnModeCard(
-            emoji: '📘',
-            title: 'Notes',
+          _JourneyStepCard(
+            step: lab == null ? 2 : 3,
+            emoji: '✅',
+            title: 'Knowledge check',
             subtitle:
-                'Read clear explanations, examples, and practice checks at your own pace.',
-            cta: 'Start notes',
-            onTap: () => _openNotes(context),
+                'Prove you can use the concept — not memorize a percentage.',
+            cta: checkDone ? 'Retake check' : 'Take knowledge check',
+            status: checkDone
+                ? 'Passed'
+                : (lectureDone ? 'Ready' : 'Best after the lecture'),
+            done: checkDone,
+            onTap: () => _openQuiz(context),
           ),
           const SizedBox(height: 12),
-          _LearnModeCard(
-            emoji: '✅',
-            title: 'Practice quiz',
-            subtitle: 'Check what you know with a short topic quiz.',
-            cta: 'Take quiz',
-            onTap: () => _openQuiz(context),
+          _JourneyStepCard(
+            step: null,
+            emoji: '📘',
+            title: 'Lecture notes',
+            subtitle:
+                'Key concepts, examples, and common mistakes from this class.',
+            cta: 'Open notes',
+            status: 'Optional',
+            done: store?.isStepComplete(lesson.id, VuV2LessonStep.coreNotes) ??
+                false,
+            onTap: () => _openNotes(context),
           ),
         ],
       ),
     );
-  }
-
-  Future<void> _markComplete(BuildContext context) async {
-    final VuV2ProgressStore? store = _store(context);
-    await store?.completeLesson(lesson.id);
   }
 
   Future<void> _openNotes(BuildContext context) async {
@@ -153,12 +214,18 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
         ),
       ),
     );
+    if (!context.mounted) return;
+    await _store(context)?.markStep(
+      lesson.id,
+      VuV2LessonStep.coreNotes,
+      requiresLab: _requiresLab,
+    );
   }
 
   Future<void> _openAiTutor(BuildContext context) async {
     await session.setContinue(
       title: lesson.title,
-      subtitle: '$facultyTitle · AI Tutor',
+      subtitle: '$facultyTitle · AI Professor',
       progress: 0.25,
     );
     if (!context.mounted) return;
@@ -172,12 +239,37 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
     if (completed == true) {
       await session.setContinue(
         title: lesson.title,
-        subtitle: '$facultyTitle · AI Tutor complete',
-        progress: 0.9,
+        subtitle: '$facultyTitle · lecture complete · enter the lab',
+        progress: 0.55,
       );
       if (!context.mounted) return;
-      await _markComplete(context);
+      await _store(context)?.markStep(
+        lesson.id,
+        VuV2LessonStep.aiProfessor,
+        requiresLab: _requiresLab,
+      );
     }
+  }
+
+  Future<void> _openLab(BuildContext context, UniversityLabLink lab) async {
+    await session.setContinue(
+      title: lesson.title,
+      subtitle: '$facultyTitle · Professional lab',
+      progress: 0.7,
+    );
+    if (!context.mounted) return;
+    final UniversityLabResult? result =
+        await VuV2LessonActivityRouter.openLinkedLab(
+      context: context,
+      link: lab,
+      subjectId: subjectId,
+    );
+    if (!context.mounted || result == null) return;
+    await _store(context)?.markStep(
+      lesson.id,
+      VuV2LessonStep.realWorldLab,
+      requiresLab: true,
+    );
   }
 
   Future<void> _openQuiz(BuildContext context) async {
@@ -196,13 +288,17 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
       MaterialPageRoute<void>(
         builder: (_) => VuV2AssessmentScreen(
           title: lesson.title,
-          subtitle: '$courseTitle · topic quiz · pass ≥70%',
-          questions: pack.topicQuiz,
+          subtitle: '$courseTitle · knowledge check · pass ≥70%',
+          questions: VuV2MixedQuiz.enrich(pack.topicQuiz),
           passPercent: 70,
           onCompleted: (double pct) {
             _store(context)?.recordQuiz('${lesson.id}_quiz', pct);
             if (pct >= 70) {
-              _markComplete(context);
+              _store(context)?.markStep(
+                lesson.id,
+                VuV2LessonStep.knowledgeCheck,
+                requiresLab: _requiresLab,
+              );
             }
           },
         ),
@@ -211,19 +307,21 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
   }
 }
 
-/// Hero card — the memorable “private professor” first impression for judges.
+/// Hero card — AI Professor lecture (step 1 of the loop).
 class _PrivateProfessorHero extends StatelessWidget {
-  const _PrivateProfessorHero({required this.onStart});
+  const _PrivateProfessorHero({
+    required this.onStart,
+    this.lectureDone = false,
+  });
 
   final VoidCallback onStart;
+  final bool lectureDone;
 
-  static const List<({String icon, String label})> _pillars =
-      <({String icon, String label})>[
-    (icon: '🎓', label: '25–40 min lecture'),
-    (icon: '📜', label: 'History + theory'),
-    (icon: '✍️', label: 'Live chalkboard'),
-    (icon: '🌍', label: 'Real-world examples'),
-    (icon: '📝', label: 'Exercises + homework'),
+  static const List<_Pillar> _pillars = <_Pillar>[
+    _Pillar(icon: '🗣️', label: 'Professor teaches'),
+    _Pillar(icon: '✨', label: 'Speech-synced visuals'),
+    _Pillar(icon: '❓', label: 'In-lecture questions'),
+    _Pillar(icon: '🔬', label: 'Then the lab'),
   ];
 
   @override
@@ -255,7 +353,26 @@ class _PrivateProfessorHero extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  const LectureProfessorBadge(size: 64, speaking: true),
+                  Container(
+                    width: 28,
+                    height: 28,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: lectureDone
+                          ? VuV2Colors.success.withValues(alpha: 0.18)
+                          : accent.withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      lectureDone ? '✓' : '1',
+                      style: TextStyle(
+                        color: lectureDone ? VuV2Colors.success : accent,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const LectureProfessorBadge(size: 56, speaking: true),
                   const SizedBox(width: 14),
                   Expanded(
                     child: Column(
@@ -266,12 +383,14 @@ class _PrivateProfessorHero extends StatelessWidget {
                           style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w900,
-                            fontSize: 22,
+                            fontSize: 20,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Full university lecture · every course',
+                          lectureDone
+                              ? 'Lecture complete · enter the lab'
+                              : 'Teaches. Visuals follow every word.',
                           style: TextStyle(
                             color: accent,
                             fontWeight: FontWeight.w800,
@@ -285,9 +404,8 @@ class _PrivateProfessorHero extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const Text(
-                'Not a chatbot. Your professor teaches for 25–40 minutes: '
-                'intro, history, deep theory, chalkboard visuals, real-world examples, '
-                'questions, exercises, and homework.',
+                'Your professor teaches the concept, highlights it as they speak, '
+                'asks you questions, then sends you into the professional lab.',
                 style: TextStyle(
                   color: VuV2Colors.mute,
                   height: 1.45,
@@ -298,31 +416,30 @@ class _PrivateProfessorHero extends StatelessWidget {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: _pillars
-                    .map(
-                      (({String icon, String label}) p) => Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.22),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: accent.withValues(alpha: 0.35),
-                          ),
-                        ),
-                        child: Text(
-                          '${p.icon}  ${p.label}',
-                          style: const TextStyle(
-                            color: VuV2Colors.ink,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
+                children: <Widget>[
+                  for (int i = 0; i < _pillars.length; i++)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.22),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: accent.withValues(alpha: 0.35),
                         ),
                       ),
-                    )
-                    .toList(),
+                      child: Text(
+                        '${_pillars[i].icon}  ${_pillars[i].label}',
+                        style: const TextStyle(
+                          color: VuV2Colors.ink,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: 16),
               SizedBox(
@@ -334,10 +451,17 @@ class _PrivateProfessorHero extends StatelessWidget {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  icon: const Icon(Icons.play_arrow_rounded),
-                  label: const Text(
-                    'Play AI video lesson',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
+                  icon: Icon(
+                    lectureDone
+                        ? Icons.replay_rounded
+                        : Icons.play_arrow_rounded,
+                  ),
+                  label: Text(
+                    lectureDone ? 'Replay lecture' : 'Start lecture',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
@@ -349,19 +473,32 @@ class _PrivateProfessorHero extends StatelessWidget {
   }
 }
 
-class _LearnModeCard extends StatelessWidget {
-  const _LearnModeCard({
+class _Pillar {
+  const _Pillar({required this.icon, required this.label});
+
+  final String icon;
+  final String label;
+}
+
+class _JourneyStepCard extends StatelessWidget {
+  const _JourneyStepCard({
     required this.emoji,
     required this.title,
     required this.subtitle,
     required this.cta,
     required this.onTap,
+    required this.status,
+    this.step,
+    this.done = false,
   });
 
+  final int? step;
   final String emoji;
   final String title;
   final String subtitle;
   final String cta;
+  final String status;
+  final bool done;
   final VoidCallback onTap;
 
   @override
@@ -378,14 +515,38 @@ class _LearnModeCard extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(VuV2Radii.xl),
-            border: Border.all(color: accent.withValues(alpha: 0.45)),
+            border: Border.all(
+              color: done
+                  ? VuV2Colors.success.withValues(alpha: 0.45)
+                  : accent.withValues(alpha: 0.45),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(emoji, style: const TextStyle(fontSize: 28)),
+                  if (step != null || done)
+                    Container(
+                      width: 28,
+                      height: 28,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: done
+                            ? VuV2Colors.success.withValues(alpha: 0.18)
+                            : accent.withValues(alpha: 0.14),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        done ? '✓' : '${step ?? ''}',
+                        style: TextStyle(
+                          color: done ? VuV2Colors.success : accent,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  if (step != null || done) const SizedBox(width: 10),
+                  Text(emoji, style: const TextStyle(fontSize: 26)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -393,11 +554,18 @@ class _LearnModeCard extends StatelessWidget {
                       style: const TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w900,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),
-                  Icon(Icons.arrow_forward_rounded, color: accent),
+                  Text(
+                    status,
+                    style: TextStyle(
+                      color: done ? VuV2Colors.success : VuV2Colors.mute,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 11,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -542,9 +710,44 @@ abstract final class VuV2AiTutorLauncher {
               ChemLessonActivityKind.lecture,
             );
       }
+    } else if (subjectId == 'nursing' ||
+        subjectId == 'medicine' ||
+        subjectId == 'psychology') {
+      final HealthFaculty? facultyEnum = HealthFaculty.fromId(subjectId);
+      if (facultyEnum != null) {
+        final List<HealthLessonPath> paths =
+            HealthFacultyCatalog.pathsFor(facultyEnum);
+        HealthLessonPath? match;
+        for (final HealthLessonPath p in paths) {
+          if (p.topic.id == lesson.id ||
+              p.topic.title.toLowerCase() == lesson.title.toLowerCase()) {
+            match = p;
+            break;
+          }
+        }
+        if (match == null) {
+          final String lid = lesson.id.toLowerCase();
+          for (final HealthLessonPath p in paths) {
+            if (lid.contains(p.topic.id.toLowerCase()) ||
+                p.topic.id.toLowerCase().contains(lid)) {
+              match = p;
+              break;
+            }
+          }
+        }
+        if (match != null) {
+          lessonTitle = match.topic.title;
+          courseId = match.course.id;
+          resolvedCourse = match.course.title;
+          moduleTitle = match.course.title;
+          lessonId = match.topic.id;
+        } else {
+          courseId = subjectId;
+          moduleTitle = courseTitle;
+        }
+      }
     }
 
-    // CS family degrees share lecture faculty prompts with computer_science.
     final String faculty = switch (subjectId) {
       'software_engineering' ||
       'artificial_intelligence' ||
@@ -554,9 +757,40 @@ abstract final class VuV2AiTutorLauncher {
       _ => subjectId,
     };
 
+    final UniversityLabLink? linkedLab = UniversityLearningEngine.labForLesson(
+      subjectId: subjectId,
+      lessonTitle: lessonTitle,
+      moduleTitle: moduleTitle,
+    );
+
+    Future<void> Function()? onEnterLab;
+    if (linkedLab != null) {
+      onEnterLab = () async {
+        final UniversityLabResult? result =
+            await VuV2LessonActivityRouter.openLinkedLab(
+          context: context,
+          link: linkedLab,
+          subjectId: subjectId,
+        );
+        if (result == null) return;
+        await VuV2Scope.maybeOf(context)?.progress.markStep(
+              lesson.id,
+              VuV2LessonStep.realWorldLab,
+              requiresLab: true,
+            );
+      };
+    }
+
+    final Future<void> Function()? baseCompleted = onCompleted;
+    onCompleted = () async {
+      await baseCompleted?.call();
+      await VuV2Scope.maybeOf(context)?.progress.syncDiagramMisconceptions();
+    };
+
     return Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(
         builder: (_) => AiProfessorClassroomScreen(
+          key: ValueKey<String>('$lessonId|$lessonTitle|$courseId'),
           openAi: openAi,
           lessonId: lessonId,
           lessonTitle: lessonTitle,
@@ -569,6 +803,8 @@ abstract final class VuV2AiTutorLauncher {
           onStartNextLesson: onNext,
           onPractice: onPractice,
           onCompleted: onCompleted,
+          linkedLabTitle: linkedLab?.title,
+          onEnterLab: onEnterLab,
         ),
       ),
     );

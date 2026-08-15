@@ -9,7 +9,7 @@ import '../widgets/modern_quiz_view.dart';
 import '../widgets/read_aloud_button.dart';
 import '../widgets/study_surface.dart';
 
-/// Quizlet-style flip cards from a saved summary.
+/// Flip cards from a saved summary.
 class SummaryFlashcardsScreen extends StatefulWidget {
   const SummaryFlashcardsScreen({super.key, required this.summary});
 

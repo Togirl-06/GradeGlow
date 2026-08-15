@@ -20,10 +20,9 @@ abstract final class VuV2TopicContent {
   }) {
     final _Discipline d = _disciplineFor(subjectId);
     final List<VuV2TextbookSection> sections = interactive
-        ? _buildInteractiveChapter(
+        ? _buildCoreNoteBlocks(
             discipline: d,
             facultyTitle: facultyTitle,
-            trackTitle: trackTitle,
             courseTitle: courseTitle,
             topic: topicTitle,
           )
@@ -54,6 +53,153 @@ abstract final class VuV2TopicContent {
     );
   }
 
+  /// Universal 7-block core notes — identical titles for every major.
+  static List<VuV2TextbookSection> coreNoteBlocks(VuV2TopicPackage pack) {
+    if (pack.sections.length == 7 &&
+        pack.sections.first.title == 'Definitions and concepts') {
+      return pack.sections;
+    }
+    final Map<String, String> byTitle = <String, String>{
+      for (final VuV2TextbookSection s in pack.sections) s.title: s.body,
+    };
+    String pick(List<String> keys, String fallback) {
+      for (final String k in keys) {
+        final String? body = byTitle[k];
+        if (body != null && body.trim().isNotEmpty) return body;
+      }
+      return fallback;
+    }
+
+    final String topic = pack.topicTitle;
+    final String course = pack.courseTitle;
+    return <VuV2TextbookSection>[
+      VuV2TextbookSection(
+        title: 'Definitions and concepts',
+        body: pick(
+          const <String>['Precise definitions', 'Definition', 'Chapter overview'],
+          '**$topic** — core definitions for $course.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Key principles',
+        body: pick(
+          const <String>['Deep explanation', 'How it works', 'Step-by-step method'],
+          'Key principles for applying **$topic** in $course.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Formulas or rules',
+        body: pick(
+          const <String>[
+            'Rules, formulas & governing principles',
+            'How to apply it',
+          ],
+          'Governing rules and formulas for **$topic**.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Diagrams and illustrations',
+        body: pick(
+          const <String>['Conceptual model'],
+          'Hold a clear mental model of **$topic** while you study $course.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Examples',
+        body: pick(
+          const <String>[
+            'Worked example 1 — guided',
+            'Worked example',
+            'Worked example 2 — independent style',
+          ],
+          'Worked examples for **$topic**.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Important terms',
+        body: _importantTermsFrom(
+          pick(
+            const <String>['Precise definitions', 'Definition'],
+            topic,
+          ),
+          topic,
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Common mistakes',
+        body: pick(
+          const <String>[
+            'Common misconceptions (and corrections)',
+            'Mistakes to avoid',
+          ],
+          'Common mistakes when learning **$topic** — and how to correct them.',
+        ),
+      ),
+    ];
+  }
+
+  /// End-of-lesson summary sheet blocks.
+  static List<VuV2TextbookSection> summaryBlocks(VuV2TopicPackage pack) {
+    final Map<String, String> byTitle = <String, String>{
+      for (final VuV2TextbookSection s in pack.sections) s.title: s.body,
+    };
+    String pick(List<String> keys, String fallback) {
+      for (final String k in keys) {
+        final String? body = byTitle[k];
+        if (body != null && body.trim().isNotEmpty) return body;
+      }
+      return fallback;
+    }
+
+    final String topic = pack.topicTitle;
+    return <VuV2TextbookSection>[
+      VuV2TextbookSection(
+        title: 'Chapter summary',
+        body: pick(
+          const <String>['Chapter summary'],
+          '**$topic** — review the definition, method, and one worked skeleton.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Study guide',
+        body: pick(
+          const <String>['Study guide & memory anchors'],
+          'Teach-back, one-page sheet, and spaced review for **$topic**.',
+        ),
+      ),
+      VuV2TextbookSection(
+        title: 'Mastery checklist',
+        body: pick(
+          const <String>['Mastery checklist'],
+          '□ Define **$topic**\n□ Apply the method\n□ Avoid the main mistakes\n□ Ready for the quiz',
+        ),
+      ),
+    ];
+  }
+
+  static String _importantTermsFrom(String definitionsBody, String topic) {
+    final List<String> terms = <String>[topic];
+    final RegExp bold = RegExp(r'\*\*([^*]+)\*\*');
+    for (final Match m in bold.allMatches(definitionsBody)) {
+      final String t = m.group(1)!.trim();
+      if (t.length > 2 && t.length < 48 && !terms.contains(t)) {
+        terms.add(t);
+      }
+      if (terms.length >= 8) break;
+    }
+    final StringBuffer buf = StringBuffer();
+    buf.writeln('**Important terms for $topic**');
+    buf.writeln();
+    for (final String t in terms) {
+      buf.writeln('• **$t** — know the definition and one non-example.');
+    }
+    buf.writeln();
+    buf.writeln(
+      'Build flashcards from this list. Recognition without recall is not mastery.',
+    );
+    return buf.toString();
+  }
+
   /// End-of-topic quiz (8–10 questions with explanations).
   static List<VuV2Mcq> topicQuiz({
     required String subjectId,
@@ -61,6 +207,7 @@ abstract final class VuV2TopicContent {
     required String courseTitle,
     required String topicTitle,
     int count = 8,
+    bool challenge = false,
   }) {
     return _buildMcqs(
       subjectId: subjectId,
@@ -68,7 +215,8 @@ abstract final class VuV2TopicContent {
       courseTitle: courseTitle,
       topicTitle: topicTitle,
       count: count,
-      examMode: false,
+      examMode: challenge,
+      seedSalt: challenge ? 0xC4A11E : 0,
     );
   }
 
@@ -119,35 +267,67 @@ abstract final class VuV2TopicContent {
 
   // ── Chapter builder ──────────────────────────────────────────────────────
 
-  /// Focused chapter: five strong explanations, no filler sections.
-  static List<VuV2TextbookSection> _buildInteractiveChapter({
+  /// Universal core notes: seven identical section titles for every faculty.
+  static List<VuV2TextbookSection> _buildCoreNoteBlocks({
     required _Discipline discipline,
     required String facultyTitle,
-    required String trackTitle,
     required String courseTitle,
     required String topic,
   }) {
     final String field = facultyTitle;
+    final String definitions =
+        discipline.explainDefinition(topic, courseTitle, field);
+    final String principles =
+        discipline.explainHowItWorks(topic, courseTitle, field);
+    final String rules = discipline.rulesAndFormulas(topic, courseTitle);
+    final String examples =
+        discipline.explainWorkedExample(topic, courseTitle, field);
+    final String mistakes = discipline.explainMistakes(topic, courseTitle, field);
+
     return <VuV2TextbookSection>[
       VuV2TextbookSection(
-        title: 'Definition',
-        body: discipline.explainDefinition(topic, courseTitle, field),
+        title: 'Definitions and concepts',
+        body: definitions,
       ),
       VuV2TextbookSection(
-        title: 'How it works',
-        body: discipline.explainHowItWorks(topic, courseTitle, field),
+        title: 'Key principles',
+        body: principles,
       ),
       VuV2TextbookSection(
-        title: 'How to apply it',
-        body: discipline.explainHowToApply(topic, courseTitle, field),
+        title: 'Formulas or rules',
+        body: rules,
       ),
       VuV2TextbookSection(
-        title: 'Worked example',
-        body: discipline.explainWorkedExample(topic, courseTitle, field),
+        title: 'Diagrams and illustrations',
+        body:
+            'Hold this mental picture while you study **$topic**:\n\n'
+            '```\n'
+            'Context ($courseTitle)\n'
+            '   ↓\n'
+            'Inputs / evidence / givens\n'
+            '   ↓\n'
+            'Core process: $topic\n'
+            '   ↓\n'
+            'Check constraints & assumptions\n'
+            '   ↓\n'
+            'Output: answer · decision · design · diagnosis · argument\n'
+            '   ↓\n'
+            'Verify · explain · communicate\n'
+            '```\n\n'
+            'Sketch this flow once from memory. If you cannot fill a box, that is '
+            'exactly where your gap is in **$field**.',
       ),
       VuV2TextbookSection(
-        title: 'Mistakes to avoid',
-        body: discipline.explainMistakes(topic, courseTitle, field),
+        title: 'Examples',
+        body: examples,
+      ),
+      VuV2TextbookSection(
+        title: 'Important terms',
+        body: _importantTermsFrom(definitions, topic),
+      ),
+      VuV2TextbookSection(
+        title: 'Common mistakes',
+        body: mistakes,
       ),
     ];
   }
@@ -540,6 +720,40 @@ abstract final class VuV2TopicContent {
   }
 }
 
+String _healthWorkedExampleBody(String topic, String course) {
+  final String t = topic.toLowerCase();
+  if (t.contains('prenatal')) {
+    return '**Scenario.** 24-year-old G1P0 at 22 weeks for a scheduled prenatal visit in **$course**.\n\n'
+        '**Step A.** Problem: routine prenatal visit + education + risk screen.\n'
+        '**Step B.** Assess: BP, weight trend, urine, FHR, fundal height, fetal movement, danger symptoms.\n'
+        '**Step C.** First action: complete focused prenatal exam, then trimester-appropriate labs/screens.\n'
+        '**Step D.** Endpoint: normal BP range, FHR documented, patient teaches back warning signs.\n'
+        '**Step E.** Escalate if BP ≥140/90, headache/vision changes, bleeding, or decreased movement.\n'
+        '**Step F.** Handoff: “22w G1P0; BP __; FHR __; urine __; next visit __; taught red flags.”\n\n'
+        '**Model reflection.** A weigh-in without BP/FHR/teaching is incomplete prenatal care.\n\n'
+        '**Your turn.** Change BP to 148/96 with headache — redo steps C–E.';
+  }
+  if (t.contains('heart failure') || t.contains('cardiac') || t.contains('chf')) {
+    return '**Scenario.** 68-year-old with heart failure reports new dyspnea on the med-surg floor.\n\n'
+        '**Step A.** Problem: possible HF decompensation.\n'
+        '**Step B.** Assess: SpO2, work of breathing, lung sounds, edema, urine output, mentation.\n'
+        '**Step C.** First action: support oxygen/ABCs and notify per protocol.\n'
+        '**Step D.** Endpoint: SpO2 goal met, breathing easier, provider aware.\n'
+        '**Step E.** Escalate for worsening hypoxia, confusion, or chest pain.\n'
+        '**Step F.** Handoff: wet vs cold profile + last SpO2 + interventions given.\n\n'
+        '**Your turn.** Add crackles halfway up + SpO2 88% — what changes first?';
+  }
+  return '**Scenario.** A learner meets a case where **$topic** matters in **$course**.\n\n'
+      '**Step A.** One-sentence problem statement.\n'
+      '**Step B.** Three assessment priorities for **$topic**.\n'
+      '**Step C.** One first action + rationale.\n'
+      '**Step D.** Measurable endpoint for reassessment.\n'
+      '**Step E.** One escalation sentence if red flags appear.\n'
+      '**Step F.** One-line handoff.\n\n'
+      '**Model reflection.** Vague language (“seems better”) fails; measurable endpoints pass.\n\n'
+      '**Your turn.** Change one cue in the scenario and redo steps C–E.';
+}
+
 enum _Discipline {
   stem('STEM'),
   health('clinical'),
@@ -814,15 +1028,7 @@ enum _Discipline {
       _Discipline.cs => VuV2CsNotesCode.workedExample(topic, course),
       _Discipline.health =>
         '**Worked example — applying $topic in $course.**\n\n'
-        '**Scenario.** A learner meets a case where **$topic** matters.\n\n'
-        '**Step A.** One-sentence problem statement.\n'
-        '**Step B.** Three assessment priorities for **$topic**.\n'
-        '**Step C.** One first action + rationale.\n'
-        '**Step D.** Measurable endpoint for reassessment.\n'
-        '**Step E.** One escalation sentence if red flags appear.\n'
-        '**Step F.** One-line handoff.\n\n'
-        '**Model reflection.** Vague language (“seems better”) fails; measurable endpoints pass.\n\n'
-        '**Your turn.** Change one cue in the scenario and redo steps C–E.',
+        '${_healthWorkedExampleBody(topic, course)}',
       _Discipline.law =>
         '**Worked example — IRAC for $topic.**\n\n'
         '**Facts (short).** A dispute arises that may trigger **$topic**.\n\n'

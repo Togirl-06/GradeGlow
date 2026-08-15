@@ -19,11 +19,19 @@ class VuV2RoadmapModule {
     required this.id,
     required this.title,
     required this.lessons,
+    this.whyItMatters,
+    this.realWorldApplications,
+    this.industries = const <String>[],
   });
 
   final String id;
   final String title;
   final List<VuV2RoadmapLesson> lessons;
+
+  /// Optional module intro copy (defaults generated in UI when null).
+  final String? whyItMatters;
+  final String? realWorldApplications;
+  final List<String> industries;
 
   int get lessonCount => lessons.length;
 }
@@ -36,6 +44,12 @@ class VuV2RoadmapCourse {
     this.emoji,
     this.modules = const <VuV2RoadmapModule>[],
     this.lessons = const <VuV2RoadmapLesson>[],
+    this.professorIntro,
+    this.learningObjectives = const <String>[],
+    this.skills = const <String>[],
+    this.careerOpportunities = const <String>[],
+    this.difficulty,
+    this.estimatedMinutes,
   });
 
   final String id;
@@ -46,6 +60,13 @@ class VuV2RoadmapCourse {
   /// Prefer modules when the source catalog has them; else flat [lessons].
   final List<VuV2RoadmapModule> modules;
   final List<VuV2RoadmapLesson> lessons;
+
+  final String? professorIntro;
+  final List<String> learningObjectives;
+  final List<String> skills;
+  final List<String> careerOpportunities;
+  final String? difficulty;
+  final int? estimatedMinutes;
 
   int get lessonCount {
     if (modules.isNotEmpty) {
@@ -64,6 +85,43 @@ class VuV2RoadmapCourse {
           .toList(growable: false);
     }
     return lessons;
+  }
+
+  String get resolvedDifficulty => difficulty ?? 'University';
+
+  int get resolvedMinutes =>
+      estimatedMinutes ?? (lessonCount * 25).clamp(60, 600);
+
+  String get resolvedProfessorIntro =>
+      professorIntro ??
+      'Your AI Professor teaches this course with chalkboard lectures, '
+          'worked examples, and checkpoints — the same journey in every major.';
+
+  List<String> get resolvedObjectives {
+    if (learningObjectives.isNotEmpty) return learningObjectives;
+    return const <String>[
+      'Explain core concepts with confidence',
+      'Solve guided practice with the AI Professor',
+      'Pass the knowledge check, challenge, and course exam',
+    ];
+  }
+
+  List<String> get resolvedSkills {
+    if (skills.isNotEmpty) return skills;
+    return const <String>[
+      'Critical reasoning',
+      'Applied problem-solving',
+      'Professional communication',
+    ];
+  }
+
+  List<String> get resolvedCareers {
+    if (careerOpportunities.isNotEmpty) return careerOpportunities;
+    return const <String>[
+      'Entry roles in the field',
+      'Internship-ready projects',
+      'Graduate / professional school prep',
+    ];
   }
 }
 

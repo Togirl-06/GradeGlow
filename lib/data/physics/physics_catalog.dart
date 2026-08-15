@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../models/physics/physics_program.dart';
 
+/// Course/topic counts for a physics academic level.
+class PhysicsLevelStats {
+  const PhysicsLevelStats({required this.courses, required this.topics});
+
+  final int courses;
+  final int topics;
+}
+
 /// Complete Virtual University Physics curriculum — foundations through research.
 /// Organized by academic level, not calendar year.
 class PhysicsCatalog {
@@ -60,9 +68,9 @@ class PhysicsCatalog {
             sum + t.courses.fold<int>(0, (int cs, PhysicsCourse c) => cs + c.topics.length),
       );
 
-  static ({int courses, int topics}) statsForLevel(PhysicsLevel level) {
+  static PhysicsLevelStats statsForLevel(PhysicsLevel level) {
     final List<PhysicsTrack> tracks = tracksForLevel(level);
-    return (
+    return PhysicsLevelStats(
       courses: tracks.fold<int>(0, (int sum, PhysicsTrack t) => sum + t.courses.length),
       topics: tracks.fold<int>(
         0,

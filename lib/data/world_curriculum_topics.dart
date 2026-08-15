@@ -27,7 +27,8 @@ abstract final class WorldCurriculumTopics {
       }
     }
 
-    return _generatedTopics(courseName);
+    // Never invent nonsense filler titles — use textbook-style chapter banks.
+    return _textbookFallback(subjectId: subjectId, courseName: courseName);
   }
 
   static String slug(String name) => name
@@ -35,30 +36,77 @@ abstract final class WorldCurriculumTopics {
       .replaceAll(RegExp(r'[^a-z0-9]+'), '_')
       .replaceAll(RegExp(r'^_|_$'), '');
 
-  static List<String> _generatedTopics(String courseName) {
-    final String c = courseName.trim().isEmpty
-        ? 'This Course'
-        : courseName.trim();
+  /// Real chapter-style fallback when a course has no explicit map.
+  static List<String> _textbookFallback({
+    required String subjectId,
+    required String courseName,
+  }) {
+    final String s = subjectId.toLowerCase();
+    if (s.contains('anatomy') ||
+        s.contains('physiology') ||
+        s == 'medicine' ||
+        s == 'nursing' ||
+        s == 'biology') {
+      return List<String>.from(_anatomyPhysiologyChapters);
+    }
+    final String c = courseName.trim().isEmpty ? 'This Course' : courseName.trim();
     return <String>[
       'Introduction to $c',
-      'Core vocabulary of $c',
-      'Foundational theories in $c',
-      'Key models and frameworks',
-      'Methods and tools',
-      'Worked examples',
-      'Common mistakes and misconceptions',
-      'Real-world applications',
-      'Case studies in $c',
-      'Problem-solving strategies',
-      'Ethics and professional practice',
-      'Research frontiers',
-      'Assessment and mastery check',
-      'Capstone synthesis of $c',
+      'Core concepts and definitions',
+      'Structures, systems, and relationships',
+      'Mechanisms and processes',
+      'Worked examples and applications',
+      'Common errors and misconceptions',
+      'Clinical or professional cases',
+      'Practice problems and mastery check',
+      'Review and synthesis',
+      'Next steps and further reading',
     ];
   }
 
+  static const List<String> _anatomyPhysiologyChapters = <String>[
+    'Anatomical position and directional terms',
+    'Body planes, cavities, and regions',
+    'Cells and organelles',
+    'Tissues of the body',
+    'Integumentary system',
+    'Axial skeleton',
+    'Appendicular skeleton',
+    'Joints and articulations',
+    'Muscle tissue and contraction',
+    'Major skeletal muscles',
+    'Nervous tissue and synapses',
+    'Spinal cord and spinal nerves',
+    'Brain and cranial nerves',
+    'Autonomic nervous system',
+    'Special senses',
+    'Endocrine system',
+    'Blood and hematopoiesis',
+    'Heart and cardiac conduction',
+    'Blood vessels and circulation',
+    'Lymphatic system and immunity',
+    'Respiratory system',
+    'Digestive system',
+    'Nutrition and metabolism',
+    'Urinary system',
+    'Fluid, electrolyte, and acid–base balance',
+    'Reproductive system',
+  ];
+
   static const Map<String, List<String>> coursesBySubject =
       <String, List<String>>{
+        'anatomy_physiology': <String>[
+          'Anatomical Language and Orientation',
+          'Cells and Tissues',
+          'Integumentary and Skeletal Systems',
+          'Muscular System',
+          'Nervous System',
+          'Cardiovascular System',
+          'Respiratory System',
+          'Digestive and Urinary Systems',
+          'Endocrine and Reproductive Systems',
+          'Integrated Physiology Capstone',
+        ],
         'nursing': <String>[
           'Fundamentals',
           'Pharmacology',
@@ -1019,20 +1067,51 @@ abstract final class WorldCurriculumTopics {
       'Lab: motion experiments',
     ],
     'biology|general_biology': <String>[
-      'Scientific method in biology',
-      'Chemistry of life',
-      'Cell structure',
-      'Membranes and transport',
-      'Energy and metabolism',
+      'What Is Biology?',
+      'The Characteristics of Life',
+      'Scientific Method',
+      'Experimental Design',
+      'Data and Scientific Reasoning',
+      'Atoms and Elements',
+      'Chemical Bonds',
+      'Water',
+      'Acids and Bases',
+      'Organic Molecules',
+      'Carbohydrates',
+      'Lipids',
+      'Proteins',
+      'Nucleic Acids',
+      'Cell Theory',
+      'Prokaryotic vs Eukaryotic Cells',
+      'Cell Membrane',
+      'Transport',
+      'Organelles',
+      'Energy and ATP',
+      'Cellular Respiration',
       'Photosynthesis',
-      'Cellular respiration',
-      'Cell cycle and mitosis',
-      'Meiosis',
-      'Mendelian genetics',
-      'DNA and gene expression',
-      'Evolution and natural selection',
-      'Ecology basics',
-      'Biodiversity',
+      'Cell Communication',
+      'DNA',
+      'DNA Replication',
+      'Gene Expression',
+      'RNA',
+      'Protein Synthesis',
+      'Mendelian Genetics',
+      'Punnett Squares',
+      'Mutations',
+      'Genetic Engineering',
+      'Natural Selection',
+      'Adaptation',
+      'Population Genetics',
+      'Speciation',
+      'Evidence for Evolution',
+      'Populations',
+      'Communities',
+      'Ecosystems',
+      'Food Webs',
+      'Energy Flow',
+      'Biogeochemical Cycles',
+      'Population Growth',
+      'Human Impact',
     ],
     'chemistry|general_chemistry': <String>[
       'Atomic structure',
@@ -1169,6 +1248,128 @@ abstract final class WorldCurriculumTopics {
       'Business ethics',
       'Globalization',
       'Career paths in business',
+    ],
+
+    // —— Anatomy & Physiology (Marieb / Tortora–style chapter lessons) ——
+    'anatomy_physiology|anatomical_language_and_orientation': <String>[
+      'Anatomical position and directional terms',
+      'Body planes and sections',
+      'Body cavities and serous membranes',
+      'Abdominopelvic regions and quadrants',
+      'Levels of organization',
+      'Homeostasis and feedback loops',
+      'Medical imaging orientation',
+      'Surface anatomy landmarks',
+      'Clinical language practice',
+      'Knowledge check: orientation',
+    ],
+    'anatomy_physiology|cells_and_tissues': <String>[
+      'Cell structure and organelles',
+      'Plasma membrane and transport',
+      'Cellular respiration overview',
+      'DNA, RNA, and protein synthesis',
+      'Cell cycle and mitosis',
+      'Epithelial tissues',
+      'Connective tissues',
+      'Muscle and nervous tissues',
+      'Tissue repair and membranes',
+      'Histology lab correlation',
+    ],
+    'anatomy_physiology|integumentary_and_skeletal_systems': <String>[
+      'Skin layers and functions',
+      'Accessory structures of the skin',
+      'Bone tissue and remodeling',
+      'Axial skeleton',
+      'Appendicular skeleton',
+      'Skull and vertebral column',
+      'Thoracic cage and pelvis',
+      'Joints and articulations',
+      'Common fractures and clinical cases',
+      'Skeletal system labeling practice',
+    ],
+    'anatomy_physiology|muscular_system': <String>[
+      'Skeletal muscle structure',
+      'Sliding filament mechanism',
+      'Neuromuscular junction',
+      'Muscle metabolism and fatigue',
+      'Naming and actions of muscles',
+      'Muscles of the head and neck',
+      'Muscles of the trunk',
+      'Muscles of the upper limb',
+      'Muscles of the lower limb',
+      'Clinical cases: strains and paralysis',
+    ],
+    'anatomy_physiology|nervous_system': <String>[
+      'Nervous tissue and synapses',
+      'Action potentials',
+      'Spinal cord and spinal nerves',
+      'Reflex arcs',
+      'Brain regions and functions',
+      'Cranial nerves',
+      'Autonomic nervous system',
+      'Sensory pathways',
+      'Special senses overview',
+      'Neurologic clinical cases',
+    ],
+    'anatomy_physiology|cardiovascular_system': <String>[
+      'Blood composition and formed elements',
+      'Heart chambers and valves',
+      'Cardiac conduction system',
+      'Cardiac cycle and ECG basics',
+      'Blood vessels and hemodynamics',
+      'Blood pressure regulation',
+      'Systemic and pulmonary circuits',
+      'Lymphatic vessels and nodes',
+      'Immunity foundations',
+      'Clinical cases: MI and shock',
+    ],
+    'anatomy_physiology|respiratory_system': <String>[
+      'Upper and lower airways',
+      'Lungs and pleura',
+      'Mechanics of breathing',
+      'Gas exchange and transport',
+      'Neural control of respiration',
+      'Acid–base and ventilation',
+      'Spirometry basics',
+      'Clinical cases: asthma and pneumothorax',
+      'Respiratory anatomy labeling',
+      'Integrated cardio-respiratory review',
+    ],
+    'anatomy_physiology|digestive_and_urinary_systems': <String>[
+      'GI tract overview and accessory organs',
+      'Digestion and absorption',
+      'Liver, pancreas, and biliary system',
+      'Nutrition and metabolism overview',
+      'Kidney structure and nephrons',
+      'Filtration, reabsorption, and secretion',
+      'Fluid and electrolyte balance',
+      'Acid–base balance',
+      'Clinical cases: dehydration and AKI',
+      'Abdominal anatomy correlation',
+    ],
+    'anatomy_physiology|endocrine_and_reproductive_systems': <String>[
+      'Hormone mechanisms',
+      'Hypothalamus and pituitary',
+      'Thyroid and parathyroid',
+      'Adrenal glands and stress response',
+      'Pancreatic hormones and glucose control',
+      'Male reproductive anatomy and physiology',
+      'Female reproductive anatomy and physiology',
+      'Pregnancy and fetal development overview',
+      'Clinical cases: diabetes and thyroid disease',
+      'Endocrine–reproductive integration',
+    ],
+    'anatomy_physiology|integrated_physiology_capstone': <String>[
+      'Whole-body homeostasis review',
+      'Exercise physiology integration',
+      'Stress response across systems',
+      'Multi-system clinical case: trauma',
+      'Multi-system clinical case: infection',
+      'Multi-system clinical case: metabolic crisis',
+      'Imaging and lab correlation',
+      'Professional communication of findings',
+      'Comprehensive practical review',
+      'Capstone mastery assessment',
     ],
   };
 }

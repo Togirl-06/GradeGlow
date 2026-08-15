@@ -165,6 +165,10 @@ class VirtualLectureTopicProfile {
     if (isBiologyCourse(courseId)) {
       return LectureTopicCategory.biology;
     }
+    // Nursing / clinical — never route to trigonometry via "sin" in "nursing".
+    if (isNursingOrHealthCourse(courseId, topic, module)) {
+      return LectureTopicCategory.general;
+    }
     if (_isDerivativeTopic(t, c)) {
       return LectureTopicCategory.derivatives;
     }
@@ -277,10 +281,17 @@ class VirtualLectureTopicProfile {
   }
 
   static LectureTopicCategory _inferFromTitle(String t, String m) {
-    if (m.contains('trig') || t.contains('sin') || t.contains('cos')) {
+    // Word-aware — never match "sin" inside "nursing" / "cosine" false friends.
+    if (_hasWord(t, 'sin') ||
+        _hasWord(t, 'cos') ||
+        _hasWord(t, 'tan') ||
+        t.contains('trigon') ||
+        m.contains('trig')) {
       return LectureTopicCategory.trigonometry;
     }
-    if (m.contains('geometry') || t.contains('triangle') || t.contains('circle')) {
+    if (m.contains('geometry') ||
+        t.contains('triangle') ||
+        (_hasWord(t, 'circle') && !t.contains('unit circle'))) {
       return LectureTopicCategory.geometry;
     }
     if (t.contains('probability') || m.contains('probability')) {
@@ -290,6 +301,28 @@ class VirtualLectureTopicProfile {
       return LectureTopicCategory.statistics;
     }
     return LectureTopicCategory.general;
+  }
+
+  static bool _hasWord(String haystack, String word) {
+    return RegExp('\\b${RegExp.escape(word)}\\b', caseSensitive: false)
+        .hasMatch(haystack);
+  }
+
+  static bool isNursingOrHealthCourse(String courseId, String topic, String module) {
+    final String c = courseId.toLowerCase();
+    final String t = topic.toLowerCase();
+    final String m = module.toLowerCase();
+    return c.contains('nurs') ||
+        c.contains('health') ||
+        c.contains('medic') ||
+        c.contains('clinical') ||
+        t.contains('nurs') ||
+        t.contains('patient') ||
+        t.contains('preoperative') ||
+        t.contains('postoperative') ||
+        t.contains('vital') ||
+        m.contains('nurs') ||
+        m.contains('clinical');
   }
 
   static _TopicContent _contentFor({
@@ -1115,6 +1148,98 @@ class VirtualLectureTopicProfile {
   }
 
   static _TopicContent _biologyContent(String topic, String course, String module) {
+    final String t = topic.toLowerCase();
+    final bool skeletal = t.contains('axial') ||
+        t.contains('appendicular') ||
+        t.contains('skeleton') ||
+        t.contains('skeletal');
+    if (skeletal) {
+      return _TopicContent(
+        objectives: <String>[
+          'Classify bones as axial or appendicular',
+          'List the major axial components and their protective roles',
+          'List appendicular components used for movement and load-bearing',
+          'Apply classification to clinical and exam scenarios',
+        ],
+        introSpeech:
+            'Today we divide the skeleton into axial and appendicular families. '
+            'Every bone belongs to one family, and that classification drives both exams and trauma care.',
+        whySpeech:
+            'If you cannot tell axial from appendicular, you will misread trauma priorities and lose easy exam points. '
+            'Axial bones protect the midline; appendicular bones move and support the limbs.',
+        conceptSpeech:
+            'The axial skeleton is the central axis: skull, vertebral column, and rib cage. '
+            'It protects brain, spinal cord, heart, and lungs and maintains posture. '
+            'The appendicular skeleton is the limbs plus pectoral and pelvic girdles — built for reaching, walking, and transferring force.',
+        mainEquation: 'Axial (core) + Appendicular (limbs/girdles) = complete skeleton',
+        conceptLines: <String>[
+          'Axial — skull, vertebral column, rib cage',
+          'Appendicular — limbs + pectoral & pelvic girdles',
+          'Function — protect midline vs enable movement',
+          'Exam bones — sternum/ribs axial; clavicle/femur appendicular',
+        ],
+        visualSpeech:
+            'On the skeleton plate, trace skull to spine to ribs for axial, then girdles and limbs for appendicular.',
+        graphFunction: 'skeleton',
+        methodSpeech:
+            'Method: name the bone, ask if it is midline protection or limb/girdle movement, then classify.',
+        methodLines: <String>[
+          'Name the bone',
+          'Ask: protect core or move limb?',
+          'Classify axial vs appendicular',
+          'State one function',
+        ],
+        mistakesSpeech:
+            'Common mistakes: calling the scapula axial, forgetting the rib cage is axial, or treating girdles as optional trivia.',
+        mistakesLines: <String>[
+          'Scapula/clavicle are appendicular',
+          'Ribs and sternum are axial',
+          'Girdles attach limbs — appendicular',
+        ],
+        applicationsSpeech:
+            'Trauma spine precautions are axial thinking; femur fracture rehab is appendicular thinking.',
+        applicationLines: <String>[
+          'Cervical spine protection after trauma',
+          'Femur fracture and gait',
+          'Labeling quizzes on bone families',
+        ],
+        checkPrompt: 'Which group includes the skull, vertebral column, and rib cage?',
+        checkOptions: <String>[
+          'Axial skeleton',
+          'Appendicular skeleton',
+          'Only the pelvic girdle',
+          'Only the upper limb',
+        ],
+        checkCorrectIndex: 0,
+        checkExplanation:
+            'Skull, vertebral column, and rib cage form the axial skeleton.',
+        definitions: <String>[
+          'Axial skeleton: skull, vertebral column, thoracic cage',
+          'Appendicular skeleton: limbs and girdles',
+        ],
+        formulas: <String>['Classification by location + function'],
+        exampleIdeas: <String>[
+          'Trauma vignette',
+          'Bone classification quiz',
+          'Gait after limb fracture',
+        ],
+        commonMistakes: <String>[
+          'Misclassifying girdle bones',
+          'Ignoring rib cage as axial',
+        ],
+        tips: <String>[
+          'Midline protection → axial',
+          'Limb movement → appendicular',
+        ],
+        summaryLearned: <String>[
+          'Two skeletal divisions',
+          'Major components of each',
+          'Clinical classification uses',
+        ],
+        summaryApplications: <String>['Trauma', 'Anatomy exams', 'Rehab'],
+        summaryReview: <String>['Bone names', 'Girdle attachments'],
+      );
+    }
     return _TopicContent(
       objectives: <String>[
         'Define $topic and place it in the hierarchy of life',
@@ -1175,6 +1300,12 @@ class VirtualLectureTopicProfile {
     String module,
     LectureTopicCategory category,
   ) {
+    final bool clinical = isNursingOrHealthCourse('', topic, module) ||
+        course.toLowerCase().contains('nurs') ||
+        module.toLowerCase().contains('nurs');
+    if (clinical) {
+      return _clinicalContent(topic, course, module);
+    }
     return _TopicContent(
       objectives: <String>[
         'Define $topic clearly in $course',
@@ -1184,23 +1315,34 @@ class VirtualLectureTopicProfile {
       introSpeech:
           'Welcome to $course — $module. This entire lecture is about $topic only. '
           'We will not drift to unrelated topics.',
-      whySpeech: '$topic connects theory to practice in $course and appears on exams and applications.',
+      whySpeech:
+          '$topic connects theory to practice in $course and appears on exams and applications.',
       conceptSpeech:
           'Core idea of $topic: precise definitions first, then notation, then worked examples tied directly to $topic.',
       mainEquation: 'Key relationship for $topic',
       conceptLines: <String>['Definition', 'Notation', 'Method', 'Check'],
-      visualSpeech: 'Visualization clarifies $topic — observe how the model behaves before computing.',
+      visualSpeech:
+          'Visualization clarifies $topic — observe how the model behaves before computing.',
       graphFunction: 'linear',
-      methodSpeech: 'Problem-solving for $topic: identify givens, select the method from today\'s lesson, verify.',
+      methodSpeech:
+          'Problem-solving for $topic: identify givens, select the method from today\'s lesson, verify.',
       methodLines: <String>['Givens & goal', 'Method from $topic', 'Compute', 'Verify'],
-      mistakesSpeech: 'The biggest mistake is applying a method from a different topic — stay with $topic tools.',
+      mistakesSpeech:
+          'The biggest mistake is applying a method from a different topic — stay with $topic tools.',
       mistakesLines: <String>['Match method to topic', 'Show steps', 'Verify answer'],
-      applicationsSpeech: '$topic has direct applications in $course and related fields.',
+      applicationsSpeech:
+          '$topic has direct applications in $course and related fields.',
       applicationLines: <String>['Course applications', 'Exam skills', 'Real models'],
       checkPrompt: 'Which step comes first when solving a $topic problem?',
-      checkOptions: <String>['Identify givens and goal', 'Write the final answer', 'Pick random formula', 'Skip diagram'],
+      checkOptions: <String>[
+        'Identify givens and goal',
+        'Write the final answer',
+        'Pick random formula',
+        'Skip diagram',
+      ],
       checkCorrectIndex: 0,
-      checkExplanation: 'Always clarify what is given and what $topic asks you to find.',
+      checkExplanation:
+          'Always clarify what is given and what $topic asks you to find.',
       definitions: <String>['$topic: central concept in $module ($course).'],
       formulas: <String>['Primary formulas for $topic — see smart notes'],
       exampleIdeas: <String>['Easy $topic example', 'Medium example', 'Hard exam-style'],
@@ -1209,6 +1351,185 @@ class VirtualLectureTopicProfile {
       summaryLearned: <String>['$topic definitions', 'Methods', 'Examples'],
       summaryApplications: <String>['$course applications'],
       summaryReview: <String>['Prerequisites from $module'],
+    );
+  }
+
+  static _TopicContent _clinicalContent(String topic, String course, String module) {
+    final String t = topic.toLowerCase();
+    final bool heart = t.contains('heart') ||
+        t.contains('cardiac') ||
+        t.contains('chf') ||
+        t.contains('cardiovascular') ||
+        t.contains('myocardial');
+    final bool resp = t.contains('respir') ||
+        t.contains('lung') ||
+        t.contains('pulmon') ||
+        t.contains('oxygen') ||
+        t.contains('airway');
+    final bool peri = t.contains('preoperative') ||
+        t.contains('postoperative') ||
+        t.contains('perioperative') ||
+        t.contains('surgical');
+
+    final String diagramId = heart
+        ? 'heart_detail'
+        : resp
+            ? 'respiratory'
+            : 'human_organs';
+
+    return _TopicContent(
+      objectives: heart
+          ? <String>[
+              'Define heart failure in plain clinical language',
+              'Recognize left vs right failure assessment cues',
+              'Prioritize nursing interventions and when to escalate',
+            ]
+          : <String>[
+              'State what $topic means at the bedside',
+              'List priority actions for $topic',
+              'Explain how $topic protects patient safety',
+            ],
+      introSpeech:
+          'Welcome to $course. Today we work $topic like a shift briefing — '
+          'what you must know, what you must do, and what happens if you skip it.',
+      whySpeech: heart
+          ? 'Heart failure nursing care matters because fluid overload and poor perfusion '
+              'kill quietly if you wait. Early recognition of dyspnea, crackles, edema, '
+              'and low output keeps patients out of code blue.'
+          : '$topic matters because patient outcomes, consent, and safety depend on it. '
+              'On the floor, weak $topic habits create preventable harm — and strong habits save shifts.',
+      conceptSpeech: heart
+          ? 'Core of heart failure nursing care: the heart cannot meet the body\'s demand. '
+              'You assess for congestion and hypoperfusion, support oxygenation, manage fluid, '
+              'give cardiac meds as ordered, reassess, and escalate early. '
+              'Every board note is something you would say in hand-off.'
+          : 'Core of $topic: assessment first, then prioritized action, then reassessment and documentation. '
+              'Every note on the board is something you would say in hand-off.',
+      mainEquation: 'Assess → Act → Reassess → Document',
+      conceptLines: heart
+          ? <String>[
+              'Heart cannot pump enough for body needs',
+              'Left failure → pulmonary congestion',
+              'Right failure → systemic edema',
+              'Nursing focus: oxygen, fluid, meds, escalate',
+            ]
+          : <String>[
+              'What $topic is',
+              'Priority assessment cues',
+              'Safe next action',
+              'Reassess & chart',
+            ],
+      visualSpeech: heart
+          ? 'Look at the heart diagram. Trace chambers and vessels while we map left-sided congestion '
+              'to the lungs and right-sided backup to the body — that picture drives your assessment.'
+          : peri || resp
+              ? 'Use the clinical diagram as your mental map for $topic — structure first, then priorities.'
+              : 'Picture the patient or clinical scene for $topic — the board diagram is your mental checklist.',
+      graphFunction: diagramId,
+      methodSpeech: heart
+          ? 'Clinical method: ABCs and oxygen first, then fluid status and cardiac perfusion cues, '
+              'then ordered meds, then reassess and escalate. Do not skip the reassess.'
+          : 'Clinical method for $topic: gather cues, choose the safest priority, intervene, reassess, communicate.',
+      methodLines: heart
+          ? <String>[
+              'ABCs + SpO2 / work of breathing',
+              'Fluid status: lungs, edema, weight',
+              'Meds: diuretics, ACEI/ARB, beta-blockers as ordered',
+              'Reassess & call early for worsening',
+            ]
+          : <String>['Gather cues', 'Prioritize safety', 'Intervene', 'Reassess & report'],
+      mistakesSpeech: heart
+          ? 'Common failures: missing rising oxygen need, pushing fluids into an overloaded patient, '
+              'and charting "stable" while urine output and mentation are falling.'
+          : 'Common $topic failures: delaying escalation, skipping reassessment, and charting that does not match what you did.',
+      mistakesLines: heart
+          ? <String>[
+              'Ignoring rising O2 needs or new crackles',
+              'Giving fluids without checking orders/status',
+              'Late escalation when urine output drops',
+            ]
+          : <String>[
+              'Do not delay escalation',
+              'Reassess after every action',
+              'Chart what you actually did',
+            ],
+      applicationsSpeech: heart
+          ? 'You will use this on med-surg floors, telemetry, ED boarding, and every hand-off where '
+              "a patient's breathing or edema changes."
+          : '$topic shows up in pre-op, med-surg floors, hand-offs, and charge-nurse huddles — not only textbooks.',
+      applicationLines: heart
+          ? <String>[
+              'Telemetry / med-surg monitoring',
+              'Fluid overload rapid response',
+              'Hand-off: congestion vs low output',
+            ]
+          : <String>[
+              'Bedside assessment',
+              'Patient safety checks',
+              'Shift hand-off',
+            ],
+      checkPrompt: heart
+          ? 'A patient with heart failure has new crackles and SpO2 88% on room air. First priority?'
+          : 'What comes first when applying $topic with an unstable patient?',
+      checkOptions: heart
+          ? <String>[
+              'Support airway/oxygen and call for help as needed',
+              'Encourage ambulation in the hallway',
+              'Hold all assessments until the next shift',
+              'Start a large fluid bolus without orders',
+            ]
+          : <String>[
+              'Safety / ABCs and assessment',
+              'Finish unrelated charting',
+              'Leave the bedside',
+              'Guess without vitals',
+            ],
+      checkCorrectIndex: 0,
+      checkExplanation: heart
+          ? 'Oxygenation and ABCs come first in heart failure decompensation — then fluid status and escalation.'
+          : 'Assessment and safety come before paperwork or convenience.',
+      definitions: heart
+          ? <String>[
+              'Heart failure: heart cannot pump enough blood for body needs.',
+              'Left-sided failure often shows pulmonary congestion.',
+              'Right-sided failure often shows systemic edema.',
+            ]
+          : <String>['$topic: central clinical priority in $module ($course).'],
+      formulas: heart
+          ? <String>[
+              'Priority: oxygen / ABCs',
+              'Then fluid status + perfusion',
+              'Then ordered cardiac meds',
+            ]
+          : <String>['Clinical priorities for $topic'],
+      exampleIdeas: heart
+          ? <String>[
+              'Stable HF on telemetry',
+              'Sudden crackles + falling SpO2',
+              'Hand-off: wet vs cold profile',
+            ]
+          : <String>['Stable case', 'Deteriorating case', 'Hand-off scenario'],
+      commonMistakes: heart
+          ? <String>[
+              'Missing early respiratory distress',
+              'Fluid without reassessment',
+            ]
+          : <String>['Ignoring early warning cues', 'Skipping reassessment'],
+      tips: heart
+          ? <String>[
+              'Listen to lungs before and after diuretics',
+              'Say the priority out loud in hand-off',
+            ]
+          : <String>['Say the priority out loud', 'Close the loop with reassessment'],
+      summaryLearned: heart
+          ? <String>[
+              'Pump failure → congestion and/or low output',
+              'Assess lungs, edema, perfusion',
+              'Oxygen, fluid balance, meds, escalate',
+            ]
+          : <String>['$topic definitions', 'Methods', 'Examples'],
+      summaryApplications: <String>['Bedside care', 'Safety', 'Communication'],
+      summaryReview: <String>['Related assessment skills in $module'],
     );
   }
 }

@@ -1,7 +1,10 @@
+import '../../config/vu_schools_catalog.dart';
 import 'vu_v2_roadmap_models.dart';
 
 /// Launch degrees + roadmap subject mapping.
-/// Only degrees with real synced catalogs are listed — no Studio scaffolds.
+///
+/// Built from [VuSchoolsCatalog] so every Virtual University program can be
+/// chosen at onboarding — not only the original eight.
 class VuV2DegreeDef {
   const VuV2DegreeDef({
     required this.id,
@@ -9,6 +12,8 @@ class VuV2DegreeDef {
     required this.emoji,
     required this.roadmapSubjectId,
     required this.blurb,
+    this.schoolId = '',
+    this.schoolTitle = '',
   });
 
   final String id;
@@ -17,70 +22,118 @@ class VuV2DegreeDef {
   /// Subject id passed to [VuV2RoadmapSync.forSubjectId].
   final String roadmapSubjectId;
   final String blurb;
+  final String schoolId;
+  final String schoolTitle;
 
   /// Kept for older call sites — always false (no stub degrees).
   bool get usesStubRoadmap => false;
 }
 
 abstract final class VuV2DegreeCatalog {
-  static const List<VuV2DegreeDef> degrees = <VuV2DegreeDef>[
-    VuV2DegreeDef(
-      id: 'computer_science',
-      title: 'Computer Science',
-      emoji: '💻',
-      roadmapSubjectId: 'computer_science',
-      blurb: 'Programming, algorithms, systems, and software craft.',
-    ),
-    VuV2DegreeDef(
-      id: 'business_administration',
-      title: 'Business Administration',
-      emoji: '📈',
-      roadmapSubjectId: 'business',
-      blurb: 'Strategy, leadership, finance, marketing, and accounting.',
-    ),
-    VuV2DegreeDef(
-      id: 'psychology',
-      title: 'Psychology',
-      emoji: '🧠',
-      roadmapSubjectId: 'psychology',
-      blurb: 'Mind, behavior, research methods, and applied practice.',
-    ),
-    VuV2DegreeDef(
-      id: 'nursing',
-      title: 'Nursing',
-      emoji: '🩺',
-      roadmapSubjectId: 'nursing',
-      blurb: 'Patient care, clinical reasoning, and health systems.',
-    ),
-    VuV2DegreeDef(
-      id: 'biology',
-      title: 'Biology',
-      emoji: '🧬',
-      roadmapSubjectId: 'biology',
-      blurb: 'Cells to ecosystems with AI lab support.',
-    ),
-    VuV2DegreeDef(
-      id: 'chemistry',
-      title: 'Chemistry',
-      emoji: '⚗️',
-      roadmapSubjectId: 'chemistry',
-      blurb: 'Matter, reactions, and molecular problem solving.',
-    ),
-    VuV2DegreeDef(
-      id: 'physics',
-      title: 'Physics',
-      emoji: '⚛️',
-      roadmapSubjectId: 'physics',
-      blurb: 'Mechanics, waves, and quantitative models.',
-    ),
-    VuV2DegreeDef(
-      id: 'mathematics',
-      title: 'Mathematics',
-      emoji: '📐',
-      roadmapSubjectId: 'mathematics',
-      blurb: 'Proofs, calculus, and problem fluency.',
-    ),
+  /// Preferred order for the original launch majors (shown first).
+  static const List<String> _launchProgramIds = <String>[
+    'computer_science',
+    'business_administration',
+    'psychology',
+    'nursing',
+    'biology',
+    'chemistry',
+    'physics',
+    'mathematics',
   ];
+
+  static const Map<String, String> _emojiOverrides = <String, String>{
+    'computer_science': '💻',
+    'software_engineering': '🛠️',
+    'artificial_intelligence': '🤖',
+    'data_science': '📊',
+    'cybersecurity': '🔐',
+    'information_technology': '🖥️',
+    'web_development': '🌐',
+    'mobile_app_development': '📱',
+    'mechanical_engineering': '⚙️',
+    'civil_engineering': '🏗️',
+    'electrical_engineering': '⚡',
+    'chemical_engineering': '🧪',
+    'aerospace_engineering': '🚀',
+    'industrial_engineering': '🏭',
+    'business_administration': '📈',
+    'accounting': '📒',
+    'finance': '💰',
+    'economics': '📉',
+    'entrepreneurship': '🚀',
+    'marketing': '📣',
+    'human_resource_management': '👥',
+    'international_business': '🌍',
+    'nursing': '🩺',
+    'public_health': '🏥',
+    'nutrition': '🥗',
+    'anatomy_physiology': '🫀',
+    'healthcare_management': '🏨',
+    'pharmacy_fundamentals': '💊',
+    'medicine': '🩺',
+    'medical_lab_science': '🧫',
+    'mathematics': '📐',
+    'physics': '⚛️',
+    'chemistry': '⚗️',
+    'biology': '🧬',
+    'environmental_science': '🌿',
+    'statistics': '📐',
+    'graphic_design': '🎨',
+    'ui_ux_design': '✨',
+    'animation': '🎬',
+    'digital_illustration': '🖌️',
+    'psychology': '🧠',
+    'sociology': '🏘️',
+    'political_science': '🏛️',
+    'history': '📜',
+    'philosophy': '💭',
+    'anthropology': '🗿',
+    'introduction_to_law': '⚖️',
+    'criminal_justice': '🚔',
+    'public_policy': '📋',
+    'international_relations': '🌐',
+    'journalism': '📰',
+    'english': '📚',
+  };
+
+  static List<VuV2DegreeDef>? _cached;
+
+  /// Every school program, launch majors first.
+  static List<VuV2DegreeDef> get degrees {
+    final List<VuV2DegreeDef>? hit = _cached;
+    if (hit != null) return hit;
+
+    final Map<String, VuV2DegreeDef> byId = <String, VuV2DegreeDef>{};
+    for (final VuSchool school in VuSchoolsCatalog.schools) {
+      for (final VuSchoolProgram program in school.programs) {
+        byId[program.id] = VuV2DegreeDef(
+          id: program.id,
+          title: program.title,
+          emoji: _emojiOverrides[program.id] ?? school.emoji,
+          roadmapSubjectId: program.roadmapSubjectId,
+          blurb: program.blurb ?? school.blurb ?? program.title,
+          schoolId: school.id,
+          schoolTitle: school.title,
+        );
+      }
+    }
+
+    final List<VuV2DegreeDef> ordered = <VuV2DegreeDef>[];
+    final Set<String> used = <String>{};
+    for (final String id in _launchProgramIds) {
+      final VuV2DegreeDef? d = byId[id];
+      if (d != null && used.add(id)) ordered.add(d);
+    }
+    for (final VuSchool school in VuSchoolsCatalog.schools) {
+      for (final VuSchoolProgram program in school.programs) {
+        if (used.add(program.id)) ordered.add(byId[program.id]!);
+      }
+    }
+
+    _cached = ordered;
+    return ordered;
+  }
 
   static VuV2DegreeDef? byId(String id) {
     for (final VuV2DegreeDef d in degrees) {
@@ -91,7 +144,7 @@ abstract final class VuV2DegreeCatalog {
 
   static VuV2DegreeDef? byRoadmapSubjectId(String subjectId) {
     for (final VuV2DegreeDef d in degrees) {
-      if (d.roadmapSubjectId == subjectId) return d;
+      if (d.roadmapSubjectId == subjectId || d.id == subjectId) return d;
     }
     return null;
   }

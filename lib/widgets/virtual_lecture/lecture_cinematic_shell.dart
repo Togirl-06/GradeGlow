@@ -1,9 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../data/virtual_lecture_outline.dart';
 import '../../theme/study_theme.dart';
 
-/// Cream academic lecture layout: CONTENTS sidebar, lecture hero, Khan-style video stage.
+/// Cream academic lecture layout: CONTENTS sidebar, lecture hero, video stage.
 class LectureCinematicShell extends StatelessWidget {
   const LectureCinematicShell({
     super.key,
@@ -59,7 +59,7 @@ class LectureCinematicShell extends StatelessWidget {
     final bool wide = MediaQuery.sizeOf(context).width >= 900;
 
     return Scaffold(
-      backgroundColor: cream,
+      backgroundColor: stageNavy,
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -69,6 +69,38 @@ class LectureCinematicShell extends StatelessWidget {
               accent: accent,
               onBack: onBack,
               onEnd: onEndLesson,
+              onContents: wide || chapters.isEmpty
+                  ? null
+                  : () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        backgroundColor: card,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(16),
+                          ),
+                        ),
+                        builder: (BuildContext ctx) {
+                          return SafeArea(
+                            child: SizedBox(
+                              height: MediaQuery.sizeOf(ctx).height * 0.55,
+                              child: Theme(
+                                data: ThemeData.light(),
+                                child: _ContentsPane(
+                                  chapters: chapters,
+                                  activeIndex: activeChapterIndex,
+                                  accent: accent,
+                                  onSelect: (int i) {
+                                    Navigator.of(ctx).pop();
+                                    onSelectChapter(i);
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
             ),
             Expanded(
               child: wide
@@ -76,18 +108,21 @@ class LectureCinematicShell extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         SizedBox(
-                          width: 280,
-                          child: _ContentsPane(
-                            chapters: chapters,
-                            activeIndex: activeChapterIndex,
-                            accent: accent,
-                            onSelect: onSelectChapter,
+                          width: 260,
+                          child: Theme(
+                            data: ThemeData.dark(),
+                            child: _ContentsPane(
+                              chapters: chapters,
+                              activeIndex: activeChapterIndex,
+                              accent: accent,
+                              onSelect: onSelectChapter,
+                            ),
                           ),
                         ),
                         Expanded(child: _mainColumn(accent)),
                       ],
                     )
-                  : _mainColumn(accent, showContentsInline: true),
+                  : _mainColumn(accent),
             ),
           ],
         ),
@@ -101,44 +136,44 @@ class LectureCinematicShell extends StatelessWidget {
         Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-              child: _LectureHero(
-                lessonTitle: lessonTitle,
-                moduleTitle: moduleTitle,
-                accent: accent,
-                blurb: blurb ??
-                    'This lecture provides a rigorous foundation for $lessonTitle.',
-                prerequisites: prerequisites,
-                compact: true,
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                children: <Widget>[
+                  const Text(
+                    'GradeGlow',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Spacer(),
+                  Flexible(
+                    child: Text(
+                      lessonTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                        color: Color(0xFF94A3B8),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            if (showContentsInline)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                child: _ContentsPane(
-                  chapters: chapters,
-                  activeIndex: activeChapterIndex,
-                  accent: accent,
-                  onSelect: onSelectChapter,
-                  compact: true,
-                ),
-              ),
             const SizedBox(height: 8),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: ColoredBox(
-                    color: const Color(0xFF0B1220),
-                    child: preparing ? _PreparingPanel(accent: accent) : stage,
-                  ),
-                ),
+                child: preparing ? _PreparingPanel(accent: accent) : stage,
               ),
             ),
             if (!preparing)
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
                 child: Column(
                   children: <Widget>[
                     controls,
@@ -158,6 +193,7 @@ class LectureCinematicShell extends StatelessWidget {
   }
 }
 
+
 class _TopBar extends StatelessWidget {
   const _TopBar({
     required this.courseTitle,
@@ -165,6 +201,7 @@ class _TopBar extends StatelessWidget {
     required this.accent,
     required this.onBack,
     required this.onEnd,
+    this.onContents,
   });
 
   final String courseTitle;
@@ -172,6 +209,7 @@ class _TopBar extends StatelessWidget {
   final Color accent;
   final VoidCallback onBack;
   final VoidCallback onEnd;
+  final VoidCallback? onContents;
 
   @override
   Widget build(BuildContext context) {
@@ -183,16 +221,25 @@ class _TopBar extends StatelessWidget {
             onPressed: onBack,
             icon: const Icon(
               Icons.arrow_back_rounded,
-              color: LectureCinematicShell.ink,
+              color: Colors.white,
             ),
           ),
+          if (onContents != null)
+            IconButton(
+              tooltip: 'Contents',
+              onPressed: onContents,
+              icon: const Icon(
+                Icons.list_alt_rounded,
+                color: Colors.white,
+              ),
+            ),
           Expanded(
             child: Text(
               courseTitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                color: LectureCinematicShell.ink,
+                color: Colors.white,
                 fontWeight: FontWeight.w800,
                 fontSize: 14,
               ),
@@ -201,7 +248,7 @@ class _TopBar extends StatelessWidget {
           Text(
             elapsedLabel,
             style: TextStyle(
-              color: accent,
+              color: Colors.white70,
               fontWeight: FontWeight.w800,
               fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
             ),
@@ -209,9 +256,9 @@ class _TopBar extends StatelessWidget {
           const SizedBox(width: 8),
           TextButton(
             onPressed: onEnd,
-            child: Text(
+            child: const Text(
               'End',
-              style: TextStyle(color: accent, fontWeight: FontWeight.w800),
+              style: TextStyle(color: Color(0xFF2DD4BF), fontWeight: FontWeight.w800),
             ),
           ),
         ],

@@ -2,20 +2,29 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../vu_v2/campus/vu_v2_adaptive_review_drill_screen.dart';
+import '../../vu_v2/data/vu_v2_progress_store.dart';
+import '../../vu_v2/data/vu_v2_scope.dart';
+import '../../data/diagram_misconception_catalog.dart';
+import '../../data/diagram_misconception_store.dart';
+import '../../data/university_learning_engine.dart';
 import '../../data/virtual_lecture_outline.dart';
+import '../../services/lecture_diagram_service.dart';
 import '../../models/virtual_lecture.dart';
 import '../../services/lecture_voice_controller.dart';
 import '../../services/openai_service.dart';
 import '../../services/virtual_lecture_service.dart';
+import '../../utils/lecture_slide_notes_synthesizer.dart';
+import '../../widgets/virtual_lecture/lecture_diagram_label_activity.dart';
 import '../../widgets/virtual_lecture/lecture_ask_overlay.dart';
 import '../../widgets/virtual_lecture/lecture_check_overlay.dart';
 import '../../widgets/virtual_lecture/lecture_cinematic_shell.dart';
 import '../../widgets/virtual_lecture/lecture_completion_report.dart';
+import '../../widgets/virtual_lecture/lecture_controls_bar.dart';
 import '../../widgets/virtual_lecture/lecture_sheets.dart';
 import '../../widgets/virtual_lecture/lecture_stage.dart';
-import '../../theme/study_theme.dart';
 
-/// Khan Academy–style AI video lesson — every course uses this classroom.
+/// University AI video lesson — every course uses this classroom.
 ///
 /// Blackboard + voice teaching (no human teacher video). Play / pause, ask,
 /// confused, summary, practice, and next-lesson recommendation.
@@ -34,6 +43,8 @@ class AiProfessorClassroomScreen extends StatefulWidget {
     this.onPractice,
     this.onCompleted,
     this.masteryHint = 0,
+    this.linkedLabTitle,
+    this.onEnterLab,
   });
 
   final OpenAiService openAi;
@@ -48,6 +59,8 @@ class AiProfessorClassroomScreen extends StatefulWidget {
   final Future<void> Function()? onPractice;
   final Future<void> Function()? onCompleted;
   final double masteryHint;
+  final String? linkedLabTitle;
+  final Future<void> Function()? onEnterLab;
 
   @override
   State<AiProfessorClassroomScreen> createState() =>
@@ -81,13 +94,32 @@ class _AiProfessorClassroomScreenState
 
   LectureKnowledgeCheck? _activeCheck;
   bool _askingProfessor = false;
+  LectureAskMode _askMode = LectureAskMode.ask;
   bool _askBusy = false;
   String? _askAnswer;
   String? _pendingQuestion;
-  String? _lastAskQuestion;
   bool _alive = true;
+  bool _immersive = false;
   int _activeChapter = 0;
   List<LectureOutlineChapter> _chapters = const <LectureOutlineChapter>[];
+
+  String get _professorLabel =>
+      UniversityProfessorStyle.forSubject(widget.faculty).title;
+
+  int get _masteryPercent {
+    final double hint = widget.masteryHint.clamp(0.0, 1.0);
+    if (_analytics.checksTotal > 0) {
+      final double fromChecks =
+          _analytics.checksCorrect / _analytics.checksTotal;
+      // Checks dominate — no fake 72% baseline.
+      final double blended = (fromChecks * 0.82) + (hint * 0.08) + 0.10;
+      return (blended * 100).round().clamp(35, 100);
+    }
+    // Finished lecture with no checks: score from engagement, not a fake constant.
+    final double fromProgress = _progress.clamp(0.0, 1.0);
+    final double blended = (fromProgress * 0.55) + (hint * 0.25) + 0.20;
+    return (blended * 100).round().clamp(40, 88);
+  }
 
   @override
   void initState() {
@@ -99,8 +131,20 @@ class _AiProfessorClassroomScreenState
   Future<void> _bootstrap() async {
     // Start the lecture immediately — don't block on analytics I/O.
     unawaited(_loadAnalytics());
+    unawaited(_loadVoicePreference());
     if (mounted) {
       await _startMode(LectureMode.comprehensive);
+    }
+  }
+
+  Future<void> _loadVoicePreference() async {
+    try {
+      await _voice.ensureReady();
+      final String id = await loadLectureVoicePreference();
+      await _voice.setVoice(id);
+      if (mounted) setState(() {});
+    } catch (e) {
+      debugPrint('Lecture voice pref load failed: $e');
     }
   }
 
@@ -132,17 +176,6 @@ class _AiProfessorClassroomScreenState
   void _safeSetState(VoidCallback fn) {
     if (!_alive || !mounted) return;
     setState(fn);
-  }
-
-  int _textSegmentSeconds(LectureSegment? segment) {
-    final String speech = segment?.professorSpeech ?? '';
-    final int words =
-        speech.trim().isEmpty ? 0 : speech.trim().split(RegExp(r'\s+')).length;
-    final int fromWords = (words / 2.2 / _speed).round();
-    final int authored = segment?.durationSeconds ?? 90;
-    final int fromMeta = (authored / _speed).round();
-    final int base = fromWords > fromMeta ? fromWords : fromMeta;
-    return base.clamp(70, 420);
   }
 
   String get _speedLabel {
@@ -182,7 +215,8 @@ class _AiProfessorClassroomScreenState
     }
 
     try {
-      // Start instantly with offline board content — no network wait.
+      unawaited(_voice.stop());
+      // Start instantly with offline board content for THIS lesson only.
       final VirtualLectureScript offline =
           _lectureService!.loadOfflineLessonScript(
         lessonTitle: widget.lessonTitle,
@@ -206,14 +240,32 @@ class _AiProfessorClassroomScreenState
         return;
       }
 
+      final String? lectureDiagramId = LectureDiagramService.preferredDiagramId(
+        topic: widget.lessonTitle,
+        faculty: widget.faculty,
+        courseId: widget.courseId,
+        lessonId: widget.lessonId,
+      );
+      final List<LectureSegment> adaptive =
+          await AdaptiveDiagramReview.prefaceIfNeeded(
+        diagramId: lectureDiagramId,
+      );
+      final VirtualLectureScript scriptWithReview = adaptive.isEmpty
+          ? offline
+          : offline.copyWith(
+              segments: <LectureSegment>[...adaptive, ...offline.segments],
+            );
+
+      if (!mounted) return;
+
       setState(() {
         _mode = mode;
-        _script = offline;
+        _script = scriptWithReview;
         _loadError = null;
         _segmentIndex = 0;
         _beatIndex = 0;
         _transcript.clear();
-        _chapters = VirtualLectureOutline.build(script: offline);
+        _chapters = VirtualLectureOutline.build(script: scriptWithReview);
         _activeChapter = 0;
         _startingMode = false;
         _analytics =
@@ -254,6 +306,12 @@ class _AiProfessorClassroomScreenState
       final VirtualLectureScript? current = _script;
       if (current == null || current.segments.isEmpty) return;
 
+      // Never discard adaptive review or rich offline diagram walkthrough.
+      if (_hasRichDiagramTeaching(current) || _hasAdaptivePreface(current)) {
+        debugPrint('Keeping offline diagram lecture — skipping thin AI upgrade.');
+        return;
+      }
+
       // Never rewind or re-speak. Keep everything through the playhead; attach
       // richer AI segments only for what has not been taught yet.
       final int keepCount = (_segmentIndex + 1).clamp(1, current.segments.length);
@@ -278,6 +336,41 @@ class _AiProfessorClassroomScreenState
     }
   }
 
+  bool _hasRichDiagramTeaching(VirtualLectureScript script) {
+    final List<LectureSegment> visuals = script.segments
+        .where(
+          (LectureSegment s) =>
+              s.phase == LecturePhase.visualDemonstration ||
+              s.whiteboard.slideType == LectureSlideType.diagram ||
+              s.whiteboard.interactiveActivity != null,
+        )
+        .toList();
+    if (visuals.length >= 2) return true;
+    return visuals.any(
+      (LectureSegment s) => s.whiteboard.keyPoints.length >= 5,
+    );
+  }
+
+  bool _hasAdaptivePreface(VirtualLectureScript script) {
+    return script.segments.any(
+      (LectureSegment s) =>
+          s.whiteboard.title == 'ADAPTIVE REVIEW' ||
+          (s.caption.contains('Adaptive review')),
+    );
+  }
+
+  int _adaptiveReviewSegmentCount() {
+    final VirtualLectureScript? script = _script;
+    if (script == null) return 0;
+    return script.segments
+        .where(
+          (LectureSegment s) =>
+              s.whiteboard.title == 'ADAPTIVE REVIEW' ||
+              (s.caption.contains('Adaptive review')),
+        )
+        .length;
+  }
+
   void _togglePlay() {
     if (_segment == null || _activeCheck != null || _askingProfessor) return;
     if (_playing) {
@@ -289,17 +382,9 @@ class _AiProfessorClassroomScreenState
 
   void _changeSpeed(double speed) {
     if (!mounted) return;
-    final bool restartSpeech = _playing &&
-        _segment != null &&
-        _activeCheck == null &&
-        !_askingProfessor;
     setState(() => _speed = speed);
+    // Instant player-rate change — do not hard-stop / re-synthesize.
     unawaited(_voice.setSpeed(speed));
-    // Restart the current section so speed is baked into fresh TTS audio.
-    if (restartSpeech) {
-      _pause(hard: true);
-      _play();
-    }
   }
 
   void _play() {
@@ -353,12 +438,16 @@ class _AiProfessorClassroomScreenState
       }
 
       try {
+        // Prefetch next beat/segment while this one plays to kill dead air.
+        final String? upcoming = _upcomingSpeech();
+        if (upcoming != null && upcoming.trim().isNotEmpty) {
+          unawaited(_voice.prefetch(upcoming));
+        }
         await _voice.speak(speech, _speed);
       } catch (e) {
         debugPrint('Lecture delivery failed: $e');
-        await Future<void>.delayed(
-          Duration(seconds: _textSegmentSeconds(active)),
-        );
+        // Never sit in silence for the full authored duration on failure.
+        await Future<void>.delayed(const Duration(milliseconds: 350));
       }
 
       if (!_alive || !mounted || epoch != _deliveryEpoch) {
@@ -366,9 +455,21 @@ class _AiProfessorClassroomScreenState
         return;
       }
 
-      // Speak returned while soft-paused (platform aborted audio) — wait and retry
-      // from the cached buffer instead of advancing.
-      if (!_playing) continue;
+      // Speak returned while soft-paused — wait for unpause, then advance only
+      // if playback is live again. Do not force a full re-synthesis loop.
+      if (!_playing) {
+        while (_alive &&
+            mounted &&
+            epoch == _deliveryEpoch &&
+            !_playing) {
+          await Future<void>.delayed(const Duration(milliseconds: 32));
+        }
+        if (!_alive || !mounted || epoch != _deliveryEpoch || !_playing) {
+          if (epoch == _deliveryEpoch) _delivering = false;
+          return;
+        }
+        // Unpaused after speak already finished — continue to next beat/segment.
+      }
       break;
     }
 
@@ -379,6 +480,15 @@ class _AiProfessorClassroomScreenState
 
     _safeSetState(() => _speaking = false);
 
+    final String? interactive = active.whiteboard.interactiveActivity?.trim();
+    if (interactive != null && interactive.isNotEmpty) {
+      _delivering = false;
+      await _launchInteractiveActivity(active.whiteboard);
+      if (!_alive || !mounted || epoch != _deliveryEpoch || !_playing) {
+        return;
+      }
+    }
+
     final LectureKnowledgeCheck? check = active.knowledgeCheck;
     if (check != null) {
       _pause(hard: true);
@@ -387,14 +497,27 @@ class _AiProfessorClassroomScreenState
       return;
     }
 
-    if (!raw.isInteractive && _isInteractivePhase(raw.phase)) {
-      _delivering = false;
-      _scheduleAutoAdvance(active);
-      return;
-    }
-
+    // Always continue immediately after speech — no post-talk silence timer.
+    // (Older builds waited 5–18s after "Examples", which felt like broken audio.)
     _delivering = false;
     _advanceBeatOrSegment(resumePlayback: true);
+  }
+
+  /// Next spoken line after the current beat/segment (for TTS prefetch).
+  String? _upcomingSpeech() {
+    final VirtualLectureScript? script = _script;
+    final LectureSegment? raw = _segment;
+    if (script == null || raw == null) return null;
+    if (raw.isInteractive && _beatIndex < raw.beats.length - 1) {
+      return raw.viewAtBeat(_beatIndex + 1).professorSpeech;
+    }
+    final int nextIndex = _segmentIndex + 1;
+    if (nextIndex >= script.segments.length) return null;
+    final LectureSegment next = script.segments[nextIndex];
+    if (next.isInteractive && next.beats.isNotEmpty) {
+      return next.viewAtBeat(0).professorSpeech;
+    }
+    return next.professorSpeech;
   }
 
   void _advanceBeatOrSegment({bool resumePlayback = false}) {
@@ -414,31 +537,113 @@ class _AiProfessorClassroomScreenState
     _advanceSegment(resumePlayback: resumePlayback);
   }
 
-  bool _isInteractivePhase(LecturePhase phase) {
-    return phase == LecturePhase.studentParticipation ||
-        phase == LecturePhase.guidedExamples;
-  }
+  Future<void> _launchInteractiveActivity(LectureWhiteboardFrame board) async {
+    final String? act = board.interactiveActivity?.trim();
+    if (act == null || act.isEmpty) return;
+    _pause(hard: true);
 
-  void _scheduleAutoAdvance(LectureSegment segment) {
-    _segmentTimer?.cancel();
-    final int seconds =
-        (_textSegmentSeconds(segment) / 3).round().clamp(5, 18);
-    _segmentTimer = Timer(Duration(seconds: seconds), () {
-      if (!mounted || !_playing) return;
-      _advanceSegment(resumePlayback: true);
+    final String diagramId = board.diagramId ?? 'skeleton';
+    final List<String>? regions =
+        board.activityRegionIds.isEmpty ? null : board.activityRegionIds;
+
+    switch (act) {
+      case 'label_drag':
+        await LectureDiagramLabelActivity.open(
+          context,
+          diagramId: diagramId,
+          regionIds: regions,
+          title: board.title,
+        );
+      case 'anatomy_3d':
+        await LectureAnatomy3dActivity.open(
+          context,
+          diagramId: diagramId,
+          focusRegionIds: regions,
+        );
+      default:
+        debugPrint('Unknown interactiveActivity: $act');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Activity unavailable: $act')),
+          );
+        }
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _playing = true;
+      _speaking = false;
     });
   }
 
-  void _onCheckAnswered(bool correct) {
+  Future<void> _onCheckAnswered(bool correct, {String? tappedRegionId}) async {
+    final LectureKnowledgeCheck? check = _activeCheck;
+    final List<String> weakAreas = List<String>.from(_analytics.weakAreas);
+
+    if (!correct &&
+        check != null &&
+        check.kind == KnowledgeCheckKind.graphIdentify &&
+        check.diagramId != null &&
+        check.targetRegionId != null &&
+        tappedRegionId != null) {
+      final VuV2ProgressStore? progress = VuV2Scope.maybeOf(context)?.progress;
+      if (progress != null) {
+        await progress.recordDiagramConfusion(
+          diagramId: check.diagramId!,
+          tappedRegionId: tappedRegionId,
+          targetRegionId: check.targetRegionId!,
+        );
+      } else {
+        await DiagramMisconceptionStore.instance.recordConfusion(
+          diagramId: check.diagramId!,
+          tappedRegionId: tappedRegionId,
+          targetRegionId: check.targetRegionId!,
+        );
+      }
+      final DiagramMisconceptionDef? def = DiagramMisconceptionCatalog.resolve(
+        diagramId: check.diagramId!,
+        tappedRegionId: tappedRegionId,
+        targetRegionId: check.targetRegionId!,
+      );
+      if (def != null &&
+          DiagramMisconceptionStore.instance.countFor(def.id) >=
+              DiagramMisconceptionStore.reviewThreshold) {
+        weakAreas.add('${def.labelA}/${def.labelB}');
+      }
+    } else if (correct &&
+        check != null &&
+        check.kind == KnowledgeCheckKind.graphIdentify &&
+        check.diagramId != null &&
+        check.targetRegionId != null) {
+      DiagramMisconceptionDef? cleared;
+      for (final DiagramMisconceptionDef d in DiagramMisconceptionCatalog.all) {
+        if (d.diagramId == check.diagramId! &&
+            (d.regionA == check.targetRegionId || d.regionB == check.targetRegionId)) {
+          cleared = d;
+          break;
+        }
+      }
+      if (cleared != null) {
+        final VuV2ProgressStore? progress = VuV2Scope.maybeOf(context)?.progress;
+        if (progress != null) {
+          unawaited(progress.recordMisconceptionCleared(cleared.id));
+        } else {
+          unawaited(DiagramMisconceptionStore.instance.markReviewed(cleared.id));
+        }
+      }
+    }
+
+    if (!correct && _segment != null) {
+      weakAreas.add(_segment!.phase.label);
+    }
+
     setState(() {
       _activeCheck = null;
       _analytics = _analytics.copyWith(
         checksTotal: _analytics.checksTotal + 1,
         checksCorrect: _analytics.checksCorrect + (correct ? 1 : 0),
         participationCount: _analytics.participationCount + 1,
-        weakAreas: correct
-            ? _analytics.weakAreas
-            : <String>[..._analytics.weakAreas, _segment!.phase.label],
+        weakAreas: weakAreas,
       );
     });
     _advanceBeatOrSegment(resumePlayback: true);
@@ -482,8 +687,10 @@ class _AiProfessorClassroomScreenState
     if (_askingProfessor) return;
     setState(() {
       _askingProfessor = true;
+      _askMode = LectureAskMode.ask;
       _askAnswer = null;
       _pendingQuestion = null;
+      _askBusy = false;
       _playing = false;
       _speaking = false;
     });
@@ -492,19 +699,15 @@ class _AiProfessorClassroomScreenState
   void _onConfused() {
     _freezeLectureForInterrupt();
     if (_askingProfessor) return;
-    const String prompt =
-        "I'm confused about this part of the lecture. "
-        'Reteach the SAME idea a DIFFERENT way: simpler language, a new analogy, '
-        'and a fresh example. Do not repeat the previous explanation. '
-        'Then check I understood with one short question.';
     setState(() {
       _askingProfessor = true;
+      _askMode = LectureAskMode.confused;
       _askAnswer = null;
-      _pendingQuestion = prompt;
+      _pendingQuestion = null;
+      _askBusy = false;
       _playing = false;
       _speaking = false;
     });
-    unawaited(_submitQuestion(prompt));
   }
 
   void _restart() {
@@ -579,6 +782,9 @@ class _AiProfessorClassroomScreenState
     } catch (e) {
       debugPrint('Lecture progress update failed: $e');
     }
+    if (mounted) {
+      await VuV2Scope.maybeOf(context)?.progress.syncDiagramMisconceptions();
+    }
     if (!mounted) return;
     setState(() => _finished = true);
     await _showSummary();
@@ -588,11 +794,17 @@ class _AiProfessorClassroomScreenState
   Future<void> _showSummary() async {
     final LectureSummary summary = _script!.summary;
     final String? next = widget.nextLessonTitle;
+    final bool demoPath = widget.lessonId.contains('hackathon_demo');
+    bool enteredLab = false;
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext ctx) => LectureCompletionReport(
         topicTitle: widget.lessonTitle,
+        courseTitle: widget.courseTitle,
+        courseCode: widget.courseId,
+        professorLabel: _professorLabel,
+        masteryPercent: _masteryPercent,
         learned: summary.learned,
         homework: summary.homeworkRecommendation,
         timeSpentSeconds: _analytics.timeSpentSeconds,
@@ -600,6 +812,7 @@ class _AiProfessorClassroomScreenState
         checksTotal: _analytics.checksTotal,
         questionsAsked: _analytics.questionsAsked,
         weakAreas: _analytics.weakAreas,
+        adaptiveReviewSegments: _adaptiveReviewSegmentCount(),
         nextLessonTitle: next,
         onQuiz: () {
           Navigator.of(ctx).pop();
@@ -612,8 +825,37 @@ class _AiProfessorClassroomScreenState
                 widget.onStartNextLesson!();
               },
         onContinue: () => Navigator.of(ctx).pop(),
+        labTitle: widget.linkedLabTitle,
+        clinicalCaseTitle: demoPath
+            ? 'Posterior shoulder trauma · Clinical Viva'
+            : (widget.onEnterLab != null ? widget.linkedLabTitle : null),
+        onLab: widget.onEnterLab == null
+            ? null
+            : () {
+                enteredLab = true;
+                Navigator.of(ctx).pop();
+              },
+        preferLabCta: demoPath,
+        onFixMisconceptions: () {
+          final VuV2ProgressStore? progress =
+              VuV2Scope.maybeOf(context)?.progress;
+          if (progress == null || !mounted) return;
+          unawaited(
+            VuV2AdaptiveReviewDrillScreen.open(context, progress: progress),
+          );
+        },
       ),
     );
+    if (enteredLab && widget.onEnterLab != null && mounted) {
+      await widget.onEnterLab!();
+    }
+    // Demo spine: lecture → Clinical Viva without a dead end on Campus.
+    if (!enteredLab &&
+        demoPath &&
+        widget.onEnterLab != null &&
+        mounted) {
+      await widget.onEnterLab!();
+    }
   }
 
   Future<void> _openQuiz() async {
@@ -631,80 +873,64 @@ class _AiProfessorClassroomScreenState
   }
 
   Future<void> _submitQuestion(String question) async {
-    if (_lectureService == null) return;
+    final String trimmed = question.trim();
+    if (trimmed.isEmpty || _lectureService == null) return;
     setState(() {
       _askBusy = true;
-      _pendingQuestion = question;
-      _lastAskQuestion = question;
+      _pendingQuestion = trimmed;
+      _askAnswer = null;
     });
+    final LectureSegment? active = _displaySegment ?? _segment;
+    final String slideContext = <String>[
+      if (active?.whiteboard.title.trim().isNotEmpty == true)
+        'Slide: ${active!.whiteboard.title}',
+      if (active?.whiteboard.subtitle?.trim().isNotEmpty == true)
+        'Subtitle: ${active!.whiteboard.subtitle}',
+      if (active != null && active.whiteboard.keyPoints.isNotEmpty)
+        'Key points: ${active.whiteboard.keyPoints.take(6).join('; ')}',
+      if ((active?.professorSpeech ?? '').trim().isNotEmpty)
+        'Professor was saying: ${active!.professorSpeech}',
+    ].join('\n');
+
+    String answer;
     try {
-      final String answer = await _lectureService!.askProfessorForLesson(
+      answer = await _lectureService!.askProfessorForLesson(
         lessonTitle: widget.lessonTitle,
         courseTitle: widget.courseTitle,
-        currentSpeech: _segment?.professorSpeech ?? '',
-        question: question,
+        currentSpeech: slideContext,
+        question: _askMode == LectureAskMode.confused
+            ? 'Student is confused and asked: $trimmed\n'
+                'Reteach this idea more simply with a new analogy and one fresh example. '
+                'Do not repeat the previous explanation word for word. '
+                'End with one short check question.'
+            : trimmed,
       );
-      if (!mounted) return;
-      setState(() {
-        _askBusy = false;
-        _askAnswer = answer;
-        _analytics = _analytics.copyWith(
-          questionsAsked: _analytics.questionsAsked + 1,
-        );
-        _transcript.add('You: $question');
-        _transcript.add('Professor: $answer');
-      });
-      // Show the answer on screen only — do not start a second/device TTS voice
-      // over the lecture. Continue uses the same professor voice afterward.
     } catch (e) {
       debugPrint('Ask professor failed: $e');
-      if (!mounted) return;
-      setState(() => _askBusy = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not reach the professor right now.'),
-        ),
-      );
+      answer = '';
     }
+
+    if (!mounted) return;
+    if (answer.trim().isEmpty) {
+      answer =
+          'Let me clarify ${widget.lessonTitle}. '
+          'Start from the core idea on this slide, then connect it to one concrete example. '
+          'If it still feels unclear, ask again and name the exact part that confuses you.';
+    }
+
+    setState(() {
+      _askBusy = false;
+      _askAnswer = answer.trim();
+      _analytics = _analytics.copyWith(
+        questionsAsked: _analytics.questionsAsked + 1,
+      );
+      _transcript.add('You: $trimmed');
+      _transcript.add('Professor: ${answer.trim()}');
+    });
+    // Speak the answer so the student hears the professor respond.
+    unawaited(_voice.speak(answer.trim(), _speed));
   }
 
-  Future<void> _expandLectureFromAsk() async {
-    if (_lectureService == null ||
-        _script == null ||
-        _lastAskQuestion == null) {
-      _dismissAsk();
-      return;
-    }
-    setState(() => _askBusy = true);
-    try {
-      final LectureSegment? extra =
-          await _lectureService!.expandLectureForLesson(
-        lessonTitle: widget.lessonTitle,
-        courseTitle: widget.courseTitle,
-        currentSpeech: _segment?.professorSpeech ?? '',
-        studentRequest: _lastAskQuestion!,
-      );
-      if (!mounted || extra == null) {
-        if (mounted) setState(() => _askBusy = false);
-        return;
-      }
-      setState(() {
-        _script = _script!.insertSegmentAfter(_segmentIndex, extra);
-        _askBusy = false;
-        _askingProfessor = false;
-        _askAnswer = null;
-        _segmentIndex += 1;
-        _beatIndex = 0;
-        _analytics = _analytics.copyWith(
-          questionsAsked: _analytics.questionsAsked + 1,
-        );
-      });
-      _play();
-    } catch (e) {
-      debugPrint('Expand lecture failed: $e');
-      if (mounted) setState(() => _askBusy = false);
-    }
-  }
 
   void _dismissAsk() {
     unawaited(_voice.stop());
@@ -821,12 +1047,40 @@ class _AiProfessorClassroomScreenState
     if (confirm == true) await _finishLecture();
   }
 
+  LectureSlideNotes _currentSlideNotes() {
+    final LectureSegment? seg = _displaySegment ?? _segment;
+    return LectureSlideNotesSynthesizer.fromSegment(
+      segment: seg ??
+          LectureSegment(
+            phase: LecturePhase.introduction,
+            professorSpeech: '',
+            caption: widget.lessonTitle,
+            whiteboard: LectureWhiteboardFrame(
+              kind: WhiteboardKind.text,
+              title: widget.lessonTitle,
+            ),
+          ),
+      lessonNotes: _script?.notes,
+    );
+  }
+
   void _openNotes() {
     if (!mounted) return;
+    final LectureSegment? seg = _displaySegment ?? _segment;
+    final LectureSlideNotes slideNotes = _currentSlideNotes();
     showLectureNotesSheet(
       context,
       notes: _script?.notes ?? const LectureSmartNotes(),
       transcript: _transcript,
+      slideNotes: slideNotes,
+      slideTitle: seg?.whiteboard.title ?? widget.lessonTitle,
+      onSaveNotes: () {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Slide notes saved for this lesson')),
+        );
+      },
+      onGenerateQuiz: () => unawaited(_openQuiz()),
     );
   }
 
@@ -838,6 +1092,42 @@ class _AiProfessorClassroomScreenState
       current: _speed,
       onSelected: _changeSpeed,
     );
+  }
+
+  void _pickVoice() {
+    if (!mounted) return;
+    showLectureVoiceSheet(
+      context,
+      currentVoiceId: _voice.voiceId,
+      onSelected: (String id) async {
+        await _voice.setVoice(id);
+        await saveLectureVoicePreference(id);
+        if (!mounted) return;
+        setState(() {});
+        // Soft-restart current section with the new voice (cache miss once).
+        if (_playing || _delivering) {
+          _pause(hard: true);
+          _play();
+        }
+      },
+    );
+  }
+
+  void _openStageSettings() {
+    if (!mounted) return;
+    showLectureSettingsSheet(
+      context,
+      speedLabel: _speedLabel,
+      voiceLabel: _voice.voiceLabel,
+      onSpeed: _pickSpeed,
+      onVoice: _pickVoice,
+      onNotes: _openNotes,
+    );
+  }
+
+  void _toggleImmersive() {
+    if (!mounted) return;
+    setState(() => _immersive = !_immersive);
   }
 
   void _syncActiveChapter() {
@@ -879,15 +1169,17 @@ class _AiProfessorClassroomScreenState
     _pause(); // soft pause keeps the current utterance
   }
 
-  /// Scrubber seek — jump only when the section changes; same section resumes audio.
+  /// Scrubber seek — jump only when the section changes; same section seeks voice.
   void _seekToProgress(double progress) {
     if (_script == null || _script!.segments.isEmpty) return;
     final int count = _script!.segments.length;
     final double pos = progress.clamp(0.0, 1.0) * count;
     final int target = pos.floor().clamp(0, count - 1);
 
-    // Stayed in the same lecture section — resume the paused voice (no re-TTS).
+    // Same section — seek within the utterance so board + voice stay aligned.
     if (target == _segmentIndex) {
+      final double fraction = (pos - target).clamp(0.0, 1.0);
+      unawaited(_voice.seekUtterance(fraction));
       if (_delivering) {
         unawaited(_voice.resume());
         if (!_playing) {
@@ -1062,10 +1354,59 @@ class _AiProfessorClassroomScreenState
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) {
         if (didPop) return;
+        if (_immersive) {
+          setState(() => _immersive = false);
+          return;
+        }
         _pause(hard: true);
         Navigator.of(context).pop(_finished);
       },
-      child: LectureCinematicShell(
+      child: _immersive && segment != null
+          ? Scaffold(
+              backgroundColor: Colors.black,
+              body: SafeArea(
+                child: LectureStage(
+                  segment: segment,
+                  topicTitle: widget.lessonTitle,
+                  phaseLabel: segment.phase.label,
+                  isSpeaking:
+                      _speaking && _activeCheck == null && !_askingProfessor,
+                  segmentProgress: _progress,
+                  speed: _speed,
+                  playing: _playing,
+                  onPlayPause: _togglePlay,
+                  onSpeed: _pickSpeed,
+                  onSettings: _openStageSettings,
+                  onFullscreen: _toggleImmersive,
+                  fullscreenActive: true,
+                  onSeek: _seekToProgress,
+                  onScrubStart: _onScrubStart,
+                  speedLabel: _speedLabel,
+                  segmentIndex: _segmentIndex,
+                  segmentCount: script?.segments.length ?? 1,
+                  utteranceProgress: _voice.utteranceProgress,
+                  forceDiagramInteractive:
+                      _activeCheck?.kind == KnowledgeCheckKind.graphIdentify ||
+                          segment.whiteboard.diagramInteractive,
+                  identifyTargetId: _activeCheck?.kind ==
+                          KnowledgeCheckKind.graphIdentify
+                      ? _activeCheck?.targetRegionId
+                      : null,
+                  onRegionIdentified: (String regionId) {
+                    final LectureKnowledgeCheck? check = _activeCheck;
+                    if (check == null ||
+                        check.kind != KnowledgeCheckKind.graphIdentify) {
+                      return;
+                    }
+                    final bool ok = regionId == check.targetRegionId;
+                    unawaited(
+                      _onCheckAnswered(ok, tappedRegionId: regionId),
+                    );
+                  },
+                ),
+              ),
+            )
+          : LectureCinematicShell(
         lessonTitle: widget.lessonTitle,
         courseTitle: widget.courseTitle,
         moduleTitle: widget.moduleTitle,
@@ -1097,33 +1438,63 @@ class _AiProfessorClassroomScreenState
                 playing: _playing,
                 onPlayPause: _togglePlay,
                 onSpeed: _pickSpeed,
+                onSettings: _openStageSettings,
+                onFullscreen: _toggleImmersive,
+                fullscreenActive: false,
                 onSeek: _seekToProgress,
                 onScrubStart: _onScrubStart,
                 speedLabel: _speedLabel,
                 segmentIndex: _segmentIndex,
                 segmentCount: script?.segments.length ?? 1,
+                utteranceProgress: _voice.utteranceProgress,
+                forceDiagramInteractive:
+                    _activeCheck?.kind == KnowledgeCheckKind.graphIdentify ||
+                        segment.whiteboard.diagramInteractive,
+                identifyTargetId: _activeCheck?.kind ==
+                        KnowledgeCheckKind.graphIdentify
+                    ? _activeCheck?.targetRegionId
+                    : null,
+                onRegionIdentified: (String regionId) {
+                  final LectureKnowledgeCheck? check = _activeCheck;
+                  if (check == null ||
+                      check.kind != KnowledgeCheckKind.graphIdentify) {
+                    return;
+                  }
+                  final bool ok = regionId == check.targetRegionId;
+                  unawaited(
+                    _onCheckAnswered(ok, tappedRegionId: regionId),
+                  );
+                },
               ),
-        controls: _KhanTeachingActions(
-          onConfused: _onConfused,
-          onAsk: _openRaiseHand,
+        controls: LectureControlsBar(
+          playing: _playing,
+          speedLabel: _speedLabel,
+          onPlayPause: _togglePlay,
+          onRestart: _restart,
+          onSpeed: _pickSpeed,
           onNotes: _openNotes,
+          onRaiseHand: _openRaiseHand,
+          onConfused: _onConfused,
           onQuiz: () => unawaited(_openQuiz()),
           onSummary: () => unawaited(_previewSummary()),
           onPrevious: _previousSection,
-          onNext: _nextSection,
-          onRestart: _restart,
+          onForward: _nextSection,
           canPrevious: _segmentIndex > 0,
-          canNext: _script != null && _script!.segments.isNotEmpty,
+          canForward: _script != null && _script!.segments.isNotEmpty,
         ),
         askOverlay: _askingProfessor
             ? LectureAskOverlay(
+                mode: _askMode,
                 busy: _askBusy,
                 answer: _askAnswer,
                 question: _pendingQuestion,
+                topicHint: _displaySegment?.whiteboard.title ?? widget.lessonTitle,
                 onSubmit: _submitQuestion,
                 onDismiss: _dismissAsk,
-                onExpandLecture:
-                    _askAnswer != null ? _expandLectureFromAsk : null,
+                onAskAgain: () {
+                  unawaited(_voice.stop());
+                  setState(() => _askAnswer = null);
+                },
               )
             : null,
         checkOverlay: _activeCheck != null
@@ -1154,132 +1525,6 @@ class _AiProfessorClassroomScreenState
                 ),
               )
             : null,
-      ),
-    );
-  }
-}
-
-class _KhanTeachingActions extends StatelessWidget {
-  const _KhanTeachingActions({
-    required this.onConfused,
-    required this.onAsk,
-    required this.onNotes,
-    required this.onQuiz,
-    required this.onSummary,
-    required this.onPrevious,
-    required this.onNext,
-    required this.onRestart,
-    required this.canPrevious,
-    required this.canNext,
-  });
-
-  final VoidCallback onConfused;
-  final VoidCallback onAsk;
-  final VoidCallback onNotes;
-  final VoidCallback onQuiz;
-  final VoidCallback onSummary;
-  final VoidCallback onPrevious;
-  final VoidCallback onNext;
-  final VoidCallback onRestart;
-  final bool canPrevious;
-  final bool canNext;
-
-  @override
-  Widget build(BuildContext context) {
-    final Color accent = StudyColors.primary;
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: FilledButton.icon(
-                onPressed: onConfused,
-                icon: const Icon(Icons.help_outline_rounded, size: 18),
-                label: const Text("I'm Confused"),
-                style: FilledButton.styleFrom(
-                  backgroundColor: accent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: FilledButton.icon(
-                onPressed: onAsk,
-                icon: const Icon(Icons.chat_bubble_outline_rounded, size: 18),
-                label: const Text('Ask Question'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: LectureCinematicShell.ink,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _ActionChip(icon: Icons.replay_rounded, label: 'Restart', onTap: onRestart),
-            _ActionChip(
-              icon: Icons.skip_previous_rounded,
-              label: 'Back',
-              onTap: canPrevious ? onPrevious : null,
-            ),
-            _ActionChip(
-              icon: Icons.skip_next_rounded,
-              label: 'Next',
-              onTap: canNext ? onNext : null,
-            ),
-            _ActionChip(icon: Icons.note_alt_outlined, label: 'Notes', onTap: onNotes),
-            _ActionChip(icon: Icons.quiz_outlined, label: 'Practice', onTap: onQuiz),
-            _ActionChip(icon: Icons.summarize_outlined, label: 'Summary', onTap: onSummary),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _ActionChip extends StatelessWidget {
-  const _ActionChip({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final bool on = onTap != null;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        child: Column(
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 20,
-              color: on ? LectureCinematicShell.ink : LectureCinematicShell.mute,
-            ),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                color: on ? LectureCinematicShell.mute : LectureCinematicShell.mute.withValues(alpha: 0.5),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

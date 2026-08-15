@@ -24,7 +24,13 @@ class LectureWorkedProblemView extends StatelessWidget {
 
   int get _totalRevealSlots => 1 + steps.length + (answer != null ? 1 : 0);
 
-  int get _revealedSlots => (progress * _totalRevealSlots).floor().clamp(0, _totalRevealSlots);
+  int get _revealedSlots {
+    // Spend early progress on the problem statement so steps don't race the voice.
+    final double eased = progress <= 0.12
+        ? progress / 0.12 * 0.15
+        : 0.15 + ((progress - 0.12) / 0.88) * 0.85;
+    return (eased.clamp(0.0, 1.0) * _totalRevealSlots).floor().clamp(0, _totalRevealSlots);
+  }
 
   bool get _showProblem => _revealedSlots >= 1;
 

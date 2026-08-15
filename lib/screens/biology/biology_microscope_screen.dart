@@ -64,13 +64,13 @@ class _BiologyMicroscopeScreenState extends State<BiologyMicroscopeScreen> {
     ),
     _SlideSpec(
       name: 'Blood field',
-      asset: 'assets/anatomy/organs.svg',
+      asset: 'assets/anatomy/organs_real.png',
       notes: 'Compare cell density and staining contrast.',
       hiddenLabels: <String>['Erythrocyte', 'Leukocyte', 'Plasma'],
     ),
     _SlideSpec(
       name: 'Neuron',
-      asset: 'assets/anatomy/neuron.svg',
+      asset: 'assets/anatomy/neuron_real.png',
       notes: 'Trace soma, axon, and dendrites.',
       hiddenLabels: <String>['Soma', 'Axon', 'Dendrite', 'Synapse'],
     ),
@@ -357,12 +357,20 @@ class _BiologyMicroscopeScreenState extends State<BiologyMicroscopeScreen> {
                 child: Center(
                   child: Transform.scale(
                     scale: (_mag / 40).clamp(0.35, 3.2),
-                    child: SvgPicture.asset(
-                      slide.asset,
-                      height: 150,
-                      placeholderBuilder: (_) =>
-                          Icon(Icons.biotech, size: 80, color: c.primaryLight),
-                    ),
+                    child: slide.asset.toLowerCase().endsWith('.svg')
+                        ? SvgPicture.asset(
+                            slide.asset,
+                            height: 150,
+                            placeholderBuilder: (_) =>
+                                Icon(Icons.biotech, size: 80, color: c.primaryLight),
+                          )
+                        : Image.asset(
+                            slide.asset,
+                            height: 150,
+                            fit: BoxFit.contain,
+                            errorBuilder: (BuildContext context, Object error, StackTrace? stack) =>
+                                Icon(Icons.biotech, size: 80, color: c.primaryLight),
+                          ),
                   ),
                 ),
               ),

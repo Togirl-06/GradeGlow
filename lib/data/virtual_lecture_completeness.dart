@@ -1,4 +1,7 @@
 import '../models/virtual_lecture.dart';
+import '../services/lecture_diagram_service.dart';
+import 'diagram_asset_registry.dart';
+import 'lecture_speech_hygiene.dart';
 import 'virtual_lecture_topic_profile.dart';
 
 /// Guarantees every lecture — any course, any topic — covers the full university checklist.
@@ -41,27 +44,25 @@ abstract final class VirtualLectureCompleteness {
           module: module,
           lessonId: lessonId,
         );
-    final String blob = _speechBlob(script);
     final LectureMode resolvedMode = mode ?? script.mode;
     final bool fullHour = resolvedMode.isFullLecture;
 
-    final List<LectureSegment> out = List<LectureSegment>.from(script.segments);
+    final List<LectureSegment> out = script.segments
+        .map(LectureSpeechHygiene.cleanSegment)
+        .toList();
+    final String blob = _speechBlob(script.copyWith(segments: out));
     if (out.isEmpty) {
       out.addAll(_fullScaffold(topic: topic, course: course, module: module, profile: resolved));
     } else {
-      final bool hasWhy = _needs(
-        blob,
-        <String>['why it matters', 'why this matters', 'matters because', 'important because', 'why we study'],
-      );
       final bool weakIntro = out.isNotEmpty &&
           out.first.phase == LecturePhase.introduction &&
-          out.first.professorSpeech.trim().split(RegExp(r'\s+')).length < 40;
-      if (!hasWhy || !_hasPhase(out, LecturePhase.introduction) || weakIntro) {
-        _insertAfterIntro(out, _introWhy(topic, course));
+          out.first.professorSpeech.trim().split(RegExp(r'\s+')).length < 12;
+      if (!_hasPhase(out, LecturePhase.introduction) || weakIntro) {
+        _insertAfterIntro(out, _introWhy(topic, course, resolved));
       }
       _ensureSomewhere(
         out,
-        satisfied: _needs(blob, <String>['history', 'origin', 'developed', 'invented', 'centuries', 'histor']),
+        satisfied: true,
         segment: _history(topic, course),
         afterPhase: LecturePhase.objectives,
       );
@@ -74,6 +75,12 @@ abstract final class VirtualLectureCompleteness {
       _ensureSomewhere(
         out,
         satisfied: _hasVisual(out) ||
+            !LectureDiagramService.topicNeedsDiagram(
+              topic: topic,
+              faculty: faculty,
+              courseId: courseId,
+              lessonId: lessonId,
+            ) ||
             _needs(blob, <String>['diagram', 'graph', 'visual', 'sketch', 'figure', 'board', 'number line']),
         segment: _visual(topic, profile: resolved),
         afterPhase: LecturePhase.visualDemonstration,
@@ -140,6 +147,14 @@ abstract final class VirtualLectureCompleteness {
       _padToHourLecture(out, topic: topic, course: course, module: module, profile: resolved);
     }
 
+    _attachTopicDiagrams(
+      out,
+      topic: topic,
+      faculty: faculty,
+      courseId: courseId,
+      lessonId: lessonId,
+    );
+
     final LectureSummary summary = _ensureSummary(script.summary, topic, course);
     final int authoredMinutes = (_authoredSeconds(out) / 60).ceil();
     final int floorMinutes = fullHour
@@ -155,12 +170,14 @@ abstract final class VirtualLectureCompleteness {
       floorMinutes,
     ].reduce((int a, int b) => a > b ? a : b);
 
-    return script.copyWith(
-      segments: out,
-      summary: summary,
-      estimatedMinutes: minutes,
-      mode: resolvedMode,
-      objectives: script.objectives.isEmpty ? resolved.objectives : script.objectives,
+    return LectureSpeechHygiene.cleanScript(
+      script.copyWith(
+        segments: out,
+        summary: summary,
+        estimatedMinutes: minutes,
+        mode: resolvedMode,
+        objectives: script.objectives.isEmpty ? resolved.objectives : script.objectives,
+      ),
     );
   }
 
@@ -252,6 +269,32 @@ abstract final class VirtualLectureCompleteness {
           durationSeconds: 160,
         );
       case 2:
+        final String? diagramId = LectureDiagramService.preferredDiagramId(
+          topic: topic,
+        );
+        if (diagramId == null) {
+          return LectureSegment(
+            phase: LecturePhase.visualDemonstration,
+            professorSpeech:
+                'Visualize $topic with a mental model on the board — no stock diagram for this topic. '
+                'I will name the parts of the process so you can redraw it from memory.',
+            caption: 'Mental model — $topic',
+            whiteboard: LectureWhiteboardFrame(
+              kind: WhiteboardKind.text,
+              title: 'Model — $topic',
+              lines: <String>[
+                'Inputs / cues',
+                'Core process: $topic',
+                'Check / verify',
+                'Output / next action',
+                ...profile.conceptLines.take(2),
+              ],
+            ),
+            durationSeconds: 140,
+          );
+        }
+        final List<String> labels =
+            LectureDiagramService.partLabelsFor(diagramId, topic: topic);
         return LectureSegment(
           phase: LecturePhase.visualDemonstration,
           professorSpeech: profile.visualSpeech,
@@ -259,9 +302,10 @@ abstract final class VirtualLectureCompleteness {
           whiteboard: LectureWhiteboardFrame(
             kind: WhiteboardKind.diagram,
             title: 'Visual — $topic',
-            diagramQuery: '$topic educational diagram labeled',
+            diagramId: diagramId,
+            diagramQuery: '$topic labeled educational diagram',
             lines: <String>[
-              'Real diagram for $topic',
+              if (labels.isNotEmpty) 'Labels: ${labels.join(' · ')}',
               ...profile.conceptLines.take(3),
             ],
           ),
@@ -462,7 +506,7 @@ abstract final class VirtualLectureCompleteness {
     }
     // Replace weak intro or insert after first segment.
     if (out.first.phase == LecturePhase.introduction &&
-        out.first.professorSpeech.trim().split(RegExp(r'\s+')).length < 40) {
+        out.first.professorSpeech.trim().split(RegExp(r'\s+')).length < 12) {
       out[0] = seg;
       return;
     }
@@ -491,29 +535,32 @@ abstract final class VirtualLectureCompleteness {
 
   // ── injected segments ────────────────────────────────────────────────────
 
-  static LectureSegment _introWhy(String topic, String course) => LectureSegment(
-        phase: LecturePhase.introduction,
-        professorSpeech:
-            'Welcome to our university lecture on $topic in $course. '
-            'I will explain carefully — not with a one-paragraph chatbot answer. '
-            'First, in plain language: $topic is the idea we will define precisely, then use. '
-            'Second, why it matters: without $topic, later work in $course becomes guesswork. '
-            'Third, how we will learn it: definition, history, theory, board visuals, real examples, '
-            'questions, practice from easy to hard, then homework and reading. '
-            'Stay with me — every sentence should make the next one easier.',
-        caption: 'Introduction — why $topic matters',
-        whiteboard: LectureWhiteboardFrame(
-          kind: WhiteboardKind.text,
-          title: topic,
-          lines: <String>[
-            'What $topic means (plain language)',
-            'Precise definition coming next',
-            'Why $course needs it',
-            'Plan: theory → examples → practice',
-          ],
-        ),
-        durationSeconds: 130,
-      );
+  static LectureSegment _introWhy(
+    String topic,
+    String course,
+    VirtualLectureTopicProfile profile,
+  ) {
+    final String speech = profile.conceptSpeech.trim().isNotEmpty
+        ? profile.conceptSpeech.trim()
+        : (profile.definitions.isNotEmpty
+            ? profile.definitions.first
+            : '$topic is the idea we will work through in $course — starting with what it means and how you use it.');
+    return LectureSegment(
+      phase: LecturePhase.introduction,
+      professorSpeech: speech,
+      caption: 'Introduction — $topic',
+      whiteboard: LectureWhiteboardFrame(
+        kind: WhiteboardKind.text,
+        title: topic,
+        subtitle: course,
+        slideType: LectureSlideType.concept,
+        keyPoints: profile.conceptLines.take(4).isNotEmpty
+            ? profile.conceptLines.take(4).toList()
+            : <String>[topic],
+      ),
+      durationSeconds: 50,
+    );
+  }
 
   static LectureSegment _history(String topic, String course) => LectureSegment(
         phase: LecturePhase.conceptExplanation,
@@ -570,22 +617,143 @@ abstract final class VirtualLectureCompleteness {
     String topic, {
     VirtualLectureTopicProfile? profile,
   }) {
+    final String? diagramId =
+        LectureDiagramService.preferredDiagramId(topic: topic);
+    if (diagramId == null) {
+      return LectureSegment(
+        phase: LecturePhase.visualDemonstration,
+        professorSpeech:
+            'For $topic we do not need a stock anatomy plate. Stay with the board notes: '
+            'define it, walk the method, and check yourself with an example. '
+            'A diagram is only useful when it shows labeled structures — this topic is taught with process, not a picture.',
+        caption: 'Board notes — $topic',
+        whiteboard: LectureWhiteboardFrame(
+          kind: WhiteboardKind.text,
+          title: 'Teach $topic',
+          lines: profile?.conceptLines.isNotEmpty == true
+              ? profile!.conceptLines.take(5).toList()
+              : <String>[
+                  'Define $topic',
+                  'How it works (steps)',
+                  'Example / case',
+                  'Common mistakes',
+                ],
+        ),
+        durationSeconds: 95,
+      );
+    }
+    final List<String> labels =
+        LectureDiagramService.partLabelsFor(diagramId, topic: topic);
     return LectureSegment(
       phase: LecturePhase.visualDemonstration,
       professorSpeech: profile?.visualSpeech ??
-          'Look at the board. This is a real diagram of $topic — not a sketch of shapes. '
-              'Trace each labeled part with me so you can see the relationships, not only hear them.',
+          'Look at the labeled diagram of $topic. '
+              'I will name each part: ${labels.take(5).join(', ')}. '
+              'Trace the labels with me so you remember the relationships, not only the title.',
       caption: 'Visual — $topic',
       whiteboard: LectureWhiteboardFrame(
         kind: WhiteboardKind.diagram,
         title: 'Diagram — $topic',
-        diagramQuery: '$topic educational diagram labeled',
-        lines: profile?.conceptLines.isNotEmpty == true
-            ? profile!.conceptLines.take(4).toList()
-            : <String>['Real diagram of $topic', 'Label every part'],
+        diagramId: diagramId,
+        diagramQuery: '$topic labeled educational diagram',
+        lines: <String>[
+          if (labels.isNotEmpty) ...labels.map((String n) => '• $n'),
+          if (labels.isEmpty) 'Labeled figure — $topic',
+        ],
       ),
       durationSeconds: 110,
     );
+  }
+
+  /// Bind diagram boards only when a topic-matched labeled figure exists.
+  /// Math graphs stay graphs. Unmatched diagram boards become labeled text notes.
+  static void _attachTopicDiagrams(
+    List<LectureSegment> segments, {
+    required String topic,
+    required String faculty,
+    required String courseId,
+    required String lessonId,
+  }) {
+    final String? preferred = LectureDiagramService.preferredDiagramId(
+      topic: topic,
+      faculty: faculty,
+      courseId: courseId,
+      lessonId: lessonId,
+    );
+    final List<String> labels =
+        LectureDiagramService.partLabelsFor(preferred, topic: topic);
+
+    for (int i = 0; i < segments.length; i++) {
+      final LectureSegment seg = segments[i];
+      final LectureWhiteboardFrame board = seg.whiteboard;
+
+      // Keep authored math graphs / geometry as-is (not anatomy PNGs).
+      if (board.kind == WhiteboardKind.graph ||
+          board.kind == WhiteboardKind.geometry) {
+        continue;
+      }
+
+      final bool wantsDiagram = board.kind == WhiteboardKind.diagram ||
+          (board.diagramQuery != null && board.diagramQuery!.trim().isNotEmpty) ||
+          (board.diagramId != null && board.diagramId!.trim().isNotEmpty) ||
+          (board.imageUrl != null && board.imageUrl!.trim().isNotEmpty);
+      if (!wantsDiagram) continue;
+
+      final String? authoredId = (board.diagramId != null &&
+              board.diagramId!.trim().isNotEmpty &&
+              DiagramAssetRegistry.bundledByDiagramId
+                  .containsKey(board.diagramId!.trim()))
+          ? LectureDiagramService.lectureSafeDiagramId(board.diagramId!.trim())
+          : null;
+      final String? id = authoredId ?? preferred;
+
+      if (id == null) {
+        // No matching figure — teach with notes instead of a wrong plate.
+        segments[i] = seg.copyWith(
+          whiteboard: LectureWhiteboardFrame(
+            kind: WhiteboardKind.text,
+            title: board.title.isNotEmpty ? board.title : 'Notes — $topic',
+            lines: board.lines.isNotEmpty
+                ? board.lines
+                : <String>[
+                    'Define $topic',
+                    'Key steps',
+                    'Example',
+                    'Check yourself',
+                  ],
+            equation: board.equation,
+            highlight: board.highlight,
+          ),
+        );
+        continue;
+      }
+
+      final List<String> partLabels = labels.isNotEmpty
+          ? labels
+          : LectureDiagramService.partLabelsFor(id, topic: topic);
+      segments[i] = seg.copyWith(
+        whiteboard: LectureWhiteboardFrame(
+          kind: WhiteboardKind.diagram,
+          title: board.title.isNotEmpty ? board.title : 'Diagram — $topic',
+          lines: <String>[
+            if (partLabels.isNotEmpty)
+              ...partLabels.map((String n) => '• $n')
+            else
+              ...board.lines,
+          ],
+          equation: board.equation,
+          graphFunction: board.graphFunction,
+          highlight: board.highlight,
+          graphApproachX: board.graphApproachX,
+          graphLimitY: board.graphLimitY,
+          problemStatement: board.problemStatement,
+          solutionSteps: board.solutionSteps,
+          imageUrl: null,
+          diagramQuery: board.diagramQuery ?? '$topic labeled educational diagram',
+          diagramId: id,
+        ),
+      );
+    }
   }
 
   static LectureSegment _formulas(
@@ -886,7 +1054,13 @@ abstract final class VirtualLectureCompleteness {
     VirtualLectureTopicProfile? profile,
   }) =>
       <LectureSegment>[
-        _introWhy(topic, course),
+        _introWhy(topic, course, profile ?? VirtualLectureTopicProfile.resolve(
+          topic: topic,
+          course: course,
+          courseId: '',
+          module: module,
+          lessonId: '',
+        )),
         _history(topic, course),
         _deepTheory(topic, profile: profile),
         _visual(topic, profile: profile),

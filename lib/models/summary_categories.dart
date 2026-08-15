@@ -1,4 +1,4 @@
-/// User-created class/subject folders for summaries (Quizlet-style).
+/// User-created class/subject folders for summaries.
 class SummarySubjects {
   SummarySubjects._();
 

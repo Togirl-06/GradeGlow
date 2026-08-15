@@ -1,5 +1,6 @@
 import '../models/leetcode_problem.dart';
 import '../models/practice_lab_question.dart';
+import 'arena_challenge_branding.dart';
 import 'leetcode_problem_bank_extended.dart';
 import 'leetcode_problem_catalog_data.dart';
 import 'leetcode_debug_bank.dart';
@@ -26,10 +27,14 @@ class LeetcodeProblemBank {
         .where((LeetcodeProblem p) => _difficultyMatches(p.difficulty, diff))
         .toList();
     final List<LeetcodeProblem> source = filtered.isNotEmpty ? filtered : pool;
-    final List<LeetcodeProblem> picked = <LeetcodeProblem>[];
-    for (int i = 0; i < count; i++) {
-      picked.add(source[i % source.length]);
+    // Unique only — never repeat the same problem id in one session.
+    final Map<String, LeetcodeProblem> unique = <String, LeetcodeProblem>{};
+    for (final LeetcodeProblem p in source) {
+      unique.putIfAbsent(p.id, () => p);
     }
+    final List<LeetcodeProblem> uniqueList = unique.values.toList();
+    final int take = count < uniqueList.length ? count : uniqueList.length;
+    final List<LeetcodeProblem> picked = uniqueList.take(take).toList();
     return picked.asMap().entries.map((MapEntry<int, LeetcodeProblem> entry) {
       final LeetcodeProblem p = entry.value;
       return PracticeLabQuestion(
@@ -40,30 +45,79 @@ class LeetcodeProblemBank {
     }).toList();
   }
 
-  /// All unique curated problems for the CS problem browser.
+  static final RegExp _titleNoise = RegExp(r'[^a-z0-9]+');
+
+  /// Unique interview problems for Algorithm Arena (300+). Debug clones excluded.
   static List<LeetcodeProblem> get allCuratedProblems {
-    final Map<String, LeetcodeProblem> seen = <String, LeetcodeProblem>{};
+    final Map<String, LeetcodeProblem> byId = <String, LeetcodeProblem>{};
+    final Map<String, String> titleOwner = <String, String>{};
+
+    void consider(LeetcodeProblem p) {
+      if (p.isDebug) return;
+      // SQL stays in the catalog file but is not for the Code Bench editor.
+      bool isSql = false;
+      for (final String t in p.tags) {
+        if (t.toLowerCase() == 'sql') {
+          isSql = true;
+          break;
+        }
+      }
+      if (isSql) return;
+
+      final String normTitle =
+          p.title.toLowerCase().replaceAll(_titleNoise, ' ').trim();
+      final String? existingTitleId = titleOwner[normTitle];
+      if (existingTitleId != null && existingTitleId != p.id) {
+        // Keep the richer / curated copy if already present.
+        return;
+      }
+
+      final LeetcodeProblem? prev = byId[p.id];
+      if (prev != null) {
+        // Prefer longer descriptions / more examples (curated over thin catalog).
+        final int prevScore = prev.description.length + prev.examples.length * 40;
+        final int nextScore = p.description.length + p.examples.length * 40;
+        if (nextScore <= prevScore) return;
+      }
+
+      byId[p.id] = p;
+      titleOwner[normTitle] = p.id;
+    }
+
     for (final LeetcodeProblem p in _catalogProblems) {
-      seen[p.id] = p;
+      consider(p);
     }
     for (final List<LeetcodeProblem> list in _byTopic.values) {
       for (final LeetcodeProblem p in list) {
-        seen[p.id] = p;
+        consider(p);
       }
     }
     for (final LeetcodeProblem p in _universalPool) {
-      seen[p.id] = p;
-    }
-    for (final LeetcodeProblem p in _debugProblems) {
-      seen[p.id] = p;
+      consider(p);
     }
     for (final LeetcodeProblem p in LeetcodeProblemBankExtended.all) {
-      seen[p.id] = p;
+      consider(p);
     }
-    return seen.values.toList();
+
+    final List<LeetcodeProblem> out = byId.values.toList();
+    out.sort((LeetcodeProblem a, LeetcodeProblem b) {
+      final int? ai = int.tryParse(a.id);
+      final int? bi = int.tryParse(b.id);
+      if (ai != null && bi != null) return ai.compareTo(bi);
+      if (ai != null) return -1;
+      if (bi != null) return 1;
+      return a.title.compareTo(b.title);
+    });
+
+    // Rebrand so titles/IDs/copy are GradeGlow originals — not third-party names.
+    final List<LeetcodeProblem> branded = <LeetcodeProblem>[];
+    for (int i = 0; i < out.length; i++) {
+      branded.add(ArenaChallengeBranding.rebrand(out[i], arenaIndex: i));
+    }
+    return branded;
   }
 
-  /// All debug challenges with pre-loaded buggy code.
+  /// All debug challenges with pre-loaded buggy code (GradeGlow-branded titles).
   static List<LeetcodeProblem> get allDebugProblems {
     final Map<String, LeetcodeProblem> seen = <String, LeetcodeProblem>{};
     for (final LeetcodeProblem p in _debugProblems) {
@@ -75,8 +129,31 @@ class LeetcodeProblemBank {
     for (final LeetcodeProblem p in LeetcodeDebugBank.all) {
       seen[p.id] = p;
     }
-    return seen.values.toList()
+    final List<LeetcodeProblem> raw = seen.values.toList()
       ..sort((LeetcodeProblem a, LeetcodeProblem b) => a.title.compareTo(b.title));
+    final List<LeetcodeProblem> out = <LeetcodeProblem>[];
+    for (int i = 0; i < raw.length; i++) {
+      final LeetcodeProblem p = raw[i];
+      final LeetcodeProblem branded =
+          ArenaChallengeBranding.rebrand(p, arenaIndex: i);
+      out.add(
+        LeetcodeProblem(
+          id: branded.id,
+          title: '${branded.title} · Debug Desk',
+          slug: branded.slug,
+          difficulty: branded.difficulty,
+          description: branded.description,
+          examples: branded.examples,
+          constraints: branded.constraints,
+          tags: branded.tags,
+          functionName: branded.functionName,
+          kind: LeetcodeProblemKind.debug,
+          starterCode: p.starterCode,
+          hiddenTests: p.hiddenTests,
+        ),
+      );
+    }
+    return out;
   }
 
   static List<LeetcodeProblem>? _catalogCache;
@@ -257,9 +334,31 @@ class LeetcodeProblemBank {
       difficulty: 'Easy',
       tags: <String>['Array', 'Dynamic Programming'],
       functionName: 'maxProfit',
-      description: 'You are given an array `prices` where `prices[i]` is the price of a stock on day `i`. Return the maximum profit from one buy and one sell.',
-      examples: <LeetcodeExample>[LeetcodeExample(input: 'prices = [7,1,5,3,6,4]', output: '5')],
-      constraints: <String>['1 <= prices.length <= 10^5', '0 <= prices[i] <= 10^4'],
+      description:
+          'You are given an array `prices` where `prices[i]` is the price of a given stock on the `i`-th day.\n\n'
+          'You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\n'
+          'Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return `0`.',
+      examples: <LeetcodeExample>[
+        LeetcodeExample(
+          input: 'prices = [7,1,5,3,6,4]',
+          output: '5',
+          explanation:
+              'Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5. Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.',
+        ),
+        LeetcodeExample(
+          input: 'prices = [7,6,4,3,1]',
+          output: '0',
+          explanation: 'In this case, no transactions are done and the max profit = 0.',
+        ),
+      ],
+      constraints: <String>[
+        '1 <= prices.length <= 10^5',
+        '0 <= prices[i] <= 10^4',
+      ],
+      hiddenTests: <LeetcodeHiddenTest>[
+        LeetcodeHiddenTest(input: 'prices = [2,4,1]', output: '2'),
+        LeetcodeHiddenTest(input: 'prices = [3,2,6,5,0,3]', output: '4'),
+      ],
     ),
     LeetcodeProblem(
       id: '238',

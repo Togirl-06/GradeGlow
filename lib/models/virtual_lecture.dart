@@ -124,6 +124,74 @@ enum WhiteboardKind {
   diagram,
 }
 
+/// How the university slide is presented (distinct from chalkboard stroke kinds).
+enum LectureSlideType {
+  concept,
+  clinicalCase,
+  data,
+  diagram,
+  label,
+  question,
+  challenge,
+  simulation,
+  caseStudy,
+  summary,
+}
+
+/// Per-slide study packet generated with the lecture (not a transcript dump).
+class LectureSlideNotes {
+  const LectureSlideNotes({
+    this.understand = '',
+    this.keyConcepts = const <String>[],
+    this.professorInsight = '',
+    this.remember = '',
+    this.examTip = '',
+    this.studyNotes = '',
+    this.questions = const <String>[],
+    this.vocabulary = const <String>[],
+  });
+
+  final String understand;
+  final List<String> keyConcepts;
+  final String professorInsight;
+  final String remember;
+  final String examTip;
+  final String studyNotes;
+  final List<String> questions;
+  final List<String> vocabulary;
+
+  bool get isEmpty =>
+      understand.trim().isEmpty &&
+      keyConcepts.isEmpty &&
+      professorInsight.trim().isEmpty &&
+      remember.trim().isEmpty &&
+      examTip.trim().isEmpty &&
+      studyNotes.trim().isEmpty &&
+      questions.isEmpty &&
+      vocabulary.isEmpty;
+
+  factory LectureSlideNotes.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return const LectureSlideNotes();
+    List<String> list(String key) =>
+        (json[key] as List<dynamic>?)?.map((dynamic e) => e.toString()).toList() ??
+        const <String>[];
+    return LectureSlideNotes(
+      understand: json['understand'] as String? ??
+          json['whatYouShouldUnderstand'] as String? ??
+          '',
+      keyConcepts: list('keyConcepts').isNotEmpty
+          ? list('keyConcepts')
+          : list('keyPoints'),
+      professorInsight: json['professorInsight'] as String? ?? '',
+      remember: json['remember'] as String? ?? '',
+      examTip: json['examTip'] as String? ?? json['examKnowledge'] as String? ?? '',
+      studyNotes: json['studyNotes'] as String? ?? '',
+      questions: list('questions'),
+      vocabulary: list('vocabulary'),
+    );
+  }
+}
+
 /// One step in a worked example — revealed on the whiteboard as the professor solves it.
 class LectureProblemStep {
   const LectureProblemStep({
@@ -157,7 +225,13 @@ class LectureWhiteboardFrame {
   const LectureWhiteboardFrame({
     required this.kind,
     required this.title,
+    this.subtitle,
+    this.slideType = LectureSlideType.concept,
     this.lines = const <String>[],
+    this.keyPoints = const <String>[],
+    this.processSteps = const <String>[],
+    this.dataColumns = const <String>[],
+    this.dataRows = const <List<String>>[],
     this.equation,
     this.graphFunction = 'quadratic',
     this.highlight,
@@ -168,11 +242,27 @@ class LectureWhiteboardFrame {
     this.imageUrl,
     this.diagramQuery,
     this.diagramId,
+    this.highlightRegionIds = const <String>[],
+    this.visibleRegionIds = const <String>[],
+    this.diagramInteractive = false,
+    this.dimDiagramBackground = false,
+    this.diagramTeachingMode,
+    this.interactiveActivity,
+    this.activityRegionIds = const <String>[],
   });
 
   final WhiteboardKind kind;
   final String title;
+  /// Secondary headline under the title (university slide style).
+  final String? subtitle;
+  final LectureSlideType slideType;
   final List<String> lines;
+  /// Short bullets distinct from spoken lecture text.
+  final List<String> keyPoints;
+  /// Ordered process / pathway labels (Assessment → Prep → …).
+  final List<String> processSteps;
+  final List<String> dataColumns;
+  final List<List<String>> dataRows;
   final String? equation;
   final String graphFunction;
   final String? highlight;
@@ -188,6 +278,20 @@ class LectureWhiteboardFrame {
   final String? diagramQuery;
   /// Bundled / CDN diagram id (e.g. animal_cell, atom, dna).
   final String? diagramId;
+  /// Regions to highlight on interactive diagram plates.
+  final List<String> highlightRegionIds;
+  /// Only these regions are visible/interactive (empty = show clean plate).
+  final List<String> visibleRegionIds;
+  /// Enable tap-to-identify on diagram during lecture.
+  final bool diagramInteractive;
+  /// Dim non-highlighted areas during part-focus teaching.
+  final bool dimDiagramBackground;
+  /// Progression mode label (overview, partFocus, identifyTap, …).
+  final String? diagramTeachingMode;
+  /// In-lecture interactive activity: `label_drag` or `anatomy_3d`.
+  final String? interactiveActivity;
+  /// Regions included in label / 3D activities.
+  final List<String> activityRegionIds;
 
   bool get isWorkedProblem =>
       kind == WhiteboardKind.workedProblem ||
@@ -197,9 +301,23 @@ class LectureWhiteboardFrame {
       kind == WhiteboardKind.diagram ||
       kind == WhiteboardKind.graph ||
       kind == WhiteboardKind.geometry ||
+      slideType == LectureSlideType.diagram ||
+      slideType == LectureSlideType.label ||
       (imageUrl != null && imageUrl!.trim().isNotEmpty) ||
       (diagramQuery != null && diagramQuery!.trim().isNotEmpty) ||
       (diagramId != null && diagramId!.trim().isNotEmpty);
+
+  /// True when the frame has visible teaching content (fixes “blank slide”).
+  bool get hasVisibleContent =>
+      title.trim().isNotEmpty ||
+      (subtitle != null && subtitle!.trim().isNotEmpty) ||
+      lines.any((String e) => e.trim().isNotEmpty) ||
+      keyPoints.any((String e) => e.trim().isNotEmpty) ||
+      processSteps.any((String e) => e.trim().isNotEmpty) ||
+      dataRows.isNotEmpty ||
+      (equation != null && equation!.trim().isNotEmpty) ||
+      isWorkedProblem ||
+      wantsRealDiagram;
 
   factory LectureWhiteboardFrame.fromJson(Map<String, dynamic> json) {
     final String kindStr = (json['kind'] as String? ?? 'text').toLowerCase();
@@ -220,13 +338,58 @@ class LectureWhiteboardFrame {
       kind = WhiteboardKind.diagram;
     }
 
+    final String slideTypeStr =
+        (json['slideType'] as String? ?? json['slide_type'] as String? ?? 'concept')
+            .toLowerCase()
+            .replaceAll('_', '');
+    LectureSlideType slideType = LectureSlideType.concept;
+    for (final LectureSlideType t in LectureSlideType.values) {
+      if (t.name.toLowerCase() == slideTypeStr) {
+        slideType = t;
+        break;
+      }
+    }
+
+    final List<List<String>> rows = <List<String>>[];
+    final dynamic rawRows = json['dataRows'] ?? json['rows'];
+    if (rawRows is List<dynamic>) {
+      for (final dynamic row in rawRows) {
+        if (row is List<dynamic>) {
+          rows.add(row.map((dynamic e) => e.toString()).toList());
+        } else if (row is String) {
+          rows.add(row.split('|').map((String e) => e.trim()).toList());
+        }
+      }
+    }
+
     return LectureWhiteboardFrame(
       kind: kind,
       title: json['title'] as String? ?? '',
+      subtitle: json['subtitle'] as String?,
+      slideType: slideType,
       lines: (json['lines'] as List<dynamic>?)
               ?.map((dynamic e) => e.toString())
               .toList() ??
           const <String>[],
+      keyPoints: (json['keyPoints'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          const <String>[],
+      processSteps: (json['processSteps'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          (json['flow'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          const <String>[],
+      dataColumns: (json['dataColumns'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          (json['columns'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          const <String>[],
+      dataRows: rows,
       equation: json['equation'] as String?,
       graphFunction: json['graphFunction'] as String? ?? 'quadratic',
       highlight: json['highlight'] as String?,
@@ -237,6 +400,22 @@ class LectureWhiteboardFrame {
       imageUrl: json['imageUrl'] as String? ?? json['image'] as String?,
       diagramQuery: json['diagramQuery'] as String? ?? json['searchQuery'] as String?,
       diagramId: json['diagramId'] as String?,
+      highlightRegionIds: (json['highlightRegionIds'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          const <String>[],
+      visibleRegionIds: (json['visibleRegionIds'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          const <String>[],
+      diagramInteractive: json['diagramInteractive'] as bool? ?? false,
+      dimDiagramBackground: json['dimDiagramBackground'] as bool? ?? false,
+      diagramTeachingMode: json['diagramTeachingMode'] as String?,
+      interactiveActivity: json['interactiveActivity'] as String?,
+      activityRegionIds: (json['activityRegionIds'] as List<dynamic>?)
+              ?.map((dynamic e) => e.toString())
+              .toList() ??
+          const <String>[],
     );
   }
 }
@@ -250,6 +429,9 @@ class LectureKnowledgeCheck {
     this.correctAnswer,
     this.explanation = '',
     this.requireCorrect = false,
+    this.timeLimitSeconds = 20,
+    this.diagramId,
+    this.targetRegionId,
   });
 
   final String prompt;
@@ -258,8 +440,14 @@ class LectureKnowledgeCheck {
   final int correctIndex;
   final String? correctAnswer;
   final String explanation;
-  /// When true, the lecture waits until the student picks the right answer.
+  /// Legacy flag — lecture UI is single-attempt; ignored for Try again.
   final bool requireCorrect;
+  /// Seconds to answer before auto time-up (default 20).
+  final int timeLimitSeconds;
+  /// For [KnowledgeCheckKind.graphIdentify] — which diagram to show.
+  final String? diagramId;
+  /// Region id the student must tap (e.g. scapula).
+  final String? targetRegionId;
 
   static LectureKnowledgeCheck? tryParse(Map<String, dynamic>? json) {
     if (json == null) return null;
@@ -282,6 +470,9 @@ class LectureKnowledgeCheck {
       correctAnswer: json['correctAnswer'] as String?,
       explanation: json['explanation'] as String? ?? '',
       requireCorrect: json['requireCorrect'] as bool? ?? false,
+      timeLimitSeconds: (json['timeLimitSeconds'] as num?)?.toInt() ?? 20,
+      diagramId: json['diagramId'] as String?,
+      targetRegionId: json['targetRegionId'] as String?,
     );
   }
 
@@ -297,6 +488,7 @@ class LectureInteractiveBeat {
     required this.whiteboard,
     this.caption,
     this.studentChoice,
+    this.slideNotes,
     this.durationSeconds = 40,
   });
 
@@ -304,6 +496,7 @@ class LectureInteractiveBeat {
   final LectureWhiteboardFrame whiteboard;
   final String? caption;
   final LectureKnowledgeCheck? studentChoice;
+  final LectureSlideNotes? slideNotes;
   final int durationSeconds;
 
   factory LectureInteractiveBeat.fromJson(Map<String, dynamic> json) {
@@ -317,6 +510,10 @@ class LectureInteractiveBeat {
         json['studentChoice'] as Map<String, dynamic>? ??
             json['knowledgeCheck'] as Map<String, dynamic>?,
       ),
+      slideNotes: LectureSlideNotes.fromJson(
+        json['slideNotes'] as Map<String, dynamic>? ??
+            json['notes'] as Map<String, dynamic>?,
+      ),
       durationSeconds: (json['durationSeconds'] as num?)?.toInt() ?? 45,
     );
   }
@@ -329,6 +526,7 @@ class LectureSegment {
     required this.caption,
     required this.whiteboard,
     this.knowledgeCheck,
+    this.slideNotes,
     this.durationSeconds = 45,
     this.beats = const <LectureInteractiveBeat>[],
   });
@@ -338,6 +536,7 @@ class LectureSegment {
   final String caption;
   final LectureWhiteboardFrame whiteboard;
   final LectureKnowledgeCheck? knowledgeCheck;
+  final LectureSlideNotes? slideNotes;
   final int durationSeconds;
   /// Step-by-step interactive tutoring (choices pause until answered).
   final List<LectureInteractiveBeat> beats;
@@ -354,6 +553,7 @@ class LectureSegment {
       caption: beat.caption ?? caption,
       whiteboard: beat.whiteboard,
       knowledgeCheck: beat.studentChoice,
+      slideNotes: beat.slideNotes ?? slideNotes,
       durationSeconds: beat.durationSeconds,
     );
   }
@@ -372,6 +572,9 @@ class LectureSegment {
       ),
       knowledgeCheck: LectureKnowledgeCheck.tryParse(
         json['knowledgeCheck'] as Map<String, dynamic>?,
+      ),
+      slideNotes: LectureSlideNotes.fromJson(
+        json['slideNotes'] as Map<String, dynamic>?,
       ),
       durationSeconds: (json['durationSeconds'] as num?)?.toInt() ?? 90,
       beats: _parseBeats(json['beats']),
@@ -398,6 +601,7 @@ class LectureSegment {
     String? caption,
     LectureWhiteboardFrame? whiteboard,
     LectureKnowledgeCheck? knowledgeCheck,
+    LectureSlideNotes? slideNotes,
     int? durationSeconds,
     List<LectureInteractiveBeat>? beats,
   }) {
@@ -407,6 +611,7 @@ class LectureSegment {
       caption: caption ?? this.caption,
       whiteboard: whiteboard ?? this.whiteboard,
       knowledgeCheck: knowledgeCheck ?? this.knowledgeCheck,
+      slideNotes: slideNotes ?? this.slideNotes,
       durationSeconds: durationSeconds ?? this.durationSeconds,
       beats: beats ?? this.beats,
     );

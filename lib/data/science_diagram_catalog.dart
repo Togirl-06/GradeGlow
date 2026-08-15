@@ -217,14 +217,23 @@ class ScienceDiagramCatalog {
 
   static const List<ScienceDiagramRegion> _skeletonRegions = <ScienceDiagramRegion>[
     ScienceDiagramRegion(id: 'skull', name: 'Skull', color: Color(0xFFECEFF1), center: Offset(0.5, 0.1), size: Size(0.22, 0.12), difficultyTier: 1, funFact: 'The skull protects the brain and forms the face.'),
-    ScienceDiagramRegion(id: 'femur', name: 'Femur', color: Color(0xFFCFD8DC), center: Offset(0.5, 0.72), size: Size(0.16, 0.22), difficultyTier: 1, funFact: 'The femur is the longest and strongest bone in the body.'),
-    ScienceDiagramRegion(id: 'ribs', name: 'Rib Cage', color: Color(0xFFB0BEC5), center: Offset(0.5, 0.3), size: Size(0.36, 0.14), difficultyTier: 2, funFact: 'Twelve pairs of ribs protect the heart and lungs.'),
+    ScienceDiagramRegion(id: 'mandible', name: 'Mandible', color: Color(0xFFD7CCC8), center: Offset(0.5, 0.16), size: Size(0.14, 0.06), difficultyTier: 2, funFact: 'The mandible is the movable jawbone used for chewing and speech.'),
+    ScienceDiagramRegion(id: 'cervical', name: 'Cervical Vertebrae', color: Color(0xFF90A4AE), center: Offset(0.5, 0.2), size: Size(0.06, 0.08), difficultyTier: 2, funFact: 'Seven cervical vertebrae support the head and protect the upper cord.'),
     ScienceDiagramRegion(id: 'sternum', name: 'Sternum', color: Color(0xFFD7CCC8), center: Offset(0.5, 0.3), size: Size(0.06, 0.14), difficultyTier: 2, funFact: 'The sternum anchors the rib cage anteriorly.'),
+    ScienceDiagramRegion(id: 'ribs', name: 'Rib Cage', color: Color(0xFFB0BEC5), center: Offset(0.5, 0.3), size: Size(0.36, 0.14), difficultyTier: 2, funFact: 'Twelve pairs of ribs protect the heart and lungs.'),
     ScienceDiagramRegion(id: 'spine', name: 'Vertebral Column', color: Color(0xFF90A4AE), center: Offset(0.5, 0.38), size: Size(0.05, 0.35), difficultyTier: 2, funFact: 'The spine protects the spinal cord and supports posture.'),
+    ScienceDiagramRegion(id: 'lumbar', name: 'Lumbar Vertebrae', color: Color(0xFF78909C), center: Offset(0.5, 0.45), size: Size(0.06, 0.1), difficultyTier: 2, funFact: 'Lumbar vertebrae carry much of the trunk weight.'),
+    ScienceDiagramRegion(id: 'sacrum', name: 'Sacrum', color: Color(0xFFB0BEC5), center: Offset(0.5, 0.5), size: Size(0.1, 0.06), difficultyTier: 3, funFact: 'The sacrum links the spine to the pelvic girdle.'),
+    ScienceDiagramRegion(id: 'clavicle', name: 'Clavicle', color: Color(0xFFE0E0E0), center: Offset(0.38, 0.24), size: Size(0.14, 0.04), difficultyTier: 2, funFact: 'The clavicle braces the shoulder and is a common fracture site.'),
     ScienceDiagramRegion(id: 'scapula', name: 'Scapula', color: Color(0xFFCFD8DC), center: Offset(0.35, 0.28), size: Size(0.12, 0.1), difficultyTier: 3, funFact: 'The shoulder blade connects the arm to the thorax.'),
     ScienceDiagramRegion(id: 'humerus', name: 'Humerus', color: Color(0xFFE0E0E0), center: Offset(0.32, 0.42), size: Size(0.08, 0.18), difficultyTier: 3, funFact: 'The humerus is the upper-arm bone between shoulder and elbow.'),
+    ScienceDiagramRegion(id: 'radius', name: 'Radius', color: Color(0xFFCFD8DC), center: Offset(0.28, 0.55), size: Size(0.05, 0.14), difficultyTier: 3, funFact: 'The radius is the thumb-side forearm bone.'),
+    ScienceDiagramRegion(id: 'ulna', name: 'Ulna', color: Color(0xFFB0BEC5), center: Offset(0.34, 0.55), size: Size(0.05, 0.14), difficultyTier: 3, funFact: 'The ulna forms the pointed elbow and lies on the pinky side.'),
     ScienceDiagramRegion(id: 'pelvis', name: 'Pelvis', color: Color(0xFFB0BEC5), center: Offset(0.5, 0.52), size: Size(0.28, 0.1), difficultyTier: 3, funFact: 'The pelvis supports the spine and anchors leg muscles.'),
-    ScienceDiagramRegion(id: 'tibia', name: 'Tibia', color: Color(0xFFECEFF1), center: Offset(0.5, 0.9), size: Size(0.12, 0.14), difficultyTier: 3, funFact: 'The tibia (shinbone) bears most of the lower-leg weight.'),
+    ScienceDiagramRegion(id: 'femur', name: 'Femur', color: Color(0xFFCFD8DC), center: Offset(0.5, 0.72), size: Size(0.16, 0.22), difficultyTier: 1, funFact: 'The femur is the longest and strongest bone in the body.'),
+    ScienceDiagramRegion(id: 'patella', name: 'Patella', color: Color(0xFFECEFF1), center: Offset(0.5, 0.78), size: Size(0.06, 0.05), difficultyTier: 2, funFact: 'The kneecap protects the knee and improves quadriceps leverage.'),
+    ScienceDiagramRegion(id: 'tibia', name: 'Tibia', color: Color(0xFFECEFF1), center: Offset(0.48, 0.9), size: Size(0.08, 0.14), difficultyTier: 3, funFact: 'The tibia (shinbone) bears most of the lower-leg weight.'),
+    ScienceDiagramRegion(id: 'fibula', name: 'Fibula', color: Color(0xFFCFD8DC), center: Offset(0.56, 0.9), size: Size(0.05, 0.14), difficultyTier: 3, funFact: 'The fibula stabilizes the ankle on the lateral side.'),
   ];
 
   static const List<ScienceDiagramRegion> _heartRegions = <ScienceDiagramRegion>[
@@ -306,6 +315,7 @@ class ScienceDiagramCatalog {
     required String courseId,
     required String topicId,
     required String topicName,
+    bool allowSubjectFallback = true,
   }) {
     if (!_diagramSubjects.contains(subjectId)) return null;
 
@@ -319,6 +329,7 @@ class ScienceDiagramCatalog {
     if (_exactTopicDiagram.containsKey(topicId)) {
       final String id = _exactTopicDiagram[topicId]!;
       if (id == 'skeleton' && matcher.excludesBoneContent) {
+        if (!allowSubjectFallback) return null;
         return _clampDiagramToProfile(
           _nonBoneFallback(subjectId, courseId, matcher),
           subjectId: subjectId,
@@ -348,14 +359,50 @@ class ScienceDiagramCatalog {
 
     final String? explicit = matchRules(<MapEntry<String, List<String>>>[
       const MapEntry<String, List<String>>('plant_cell', <String>['plant_cell', 'plant', 'chloroplast', 'photosynth', 'cell_wall']),
-      const MapEntry<String, List<String>>('bacteria', <String>['bacteria', 'bacterial', 'prokaryote', 'microbiology', 'pathogen', 'gram_positive', 'gram_negative']),
+      const MapEntry<String, List<String>>('bacteria', <String>['bacteria', 'bacterial', 'prokaryote', 'microbiology', 'pathogen', 'gram_positive', 'gram_negative', 'infection', 'sepsis']),
       const MapEntry<String, List<String>>('animal_cell', <String>['organelle', 'organelles', 'eukaryotic', 'cell_structure', 'apoptosis', 'protein_synthesis', 'ribosome', 'membrane_transport', 'endocytosis', 'exocytosis']),
       const MapEntry<String, List<String>>('dna', <String>['dna', 'double_helix', 'nucleotide', 'replication', 'transcription', 'translation', 'crispr', 'epigenetic']),
       const MapEntry<String, List<String>>('chromosome', <String>['chromosome', 'karyotype', 'mitosis', 'meiosis', 'cell_cycle', 'cell_division']),
       const MapEntry<String, List<String>>('neuron', <String>['neuron', 'nerve', 'synapse', 'action_potential', 'neuroanatomy', 'cranial', 'nervous_system', 'neural']),
-      const MapEntry<String, List<String>>('human_organs', <String>['digestive', 'renal', 'kidney', 'liver', 'stomach', 'abdominal', 'viscera', 'endocrine', 'lymphatic']),
-      const MapEntry<String, List<String>>('heart_detail', <String>['heart', 'cardiac', 'chamber', 'aorta', 'ventricle', 'atrium', 'cardiovascular', 'cardiology', 'cardiac_cycle']),
-      const MapEntry<String, List<String>>('respiratory', <String>['respiratory', 'lung', 'breath', 'ventilat', 'pulmon', 'copd', 'gas_exchange']),
+      const MapEntry<String, List<String>>('human_organs', <String>[
+        'digestive',
+        'renal',
+        'kidney',
+        'liver',
+        'stomach',
+        'abdominal',
+        'viscera',
+        'endocrine',
+        'lymphatic',
+        'postoperative',
+        'preoperative',
+        'perioperative',
+        'surgical',
+        'complication',
+        'wound',
+        'vital_signs',
+        'anatomy',
+        'organs',
+        'organ',
+      ]),
+      const MapEntry<String, List<String>>('heart_detail', <String>[
+        'heart',
+        'cardiac',
+        'chamber',
+        'aorta',
+        'ventricle',
+        'atrium',
+        'cardiovascular',
+        'cardiology',
+        'cardiac_cycle',
+        'heart_failure',
+        'chf',
+        'congestive',
+        'myocardial',
+        'infarction',
+        'ejection_fraction',
+      ]),
+      const MapEntry<String, List<String>>('respiratory', <String>['respiratory', 'lung', 'breath', 'ventilat', 'pulmon', 'copd', 'gas_exchange', 'pneumonia', 'atelectasis']),
       const MapEntry<String, List<String>>('skeleton', <String>['skeletal', 'skeleton', 'bone', 'bones', 'musculoskeletal', 'orthopedic', 'fracture', 'skull', 'femur', 'limb_anatomy', 'joint_types', 'vertebral', 'brachial']),
       const MapEntry<String, List<String>>('atom', <String>['atomic', 'atom', 'electron', 'proton', 'periodic', 'quantum', 'nuclear', 'bohr', 'isotope']),
       const MapEntry<String, List<String>>('molecule', <String>['bonding', 'molecule', 'lewis', 'polar', 'ionic', 'covalent', 'functional_group', 'stoichiometry', 'vsepr']),
@@ -373,6 +420,9 @@ class ScienceDiagramCatalog {
         topicName: topicName,
       );
     }
+
+    // Lectures: only keyword/exact matches — never dump a random subject plate.
+    if (!allowSubjectFallback) return null;
 
     final String? courseDefault = _courseDefaultDiagram['$subjectId|$courseId'];
     if (courseDefault != null) {
@@ -541,6 +591,24 @@ class ScienceDiagramCatalog {
     'head_to_toe_assessment': 'human_organs',
     'cardiovascular_assessment': 'heart_detail',
     'cardiovascular_exam': 'heart_detail',
+    'postoperative_complications': 'human_organs',
+    'postoperative_care': 'human_organs',
+    'postoperative_fever': 'human_organs',
+    'preoperative_nursing': 'human_organs',
+    'preoperative_care': 'human_organs',
+    'perioperative_nursing': 'human_organs',
+    'surgical_wound': 'human_organs',
+    'wound_care': 'human_organs',
+    'infection_control': 'bacteria',
+    'sepsis': 'bacteria',
+    'heart_failure_nursing_care': 'heart_detail',
+    'heart_failure_nursing': 'heart_detail',
+    'chf': 'heart_detail',
+    'congestive_heart_failure': 'heart_detail',
+    'cardiac_output': 'heart_detail',
+    'myocardial_infarction': 'heart_detail',
+    'mi_nursing_care': 'heart_detail',
+    'hypertension_nursing': 'heart_detail',
   };
 
   static const Map<String, String> _courseDefaultDiagram = <String, String>{

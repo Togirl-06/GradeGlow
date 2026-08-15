@@ -13,16 +13,18 @@ class VuV2ProfileScreen extends StatelessWidget {
     required this.session,
     required this.progress,
     required this.onThemeChanged,
+    this.embedded = false,
   });
 
   final VuV2Session session;
   final VuV2ProgressStore progress;
   final ValueChanged<bool> onThemeChanged;
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Student profile')),
+      appBar: embedded ? null : AppBar(title: const Text('Student profile')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
         children: <Widget>[

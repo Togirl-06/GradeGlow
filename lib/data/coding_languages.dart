@@ -101,7 +101,12 @@ class CodingLanguage {
     ),
   ];
 
-  static List<CodingLanguage> get all => <CodingLanguage>[...leftColumn, ...rightColumn];
+  static List<CodingLanguage> get all {
+    final List<CodingLanguage> out = <CodingLanguage>[];
+    out.addAll(leftColumn);
+    out.addAll(rightColumn);
+    return out;
+  }
 
   static CodingLanguage get defaultLanguage => python3;
 
@@ -121,13 +126,20 @@ class CodingLanguage {
 
   /// LeetCode-style starter with the problem's function name.
   static String starterFor(CodingLanguage language, String functionName) {
-    return switch (language.id) {
-      'python3' => 'class Solution:\n    def $functionName(self, *args):\n        pass\n',
-      'java' => 'class Solution {\n    public Object $functionName(Object... args) {\n        \n    }\n}\n',
-      'javascript' => '/**\n * @return {*}\n */\nvar $functionName = function(...args) {\n    \n};\n',
-      'cpp' => 'class Solution {\npublic:\n    auto $functionName(auto... args) {\n        \n    }\n};\n',
-      _ => language.starter.replaceAll('solve', functionName),
-    };
+    final String id = language.id;
+    if (id == 'python3') {
+      return 'class Solution:\n    def $functionName(self, *args):\n        pass\n';
+    }
+    if (id == 'java') {
+      return 'class Solution {\n    public Object $functionName(Object... args) {\n        \n    }\n}\n';
+    }
+    if (id == 'javascript') {
+      return '/**\n * @return {*}\n */\nvar $functionName = function(...args) {\n    \n};\n';
+    }
+    if (id == 'cpp') {
+      return 'class Solution {\npublic:\n    auto $functionName(auto... args) {\n        \n    }\n};\n';
+    }
+    return language.starter.replaceAll('solve', functionName);
   }
 
   /// Editor seed — buggy code for debug problems, empty template otherwise.

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../config/app_config.dart';
 import '../../data/physics/physics_lab_engine.dart';
+import '../../models/physics/physics_lab_models.dart';
 import '../../models/physics/physics_program.dart';
 import '../../services/openai_service.dart';
 import '../../theme/physics_theme.dart';
@@ -36,11 +37,21 @@ class _PhysicsModeScreenState extends State<PhysicsModeScreen> {
   String _output = '';
   bool _loading = false;
 
+  PhysicsSimulationKind get _simKind => PhysicsLabEngine.simulationKind(
+        courseId: widget.course.id,
+        topicTitle: widget.topic.title,
+      );
+
+  List<PhysicsControlSpec> get _controls => PhysicsLabEngine.controlsFor(
+        courseId: widget.course.id,
+        kind: _simKind,
+      );
+
   @override
   void initState() {
     super.initState();
     _output = _offlineContent();
-    for (final PhysicsControlSpec c in PhysicsLabEngine.controlsFor(widget.course.id)) {
+    for (final PhysicsControlSpec c in _controls) {
       _sliders[c.id] = c.initial;
     }
   }
@@ -144,7 +155,7 @@ class _PhysicsModeScreenState extends State<PhysicsModeScreen> {
           ),
           if (_isInteractive && snap != null) ...<Widget>[
             const SizedBox(height: 16),
-            ...PhysicsLabEngine.controlsFor(widget.course.id).map(
+            ..._controls.map(
               (PhysicsControlSpec c) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

@@ -45,7 +45,7 @@ class PhysicsProgramContent extends StatelessWidget {
         const SizedBox(height: 28),
         FacultySectionHeader(palette: palette, label: 'Select level', icon: Icons.layers_outlined),
         ...levels.map((PhysicsLevel level) {
-          final ({int courses, int topics}) stats = PhysicsCatalog.statsForLevel(level);
+          final PhysicsLevelStats stats = PhysicsCatalog.statsForLevel(level);
           return FacultyNavCard(
             palette: palette,
             icon: level.icon,

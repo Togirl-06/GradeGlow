@@ -3,13 +3,17 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/diagram_misconception_store.dart';
+import 'vu_v2_lesson_flow.dart';
+
 /// Local persistence for VU V2 progress, enrollment, and campus extras.
 class VuV2ProgressStore extends ChangeNotifier {
   VuV2ProgressStore();
 
-  static const String _key = 'vu_v2_progress_v1';
+  static const String _legacyKey = 'vu_v2_progress_v1';
 
   bool _loaded = false;
+  String? _userId;
   final Set<String> enrolledDegreeIds = <String>{};
   final Set<String> completedLessonIds = <String>{};
   final Map<String, double> quizScores = <String, double>{};
@@ -19,17 +23,52 @@ class VuV2ProgressStore extends ChangeNotifier {
   final List<String> plannerSlots = <String>[];
   final List<String> skills = <String>[];
 
+  /// lessonId → completed step keys (see [VuV2LessonFlowPlan.stepKey]).
+  final Map<String, Set<String>> completedStepsByLessonId = <String, Set<String>>{};
+
+  /// Misconception pair id → wrong-answer count (synced from [DiagramMisconceptionStore]).
+  final Map<String, int> diagramMisconceptions = <String, int>{};
+
+  /// Consecutive correct clears of diagram misconceptions (not login streak).
+  int masteryClearStreak = 0;
+
+  /// Total XP earned from gated lesson steps.
+  int lessonXp = 0;
+
   int studyMinutes = 0;
   int streakDays = 0;
   bool isPremium = false;
   bool preferLightTheme = false;
-  double gpaPlaceholder = 3.6;
+  double gpaPlaceholder = 0;
 
-  Future<void> ensureLoaded() async {
-    if (_loaded) return;
+  /// Cumulative GPA on a 4.0 scale from quiz performance.
+  double get gpa {
+    if (quizScores.isEmpty) return 0;
+    final double avg = quizScores.values.reduce((double a, double b) => a + b) /
+        quizScores.length;
+    return ((avg / 100) * 4.0).clamp(0.0, 4.0);
+  }
+
+  String get gpaLabel => gpa.toStringAsFixed(2);
+
+  String get _storageKey {
+    final String? id = _userId;
+    if (id == null || id.isEmpty) return _legacyKey;
+    return '${_legacyKey}_$id';
+  }
+
+  Future<void> ensureLoaded({String? userId}) async {
+    if (_loaded && _userId == userId) return;
     _loaded = true;
+    _userId = userId;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? raw = prefs.getString(_key);
+    String? raw = prefs.getString(_storageKey);
+    if (raw == null && userId != null && userId.isNotEmpty) {
+      raw = prefs.getString(_legacyKey);
+      if (raw != null) {
+        await prefs.setString(_storageKey, raw);
+      }
+    }
     if (raw == null) {
       _seedNotifications();
       notifyListeners();
@@ -71,7 +110,22 @@ class VuV2ProgressStore extends ChangeNotifier {
       streakDays = (data['streakDays'] as num?)?.toInt() ?? 0;
       isPremium = data['isPremium'] as bool? ?? false;
       preferLightTheme = data['preferLightTheme'] as bool? ?? false;
-      gpaPlaceholder = (data['gpa'] as num?)?.toDouble() ?? 3.6;
+      gpaPlaceholder = (data['gpa'] as num?)?.toDouble() ?? 0;
+      lessonXp = (data['lessonXp'] as num?)?.toInt() ?? 0;
+      masteryClearStreak = (data['masteryClearStreak'] as num?)?.toInt() ?? 0;
+      completedStepsByLessonId
+        ..clear()
+        ..addAll(
+          ((data['lessonSteps'] as Map<String, dynamic>?) ?? <String, dynamic>{})
+              .map(
+            (String k, dynamic v) => MapEntry(
+              k,
+              ((v as List<dynamic>?) ?? <dynamic>[])
+                  .whereType<String>()
+                  .toSet(),
+            ),
+          ),
+        );
       notifications
         ..clear()
         ..addAll(
@@ -88,9 +142,62 @@ class VuV2ProgressStore extends ChangeNotifier {
               ),
         );
       if (notifications.isEmpty) _seedNotifications();
+      diagramMisconceptions
+        ..clear()
+        ..addAll(
+          ((data['diagramMisconceptions'] as Map<String, dynamic>?) ?? <String, dynamic>{})
+              .map((String k, dynamic v) => MapEntry(k, (v as num).toInt())),
+        );
+      await syncDiagramMisconceptions();
     } catch (_) {
       _seedNotifications();
     }
+    notifyListeners();
+  }
+
+  Future<void> syncDiagramMisconceptions() async {
+    await DiagramMisconceptionStore.instance.ensureLoaded();
+    diagramMisconceptions
+      ..clear()
+      ..addAll(DiagramMisconceptionStore.instance.exportCounts());
+  }
+
+  Future<void> recordDiagramConfusion({
+    required String diagramId,
+    required String tappedRegionId,
+    required String targetRegionId,
+  }) async {
+    await DiagramMisconceptionStore.instance.recordConfusion(
+      diagramId: diagramId,
+      tappedRegionId: tappedRegionId,
+      targetRegionId: targetRegionId,
+    );
+    await syncDiagramMisconceptions();
+    notifyListeners();
+  }
+
+  List<String> get topDiagramMisconceptions {
+    final List<MapEntry<String, int>> sorted = diagramMisconceptions.entries.toList()
+      ..sort((MapEntry<String, int> a, MapEntry<String, int> b) => b.value.compareTo(a.value));
+    return sorted.map((MapEntry<String, int> e) => e.key).take(5).toList(growable: false);
+  }
+
+  /// Misconceptions at or above the adaptive re-teach threshold.
+  int get dueAdaptiveReviews {
+    return diagramMisconceptions.values
+        .where((int c) => c >= DiagramMisconceptionStore.reviewThreshold)
+        .length;
+  }
+
+  Future<void> recordMisconceptionCleared(String misconceptionId) async {
+    await DiagramMisconceptionStore.instance.markReviewed(misconceptionId);
+    await syncDiagramMisconceptions();
+    masteryClearStreak += 1;
+    lessonXp += 15;
+    if (!skills.contains('Spatial anatomist')) {
+      skills.add('Spatial anatomist');
+    }
+    await _persist();
     notifyListeners();
   }
 
@@ -124,6 +231,18 @@ class VuV2ProgressStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Enroll every program id so Lecture Halls open without per-program gates.
+  Future<void> enrollAll(Iterable<String> degreeIds) async {
+    var changed = false;
+    for (final String id in degreeIds) {
+      if (id.isEmpty) continue;
+      if (enrolledDegreeIds.add(id)) changed = true;
+    }
+    if (!changed) return;
+    await _persist();
+    notifyListeners();
+  }
+
   Future<void> completeLesson(String lessonId, {int minutes = 12}) async {
     completedLessonIds.add(lessonId);
     studyMinutes += minutes;
@@ -134,16 +253,129 @@ class VuV2ProgressStore extends ChangeNotifier {
     }
     await pushNotification(
       id: 'lesson_$lessonId',
-      title: 'Lesson completed',
-      body: 'Nice work — progress saved to your degree path.',
+      title: 'Skill mastered',
+      body: 'Lecture, lab, and knowledge check are complete.',
       kind: 'achievement',
     );
     await _persist();
     notifyListeners();
   }
 
+  /// Campus is fully open — no sequential course/lesson/step locks.
+  static const bool unlockAllCourses = true;
+
+  /// Whether [step] is done for this lesson.
+  bool isStepComplete(String lessonId, VuV2LessonStep step) {
+    return completedStepsByLessonId[lessonId]
+            ?.contains(VuV2LessonFlowPlan.stepKey(step)) ??
+        false;
+  }
+
+  /// First hub step is always unlocked; later steps need the previous one done.
+  bool isStepUnlocked(
+    String lessonId,
+    VuV2LessonStep step, {
+    List<VuV2LessonStep>? steps,
+  }) {
+    if (unlockAllCourses) return true;
+    final List<VuV2LessonStep> ordered =
+        steps ?? VuV2LessonFlowPlan.hubSteps;
+    final int i = ordered.indexOf(step);
+    if (i <= 0) return true;
+    return isStepComplete(lessonId, ordered[i - 1]);
+  }
+
+  /// Next incomplete unlocked step, or null when the hub journey is finished.
+  VuV2LessonStep? nextOpenStep(
+    String lessonId, {
+    List<VuV2LessonStep>? steps,
+  }) {
+    final List<VuV2LessonStep> ordered =
+        steps ?? VuV2LessonFlowPlan.hubSteps;
+    for (final VuV2LessonStep step in ordered) {
+      if (!isStepComplete(lessonId, step) &&
+          isStepUnlocked(lessonId, step, steps: ordered)) {
+        return step;
+      }
+    }
+    return null;
+  }
+
+  bool areAllHubStepsComplete(String lessonId) {
+    for (final VuV2LessonStep step in VuV2LessonFlowPlan.hubSteps) {
+      if (!isStepComplete(lessonId, step)) return false;
+    }
+    return true;
+  }
+
+  /// Lecture alone is not mastery. Professor + check (+ lab when required).
+  bool meetsMastery(String lessonId, {bool requiresLab = true}) {
+    for (final VuV2LessonStep step
+        in VuV2LessonFlowPlan.masterySteps(requiresLab: requiresLab)) {
+      if (!isStepComplete(lessonId, step)) return false;
+    }
+    return true;
+  }
+
+  /// Mark a flow step done, award XP, and complete the lesson at mastery.
+  Future<bool> markStep(
+    String lessonId,
+    VuV2LessonStep step, {
+    String? subjectId,
+    String? topicTitle,
+    bool requiresLab = true,
+  }) async {
+    final String key = VuV2LessonFlowPlan.stepKey(step);
+    final Set<String> bucket =
+        completedStepsByLessonId.putIfAbsent(lessonId, () => <String>{});
+    final bool already = bucket.contains(key);
+    if (!already) {
+      bucket.add(key);
+      lessonXp += VuV2LessonFlowPlan.xpFor(step);
+      studyMinutes += 4;
+      _markAttendanceToday();
+    }
+
+    final bool finished = meetsMastery(lessonId, requiresLab: requiresLab);
+    if (finished && !completedLessonIds.contains(lessonId)) {
+      completedLessonIds.add(lessonId);
+      studyMinutes += 8;
+      _bumpStreak();
+      if (!skills.contains('Active learner')) {
+        skills.add('Active learner');
+      }
+      lessonXp += 40; // completion bonus
+      await pushNotification(
+        id: 'lesson_flow_$lessonId',
+        title: 'You can do this yourself',
+        body:
+            'You learned it from the professor, used it in the lab, and proved it.',
+        kind: 'achievement',
+      );
+    }
+
+    if (already && !finished) {
+      notifyListeners();
+      return false;
+    }
+
+    await _persist();
+    notifyListeners();
+    return finished;
+  }
+
+  /// Course lessons unlock in order: first always open; later need prior complete.
+  bool isLessonUnlocked(String lessonId, List<String> orderedLessonIds) {
+    if (unlockAllCourses) return true;
+    if (orderedLessonIds.isEmpty) return true;
+    final int i = orderedLessonIds.indexOf(lessonId);
+    if (i <= 0) return true;
+    return completedLessonIds.contains(orderedLessonIds[i - 1]);
+  }
+
   Future<void> recordQuiz(String quizId, double percent) async {
     quizScores[quizId] = percent;
+    gpaPlaceholder = gpa;
     studyMinutes += 8;
     _markAttendanceToday();
     await _persist();
@@ -247,7 +479,7 @@ class VuV2ProgressStore extends ChangeNotifier {
   Future<void> _persist() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-      _key,
+      _storageKey,
       jsonEncode(<String, dynamic>{
         'enrolled': enrolledDegreeIds.toList(),
         'lessons': completedLessonIds.toList(),
@@ -260,7 +492,13 @@ class VuV2ProgressStore extends ChangeNotifier {
         'streakDays': streakDays,
         'isPremium': isPremium,
         'preferLightTheme': preferLightTheme,
-        'gpa': gpaPlaceholder,
+        'gpa': gpa,
+        'lessonXp': lessonXp,
+        'masteryClearStreak': masteryClearStreak,
+        'lessonSteps': completedStepsByLessonId.map(
+          (String k, Set<String> v) => MapEntry(k, v.toList()),
+        ),
+        'diagramMisconceptions': diagramMisconceptions,
         'notifications': notifications
             .map(
               (VuV2NotificationItem n) => <String, dynamic>{

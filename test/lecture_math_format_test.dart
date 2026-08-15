@@ -38,6 +38,18 @@ void main() {
     test('detects math content', () {
       expect(LectureMathFormat.containsMath('lim (x→a) f(x) = L'), isTrue);
       expect(LectureMathFormat.containsMath('Textbook depth'), isFalse);
+      expect(
+        LectureMathFormat.containsMath('Why Medical-Surgical Nursing needs it'),
+        isFalse,
+      );
+      expect(
+        LectureMathFormat.containsMath('Plan: theory → examples → practice'),
+        isFalse,
+      );
+      expect(
+        LectureMathFormat.containsMath('Assess → Act → Reassess → Document'),
+        isFalse,
+      );
     });
   });
 }

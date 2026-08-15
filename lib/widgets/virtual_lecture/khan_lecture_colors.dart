@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Khan Academy–inspired chalkboard video palette.
+/// Chalkboard video palette for dark lecture boards.
 abstract final class KhanLectureColors {
   static const Color board = Color(0xFF1A2332);
   static const Color boardDeep = Color(0xFF0F1623);

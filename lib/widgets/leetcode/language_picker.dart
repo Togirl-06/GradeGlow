@@ -99,17 +99,20 @@ class _LanguageColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> tiles = <Widget>[];
+    for (int i = 0; i < languages.length; i++) {
+      final CodingLanguage lang = languages[i];
+      tiles.add(
+        _LanguageTile(
+          language: lang,
+          isSelected: lang.id == selected.id,
+          onTap: () => Navigator.pop(context, lang),
+        ),
+      );
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: languages
-          .map(
-            (CodingLanguage lang) => _LanguageTile(
-              language: lang,
-              isSelected: lang.id == selected.id,
-              onTap: () => Navigator.pop(context, lang),
-            ),
-          )
-          .toList(),
+      children: tiles,
     );
   }
 }

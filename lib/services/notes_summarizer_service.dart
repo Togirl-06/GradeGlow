@@ -948,7 +948,7 @@ class NotesSummarizerService extends ChangeNotifier {
     return updated;
   }
 
-  /// Auto-generate flashcards & quiz from summary text if missing (Quizlet-style).
+  /// Auto-generate flashcards & quiz from summary text if missing.
   Future<StudySummary> ensureStudyMaterials(
     StudySummary summary, {
     bool flashcardsOnly = false,

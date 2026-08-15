@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -62,16 +63,25 @@ class TutorVoiceService {
   double _playbackSpeed = 1;
   /// Speed baked into the current OpenAI MP3 (player rate is relative to this).
   double _bakedSpeed = 1;
+  String _openAiVoice = OpenAiTtsVoices.defaultId;
+  Duration? _pausedAt;
   Completer<void>? _resumeGate;
   Completer<void>? _mp3Done;
   Uint8List? _activeMp3Bytes;
   String? _activeMp3Text;
   String? _activeMp3Path;
+  /// Prefetched OpenAI MP3s keyed by `text|voice` so the next segment starts instantly.
+  final LinkedHashMap<String, Uint8List> _ttsPrefetchCache =
+      LinkedHashMap<String, Uint8List>();
+  static const int _ttsPrefetchCacheMax = 8;
   bool _ignoreNextMp3Complete = false;
   VoidCallback? _onListenEnd;
   String? _statusMessage;
   String? _lastSpeakError;
   String? _lastListenError;
+
+  /// 0–1 progress through the current spoken utterance (audio-backed when MP3).
+  final ValueNotifier<double> utteranceProgress = ValueNotifier<double>(0);
 
   bool get canListen =>
       (AppConfig.hasOpenAi && (kIsWeb || _recorderReady)) || _speechReady;
@@ -84,9 +94,32 @@ class TutorVoiceService {
   bool get isSpeaking => _speaking;
   bool get isPlaybackPaused => _playbackPaused;
   bool get usesOpenAiTts => _useOpenAiTts;
+  String get openAiVoice => _openAiVoice;
   String? get statusMessage => _statusMessage;
   String? get lastSpeakError => _lastSpeakError;
   String? get lastListenError => _lastListenError;
+
+  /// Switch professor voice. Clears cached audio so the next speak uses it.
+  Future<void> setOpenAiVoice(String voiceId) async {
+    final String next =
+        OpenAiTtsVoices.isValid(voiceId) ? voiceId : OpenAiTtsVoices.defaultId;
+    if (next == _openAiVoice) return;
+    _openAiVoice = next;
+    _activeMp3Text = null;
+    _activeMp3Bytes = null;
+  }
+
+  Future<void> setPlaybackSpeed(double multiplier) async {
+    final double next = multiplier.clamp(0.5, 2.5);
+    _playbackSpeed = next;
+    // Stretch/compress with player rate — no network re-synthesis on speed tap.
+    await _applyEffectivePlayerRate(reinforce: true);
+    if (_ttsReady) {
+      try {
+        await _tts.setSpeechRate((0.42 * _playbackSpeed).clamp(0.2, 1.0));
+      } catch (_) {}
+    }
+  }
 
   Future<VoiceCapabilities> initialize() async {
     _statusMessage = null;
@@ -641,22 +674,6 @@ class TutorVoiceService {
     }
   }
 
-  Future<void> setPlaybackSpeed(double multiplier) async {
-    final double next = multiplier.clamp(0.5, 2.5);
-    final bool changed = (next - _playbackSpeed).abs() > 0.01;
-    _playbackSpeed = next;
-    if (changed) {
-      // Force next TTS chunk to regenerate at the new baked speed.
-      _activeMp3Text = null;
-    }
-    await _applyEffectivePlayerRate(reinforce: true);
-    if (_ttsReady) {
-      try {
-        await _tts.setSpeechRate((0.42 * _playbackSpeed).clamp(0.2, 1.0));
-      } catch (_) {}
-    }
-  }
-
   /// OpenAI audio is synthesized at [_bakedSpeed]; player rate = desired / baked.
   Future<void> _applyEffectivePlayerRate({bool reinforce = false}) async {
     final double baked = _bakedSpeed <= 0 ? 1 : _bakedSpeed;
@@ -673,6 +690,47 @@ class TutorVoiceService {
     } catch (_) {}
   }
 
+  /// Synthesize OpenAI audio ahead of time so the next lecture beat starts with
+  /// almost no network gap.
+  Future<void> prefetchSpeak(String text) async {
+    if (!_useOpenAiTts || !AppConfig.hasOpenAi) return;
+    final String trimmed = speechTextFromMarkdown(text);
+    if (trimmed.isEmpty) return;
+    final List<String> chunks = speechChunksForTts(trimmed);
+    for (final String chunk in chunks) {
+      final String cacheKey = '$chunk|$_openAiVoice';
+      if (_cachedTtsBytes(cacheKey) != null) continue;
+      try {
+        final Uint8List audio = await _openAiTts.synthesizeBytes(
+          chunk,
+          speed: 1.0,
+          voice: _openAiVoice,
+        );
+        _storeTtsCache(cacheKey, audio);
+      } catch (e) {
+        debugPrint('TTS prefetch skipped: $e');
+        return;
+      }
+    }
+  }
+
+  Uint8List? _cachedTtsBytes(String cacheKey) {
+    final Uint8List? prefetched = _ttsPrefetchCache[cacheKey];
+    if (prefetched != null) return prefetched;
+    if (_activeMp3Text == cacheKey && _activeMp3Bytes != null) {
+      return _activeMp3Bytes;
+    }
+    return null;
+  }
+
+  void _storeTtsCache(String cacheKey, Uint8List audio) {
+    _ttsPrefetchCache.remove(cacheKey);
+    _ttsPrefetchCache[cacheKey] = audio;
+    while (_ttsPrefetchCache.length > _ttsPrefetchCacheMax) {
+      _ttsPrefetchCache.remove(_ttsPrefetchCache.keys.first);
+    }
+  }
+
   Future<bool> speak(
     String text, {
     bool preferDeviceVoice = false,
@@ -686,6 +744,7 @@ class TutorVoiceService {
     _lastSpeakError = null;
     final int generation = ++_speakGeneration;
     _playbackPaused = false;
+    utteranceProgress.value = 0;
     final Completer<void>? gate = _resumeGate;
     _resumeGate = null;
     if (gate != null && !gate.isCompleted) {
@@ -697,21 +756,51 @@ class TutorVoiceService {
     if (chunks.isEmpty) return false;
 
     bool spokeAny = false;
-    for (final String chunk in chunks) {
+    final int totalChars =
+        chunks.fold<int>(0, (int a, String c) => a + c.length).clamp(1, 1000000);
+    int offsetChars = 0;
+    for (int i = 0; i < chunks.length; i++) {
+      final String chunk = chunks[i];
       if (generation != _speakGeneration) break;
       await _waitWhilePaused(generation);
       if (generation != _speakGeneration) break;
+      // Warm the following chunk while this one plays (OpenAI network gap).
+      if (_useOpenAiTts && AppConfig.hasOpenAi && i + 1 < chunks.length) {
+        final String nextKey = '${chunks[i + 1]}|$_openAiVoice';
+        if (_cachedTtsBytes(nextKey) == null) {
+          unawaited(() async {
+            try {
+              final Uint8List audio = await _openAiTts.synthesizeBytes(
+                chunks[i + 1],
+                speed: 1.0,
+                voice: _openAiVoice,
+              );
+              if (generation == _speakGeneration) {
+                _storeTtsCache(nextKey, audio);
+              }
+            } catch (_) {}
+          }());
+        }
+      }
+      final double span = chunk.length / totalChars;
+      final double base = offsetChars / totalChars;
       final bool ok = await _speakOneChunk(
         chunk,
         preferDeviceVoice: preferDeviceVoice,
         allowDeviceFallback: allowDeviceFallback,
+        progressBase: base,
+        progressSpan: span,
       );
+      offsetChars += chunk.length;
       if (generation != _speakGeneration) break;
       if (ok) {
         spokeAny = true;
       } else if (!spokeAny) {
         return false;
       }
+    }
+    if (spokeAny && generation == _speakGeneration) {
+      utteranceProgress.value = 1;
     }
     return spokeAny && generation == _speakGeneration;
   }
@@ -734,6 +823,8 @@ class TutorVoiceService {
     String trimmed, {
     required bool preferDeviceVoice,
     bool allowDeviceFallback = false,
+    double progressBase = 0,
+    double progressSpan = 1,
   }) async {
     final bool openAiReady = _useOpenAiTts && AppConfig.hasOpenAi;
 
@@ -743,7 +834,11 @@ class TutorVoiceService {
         await _initDeviceTts();
       }
       if (_ttsReady) {
-        final bool spoke = await _speakWithDevice(trimmed);
+        final bool spoke = await _speakWithDevice(
+          trimmed,
+          progressBase: progressBase,
+          progressSpan: progressSpan,
+        );
         if (spoke) return true;
       }
     }
@@ -751,20 +846,27 @@ class TutorVoiceService {
     if (openAiReady) {
       try {
         Uint8List audio;
-        final String cacheKey = '$trimmed|${_playbackSpeed.toStringAsFixed(2)}';
-        if (_activeMp3Text == cacheKey && _activeMp3Bytes != null) {
-          audio = _activeMp3Bytes!;
-          _bakedSpeed = _playbackSpeed;
+        // Cache by text + voice only — speed is applied via player rate.
+        final String cacheKey = '$trimmed|$_openAiVoice';
+        final Uint8List? cached = _cachedTtsBytes(cacheKey);
+        if (cached != null) {
+          audio = cached;
         } else {
           audio = await _openAiTts.synthesizeBytes(
             trimmed,
-            speed: _playbackSpeed,
+            speed: 1.0,
+            voice: _openAiVoice,
           );
-          _activeMp3Bytes = audio;
-          _activeMp3Text = cacheKey;
-          _bakedSpeed = _playbackSpeed;
+          _storeTtsCache(cacheKey, audio);
         }
-        final bool played = await _playMp3Bytes(audio);
+        _activeMp3Bytes = audio;
+        _activeMp3Text = cacheKey;
+        _bakedSpeed = 1.0;
+        final bool played = await _playMp3Bytes(
+          audio,
+          progressBase: progressBase,
+          progressSpan: progressSpan,
+        );
         if (played) return true;
         _lastSpeakError = 'Audio player did not start.';
         debugPrint(_lastSpeakError);
@@ -781,17 +883,29 @@ class TutorVoiceService {
     }
     if (!_ttsReady) return false;
 
-    return _speakWithDevice(trimmed);
+    return _speakWithDevice(
+      trimmed,
+      progressBase: progressBase,
+      progressSpan: progressSpan,
+    );
   }
 
-  Future<bool> _playMp3Bytes(Uint8List bytes) async {
+  Future<bool> _playMp3Bytes(
+    Uint8List bytes, {
+    double progressBase = 0,
+    double progressSpan = 1,
+  }) async {
     _speaking = true;
     StreamSubscription<PlayerState>? stateSub;
     StreamSubscription<void>? completeSub;
+    StreamSubscription<Duration>? positionSub;
     final int generation = _speakGeneration;
     final Completer<void> done = Completer<void>();
     _mp3Done = done;
     _activeMp3Bytes = bytes;
+    final double span = progressSpan.clamp(0.0, 1.0);
+    final double base = progressBase.clamp(0.0, 1.0);
+    utteranceProgress.value = base;
 
     try {
       final Source source = await _sourceForMp3(bytes);
@@ -801,18 +915,38 @@ class TutorVoiceService {
       // Audio is already synthesized at [_bakedSpeed] — start at relative rate 1.
       await _applyEffectivePlayerRate();
 
+      void setProgress(double local) {
+        utteranceProgress.value =
+            (base + local.clamp(0.0, 1.0) * span).clamp(0.0, 1.0);
+      }
+
       void maybeComplete() {
         if (_playbackPaused || done.isCompleted) return;
         if (_ignoreNextMp3Complete) {
           _ignoreNextMp3Complete = false;
           return;
         }
+        setProgress(1);
         done.complete();
       }
 
       completeSub = _player.onPlayerComplete.listen((_) => maybeComplete());
       stateSub = _player.onPlayerStateChanged.listen((PlayerState state) {
         if (state == PlayerState.completed) maybeComplete();
+      });
+
+      Duration? knownDuration;
+      positionSub = _player.onPositionChanged.listen((Duration pos) async {
+        if (generation != _speakGeneration || _playbackPaused) return;
+        knownDuration ??= await _player.getDuration();
+        final Duration? d = knownDuration;
+        if (d == null || d.inMilliseconds <= 0) return;
+        final double p =
+            (pos.inMilliseconds / d.inMilliseconds).clamp(0.0, 1.0);
+        final double mapped = (base + p * span).clamp(0.0, 1.0);
+        if ((mapped - utteranceProgress.value).abs() >= 0.008 || p >= 0.99) {
+          utteranceProgress.value = mapped;
+        }
       });
 
       await _player.play(source);
@@ -826,6 +960,7 @@ class TutorVoiceService {
             'OpenAI audio: play() called but player never entered playing state.');
         return false;
       }
+      knownDuration ??= await _player.getDuration();
 
       // Generous upper bound; clock does not advance while soft-paused.
       // Faster playback finishes sooner — scale timeout by speed.
@@ -836,11 +971,15 @@ class TutorVoiceService {
         generation: generation,
         maxMs: maxMs,
       );
+      if (generation == _speakGeneration) {
+        setProgress(1);
+      }
       return generation == _speakGeneration;
     } catch (error) {
       debugPrint('MP3 playback error: $error');
       return false;
     } finally {
+      await positionSub?.cancel();
       await stateSub?.cancel();
       await completeSub?.cancel();
       if (identical(_mp3Done, done)) {
@@ -850,6 +989,27 @@ class TutorVoiceService {
         done.complete();
       }
       _speaking = false;
+    }
+  }
+
+  /// Seek within the current utterance (0–1). Used to keep scrubber + voice in sync.
+  Future<void> seekUtterance(double fraction) async {
+    final double f = fraction.clamp(0.0, 1.0);
+    try {
+      final Duration? d = await _player.getDuration();
+      if (d == null || d.inMilliseconds <= 0) {
+        utteranceProgress.value = f;
+        return;
+      }
+      final Duration target = Duration(
+        milliseconds: (d.inMilliseconds * f).round(),
+      );
+      await _player.seek(target);
+      _pausedAt = target;
+      utteranceProgress.value = f;
+    } catch (e) {
+      debugPrint('seekUtterance failed: $e');
+      utteranceProgress.value = f;
     }
   }
 
@@ -918,8 +1078,38 @@ class TutorVoiceService {
     }
   }
 
-  Future<bool> _speakWithDevice(String text) async {
+  Future<bool> _speakWithDevice(
+    String text, {
+    double progressBase = 0,
+    double progressSpan = 1,
+  }) async {
     _speaking = true;
+    final double span = progressSpan.clamp(0.0, 1.0);
+    final double base = progressBase.clamp(0.0, 1.0);
+    utteranceProgress.value = base;
+    final int generation = _speakGeneration;
+    final int wordCount =
+        text.split(RegExp(r'\s+')).where((String w) => w.isNotEmpty).length;
+    // ~130 wpm at 1x — keeps board reveal roughly aligned when MP3 position is unavailable.
+    final int totalMs =
+        ((wordCount.clamp(1, 5000) / 130.0) * 60000 / _playbackSpeed)
+            .round()
+            .clamp(800, 300000);
+    final Stopwatch clock = Stopwatch()..start();
+    final Timer tick = Timer.periodic(const Duration(milliseconds: 50), (_) {
+      if (generation != _speakGeneration) return;
+      if (_playbackPaused) {
+        if (clock.isRunning) clock.stop();
+        return;
+      }
+      if (!clock.isRunning) clock.start();
+      final double local =
+          (clock.elapsedMilliseconds / totalMs).clamp(0.0, 0.99);
+      final double mapped = (base + local * span).clamp(0.0, 1.0);
+      if ((mapped - utteranceProgress.value).abs() >= 0.008) {
+        utteranceProgress.value = mapped;
+      }
+    });
     try {
       await _tts.stop();
       final dynamic result = await _tts.speak(text);
@@ -928,12 +1118,16 @@ class TutorVoiceService {
         debugPrint('Device TTS speak returned $result');
         return false;
       }
+      if (generation == _speakGeneration) {
+        utteranceProgress.value = (base + span).clamp(0.0, 1.0);
+      }
       return true;
     } catch (error) {
       _lastSpeakError = error.toString().replaceFirst('Exception: ', '');
       debugPrint('Device TTS speak error: $error');
       return false;
     } finally {
+      tick.cancel();
       _speaking = false;
     }
   }
@@ -942,6 +1136,11 @@ class TutorVoiceService {
   Future<void> pauseSpeaking() async {
     if (_playbackPaused) return;
     _playbackPaused = true;
+    try {
+      _pausedAt = await _player.getCurrentPosition();
+    } catch (_) {
+      _pausedAt = null;
+    }
     try {
       await _player.pause();
     } catch (_) {}
@@ -952,7 +1151,7 @@ class TutorVoiceService {
     }
   }
 
-  /// Continue after [pauseSpeaking]. Does not restart from the beginning.
+  /// Continue after [pauseSpeaking]. Resumes from the paused position when possible.
   Future<void> resumeSpeaking() async {
     if (!_playbackPaused) return;
     _playbackPaused = false;
@@ -968,13 +1167,18 @@ class TutorVoiceService {
         await _player.resume();
         return;
       }
-      // Some platforms drop pause into "stopped" — replay the same buffer
-      // immediately (no network) so unpause is instant.
+      // Some platforms drop pause into "stopped" — restore position then play
+      // the same buffer (no network) so unpause stays instant.
       if (state != PlayerState.playing && _activeMp3Bytes != null) {
         final Source source = await _sourceForMp3(_activeMp3Bytes!);
-        // Ignore the complete/stop event from replacing the player source.
         _ignoreNextMp3Complete = true;
         await _player.play(source);
+        final Duration? seekTo = _pausedAt;
+        if (seekTo != null && seekTo > Duration.zero) {
+          try {
+            await _player.seek(seekTo);
+          } catch (_) {}
+        }
         await _applyEffectivePlayerRate(reinforce: true);
       }
     } catch (e) {
@@ -1119,5 +1323,6 @@ class TutorVoiceService {
     await stopSpeaking();
     await _recorder.dispose();
     await _player.dispose();
+    utteranceProgress.dispose();
   }
 }

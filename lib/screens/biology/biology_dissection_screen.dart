@@ -88,15 +88,15 @@ class _BiologyDissectionScreenState extends State<BiologyDissectionScreen> {
   String get _asset {
     switch (_specimen) {
       case 'Heart':
-        return 'assets/anatomy/heart.svg';
+        return 'assets/anatomy/heart_real.png';
       case 'Eye':
-        return 'assets/anatomy/neuron.svg';
+        return 'assets/anatomy/neuron_real.png';
       case 'Flower':
         return 'assets/biology/plant_cell.svg';
       case 'Fish':
-        return 'assets/anatomy/organs.svg';
+        return 'assets/anatomy/organs_real.png';
       default:
-        return 'assets/anatomy/human_body.svg';
+        return 'assets/anatomy/organs_labeled.png';
     }
   }
 
@@ -202,15 +202,26 @@ class _BiologyDissectionScreenState extends State<BiologyDissectionScreen> {
                                     Colors.transparent,
                                     BlendMode.srcATop,
                                   ),
-                            child: SvgPicture.asset(
-                              _asset,
-                              height: 170,
-                              placeholderBuilder: (_) => Icon(
-                                Icons.pets,
-                                size: 100,
-                                color: c.primary,
-                              ),
-                            ),
+                            child: _asset.toLowerCase().endsWith('.svg')
+                                ? SvgPicture.asset(
+                                    _asset,
+                                    height: 170,
+                                    placeholderBuilder: (_) => Icon(
+                                      Icons.pets,
+                                      size: 100,
+                                      color: c.primary,
+                                    ),
+                                  )
+                                : Image.asset(
+                                    _asset,
+                                    height: 170,
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (BuildContext context, Object error, StackTrace? stack) => Icon(
+                                      Icons.pets,
+                                      size: 100,
+                                      color: c.primary,
+                                    ),
+                                  ),
                           ),
                         ),
                       ),

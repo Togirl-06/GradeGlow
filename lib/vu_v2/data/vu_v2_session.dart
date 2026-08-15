@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Lightweight V2 onboarding + campus preferences.
+/// Lightweight V2 onboarding + campus preferences (per signed-in user).
 class VuV2Session extends ChangeNotifier {
   VuV2Session();
 
-  static const String _key = 'vu_v2_session_v1';
+  static const String _legacyKey = 'vu_v2_session_v1';
 
   bool _loaded = false;
+  String? _userId;
   bool onboardingComplete = false;
   String displayName = 'Student';
   String majorId = 'computer_science';
@@ -21,11 +22,28 @@ class VuV2Session extends ChangeNotifier {
   String? continueSubtitle;
   double continueProgress = 0;
 
-  Future<void> ensureLoaded() async {
-    if (_loaded) return;
+  /// Last unfinished onboarding page (0–4). Used to resume without retyping.
+  int onboardingStep = 0;
+
+  String get _storageKey {
+    final String? id = _userId;
+    if (id == null || id.isEmpty) return _legacyKey;
+    return '${_legacyKey}_$id';
+  }
+
+  Future<void> ensureLoaded({String? userId}) async {
+    if (_loaded && _userId == userId) return;
     _loaded = true;
+    _userId = userId;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? raw = prefs.getString(_key);
+    String? raw = prefs.getString(_storageKey);
+    // Migrate legacy device-wide session into this user once.
+    if (raw == null && userId != null && userId.isNotEmpty) {
+      raw = prefs.getString(_legacyKey);
+      if (raw != null) {
+        await prefs.setString(_storageKey, raw);
+      }
+    }
     if (raw == null) {
       notifyListeners();
       return;
@@ -44,7 +62,30 @@ class VuV2Session extends ChangeNotifier {
       continueTitle = data['continueTitle'] as String?;
       continueSubtitle = data['continueSubtitle'] as String?;
       continueProgress = (data['continueProgress'] as num?)?.toDouble() ?? 0;
+      onboardingStep = (data['onboardingStep'] as num?)?.toInt() ?? 0;
     } catch (_) {}
+    notifyListeners();
+  }
+
+  Future<void> saveOnboardingDraft({
+    required String name,
+    required List<String> goals,
+    String? majorId,
+    String? majorLabel,
+    required int weeklyMinutes,
+    required int step,
+  }) async {
+    if (onboardingComplete) return;
+    final String trimmed = name.trim();
+    if (trimmed.isNotEmpty) displayName = trimmed;
+    this.goals = List<String>.from(goals);
+    if (majorId != null && majorId.isNotEmpty) this.majorId = majorId;
+    if (majorLabel != null && majorLabel.isNotEmpty) {
+      this.majorLabel = majorLabel;
+    }
+    this.weeklyMinutes = weeklyMinutes;
+    onboardingStep = step.clamp(0, 4);
+    await _persist();
     notifyListeners();
   }
 
@@ -61,6 +102,7 @@ class VuV2Session extends ChangeNotifier {
     this.goals = List<String>.from(goals);
     this.weeklyMinutes = weeklyMinutes;
     onboardingComplete = true;
+    onboardingStep = 4;
     continueTitle = 'Orientation: Meet your AI Professor';
     continueSubtitle = '$majorLabel · Module 1';
     continueProgress = 0.08;
@@ -83,7 +125,7 @@ class VuV2Session extends ChangeNotifier {
   Future<void> _persist() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-      _key,
+      _storageKey,
       jsonEncode(<String, dynamic>{
         'onboardingComplete': onboardingComplete,
         'displayName': displayName,
@@ -95,6 +137,7 @@ class VuV2Session extends ChangeNotifier {
         'continueTitle': continueTitle,
         'continueSubtitle': continueSubtitle,
         'continueProgress': continueProgress,
+        'onboardingStep': onboardingStep,
       }),
     );
   }

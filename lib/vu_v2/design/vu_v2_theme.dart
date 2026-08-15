@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/study_theme.dart';
-
-/// GradeGlow Virtual University V2 design tokens.
-/// Accent colors follow the user's Appearance primary ([StudyColors]).
+/// Virtual University visual system — matches the mint/teal campus mockups.
 abstract final class VuV2Colors {
-  static const Color navy = Color(0xFF0F172A);
-  static const Color navyElevated = Color(0xFF1E293B);
+  static const Color navy = Color(0xFF0A0E14);
+  static const Color navyElevated = Color(0xFF121A26);
+  static const Color card = Color(0xFF162032);
   static const Color ink = Color(0xFFF8FAFC);
   static const Color mute = Color(0xFF94A3B8);
 
-  /// User-chosen accent (settings / Appearance).
-  static Color get orange => StudyColors.primary;
-  static Color get orangeDeep => StudyColors.primaryDark;
+  /// Brand mint / teal from mockups.
+  static const Color mint = Color(0xFF3DDBAD);
+  static const Color mintDeep = Color(0xFF28B69A);
+  static const Color gold = Color(0xFFF5D76E);
+
+  /// Alias used across older VU screens (now mint).
+  static Color get orange => mint;
+  static Color get orangeDeep => mintDeep;
 
   static const Color yellow = Color(0xFFFBBF24);
   static const Color success = Color(0xFF22C55E);
   static const Color danger = Color(0xFFEF4444);
-  static const Color stroke = Color(0xFF334155);
+  static const Color stroke = Color(0xFF243044);
 }
 
 abstract final class VuV2Radii {
   static const double sm = 10;
   static const double md = 14;
-  static const double lg = 20;
+  static const double lg = 18;
   static const double xl = 28;
 }
 
 ThemeData vuV2DarkTheme() {
-  final Color primary = StudyColors.primary;
+  const Color primary = VuV2Colors.mint;
   final ColorScheme scheme = ColorScheme.dark(
     primary: primary,
-    onPrimary: Colors.white,
-    secondary: StudyColors.primaryLight,
+    onPrimary: const Color(0xFF04110C),
+    secondary: VuV2Colors.mintDeep,
     surface: VuV2Colors.navy,
     onSurface: VuV2Colors.ink,
     onSurfaceVariant: VuV2Colors.mute,
@@ -66,8 +69,8 @@ ThemeData vuV2DarkTheme() {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: primary,
-        foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(52),
+        foregroundColor: const Color(0xFF04110C),
+        minimumSize: const Size.fromHeight(54),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(VuV2Radii.md),
         ),
@@ -78,12 +81,11 @@ ThemeData vuV2DarkTheme() {
 }
 
 ThemeData vuV2LightTheme() {
-  final Color primary = StudyColors.primary;
-  final Color primaryDark = StudyColors.primaryDark;
+  const Color primary = VuV2Colors.mintDeep;
   final ColorScheme scheme = ColorScheme.light(
-    primary: primaryDark,
+    primary: primary,
     onPrimary: Colors.white,
-    secondary: StudyColors.primaryLight,
+    secondary: VuV2Colors.mint,
     surface: const Color(0xFFF8FAFC),
     onSurface: const Color(0xFF0F172A),
     onSurfaceVariant: const Color(0xFF64748B),
@@ -116,9 +118,9 @@ ThemeData vuV2LightTheme() {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: primaryDark,
+        backgroundColor: primary,
         foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(52),
+        minimumSize: const Size.fromHeight(54),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(VuV2Radii.md),
         ),

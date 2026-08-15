@@ -1,4 +1,5 @@
 import '../../models/biology_degree.dart';
+import '../bio_101_curriculum.dart';
 
 String bioSlug(String text) {
   return text
@@ -37,6 +38,24 @@ BiologyDegreeCourse bioCourse(
     modules: modules,
     emoji: emoji,
     tagline: tagline,
+  );
+}
+
+BiologyDegreeCourse bio101Course() {
+  return bioCourse(
+    'general_biology',
+    Bio101Curriculum.title,
+    modules: Bio101Curriculum.modules
+        .map(
+          (Bio101Module m) => BiologyDegreeModule(
+            id: m.id,
+            title: m.title,
+            lessons: bioLessons(m.units),
+          ),
+        )
+        .toList(growable: false),
+    emoji: '🌱',
+    tagline: Bio101Curriculum.subtitle,
   );
 }
 

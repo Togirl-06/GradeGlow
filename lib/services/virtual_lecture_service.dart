@@ -6,12 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/app_config.dart';
 import '../data/virtual_lecture_completeness.dart';
+import '../data/virtual_lecture_curriculum_script.dart';
 import '../data/virtual_lecture_fallback.dart';
 import '../data/virtual_lecture_topic_profile.dart';
 import '../models/biology_degree.dart';
 import '../models/chemistry_degree.dart';
 import '../models/mathematics_degree.dart';
 import '../models/virtual_lecture.dart';
+import '../utils/lecture_slide_sync.dart';
 import 'openai_service.dart';
 
 /// Generates lecture scripts, handles Ask Professor, and stores analytics.
@@ -88,19 +90,36 @@ class VirtualLectureService {
     required LectureMode mode,
     String faculty = 'general',
   }) {
-    return VirtualLectureCompleteness.ensure(
-      script: VirtualLectureFallback.build(
-        topic: lessonTitle,
-        course: courseTitle,
-        module: moduleTitle,
+    final VirtualLectureScript raw =
+        VirtualLectureCurriculumScript.prefersCurriculumBank(
+              faculty: faculty,
+              courseId: courseId,
+            )
+            ? VirtualLectureCurriculumScript.build(
+                lessonTitle: lessonTitle,
+                courseTitle: courseTitle,
+                moduleTitle: moduleTitle,
+                courseId: courseId,
+                lessonId: lessonId,
+                mode: mode,
+                faculty: faculty,
+              )
+            : VirtualLectureFallback.build(
+                topic: lessonTitle,
+                course: courseTitle,
+                module: moduleTitle,
+                courseId: courseId,
+                lessonId: lessonId,
+                mode: mode,
+              );
+    return LectureSlideSync.syncScript(
+      VirtualLectureCompleteness.ensure(
+        script: raw,
+        faculty: faculty,
+        mode: mode,
         courseId: courseId,
         lessonId: lessonId,
-        mode: mode,
       ),
-      faculty: faculty,
-      mode: mode,
-      courseId: courseId,
-      lessonId: lessonId,
     );
   }
 
@@ -186,13 +205,19 @@ class VirtualLectureService {
             faculty: faculty,
             paceHint:
                 '$facultyGuide$paceHint$reviewHint '
+                'CURRICULUM LOCK: Teach ONLY "$lessonTitle" inside course "$courseTitle" '
+                '(courseId=$courseId, module="$moduleTitle"). '
+                'Whiteboard notes must match what you say — one slide note per spoken beat. '
+                'REQUIRED: theory/example segments use beats[] so the board flips with each idea. '
+                'Never 12+ sentences in one professorSpeech with a long lines[] list. '
                 'TOPIC EQUATION/RULE: ${profile.mainEquation}. '
                 'CATEGORY: ${profile.category.name}. '
-                'Do NOT invent unrelated calculus, algebra, or other topics.',
+                'FORBIDDEN: inventing trigonometry, calculus, algebra, or any other course content '
+                'unless this lesson is explicitly that subject.',
             premium: true,
             courseId: courseId,
           )
-          .timeout(const Duration(seconds: 55));
+          .timeout(const Duration(seconds: 90));
       final VirtualLectureScript script = VirtualLectureScript.fromJson(
         raw,
         mode: mode,
@@ -201,13 +226,15 @@ class VirtualLectureService {
         module: moduleTitle,
       );
       if (script.segments.isNotEmpty) {
-        return VirtualLectureCompleteness.ensure(
-          script: script,
-          faculty: faculty,
-          mode: mode,
-          profile: profile,
-          courseId: courseId,
-          lessonId: lessonId,
+        return LectureSlideSync.syncScript(
+          VirtualLectureCompleteness.ensure(
+            script: script,
+            faculty: faculty,
+            mode: mode,
+            profile: profile,
+            courseId: courseId,
+            lessonId: lessonId,
+          ),
         );
       }
     } catch (e) {
@@ -252,10 +279,19 @@ class VirtualLectureService {
       case 'marketing':
         return 'BUSINESS FACULTY: Frameworks + real company examples; decisions and consequences on the board. $deepRule';
       case 'nursing':
+        return 'NURSING FACULTY: Teach clinical judgment for THIS nursing topic only — '
+            'assessment cues, priorities, safe actions, reassessment, documentation, escalation. '
+            'Use bedside / unit language. Never teach trigonometry or unrelated math. $deepRule';
+      case 'medicine':
+        return 'MEDICINE FACULTY: Teach diagnostic reasoning for THIS medical topic only — '
+            'presentation, differentials, red flags, first actions, disposition. '
+            'Never drift into unrelated courses. $deepRule';
       case 'psychology':
-        return 'HEALTH / SOCIAL SCIENCE FACULTY: Clear scenarios, ethics, then check understanding. $deepRule';
+        return 'PSYCHOLOGY FACULTY: Teach assessment and intervention for THIS psychology topic only — '
+            'definitions, mechanisms, ethics, clinical application. Never invent other subjects. $deepRule';
       default:
-        return 'UNIVERSITY FACULTY: Teach as if students are in your lecture hall for 60–75 minutes. $deepRule';
+        return 'UNIVERSITY FACULTY: Teach as if students are in your lecture hall for 60–75 minutes. '
+            'Stay strictly on the assigned topic and course. $deepRule';
     }
   }
 
@@ -367,7 +403,9 @@ class VirtualLectureService {
     required String studentRequest,
   }) async {
     if (!AppConfig.hasOpenAi) {
-      return _offlineExpansionSegment(lessonTitle, studentRequest);
+      return LectureSlideSync.syncSegment(
+        _offlineExpansionSegment(lessonTitle, studentRequest),
+      );
     }
     try {
       final Map<String, dynamic> raw = await _openAi.generateLectureExpansionSegmentRaw(
@@ -379,16 +417,23 @@ class VirtualLectureService {
       );
       final LectureSegment segment = LectureSegment.fromJson(raw);
       if (segment.professorSpeech.trim().isEmpty) return null;
-      return segment;
+      return LectureSlideSync.syncSegment(segment);
     } catch (e) {
       debugPrint('Lecture expansion failed: $e');
-      return _offlineExpansionSegment(lessonTitle, studentRequest);
+      return LectureSlideSync.syncSegment(
+        _offlineExpansionSegment(lessonTitle, studentRequest),
+      );
     }
   }
 
   static String _offlineAskAnswer(String topic, String question) {
-    return 'Great question about $topic. $question — let me add more detail on the board next. '
-        'Tap "Add to lecture" to continue teaching this point without restarting.';
+    final String q = question.trim();
+    return 'About $topic — here is a clearer take on your question'
+        '${q.isEmpty ? '' : ' ("$q")'}. '
+        'First, lock the core definition in simple words. '
+        'Next, picture one concrete example that uses that definition. '
+        'Then ask yourself: what would change if I removed this idea? '
+        'If a specific term or step is still unclear, ask again and name that part exactly.';
   }
 
   static LectureSegment _offlineExpansionSegment(String topic, String request) {

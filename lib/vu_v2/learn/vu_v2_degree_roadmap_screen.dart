@@ -612,7 +612,7 @@ class _StatChip extends StatelessWidget {
   }
 }
 
-/// Opens the Khan-style learn hub: Notes · AI Tutor · Quiz.
+/// Opens the learn hub: Notes · AI Tutor · Quiz.
 Future<void> _openVuV2Lesson({
   required BuildContext context,
   required VuV2Session session,

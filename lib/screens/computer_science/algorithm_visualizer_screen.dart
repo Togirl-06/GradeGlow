@@ -20,7 +20,7 @@ class AlgorithmVisualizerListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: LeetCodeTheme.background,
-      appBar: AppBar(rrr
+      appBar: AppBar(
         backgroundColor: LeetCodeTheme.surface,
         foregroundColor: LeetCodeTheme.textPrimary,
         title: const Text('Algorithm Visualizer'),

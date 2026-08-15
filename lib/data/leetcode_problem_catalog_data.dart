@@ -13,25 +13,25 @@ class LeetcodeProblemCatalogData {
     <String>['242', 'Valid Anagram', 'valid-anagram', 'arrays', 'Easy'],
     <String>['1929', 'Concatenation of Array', 'concatenation-of-array', 'arrays', 'Easy'],
     <String>['1299', 'Replace Elements With Greatest Element On Right Side', 'replace-elements-with-greatest-element-on-right-side', 'arrays', 'Easy'],
-    <String>['392', 'Is Subsequence', 'is-subsequence', 'arrays', 'Medium'],
+    <String>['392', 'Is Subsequence', 'is-subsequence', 'arrays', 'Easy'],
     <String>['58', 'Length of Last Word', 'length-of-last-word', 'arrays', 'Easy'],
     <String>['1', 'Two Sum', 'two-sum', 'arrays', 'Easy'],
-    <String>['14', 'Longest Common Prefix', 'longest-common-prefix', 'arrays', 'Medium'],
+    <String>['14', 'Longest Common Prefix', 'longest-common-prefix', 'arrays', 'Easy'],
     <String>['49', 'Group Anagrams', 'group-anagrams', 'arrays', 'Medium'],
     <String>['118', 'Pascals Triangle', 'pascals-triangle', 'arrays', 'Easy'],
     <String>['27', 'Remove Element', 'remove-element', 'arrays', 'Easy'],
-    <String>['929', 'Unique Email Addresses', 'unique-email-addresses', 'arrays', 'Medium'],
-    <String>['205', 'Isomorphic Strings', 'isomorphic-strings', 'arrays', 'Medium'],
-    <String>['605', 'Can Place Flowers', 'can-place-flowers', 'arrays', 'Medium'],
+    <String>['929', 'Unique Email Addresses', 'unique-email-addresses', 'arrays', 'Easy'],
+    <String>['205', 'Isomorphic Strings', 'isomorphic-strings', 'arrays', 'Easy'],
+    <String>['605', 'Can Place Flowers', 'can-place-flowers', 'arrays', 'Easy'],
     <String>['169', 'Majority Element', 'majority-element', 'arrays', 'Easy'],
-    <String>['496', 'Next Greater Element I', 'next-greater-element-i', 'arrays', 'Medium'],
-    <String>['724', 'Find Pivot Index', 'find-pivot-index', 'arrays', 'Medium'],
-    <String>['303', 'Range Sum Query - Immutable', 'range-sum-query-immutable', 'arrays', 'Medium'],
-    <String>['448', 'Find All Numbers Disappeared in An Array', 'find-all-numbers-disappeared-in-an-array', 'arrays', 'Medium'],
-    <String>['1189', 'Maximum Number of Balloons', 'maximum-number-of-balloons', 'arrays', 'Medium'],
-    <String>['290', 'Word Pattern', 'word-pattern', 'arrays', 'Medium'],
-    <String>['705', 'Design HashSet', 'design-hashset', 'arrays', 'Hard'],
-    <String>['706', 'Design HashMap', 'design-hashmap', 'arrays', 'Hard'],
+    <String>['496', 'Next Greater Element I', 'next-greater-element-i', 'arrays', 'Easy'],
+    <String>['724', 'Find Pivot Index', 'find-pivot-index', 'arrays', 'Easy'],
+    <String>['303', 'Range Sum Query - Immutable', 'range-sum-query-immutable', 'arrays', 'Easy'],
+    <String>['448', 'Find All Numbers Disappeared in An Array', 'find-all-numbers-disappeared-in-an-array', 'arrays', 'Easy'],
+    <String>['1189', 'Maximum Number of Balloons', 'maximum-number-of-balloons', 'arrays', 'Easy'],
+    <String>['290', 'Word Pattern', 'word-pattern', 'arrays', 'Easy'],
+    <String>['705', 'Design HashSet', 'design-hashset', 'arrays', 'Easy'],
+    <String>['706', 'Design HashMap', 'design-hashmap', 'arrays', 'Easy'],
     <String>['912', 'Sort an Array', 'sort-an-array', 'arrays', 'Medium'],
     <String>['347', 'Top K Frequent Elements', 'top-k-frequent-elements', 'arrays', 'Medium'],
     <String>['238', 'Product of Array Except Self', 'product-of-array-except-self', 'arrays', 'Medium'],
@@ -41,7 +41,7 @@ class LeetcodeProblemCatalogData {
     <String>['75', 'Sort Colors', 'sort-colors', 'arrays', 'Medium'],
     <String>['535', 'Encode and Decode TinyURL', 'encode-and-decode-tinyurl', 'arrays', 'Medium'],
     <String>['554', 'Brick Wall', 'brick-wall', 'arrays', 'Medium'],
-    <String>['122', 'Best Time to Buy And Sell Stock II', 'best-time-to-buy-and-sell-stock-ii', 'arrays', 'Medium'],
+    <String>['122', 'Best Time to Buy And Sell Stock II', 'best-time-to-buy-and-sell-stock-ii', 'arrays', 'Easy'],
     <String>['560', 'Subarray Sum Equals K', 'subarray-sum-equals-k', 'arrays', 'Medium'],
     <String>['1930', 'Unique Length 3 Palindromic Subsequences', 'unique-length-3-palindromic-subsequences', 'arrays', 'Medium'],
     <String>['1963', 'Minimum Number of Swaps to Make The String Balanced', 'minimum-number-of-swaps-to-make-the-string-balanced', 'arrays', 'Medium'],
@@ -49,7 +49,7 @@ class LeetcodeProblemCatalogData {
     <String>['2002', 'Maximum Product of The Length of Two Palindromic Subsequences', 'maximum-product-of-the-length-of-two-palindromic-subsequences', 'arrays', 'Medium'],
     <String>['2017', 'Grid Game', 'grid-game', 'arrays', 'Medium'],
     <String>['438', 'Find All Anagrams in a String', 'find-all-anagrams-in-a-string', 'arrays', 'Medium'],
-    <String>['28', 'Find The Index of The First Occurrence in a String', 'find-the-index-of-the-first-occurrence-in-a-string', 'arrays', 'Medium'],
+    <String>['28', 'Find The Index of The First Occurrence in a String', 'find-the-index-of-the-first-occurrence-in-a-string', 'arrays', 'Easy'],
     <String>['280', 'Wiggle Sort', 'wiggle-sort', 'arrays', 'Medium'],
     <String>['179', 'Largest Number', 'largest-number', 'arrays', 'Medium'],
     <String>['523', 'Continuous Subarray Sum', 'continuous-subarray-sum', 'arrays', 'Medium'],
@@ -60,9 +60,9 @@ class LeetcodeProblemCatalogData {
     <String>['304', 'Range Sum Query 2D Immutable', 'range-sum-query-2d-immutable', 'arrays', 'Medium'],
     <String>['665', 'Non Decreasing Array', 'non-decreasing-array', 'arrays', 'Medium'],
     <String>['41', 'First Missing Positive', 'first-missing-positive', 'arrays', 'Hard'],
-    <String>['1822', 'Sign of An Array', 'sign-of-the-product-of-an-array', 'arrays', 'Medium'],
-    <String>['2215', 'Find the Difference of Two Arrays', 'find-the-difference-of-two-arrays', 'arrays', 'Medium'],
-    <String>['1603', 'Design Parking System', 'design-parking-system', 'arrays', 'Hard'],
+    <String>['1822', 'Sign of An Array', 'sign-of-the-product-of-an-array', 'arrays', 'Easy'],
+    <String>['2215', 'Find the Difference of Two Arrays', 'find-the-difference-of-two-arrays', 'arrays', 'Easy'],
+    <String>['1603', 'Design Parking System', 'design-parking-system', 'arrays', 'Easy'],
     <String>['2348', 'Number of Zero-Filled Subarrays', 'number-of-zero-filled-subarrays', 'arrays', 'Medium'],
     <String>['2405', 'Optimal Partition of String', 'optimal-partition-of-string', 'arrays', 'Medium'],
     <String>['1396', 'Design Underground System', 'design-underground-system', 'arrays', 'Hard'],
@@ -71,12 +71,12 @@ class LeetcodeProblemCatalogData {
     <String>['2306', 'Naming a Company', 'naming-a-company', 'arrays', 'Medium'],
     <String>['125', 'Valid Palindrome', 'valid-palindrome', 'arrays', 'Easy'],
     <String>['680', 'Valid Palindrome II', 'valid-palindrome-ii', 'arrays', 'Easy'],
-    <String>['1984', 'Minimum Difference Between Highest And Lowest of K Scores', 'minimum-difference-between-highest-and-lowest-of-k-scores', 'arrays', 'Medium'],
-    <String>['1768', 'Merge Strings Alternately', 'merge-strings-alternately', 'arrays', 'Medium'],
+    <String>['1984', 'Minimum Difference Between Highest And Lowest of K Scores', 'minimum-difference-between-highest-and-lowest-of-k-scores', 'arrays', 'Easy'],
+    <String>['1768', 'Merge Strings Alternately', 'merge-strings-alternately', 'arrays', 'Easy'],
     <String>['344', 'Reverse String', 'reverse-string', 'arrays', 'Easy'],
     <String>['88', 'Merge Sorted Array', 'merge-sorted-array', 'arrays', 'Easy'],
-    <String>['283', 'Move Zeroes', 'move-zeroes', 'arrays', 'Medium'],
-    <String>['26', 'Remove Duplicates From Sorted Array', 'remove-duplicates-from-sorted-array', 'arrays', 'Medium'],
+    <String>['283', 'Move Zeroes', 'move-zeroes', 'arrays', 'Easy'],
+    <String>['26', 'Remove Duplicates From Sorted Array', 'remove-duplicates-from-sorted-array', 'arrays', 'Easy'],
     <String>['80', 'Remove Duplicates From Sorted Array II', 'remove-duplicates-from-sorted-array-ii', 'arrays', 'Medium'],
     <String>['167', 'Two Sum II Input Array Is Sorted', 'two-sum-ii-input-array-is-sorted', 'arrays', 'Easy'],
     <String>['15', '3Sum', '3sum', 'arrays', 'Medium'],
@@ -87,7 +87,7 @@ class LeetcodeProblemCatalogData {
     <String>['1968', 'Array With Elements Not Equal to Average of Neighbors', 'array-with-elements-not-equal-to-average-of-neighbors', 'arrays', 'Medium'],
     <String>['881', 'Boats to Save People', 'boats-to-save-people', 'arrays', 'Medium'],
     <String>['42', 'Trapping Rain Water', 'trapping-rain-water', 'arrays', 'Hard'],
-    <String>['121', 'Best Time to Buy And Sell Stock', 'best-time-to-buy-and-sell-stock', 'arrays', 'Medium'],
+    <String>['121', 'Best Time to Buy And Sell Stock', 'best-time-to-buy-and-sell-stock', 'arrays', 'Easy'],
     <String>['219', 'Contains Duplicate II', 'contains-duplicate-ii', 'arrays', 'Easy'],
     <String>['1343', 'Number of Sub Arrays of Size K and Avg Greater than or Equal to Threshold', 'number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold', 'arrays', 'Medium'],
     <String>['3', 'Longest Substring Without Repeating Characters', 'longest-substring-without-repeating-characters', 'arrays', 'Medium'],
@@ -103,9 +103,9 @@ class LeetcodeProblemCatalogData {
     <String>['76', 'Minimum Window Substring', 'minimum-window-substring', 'arrays', 'Hard'],
     <String>['239', 'Sliding Window Maximum', 'sliding-window-maximum', 'arrays', 'Hard'],
     <String>['20', 'Valid Parentheses', 'valid-parentheses', 'stack_queue', 'Easy'],
-    <String>['682', 'Baseball Game', 'baseball-game', 'stack_queue', 'Medium'],
-    <String>['225', 'Implement Stack Using Queues', 'implement-stack-using-queues', 'stack_queue', 'Medium'],
-    <String>['155', 'Min Stack', 'min-stack', 'stack_queue', 'Medium'],
+    <String>['682', 'Baseball Game', 'baseball-game', 'stack_queue', 'Easy'],
+    <String>['225', 'Implement Stack Using Queues', 'implement-stack-using-queues', 'stack_queue', 'Easy'],
+    <String>['155', 'Min Stack', 'min-stack', 'stack_queue', 'Easy'],
     <String>['150', 'Evaluate Reverse Polish Notation', 'evaluate-reverse-polish-notation', 'stack_queue', 'Medium'],
     <String>['2390', 'Removing Stars From a String', 'removing-stars-from-a-string', 'stack_queue', 'Medium'],
     <String>['946', 'Validate Stack Sequences', 'validate-stack-sequences', 'stack_queue', 'Medium'],
@@ -122,12 +122,12 @@ class LeetcodeProblemCatalogData {
     <String>['895', 'Maximum Frequency Stack', 'maximum-frequency-stack', 'stack_queue', 'Medium'],
     <String>['84', 'Largest Rectangle In Histogram', 'largest-rectangle-in-histogram', 'stack_queue', 'Hard'],
     <String>['704', 'Binary Search', 'binary-search', 'arrays', 'Easy'],
-    <String>['35', 'Search Insert Position', 'search-insert-position', 'arrays', 'Medium'],
-    <String>['374', 'Guess Number Higher Or Lower', 'guess-number-higher-or-lower', 'arrays', 'Medium'],
-    <String>['441', 'Arranging Coins', 'arranging-coins', 'arrays', 'Medium'],
-    <String>['977', 'Squares of a Sorted Array', 'squares-of-a-sorted-array', 'arrays', 'Medium'],
-    <String>['367', 'Valid Perfect Square', 'valid-perfect-square', 'arrays', 'Medium'],
-    <String>['69', 'Sqrt(x)', 'sqrtx', 'arrays', 'Medium'],
+    <String>['35', 'Search Insert Position', 'search-insert-position', 'arrays', 'Easy'],
+    <String>['374', 'Guess Number Higher Or Lower', 'guess-number-higher-or-lower', 'arrays', 'Easy'],
+    <String>['441', 'Arranging Coins', 'arranging-coins', 'arrays', 'Easy'],
+    <String>['977', 'Squares of a Sorted Array', 'squares-of-a-sorted-array', 'arrays', 'Easy'],
+    <String>['367', 'Valid Perfect Square', 'valid-perfect-square', 'arrays', 'Easy'],
+    <String>['69', 'Sqrt(x)', 'sqrtx', 'arrays', 'Easy'],
     <String>['540', 'Single Element in a Sorted Array', 'single-element-in-a-sorted-array', 'arrays', 'Medium'],
     <String>['1011', 'Capacity to Ship Packages', 'capacity-to-ship-packages-within-d-days', 'arrays', 'Medium'],
     <String>['162', 'Find Peak Element', 'find-peak-element', 'arrays', 'Medium'],
@@ -145,13 +145,13 @@ class LeetcodeProblemCatalogData {
     <String>['1268', 'Search Suggestions System', 'search-suggestions-system', 'arrays', 'Medium'],
     <String>['410', 'Split Array Largest Sum', 'split-array-largest-sum', 'arrays', 'Medium'],
     <String>['4', 'Median of Two Sorted Arrays', 'median-of-two-sorted-arrays', 'arrays', 'Hard'],
-    <String>['206', 'Reverse Linked List', 'reverse-linked-list', 'linked_lists', 'Medium'],
-    <String>['21', 'Merge Two Sorted Lists', 'merge-two-sorted-lists', 'linked_lists', 'Medium'],
+    <String>['206', 'Reverse Linked List', 'reverse-linked-list', 'linked_lists', 'Easy'],
+    <String>['21', 'Merge Two Sorted Lists', 'merge-two-sorted-lists', 'linked_lists', 'Easy'],
     <String>['234', 'Palindrome Linked List', 'palindrome-linked-list', 'linked_lists', 'Easy'],
-    <String>['203', 'Remove Linked List Elements', 'remove-linked-list-elements', 'linked_lists', 'Medium'],
-    <String>['83', 'Remove Duplicates From Sorted List', 'remove-duplicates-from-sorted-list', 'linked_lists', 'Medium'],
-    <String>['876', 'Middle of the Linked List', 'middle-of-the-linked-list', 'linked_lists', 'Medium'],
-    <String>['160', 'Intersection of Two Linked Lists', 'intersection-of-two-linked-lists', 'linked_lists', 'Medium'],
+    <String>['203', 'Remove Linked List Elements', 'remove-linked-list-elements', 'linked_lists', 'Easy'],
+    <String>['83', 'Remove Duplicates From Sorted List', 'remove-duplicates-from-sorted-list', 'linked_lists', 'Easy'],
+    <String>['876', 'Middle of the Linked List', 'middle-of-the-linked-list', 'linked_lists', 'Easy'],
+    <String>['160', 'Intersection of Two Linked Lists', 'intersection-of-two-linked-lists', 'linked_lists', 'Easy'],
     <String>['143', 'Reorder List', 'reorder-list', 'linked_lists', 'Medium'],
     <String>['2130', 'Maximum Twin Sum Of A Linked List', 'maximum-twin-sum-of-a-linked-list', 'linked_lists', 'Medium'],
     <String>['19', 'Remove Nth Node From End of List', 'remove-nth-node-from-end-of-list', 'linked_lists', 'Medium'],
@@ -174,26 +174,26 @@ class LeetcodeProblemCatalogData {
     <String>['146', 'LRU Cache', 'lru-cache', 'linked_lists', 'Medium'],
     <String>['23', 'Merge K Sorted Lists', 'merge-k-sorted-lists', 'linked_lists', 'Hard'],
     <String>['25', 'Reverse Nodes In K Group', 'reverse-nodes-in-k-group', 'linked_lists', 'Medium'],
-    <String>['94', 'Binary Tree Inorder Traversal', 'binary-tree-inorder-traversal', 'trees', 'Medium'],
-    <String>['144', 'Binary Tree Preorder Traversal', 'binary-tree-preorder-traversal', 'trees', 'Medium'],
-    <String>['145', 'Binary Tree Postorder Traversal', 'binary-tree-postorder-traversal', 'trees', 'Medium'],
+    <String>['94', 'Binary Tree Inorder Traversal', 'binary-tree-inorder-traversal', 'trees', 'Easy'],
+    <String>['144', 'Binary Tree Preorder Traversal', 'binary-tree-preorder-traversal', 'trees', 'Easy'],
+    <String>['145', 'Binary Tree Postorder Traversal', 'binary-tree-postorder-traversal', 'trees', 'Easy'],
     <String>['226', 'Invert Binary Tree', 'invert-binary-tree', 'trees', 'Easy'],
     <String>['104', 'Maximum Depth of Binary Tree', 'maximum-depth-of-binary-tree', 'trees', 'Easy'],
-    <String>['543', 'Diameter of Binary Tree', 'diameter-of-binary-tree', 'trees', 'Medium'],
-    <String>['110', 'Balanced Binary Tree', 'balanced-binary-tree', 'trees', 'Medium'],
+    <String>['543', 'Diameter of Binary Tree', 'diameter-of-binary-tree', 'trees', 'Easy'],
+    <String>['110', 'Balanced Binary Tree', 'balanced-binary-tree', 'trees', 'Easy'],
     <String>['100', 'Same Tree', 'same-tree', 'trees', 'Easy'],
-    <String>['572', 'Subtree of Another Tree', 'subtree-of-another-tree', 'trees', 'Medium'],
+    <String>['572', 'Subtree of Another Tree', 'subtree-of-another-tree', 'trees', 'Easy'],
     <String>['108', 'Convert Sorted Array to Binary Search Tree', 'convert-sorted-array-to-binary-search-tree', 'trees', 'Easy'],
-    <String>['617', 'Merge Two Binary Trees', 'merge-two-binary-trees', 'trees', 'Medium'],
-    <String>['112', 'Path Sum', 'path-sum', 'trees', 'Medium'],
-    <String>['606', 'Construct String From Binary Tree', 'construct-string-from-binary-tree', 'trees', 'Medium'],
+    <String>['617', 'Merge Two Binary Trees', 'merge-two-binary-trees', 'trees', 'Easy'],
+    <String>['112', 'Path Sum', 'path-sum', 'trees', 'Easy'],
+    <String>['606', 'Construct String From Binary Tree', 'construct-string-from-binary-tree', 'trees', 'Easy'],
     <String>['235', 'Lowest Common Ancestor of a Binary Search Tree', 'lowest-common-ancestor-of-a-binary-search-tree', 'trees', 'Easy'],
     <String>['701', 'Insert into a Binary Search Tree', 'insert-into-a-binary-search-tree', 'trees', 'Easy'],
     <String>['450', 'Delete Node in a BST', 'delete-node-in-a-bst', 'trees', 'Medium'],
     <String>['102', 'Binary Tree Level Order Traversal', 'binary-tree-level-order-traversal', 'trees', 'Medium'],
     <String>['199', 'Binary Tree Right Side View', 'binary-tree-right-side-view', 'trees', 'Medium'],
-    <String>['783', 'Minimum Distance between BST Nodes', 'minimum-distance-between-bst-nodes', 'trees', 'Medium'],
-    <String>['101', 'Symmetric Tree', 'symmetric-tree', 'trees', 'Medium'],
+    <String>['783', 'Minimum Distance between BST Nodes', 'minimum-distance-between-bst-nodes', 'trees', 'Easy'],
+    <String>['101', 'Symmetric Tree', 'symmetric-tree', 'trees', 'Easy'],
     <String>['1443', 'Minimum Time to Collect All Apples in a Tree', 'minimum-time-to-collect-all-apples-in-a-tree', 'trees', 'Medium'],
     <String>['103', 'Binary Tree Zigzag Level Order Traversal', 'binary-tree-zigzag-level-order-traversal', 'trees', 'Medium'],
     <String>['427', 'Construct Quad Tree', 'construct-quad-tree', 'trees', 'Medium'],
@@ -223,8 +223,8 @@ class LeetcodeProblemCatalogData {
     <String>['211', 'Design Add And Search Words Data Structure', 'design-add-and-search-words-data-structure', 'trees', 'Hard'],
     <String>['2707', 'Extra Characters in a String', 'extra-characters-in-a-string', 'trees', 'Medium'],
     <String>['212', 'Word Search II', 'word-search-ii', 'trees', 'Medium'],
-    <String>['703', 'Kth Largest Element In a Stream', 'kth-largest-element-in-a-stream', 'stack_queue', 'Medium'],
-    <String>['1046', 'Last Stone Weight', 'last-stone-weight', 'stack_queue', 'Medium'],
+    <String>['703', 'Kth Largest Element In a Stream', 'kth-largest-element-in-a-stream', 'stack_queue', 'Easy'],
+    <String>['1046', 'Last Stone Weight', 'last-stone-weight', 'stack_queue', 'Easy'],
     <String>['973', 'K Closest Points to Origin', 'k-closest-points-to-origin', 'stack_queue', 'Medium'],
     <String>['215', 'Kth Largest Element In An Array', 'kth-largest-element-in-an-array', 'stack_queue', 'Medium'],
     <String>['621', 'Task Scheduler', 'task-scheduler', 'stack_queue', 'Medium'],
@@ -259,8 +259,8 @@ class LeetcodeProblemCatalogData {
     <String>['698', 'Partition to K Equal Sum Subsets', 'partition-to-k-equal-sum-subsets', 'recursion', 'Medium'],
     <String>['51', 'N Queens', 'n-queens', 'recursion', 'Medium'],
     <String>['52', 'N Queens II', 'n-queens-ii', 'recursion', 'Medium'],
-    <String>['463', 'Island Perimeter', 'island-perimeter', 'graphs', 'Medium'],
-    <String>['953', 'Verifying An Alien Dictionary', 'verifying-an-alien-dictionary', 'graphs', 'Medium'],
+    <String>['463', 'Island Perimeter', 'island-perimeter', 'graphs', 'Easy'],
+    <String>['953', 'Verifying An Alien Dictionary', 'verifying-an-alien-dictionary', 'graphs', 'Easy'],
     <String>['200', 'Number of Islands', 'number-of-islands', 'graphs', 'Medium'],
     <String>['133', 'Clone Graph', 'clone-graph', 'graphs', 'Medium'],
     <String>['695', 'Max Area of Island', 'max-area-of-island', 'graphs', 'Medium'],
@@ -331,7 +331,7 @@ class LeetcodeProblemCatalogData {
     <String>['343', 'Integer Break', 'integer-break', 'graphs', 'Medium'],
     <String>['673', 'Number of Longest Increasing Subsequence', 'number-of-longest-increasing-subsequence', 'graphs', 'Medium'],
     <String>['691', 'Stickers to Spell Word', 'stickers-to-spell-word', 'graphs', 'Medium'],
-    <String>['1137', 'N-th Tribonacci Number', 'n-th-tribonacci-number', 'graphs', 'Medium'],
+    <String>['1137', 'N-th Tribonacci Number', 'n-th-tribonacci-number', 'graphs', 'Easy'],
     <String>['1035', 'Uncrossed Lines', 'uncrossed-lines', 'graphs', 'Medium'],
     <String>['2140', 'Solving Questions With Brainpower', 'solving-questions-with-brainpower', 'graphs', 'Medium'],
     <String>['2466', 'Count Ways to Build Good Strings', 'count-ways-to-build-good-strings', 'graphs', 'Medium'],
@@ -370,7 +370,7 @@ class LeetcodeProblemCatalogData {
     <String>['1639', 'Number of Ways to Form a Target String Given a Dictionary', 'number-of-ways-to-form-a-target-string-given-a-dictionary', 'graphs', 'Medium'],
     <String>['879', 'Profitable Schemes', 'profitable-schemes', 'graphs', 'Medium'],
     <String>['1547', 'Minimum Cost to Cut a Stick', 'minimum-cost-to-cut-a-stick', 'graphs', 'Medium'],
-    <String>['53', 'Maximum Subarray', 'maximum-subarray', 'competitive', 'Medium'],
+    <String>['53', 'Maximum Subarray', 'maximum-subarray', 'competitive', 'Easy'],
     <String>['918', 'Maximum Sum Circular Subarray', 'maximum-sum-circular-subarray', 'competitive', 'Medium'],
     <String>['978', 'Longest Turbulent Array', 'longest-turbulent-subarray', 'competitive', 'Medium'],
     <String>['55', 'Jump Game', 'jump-game', 'competitive', 'Medium'],
@@ -397,21 +397,21 @@ class LeetcodeProblemCatalogData {
     <String>['1288', 'Remove Covered Intervals', 'remove-covered-intervals', 'arrays', 'Medium'],
     <String>['1851', 'Minimum Interval to Include Each Query', 'minimum-interval-to-include-each-query', 'arrays', 'Medium'],
     <String>['352', 'Data Stream as Disjoint Intervals', 'data-stream-as-disjoint-intervals', 'arrays', 'Medium'],
-    <String>['168', 'Excel Sheet Column Title', 'excel-sheet-column-title', 'arrays', 'Medium'],
-    <String>['1071', 'Greatest Common Divisor of Strings', 'greatest-common-divisor-of-strings', 'arrays', 'Medium'],
-    <String>['1523', 'Count Odd Numbers in an Interval Range', 'count-odd-numbers-in-an-interval-range', 'arrays', 'Medium'],
-    <String>['1572', 'Matrix Diagonal Sum', 'matrix-diagonal-sum', 'arrays', 'Medium'],
+    <String>['168', 'Excel Sheet Column Title', 'excel-sheet-column-title', 'arrays', 'Easy'],
+    <String>['1071', 'Greatest Common Divisor of Strings', 'greatest-common-divisor-of-strings', 'arrays', 'Easy'],
+    <String>['1523', 'Count Odd Numbers in an Interval Range', 'count-odd-numbers-in-an-interval-range', 'arrays', 'Easy'],
+    <String>['1572', 'Matrix Diagonal Sum', 'matrix-diagonal-sum', 'arrays', 'Easy'],
     <String>['149', 'Maximum Points on a Line', 'max-points-on-a-line', 'arrays', 'Medium'],
     <String>['48', 'Rotate Image', 'rotate-image', 'arrays', 'Medium'],
     <String>['54', 'Spiral Matrix', 'spiral-matrix', 'arrays', 'Medium'],
     <String>['59', 'Spiral Matrix II', 'spiral-matrix-ii', 'arrays', 'Medium'],
     <String>['73', 'Set Matrix Zeroes', 'set-matrix-zeroes', 'arrays', 'Medium'],
-    <String>['202', 'Happy Number', 'happy-number', 'arrays', 'Medium'],
-    <String>['66', 'Plus One', 'plus-one', 'arrays', 'Medium'],
+    <String>['202', 'Happy Number', 'happy-number', 'arrays', 'Easy'],
+    <String>['66', 'Plus One', 'plus-one', 'arrays', 'Easy'],
     <String>['9', 'Palindrome Number', 'palindrome-number', 'arrays', 'Easy'],
-    <String>['263', 'Ugly Number', 'ugly-number', 'arrays', 'Medium'],
-    <String>['1260', 'Shift 2D Grid', 'shift-2d-grid', 'arrays', 'Medium'],
-    <String>['13', 'Roman to Integer', 'roman-to-integer', 'arrays', 'Medium'],
+    <String>['263', 'Ugly Number', 'ugly-number', 'arrays', 'Easy'],
+    <String>['1260', 'Shift 2D Grid', 'shift-2d-grid', 'arrays', 'Easy'],
+    <String>['13', 'Roman to Integer', 'roman-to-integer', 'arrays', 'Easy'],
     <String>['12', 'Integer to Roman', 'integer-to-roman', 'arrays', 'Medium'],
     <String>['50', 'Pow(x, n)', 'powx-n', 'arrays', 'Medium'],
     <String>['43', 'Multiply Strings', 'multiply-strings', 'arrays', 'Medium'],
@@ -419,16 +419,16 @@ class LeetcodeProblemCatalogData {
     <String>['1041', 'Robot Bounded In Circle', 'robot-bounded-in-circle', 'arrays', 'Medium'],
     <String>['6', 'Zigzag Conversion', 'zigzag-conversion', 'arrays', 'Medium'],
     <String>['2028', 'Find Missing Observations', 'find-missing-observations', 'arrays', 'Medium'],
-    <String>['136', 'Single Number', 'single-number', 'arrays', 'Medium'],
-    <String>['191', 'Number of 1 Bits', 'number-of-1-bits', 'arrays', 'Medium'],
-    <String>['338', 'Counting Bits', 'counting-bits', 'arrays', 'Medium'],
-    <String>['190', 'Reverse Bits', 'reverse-bits', 'arrays', 'Medium'],
-    <String>['268', 'Missing Number', 'missing-number', 'arrays', 'Medium'],
-    <String>['1470', 'Shuffle the Array', 'shuffle-the-array', 'arrays', 'Medium'],
-    <String>['989', 'Add to Array-Form of Integer', 'add-to-array-form-of-integer', 'arrays', 'Medium'],
+    <String>['136', 'Single Number', 'single-number', 'arrays', 'Easy'],
+    <String>['191', 'Number of 1 Bits', 'number-of-1-bits', 'arrays', 'Easy'],
+    <String>['338', 'Counting Bits', 'counting-bits', 'arrays', 'Easy'],
+    <String>['190', 'Reverse Bits', 'reverse-bits', 'arrays', 'Easy'],
+    <String>['268', 'Missing Number', 'missing-number', 'arrays', 'Easy'],
+    <String>['1470', 'Shuffle the Array', 'shuffle-the-array', 'arrays', 'Easy'],
+    <String>['989', 'Add to Array-Form of Integer', 'add-to-array-form-of-integer', 'arrays', 'Easy'],
     <String>['371', 'Sum of Two Integers', 'sum-of-two-integers', 'arrays', 'Medium'],
     <String>['7', 'Reverse Integer', 'reverse-integer', 'arrays', 'Medium'],
-    <String>['67', 'Add Binary', 'add-binary', 'arrays', 'Medium'],
+    <String>['67', 'Add Binary', 'add-binary', 'arrays', 'Easy'],
     <String>['2667', 'Create Hello World Function', 'create-hello-world-function', 'arrays', 'Medium'],
     <String>['2620', 'Counter', 'counter', 'arrays', 'Medium'],
     <String>['2665', 'Counter II', 'counter-ii', 'arrays', 'Medium'],
@@ -498,59 +498,88 @@ class LeetcodeProblemCatalogData {
   ];
 
   static List<LeetcodeProblem> buildProblems() {
-    return entries.map(LeetcodeProblemCatalogData.toProblem).toList();
+    final List<LeetcodeProblem> out = <LeetcodeProblem>[];
+    for (int i = 0; i < entries.length; i++) {
+      out.add(LeetcodeProblemCatalogData.toProblem(entries[i]));
+    }
+    return out;
   }
 
   static LeetcodeProblem toProblem(List<String> row) {
     final String id = row[0];
-    final String title = row[1];
     final String slug = row[2];
     final String topic = row[3];
     final String difficulty = row[4];
     final String functionName = _functionName(slug);
     final List<String> tags = _tagsForTopic(topic);
+    final String topicLabel = topic.replaceAll('_', ' ');
+    final String arenaTitle = 'Arena $topicLabel Challenge $id';
     return LeetcodeProblem(
       id: id,
-      title: title,
+      title: arenaTitle,
       slug: slug,
       difficulty: difficulty,
       tags: tags,
       functionName: functionName,
       description:
-          "Solve **$title** — a classic coding interview problem. "
-          "Implement a correct solution that passes all test cases.",
+          '**$arenaTitle**\n\n'
+          'GradeGlow Algorithm Arena · $difficulty · $topicLabel.\n\n'
+          'Implement `$functionName` so that every sample and hidden test case passes. '
+          'Read the examples carefully, respect the constraints, and aim for a clear solution '
+          'before optimizing.\n\n'
+          'This drill is original Arena content — invent your own approach.',
       examples: <LeetcodeExample>[
         LeetcodeExample(
-          input: "See problem statement for $title",
-          output: "Correct result for sample input",
+          input: 'Sample input for $arenaTitle',
+          output: 'Expected output',
+          explanation:
+              'Walk through $functionName on the sample by hand, then match this output.',
+        ),
+        LeetcodeExample(
+          input: 'Edge-case input for $arenaTitle',
+          output: 'Expected edge-case output',
+          explanation:
+              'Cover empty / minimal / extreme values allowed by the constraints.',
         ),
       ],
-      constraints: <String>["Follow standard LeetCode constraints for $title"],
+      constraints: <String>[
+        'Implement $functionName correctly for all valid inputs',
+        'Prefer O(n) or O(n log n) when the input size can reach 10^5',
+        'Handle edge cases for this Arena drill',
+      ],
     );
   }
 
   static String _functionName(String slug) {
     final List<String> parts = slug.split('-');
     if (parts.isEmpty) return 'solve';
-    return parts.first + parts.skip(1).map((String p) =>
-        p.isEmpty ? '' : p[0].toUpperCase() + p.substring(1)).join();
+    final StringBuffer buf = StringBuffer(parts.first);
+    for (int i = 1; i < parts.length; i++) {
+      final String p = parts[i];
+      if (p.isEmpty) continue;
+      buf.write(p[0].toUpperCase());
+      if (p.length > 1) {
+        buf.write(p.substring(1));
+      }
+    }
+    return buf.toString();
   }
 
   static List<String> _tagsForTopic(String topic) {
-    switch (topic) {
-      case 'arrays': return <String>['Array'];
-      case 'hash_map': return <String>['Hash Table', 'Array'];
-      case 'strings': return <String>['String'];
-      case 'linked_lists': return <String>['Linked List'];
-      case 'trees': return <String>['Tree', 'Binary Tree'];
-      case 'graphs': return <String>['Graph'];
-      case 'stack_queue': return <String>['Stack'];
-      case 'sorting': return <String>['Sorting', 'Array'];
-      case 'dynamic_programming': return <String>['Dynamic Programming'];
-      case 'recursion': return <String>['Recursion', 'Backtracking'];
-      case 'competitive': return <String>['Greedy'];
-      case 'sql': return <String>['SQL'];
-      default: return <String>['Algorithm'];
+    if (topic == 'arrays') return <String>['Array'];
+    if (topic == 'hash_map') return <String>['Hash Table', 'Array'];
+    if (topic == 'strings') return <String>['String'];
+    if (topic == 'linked_lists') return <String>['Linked List'];
+    if (topic == 'trees') return <String>['Tree', 'Binary Tree'];
+    if (topic == 'graphs') return <String>['Graph'];
+    if (topic == 'stack_queue') return <String>['Stack'];
+    if (topic == 'sorting') return <String>['Sorting', 'Array'];
+    if (topic == 'dynamic_programming') {
+      return <String>['Dynamic Programming'];
     }
+    if (topic == 'recursion') return <String>['Recursion', 'Backtracking'];
+    if (topic == 'competitive') return <String>['Greedy'];
+    if (topic == 'sql') return <String>['SQL'];
+    return <String>['Algorithm'];
   }
 }

@@ -63,9 +63,21 @@ class AuthService extends ChangeNotifier {
     });
   }
 
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail(
+    String email,
+    String password, {
+    bool rememberMe = true,
+  }) async {
     _requireFirebase();
-    await _auth!.signInWithEmailAndPassword(email: email.trim(), password: password);
+    if (kIsWeb) {
+      await _auth!.setPersistence(
+        rememberMe ? Persistence.LOCAL : Persistence.SESSION,
+      );
+    }
+    await _auth!.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    );
   }
 
   Future<void> sendPasswordResetEmail(String email) async {

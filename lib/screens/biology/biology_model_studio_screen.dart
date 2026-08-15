@@ -227,16 +227,27 @@ class _BiologyModelStudioScreenState extends State<BiologyModelStudioScreen>
                                             Colors.transparent,
                                             BlendMode.srcATop,
                                           ),
-                                    child: SvgPicture.asset(
-                                      _model.assetPath,
-                                      height: 260,
-                                      fit: BoxFit.contain,
-                                      placeholderBuilder: (_) => Icon(
-                                        Icons.biotech,
-                                        size: 120,
-                                        color: c.primary,
-                                      ),
-                                    ),
+                                    child: _model.assetPath.toLowerCase().endsWith('.svg')
+                                        ? SvgPicture.asset(
+                                            _model.assetPath,
+                                            height: 260,
+                                            fit: BoxFit.contain,
+                                            placeholderBuilder: (_) => Icon(
+                                              Icons.biotech,
+                                              size: 120,
+                                              color: c.primary,
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            _model.assetPath,
+                                            height: 260,
+                                            fit: BoxFit.contain,
+                                            errorBuilder: (BuildContext context, Object error, StackTrace? stack) => Icon(
+                                              Icons.biotech,
+                                              size: 120,
+                                              color: c.primary,
+                                            ),
+                                          ),
                                   ),
                                 ),
                                 if (_bloodFlow)

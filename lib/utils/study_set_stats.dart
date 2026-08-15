@@ -1,6 +1,6 @@
 import '../models/study_summary.dart';
 
-/// Mastery bucket counts for a study set (Quizlet-style).
+/// Mastery bucket counts for a study set.
 class StudySetMastery {
   const StudySetMastery({
     required this.unfamiliar,

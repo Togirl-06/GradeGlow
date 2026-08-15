@@ -1,9 +1,24 @@
 const Map<String, List<String>> biologyCourseTopics = <String, List<String>>{
   'biology|general_biology': <String>[
-    'Scientific Method', 'Cell Structure', 'Photosynthesis', 'Cellular Respiration',
-    'Evolution', 'Classification', 'Homeostasis', 'Lab Safety',
-    'Water & Life', 'Macromolecules', 'Enzymes', 'Membrane Transport',
-    'Genetics Intro', 'Ecology Intro', 'Biotechnology', 'Exam Review',
+    // Module 1 — Foundations of Biology
+    'What Is Biology?', 'The Characteristics of Life', 'Scientific Method',
+    'Experimental Design', 'Data and Scientific Reasoning',
+    // Module 2 — Chemistry of Life
+    'Atoms and Elements', 'Chemical Bonds', 'Water', 'Acids and Bases',
+    'Organic Molecules', 'Carbohydrates', 'Lipids', 'Proteins', 'Nucleic Acids',
+    // Module 3 — Cell Biology
+    'Cell Theory', 'Prokaryotic vs Eukaryotic Cells', 'Cell Membrane', 'Transport',
+    'Organelles', 'Energy and ATP', 'Cellular Respiration', 'Photosynthesis',
+    'Cell Communication',
+    // Module 4 — Genetics
+    'DNA', 'DNA Replication', 'Gene Expression', 'RNA', 'Protein Synthesis',
+    'Mendelian Genetics', 'Punnett Squares', 'Mutations', 'Genetic Engineering',
+    // Module 5 — Evolution
+    'Natural Selection', 'Adaptation', 'Population Genetics', 'Speciation',
+    'Evidence for Evolution',
+    // Module 6 — Ecology
+    'Populations', 'Communities', 'Ecosystems', 'Food Webs', 'Energy Flow',
+    'Biogeochemical Cycles', 'Population Growth', 'Human Impact',
   ],
   'biology|cell_biology': <String>[
     'Cell Membrane Transport', 'Mitosis & Meiosis', 'Organelle Function', 'Signal Transduction',

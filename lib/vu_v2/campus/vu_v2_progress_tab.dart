@@ -8,15 +8,18 @@ import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
 import '../learn/vu_v2_degree_roadmap_screen.dart';
 
-class VuV2ProgressTab extends StatelessWidget {
-  const VuV2ProgressTab({
+/// Degree progress summary — used on Campus (replaces the old Progress tab).
+class VuV2ProgressPanel extends StatelessWidget {
+  const VuV2ProgressPanel({
     super.key,
     required this.session,
     required this.progress,
+    this.showTitle = true,
   });
 
   final VuV2Session session;
   final VuV2ProgressStore progress;
+  final bool showTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +36,18 @@ class VuV2ProgressTab extends StatelessWidget {
         : progress.quizScores.values.reduce((double a, double b) => a + b) /
             progress.quizScores.length;
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const VuV2SectionTitle('Your progress'),
-        const SizedBox(height: 8),
-        Text(
-          session.majorLabel,
-          style: const TextStyle(color: VuV2Colors.mute),
-        ),
-        const SizedBox(height: 14),
+        if (showTitle) ...<Widget>[
+          const VuV2SectionTitle('Progress'),
+          const SizedBox(height: 8),
+          Text(
+            session.majorLabel,
+            style: const TextStyle(color: VuV2Colors.mute),
+          ),
+          const SizedBox(height: 14),
+        ],
         VuV2Surface(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,11 +110,16 @@ class VuV2ProgressTab extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: _StatCard(
-                label: 'Attendance',
-                value: '${progress.attendanceDays.length} days',
+                label: 'GPA',
+                value: progress.gpaLabel,
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 10),
+        _StatCard(
+          label: 'Attendance',
+          value: '${progress.attendanceDays.length} days',
         ),
         const SizedBox(height: 16),
         VuV2PrimaryButton(
@@ -127,6 +137,28 @@ class VuV2ProgressTab extends StatelessWidget {
             );
           },
         ),
+      ],
+    );
+  }
+}
+
+/// Standalone scrollable progress view (kept for reuse).
+class VuV2ProgressTab extends StatelessWidget {
+  const VuV2ProgressTab({
+    super.key,
+    required this.session,
+    required this.progress,
+  });
+
+  final VuV2Session session;
+  final VuV2ProgressStore progress;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+      children: <Widget>[
+        VuV2ProgressPanel(session: session, progress: progress),
       ],
     );
   }

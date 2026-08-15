@@ -11,6 +11,7 @@ abstract final class LectureMathFormat {
     }
 
     if (_looksLikeLatex(s)) return s;
+    if (_isProse(s) && !_hasStrongMathSignal(s)) return s;
 
     s = _convertLimits(s);
     s = _replaceUnicode(s);
@@ -20,14 +21,29 @@ abstract final class LectureMathFormat {
     return s.replaceAll(RegExp(r'\s+'), ' ').trim();
   }
 
+  /// True only for real math — not hyphens in words or arrows in lecture notes.
   static bool containsMath(String text) {
     final String t = text.trim();
     if (t.isEmpty) return false;
-    return t.contains(r'$') ||
-        t.contains(r'\') ||
-        RegExp(r'[²³⁴⁺⁻⁼⁽⁾×÷→∞≤≥≠⇔′]').hasMatch(t) ||
-        RegExp(r'\blim\b', caseSensitive: false).hasMatch(t) ||
-        RegExp(r"f\s*[(']|d/dx|[=+\-*/^]").hasMatch(t);
+    if (_hasStrongMathSignal(t)) return true;
+    if (_isProse(t)) return false;
+    if (t.contains(r'$') || t.contains(r'\')) return true;
+    if (RegExp(r'[²³⁴⁺⁻⁼⁽⁾×÷∞≤≥≠⇔′]').hasMatch(t)) return true;
+    // Short equation-like tokens with arrows (e.g. "x → 0"), not long sentences.
+    if (t.contains('→') && t.length <= 28 && !_looksLikeSentence(t)) {
+      return true;
+    }
+    return false;
+  }
+
+  static bool _hasStrongMathSignal(String s) {
+    if (RegExp(r'\blim\b', caseSensitive: false).hasMatch(s)) return true;
+    if (RegExp(r'd/dx|\bf\s*\(').hasMatch(s)) return true;
+    if (RegExp(r'[=+*/^]').hasMatch(s)) return true;
+    if (RegExp(r'\([^)]+\)\s*/\s*\([^)]+\)').hasMatch(s)) return true;
+    if (RegExp(r'[²³⁴]').hasMatch(s)) return true;
+    if (_looksLikeLatex(s)) return true;
+    return false;
   }
 
   static String graphLabel(String graphFunction) {
@@ -49,6 +65,29 @@ abstract final class LectureMathFormat {
 
   static bool _looksLikeLatex(String s) =>
       RegExp(r'\\(lim|frac|sin|cos|tan|sqrt|int|sum|boxed|to|infty|le|ge|ne|pm|cdot|times|div)').hasMatch(s);
+
+  /// Board notes that are English sentences / clinical checklists — never math mode.
+  static bool _isProse(String s) {
+    if (_hasStrongMathSignal(s)) return false;
+    if (_looksLikeSentence(s)) return true;
+    // Multi-word clinical / outline lines with hyphens or arrows.
+    final int words = s.split(RegExp(r'\s+')).where((String w) => w.isNotEmpty).length;
+    if (words >= 4) return true;
+    if (words >= 2 && RegExp(r'[A-Za-z]{3,}').hasMatch(s) && !RegExp(r'\d').hasMatch(s)) {
+      return true;
+    }
+    return false;
+  }
+
+  static bool _looksLikeSentence(String s) {
+    return s.contains(' ') &&
+        (s.endsWith('.') ||
+            s.endsWith('?') ||
+            s.endsWith('!') ||
+            RegExp(r'\b(the|and|for|with|what|why|how|plan|needs|means|coming|next)\b',
+                    caseSensitive: false)
+                .hasMatch(s));
+  }
 
   static String _replaceUnicode(String s) {
     return s

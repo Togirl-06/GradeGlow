@@ -4,18 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/appearance_service.dart';
-import 'campus/vu_v2_campus_home.dart';
-import 'campus/vu_v2_notifications_screen.dart';
-import 'campus/vu_v2_practice_tab.dart';
-import 'campus/vu_v2_progress_tab.dart';
-import 'campus/vu_v2_search_screen.dart';
-import 'campus/vu_v2_subscription_screen.dart';
+import '../services/auth_service.dart';
+import '../config/vu_schools_catalog.dart';
+import 'campus/vu_v2_campus_shell.dart';
 import 'data/vu_v2_progress_store.dart';
 import 'data/vu_v2_roadmap_sync.dart';
 import 'data/vu_v2_scope.dart';
 import 'data/vu_v2_session.dart';
 import 'design/vu_v2_theme.dart';
-import 'learn/vu_v2_faculty_screen.dart';
 import 'onboarding/vu_v2_onboarding_screen.dart';
 
 /// Root entry for Virtual University V2 — entirely new product surface.
@@ -40,13 +36,39 @@ class _VuV2AppState extends State<VuV2App> {
 
   Future<void> _boot() async {
     VuV2RoadmapSync.clearCache();
+    final AuthService auth = context.read<AuthService>();
+    final String? uid = auth.uid;
+    final String authName = auth.displayName.trim();
     await Future.wait(<Future<void>>[
-      _session.ensureLoaded(),
-      _progress.ensureLoaded(),
+      _session.ensureLoaded(userId: uid),
+      _progress.ensureLoaded(userId: uid),
     ]);
+    // Prefer account name if onboarding draft is still the default.
+    if (!_session.onboardingComplete) {
+      if (authName.isNotEmpty &&
+          authName != 'Student' &&
+          (_session.displayName == 'Student' || _session.displayName.isEmpty)) {
+        await _session.saveOnboardingDraft(
+          name: authName,
+          goals: _session.goals,
+          majorId: null,
+          majorLabel: null,
+          weeklyMinutes: _session.weeklyMinutes,
+          step: _session.onboardingStep,
+        );
+      }
+    }
     if (_session.onboardingComplete &&
         !_progress.enrolledDegreeIds.contains(_session.majorId)) {
       await _progress.enroll(_session.majorId);
+    }
+    if (VuV2ProgressStore.unlockAllCourses) {
+      final Set<String> allIds = <String>{
+        for (final VuSchool school in VuSchoolsCatalog.schools)
+          for (final VuSchoolProgram program in school.programs)
+            program.roadmapSubjectId,
+      };
+      await _progress.enrollAll(allIds);
     }
     if (mounted) setState(() => _ready = true);
   }
@@ -87,7 +109,7 @@ class _VuV2AppState extends State<VuV2App> {
                     onGenerateRoute: (RouteSettings settings) {
                       return MaterialPageRoute<void>(
                         settings: settings,
-                        builder: (_) => _CampusShell(
+                        builder: (_) => VuV2CampusShell(
                           session: _session,
                           progress: _progress,
                           onCloseCampus: () => Navigator.of(
@@ -101,126 +123,6 @@ class _VuV2AppState extends State<VuV2App> {
                 },
               ),
       ),
-    );
-  }
-}
-
-class _CampusShell extends StatefulWidget {
-  const _CampusShell({
-    required this.session,
-    required this.progress,
-    required this.onCloseCampus,
-  });
-
-  final VuV2Session session;
-  final VuV2ProgressStore progress;
-  final VoidCallback onCloseCampus;
-
-  @override
-  State<_CampusShell> createState() => _CampusShellState();
-}
-
-class _CampusShellState extends State<_CampusShell> {
-  int _tab = 0;
-
-  VuV2Session get session => widget.session;
-  VuV2ProgressStore get progress => widget.progress;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Virtual University'),
-        actions: <Widget>[
-          IconButton(
-            tooltip: 'Search',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => VuV2SearchScreen(
-                    session: session,
-                    progress: progress,
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.search_rounded),
-          ),
-          IconButton(
-            tooltip: 'Notifications',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => VuV2NotificationsScreen(progress: progress),
-                ),
-              );
-            },
-            icon: Badge(
-              isLabelVisible: progress.unreadCount > 0,
-              label: Text('${progress.unreadCount}'),
-              child: const Icon(Icons.notifications_outlined),
-            ),
-          ),
-          IconButton(
-            tooltip: 'Close campus',
-            onPressed: widget.onCloseCampus,
-            icon: const Icon(Icons.close_rounded),
-          ),
-        ],
-      ),
-      body: IndexedStack(
-        index: _tab,
-        children: <Widget>[
-          VuV2CampusHome(
-            session: session,
-            progress: progress,
-            onOpenLearn: () => setState(() => _tab = 1),
-            onOpenPractice: () => setState(() => _tab = 2),
-          ),
-          VuV2LearnTab(session: session, progress: progress),
-          VuV2PracticeTab(session: session, progress: progress),
-          VuV2ProgressTab(session: session, progress: progress),
-        ],
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _tab,
-        onDestinationSelected: (int i) => setState(() => _tab = i),
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map_rounded),
-            label: 'Campus',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.menu_book_outlined),
-            selectedIcon: Icon(Icons.menu_book_rounded),
-            label: 'Learn',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.science_outlined),
-            selectedIcon: Icon(Icons.science_rounded),
-            label: 'Practice',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.insights_outlined),
-            selectedIcon: Icon(Icons.insights_rounded),
-            label: 'Progress',
-          ),
-        ],
-      ),
-      floatingActionButton: _tab == 0
-          ? FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => VuV2SubscriptionScreen(progress: progress),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.workspace_premium_outlined),
-              label: Text(progress.isPremium ? 'Premium' : 'Plans'),
-            )
-          : null,
     );
   }
 }

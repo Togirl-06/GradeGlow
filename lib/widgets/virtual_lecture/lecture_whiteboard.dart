@@ -25,66 +25,18 @@ class LectureWhiteboard extends StatefulWidget {
   final bool animate;
   final double speechProgress;
   final bool isSpeaking;
-  /// Yellow/white chalk on dark board (Khan Academy video look).
+  /// Yellow/white chalk on dark board (video-lecture look).
   final bool khanStyle;
 
   @override
   State<LectureWhiteboard> createState() => _LectureWhiteboardState();
 }
 
-class _LectureWhiteboardState extends State<LectureWhiteboard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _introController;
-  late final Animation<double> _introProgress;
-
-  @override
-  void initState() {
-    super.initState();
-    _introController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    );
-    _introProgress = CurvedAnimation(parent: _introController, curve: Curves.easeOutCubic);
-    _startIntro();
-  }
-
-  @override
-  void didUpdateWidget(LectureWhiteboard oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.frame.title != widget.frame.title ||
-        oldWidget.frame.kind != widget.frame.kind ||
-        oldWidget.frame.problemStatement != widget.frame.problemStatement ||
-        oldWidget.frame.solutionSteps.length != widget.frame.solutionSteps.length) {
-      _startIntro();
-    }
-  }
-
-  void _startIntro() {
-    _introController.reset();
-    if (widget.animate) {
-      _introController.forward();
-    } else {
-      _introController.value = 1;
-    }
-  }
-
-  @override
-  void dispose() {
-    _introController.dispose();
-    super.dispose();
-  }
-
-  double get _drawProgress {
-    final double speech = widget.speechProgress.clamp(0, 1);
-    final double intro = _introProgress.value;
-    if (!widget.isSpeaking && speech > 0.05) return speech;
-    return math.max(speech * 0.85 + intro * 0.15, intro * 0.4);
-  }
-
+class _LectureWhiteboardState extends State<LectureWhiteboard> {
   @override
   Widget build(BuildContext context) {
     final bool khan = widget.khanStyle;
-    // Khan board uses fixed chalk colors — avoid Theme.of so teardown cannot
+    // Dark board uses fixed chalk colors — avoid Theme.of so teardown cannot
     // leave InheritedWidget dependents behind during route pops.
     final Color chalk = khan
         ? KhanLectureColors.chalkYellow
@@ -99,10 +51,7 @@ class _LectureWhiteboardState extends State<LectureWhiteboard>
         ? KhanLectureColors.chalkWhite.withValues(alpha: 0.22)
         : MathematicsDegreeTheme.of(context).border;
 
-    return AnimatedBuilder(
-      animation: _introController,
-      builder: (BuildContext context, Widget? child) {
-        return Container(
+    return Container(
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
@@ -121,61 +70,78 @@ class _LectureWhiteboardState extends State<LectureWhiteboard>
           ),
           child: Stack(
             children: <Widget>[
-              CustomPaint(
-                painter: _BoardGridPainter(
-                  color: chalk.withValues(alpha: khan ? 0.06 : 0.08),
+              // Soft chalk wash — no grid (felt empty / unfinished).
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: const Alignment(0, -0.2),
+                      radius: 1.15,
+                      colors: <Color>[
+                        Colors.white.withValues(alpha: khan ? 0.035 : 0.02),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
                 ),
-                child: const SizedBox.expand(),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(18, khan ? 28 : 56, 18, khan ? 88 : 100),
-                child: khan
-                    ? _buildContent(
-                        chalk: chalk,
-                        ink: ink,
-                        mute: mute,
-                        border: border,
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                padding: EdgeInsets.fromLTRB(18, khan ? 22 : 56, 18, khan ? 88 : 100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    if (khan) ...<Widget>[
+                      Text(
+                        widget.frame.title.trim().isEmpty
+                            ? 'Lecture board'
+                            : widget.frame.title.trim(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: chalk.withValues(alpha: 0.95),
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
+                          letterSpacing: 0.2,
+                          height: 1.25,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        height: 1.5,
+                        width: 72,
+                        color: chalk.withValues(alpha: 0.45),
+                      ),
+                      const SizedBox(height: 14),
+                    ] else ...<Widget>[
+                      Row(
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.draw_rounded, color: chalk, size: 18),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  widget.frame.title,
-                                  style: TextStyle(
-                                    color: chalk,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 17,
-                                    height: 1.2,
-                                  ),
-                                ),
-                              ),
-                              if (widget.frame.highlight != null &&
-                                  !widget.frame.isWorkedProblem)
-                                Flexible(
-                                  child: _HighlightChip(
-                                    label: widget.frame.highlight!,
-                                    color: chalk,
-                                    visible: _drawProgress > 0.55,
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 14),
+                          Icon(Icons.draw_rounded, color: chalk, size: 18),
+                          const SizedBox(width: 8),
                           Expanded(
-                            child: _buildContent(
-                              chalk: chalk,
-                              ink: ink,
-                              mute: mute,
-                              border: border,
+                            child: Text(
+                              widget.frame.title,
+                              style: TextStyle(
+                                color: chalk,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 17,
+                                height: 1.2,
+                              ),
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(height: 14),
+                    ],
+                    Expanded(
+                      child: _buildContent(
+                        chalk: chalk,
+                        ink: ink,
+                        mute: mute,
+                        border: border,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               if (widget.isSpeaking && _drawProgress < 0.98)
                 Positioned.fill(
@@ -196,9 +162,12 @@ class _LectureWhiteboardState extends State<LectureWhiteboard>
                 ),
             ],
           ),
-        );
-      },
     );
+  }
+
+  double get _drawProgress {
+    // Board follows voice exactly — no intro floor that races ahead of speech.
+    return widget.speechProgress.clamp(0.0, 1.0);
   }
 
   Widget _buildContent({
@@ -256,42 +225,9 @@ class _LectureWhiteboardState extends State<LectureWhiteboard>
           color: ink,
           accent: chalk,
           progress: _drawProgress,
+          highlight: widget.frame.highlight,
         );
     }
-  }
-}
-
-class _HighlightChip extends StatelessWidget {
-  const _HighlightChip({
-    required this.label,
-    required this.color,
-    required this.visible,
-  });
-
-  final String label;
-  final Color color;
-  final bool visible;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: visible ? 1 : 0,
-      duration: const Duration(milliseconds: 400),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.15),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color.withValues(alpha: 0.4)),
-        ),
-        child: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.w800),
-        ),
-      ),
-    );
   }
 }
 
@@ -423,55 +359,221 @@ class _AnimatedLines extends StatelessWidget {
     required this.color,
     required this.accent,
     required this.progress,
+    this.highlight,
   });
 
   final List<String> lines;
   final Color color;
   final Color accent;
   final double progress;
+  final String? highlight;
 
   @override
   Widget build(BuildContext context) {
-    final int visible = (lines.length * progress).ceil().clamp(0, lines.length);
-    return ListView.builder(
-      physics: const ClampingScrollPhysics(),
-      itemCount: visible,
-      itemBuilder: (BuildContext context, int index) {
-        final double lineProgress = ((progress * lines.length) - index).clamp(0.0, 1.0);
-        return Opacity(
-          opacity: lineProgress.clamp(0.3, 1),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: 22,
-                  height: 22,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: accent.withValues(alpha: 0.12),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '${index + 1}',
-                    style: TextStyle(color: accent, fontSize: 11, fontWeight: FontWeight.w800),
+    if (lines.isEmpty) {
+      return Center(
+        child: Text(
+          'Board notes appear as the professor teaches…',
+          style: TextStyle(color: color.withValues(alpha: 0.55), fontSize: 14),
+        ),
+      );
+    }
+
+    // Progress drives the active slide. [highlight] only accents the focused line —
+    // it must never freeze the board while the professor keeps talking.
+    final int focus = () {
+      if (progress < 0.02) return 0;
+      final int byProgress =
+          (lines.length * progress.clamp(0.0, 1.0)).ceil().clamp(1, lines.length) -
+              1;
+      return byProgress;
+    }();
+
+    final String current = lines[focus.clamp(0, lines.length - 1)];
+    final String? kind = _noteKind(current);
+    final bool highlightActive =
+        highlight != null && highlight!.trim() == current.trim();
+    // Writing reveal: chalk appears as the voice reaches this slide.
+    final double writeIn = () {
+      if (lines.length <= 1) return progress.clamp(0.0, 1.0);
+      final double slot = 1.0 / lines.length;
+      final double start = focus * slot;
+      final double local = ((progress - start) / slot).clamp(0.0, 1.0);
+      return Curves.easeOutCubic.transform(local);
+    }();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text(
+              'Slide ${focus + 1} of ${lines.length}',
+              style: TextStyle(
+                color: accent.withValues(alpha: 0.85),
+                fontWeight: FontWeight.w800,
+                fontSize: 12,
+                letterSpacing: 0.4,
+              ),
+            ),
+            if (kind != null) ...<Widget>[
+              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.16),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: accent.withValues(alpha: 0.35)),
+                ),
+                child: Text(
+                  kind,
+                  style: TextStyle(
+                    color: accent,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 10,
+                    letterSpacing: 0.6,
                   ),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: LectureMathText(
-                    text: lines[index],
-                    color: color,
-                    fontSize: 14,
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: 14),
+        Expanded(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 280),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            child: Align(
+              key: ValueKey<String>('$focus|$current'),
+              alignment: Alignment.topLeft,
+              child: Opacity(
+                opacity: writeIn.clamp(0.15, 1.0),
+                child: Transform.translate(
+                  offset: Offset(0, 10 * (1 - writeIn)),
+                  child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: highlightActive ? 0.14 : 0.08),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: accent.withValues(alpha: highlightActive ? 0.55 : 0.4),
+                    width: 1.4,
                   ),
                 ),
-              ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 30,
+                          height: 30,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: accent.withValues(alpha: 0.28),
+                            shape: BoxShape.circle,
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: accent.withValues(alpha: 0.35),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            '${focus + 1}',
+                            style: TextStyle(
+                              color: accent,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            current,
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              height: 1.45,
+                              letterSpacing: 0.15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (focus > 0) ...<Widget>[
+                      const SizedBox(height: 16),
+                      Text(
+                        'Already on the board',
+                        style: TextStyle(
+                          color: color.withValues(alpha: 0.45),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ...lines.take(focus).map(
+                        (String prior) => Padding(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '·  ',
+                                style: TextStyle(
+                                  color: color.withValues(alpha: 0.4),
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  prior,
+                                  style: TextStyle(
+                                    color: color.withValues(alpha: 0.55),
+                                    fontSize: 13,
+                                    height: 1.35,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                  ),
+                ),
+              ),
             ),
           ),
-        );
-      },
+        ),
+      ],
     );
+  }
+
+  static String? _noteKind(String note) {
+    final String n = note.toLowerCase();
+    if (n.startsWith('how') || n.contains('step ') || n.startsWith('1.') || n.contains('first ')) {
+      return 'HOW';
+    }
+    if (n.contains('example') || n.startsWith('e.g.') || n.contains('scenario') || n.contains('case:')) {
+      return 'EXAMPLE';
+    }
+    if (n.contains('why') || n.contains('because') || n.contains('matters')) {
+      return 'WHY';
+    }
+    if (n.contains('define') || n.contains('means') || n.contains('definition')) {
+      return 'DEFINE';
+    }
+    return null;
   }
 }
 
@@ -519,30 +621,6 @@ class _MatrixGrid extends StatelessWidget {
   }
 }
 
-class _BoardGridPainter extends CustomPainter {
-  _BoardGridPainter({required this.color});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint grid = Paint()
-      ..color = color
-      ..strokeWidth = 1;
-    const double step = 28;
-    for (double x = 0; x < size.width; x += step) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid);
-    }
-    for (double y = 0; y < size.height; y += step) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), grid);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _BoardGridPainter old) => old.color != color;
-}
-
-/// Loads a real educational diagram (asset or internet) — never freehand shapes.
 class _LectureDiagramBoard extends StatefulWidget {
   const _LectureDiagramBoard({
     required this.frame,
@@ -630,15 +708,55 @@ class _LectureDiagramBoardState extends State<_LectureDiagramBoard> {
             if (widget.frame.lines.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  widget.frame.lines.take(2).join(' · '),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: widget.mute,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Labels',
+                      style: TextStyle(
+                        color: widget.chalk,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: () {
+                        final List<String> labels = widget.frame.lines;
+                        final int visible = labels.isEmpty
+                            ? 0
+                            : (labels.length * widget.progress.clamp(0.08, 1.0))
+                                .ceil()
+                                .clamp(1, labels.length);
+                        return labels.take(visible).map(
+                          (String line) => Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.28),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: widget.chalk.withValues(alpha: 0.35),
+                              ),
+                            ),
+                            child: Text(
+                              line.replaceFirst(RegExp(r'^•\s*'), ''),
+                              style: TextStyle(
+                                color: widget.ink,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ).toList();
+                      }(),
+                    ),
+                  ],
                 ),
               ),
             Expanded(
