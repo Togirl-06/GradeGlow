@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/gpa_predictor.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_roadmap_models.dart';
 import '../data/vu_v2_roadmap_sync.dart';
@@ -35,6 +36,11 @@ class VuV2ProgressPanel extends StatelessWidget {
         ? 0
         : progress.quizScores.values.reduce((double a, double b) => a + b) /
             progress.quizScores.length;
+    final GpaForecast gpaForecast = GpaPredictor.fromPercents(
+      percents: progress.quizScores.values
+          .map((double v) => v.round())
+          .toList(),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +116,7 @@ class VuV2ProgressPanel extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: _StatCard(
-                label: 'GPA',
+                label: 'Pred. GPA',
                 value: progress.gpaLabel,
               ),
             ),
@@ -120,6 +126,39 @@ class VuV2ProgressPanel extends StatelessWidget {
         _StatCard(
           label: 'Attendance',
           value: '${progress.attendanceDays.length} days',
+        ),
+        const SizedBox(height: 10),
+        VuV2Surface(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'GPA PREDICTION',
+                style: TextStyle(
+                  color: VuV2Colors.orange,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 11,
+                  letterSpacing: 0.8,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                gpaForecast.hasQuizzes
+                    ? '${gpaForecast.gpaLabel} / 4.00 · ${gpaForecast.letter} · ${gpaForecast.trendLabel}'
+                    : 'No quiz scores yet',
+                style: const TextStyle(
+                  color: VuV2Colors.ink,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                gpaForecast.nextStep,
+                style: const TextStyle(color: VuV2Colors.mute, fontSize: 12, height: 1.35),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 16),
         VuV2PrimaryButton(

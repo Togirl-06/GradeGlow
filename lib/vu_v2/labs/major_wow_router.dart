@@ -5,6 +5,7 @@ import '../career_labs/playable/science/biology/clinical_viva_quiz_screen.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import 'course_labs_catalog.dart';
+import 'winning_career_showcases.dart';
 import 'winning_major_showcases.dart';
 
 /// Routes every major to graded workplace practicals — several labs per course.

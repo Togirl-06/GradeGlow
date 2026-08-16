@@ -62,9 +62,12 @@ class StudyMonthCalendar extends StatelessWidget {
     ).day;
     final int totalCells = ((leadingBlanks + daysInMonth) / 7).ceil() * 7;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 340),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
         Row(
           children: <Widget>[
             Expanded(
@@ -72,20 +75,12 @@ class StudyMonthCalendar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    DateFormat('MMMM').format(firstOfMonth),
+                    DateFormat('MMMM yyyy').format(firstOfMonth),
                     style: TextStyle(
                       color: textPrimary,
-                      fontSize: 22,
+                      fontSize: 15,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                  Text(
-                    '${firstOfMonth.year}',
-                    style: TextStyle(
-                      color: textSecondary,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.2,
                     ),
                   ),
                 ],
@@ -119,9 +114,9 @@ class StudyMonthCalendar extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 8),
         Row(
-          children: <String>['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+          children: <String>['S', 'M', 'T', 'W', 'T', 'F', 'S']
               .map(
                 (String label) => Expanded(
                   child: Center(
@@ -129,9 +124,9 @@ class StudyMonthCalendar extends StatelessWidget {
                       label,
                       style: TextStyle(
                         color: textSecondary,
-                        fontSize: 9,
+                        fontSize: 10,
                         fontWeight: FontWeight.w800,
-                        letterSpacing: 0.35,
+                        letterSpacing: 0.2,
                       ),
                     ),
                   ),
@@ -139,16 +134,16 @@ class StudyMonthCalendar extends StatelessWidget {
               )
               .toList(),
         ),
-        const SizedBox(height: 9),
+        const SizedBox(height: 4),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: totalCells,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 7,
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
-            childAspectRatio: 0.88,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            mainAxisExtent: 32,
           ),
           itemBuilder: (BuildContext context, int index) {
             final int dayNum = index - leadingBlanks + 1;
@@ -177,6 +172,8 @@ class StudyMonthCalendar extends StatelessWidget {
           },
         ),
       ],
+        ),
+      ),
     );
   }
 }
@@ -207,9 +204,9 @@ class _CalendarControl extends StatelessWidget {
           onTap: onPressed,
           borderRadius: BorderRadius.circular(12),
           child: SizedBox(
-            width: 36,
-            height: 36,
-            child: Icon(icon, color: color, size: 18),
+            width: 28,
+            height: 28,
+            child: Icon(icon, color: color, size: 16),
           ),
         ),
       ),
@@ -251,14 +248,14 @@ class _DayCell extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(8),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
           decoration: BoxDecoration(
             color: markers.isNotEmpty && !isSelected && !isToday
                 ? surface.withValues(alpha: 0.72)
                 : background,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -267,24 +264,24 @@ class _DayCell extends StatelessWidget {
                 '${day.day}',
                 style: TextStyle(
                   color: numberColor,
-                  fontSize: 14,
+                  fontSize: 12,
+                  height: 1,
                   fontWeight: isSelected || isToday
                       ? FontWeight.w900
                       : FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 3),
-              SizedBox(
-                height: 6,
-                child: Row(
+              if (markers.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 2),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: markers
                       .take(3)
                       .map(
                         (Color color) => Container(
-                          width: 5,
-                          height: 5,
-                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                          width: 3.5,
+                          height: 3.5,
+                          margin: const EdgeInsets.symmetric(horizontal: 0.5),
                           decoration: BoxDecoration(
                             color: isSelected ? Colors.white : color,
                             shape: BoxShape.circle,
@@ -293,7 +290,7 @@ class _DayCell extends StatelessWidget {
                       )
                       .toList(),
                 ),
-              ),
+              ],
             ],
           ),
         ),

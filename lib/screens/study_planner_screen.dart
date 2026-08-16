@@ -425,7 +425,7 @@ class _StudyPlannerScreenState extends State<StudyPlannerScreen> {
         ),
         const SizedBox(height: 14),
         StudySurfaceCard(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
           child: StudyMonthCalendar(
             focusedMonth: _focusedMonth,
             selectedDay: _selectedDay,
@@ -567,10 +567,10 @@ class _PlannerOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: scheme.primaryContainer,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: <Widget>[

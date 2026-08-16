@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/diagram_misconception_store.dart';
+import '../../utils/gpa_predictor.dart';
 import 'vu_v2_lesson_flow.dart';
 
 /// Local persistence for VU V2 progress, enrollment, and campus extras.
@@ -41,12 +42,12 @@ class VuV2ProgressStore extends ChangeNotifier {
   bool preferLightTheme = false;
   double gpaPlaceholder = 0;
 
-  /// Cumulative GPA on a 4.0 scale from quiz performance.
+  /// Predicted term GPA on a 4.0 letter scale from quiz performance.
   double get gpa {
     if (quizScores.isEmpty) return 0;
-    final double avg = quizScores.values.reduce((double a, double b) => a + b) /
-        quizScores.length;
-    return ((avg / 100) * 4.0).clamp(0.0, 4.0);
+    return GpaPredictor.fromPercents(
+      percents: quizScores.values.map((double v) => v.round()).toList(),
+    ).predictedGpa;
   }
 
   String get gpaLabel => gpa.toStringAsFixed(2);

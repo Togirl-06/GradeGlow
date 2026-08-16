@@ -229,7 +229,7 @@ class VuV2CampusHome extends StatelessWidget {
               SizedBox(
                 width: 92,
                 child: _MiniStat(
-                  label: 'GPA',
+                  label: 'Pred. GPA',
                   value: progress.gpaLabel,
                 ),
               ),

@@ -18,6 +18,7 @@ import '../utils/class_study_groups.dart';
 import '../utils/course_summary_actions.dart';
 import '../utils/progress_analytics.dart';
 import '../utils/summary_study_actions.dart';
+import '../widgets/gpa_prediction_card.dart';
 import '../widgets/program_analytics_section.dart';
 import '../widgets/study_set_card.dart';
 
@@ -99,6 +100,16 @@ class ProgressScreen extends StatelessWidget {
                           classCount: groups.length,
                           cardCount: totalCards,
                         ),
+                        const SizedBox(height: 12),
+                        GpaPredictionCard(
+                          profile: profile,
+                          onOpenDetails: () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  GradePredictorScreen(profile: profile),
+                            ),
+                          ),
+                        ),
                         if (!isPremium) ...<Widget>[
                           const SizedBox(height: 12),
                           _PremiumFocusBanner(
@@ -106,21 +117,6 @@ class ProgressScreen extends StatelessWidget {
                               MaterialPageRoute<void>(
                                 builder: (_) => const MembershipScreen(),
                               ),
-                            ),
-                          ),
-                        ] else ...<Widget>[
-                          const SizedBox(height: 12),
-                          FilledButton.icon(
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    GradePredictorScreen(profile: profile),
-                              ),
-                            ),
-                            icon: const Icon(Icons.insights_rounded),
-                            label: const Text('Grade Predictor'),
-                            style: FilledButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
                             ),
                           ),
                         ],
@@ -506,7 +502,7 @@ class _PremiumFocusBanner extends StatelessWidget {
           const SizedBox(width: 12),
           const Expanded(
             child: Text(
-              'Upgrade for AI focus topics, Grade Predictor, and advanced analytics.',
+              'Upgrade for AI focus topics and extra weekly study analytics.',
               style: TextStyle(
                 fontSize: 13,
                 height: 1.35,
