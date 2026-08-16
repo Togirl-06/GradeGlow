@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ import '../utils/api_error_messages.dart';
 import '../utils/premium_access.dart';
 import '../utils/tutor_limits.dart';
 import '../widgets/api_error_banner.dart';
+import '../widgets/local_or_network_image.dart';
 import '../widgets/study_surface.dart';
 import '../widgets/tutor_limit_banner.dart';
 import '../widgets/tutor_sidebar.dart';
@@ -1122,7 +1122,11 @@ class _PendingMediaStrip extends StatelessWidget {
                 children: <Widget>[
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.file(File(e.value), width: 72, height: 72, fit: BoxFit.cover),
+                    child: LocalOrNetworkImage(
+                      path: e.value,
+                      width: 72,
+                      height: 72,
+                    ),
                   ),
                   Positioned(
                     top: 2,

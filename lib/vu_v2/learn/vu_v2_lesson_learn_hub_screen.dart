@@ -773,6 +773,7 @@ abstract final class VuV2AiTutorLauncher {
           subjectId: subjectId,
         );
         if (result == null) return;
+        if (!context.mounted) return;
         await VuV2Scope.maybeOf(context)?.progress.markStep(
               lesson.id,
               VuV2LessonStep.realWorldLab,
@@ -784,6 +785,7 @@ abstract final class VuV2AiTutorLauncher {
     final Future<void> Function()? baseCompleted = onCompleted;
     onCompleted = () async {
       await baseCompleted?.call();
+      if (!context.mounted) return;
       await VuV2Scope.maybeOf(context)?.progress.syncDiagramMisconceptions();
     };
 

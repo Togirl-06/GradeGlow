@@ -21,7 +21,10 @@ class ChatMessage {
   final bool isVoice;
   final int? voiceDurationSeconds;
 
-  bool get hasMedia => mediaPath != null && mediaPath!.isNotEmpty && mediaType != ChatMediaType.none;
+  bool get hasMedia {
+    final String? path = mediaPath;
+    return path != null && path.isNotEmpty && mediaType != ChatMediaType.none;
+  }
 
   factory ChatMessage.fromMap(String id, Map<String, dynamic> data) {
     return ChatMessage(

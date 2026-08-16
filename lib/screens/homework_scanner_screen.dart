@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../services/openai_service.dart';
 import '../services/tutor_voice_service.dart';
 import '../theme/study_theme.dart';
+import '../widgets/local_or_network_image.dart';
 import '../widgets/premium_gate.dart';
 import '../widgets/study_surface.dart';
 import '../utils/study_messenger.dart';
@@ -126,7 +125,7 @@ class _HomeworkScannerBody extends StatelessWidget {
           if (imagePath != null)
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.file(File(imagePath!), fit: BoxFit.cover),
+              child: LocalOrNetworkImage(path: imagePath!, fit: BoxFit.cover),
             ),
           if (imagePath == null)
             StudySurfaceCard(

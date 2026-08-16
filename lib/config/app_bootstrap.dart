@@ -43,7 +43,10 @@ class AppBootstrap {
       firebaseReady = false;
     }
 
-    if (firebaseReady && !kIsWeb) {
+    // Crashlytics in debug reports Flutter errors as fatal native crashes, which
+    // drops the observatory connection ("Lost connection to device") and spams
+    // "Unable to read App Quality Sessions session id" on emulators.
+    if (firebaseReady && !kIsWeb && kReleaseMode) {
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
       PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
@@ -52,7 +55,13 @@ class AppBootstrap {
       };
       try {
         await FirebaseCrashlytics.instance
-            .setCrashlyticsCollectionEnabled(!kDebugMode)
+            .setCrashlyticsCollectionEnabled(true)
+            .timeout(const Duration(seconds: 5));
+      } catch (_) {}
+    } else if (firebaseReady && !kIsWeb) {
+      try {
+        await FirebaseCrashlytics.instance
+            .setCrashlyticsCollectionEnabled(false)
             .timeout(const Duration(seconds: 5));
       } catch (_) {}
     }

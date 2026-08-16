@@ -49,7 +49,15 @@ class UserService extends ChangeNotifier {
     if (_auth.isDemoMode) {
       _demoProfile ??= UserProfile.empty(email: _auth.email, displayName: _auth.displayName);
       return Stream<UserProfile>.multi((StreamController<UserProfile> controller) {
-        void emit() => controller.add(_demoProfile!);
+        void emit() {
+          controller.add(
+            _demoProfile ??
+                UserProfile.empty(
+                  email: _auth.email,
+                  displayName: _auth.displayName,
+                ),
+          );
+        }
         emit();
         void listener() => emit();
         addListener(listener);
@@ -567,7 +575,12 @@ class UserService extends ChangeNotifier {
   Future<TutorMediaUsage> refreshTutorUsage(SubscriptionPlan plan) async {
     _tutorUsageCache = await _loadTutorMediaUsage(plan);
     notifyListeners();
-    return _tutorUsageCache!;
+    return _tutorUsageCache ??
+        TutorMediaUsage(
+          count: 0,
+          limit: TutorLimits.freeDailyMediaAttachments,
+          isPremium: plan.isPaid,
+        );
   }
 
   Future<bool> canSendTutorMedia(SubscriptionPlan plan, int attachmentCount) async {
@@ -672,7 +685,12 @@ class UserService extends ChangeNotifier {
   Future<SummarizeDailyUsage> refreshSummarizeUsage(SubscriptionPlan plan) async {
     _summarizeUsageCache = await _loadSummarizeUsage(plan);
     notifyListeners();
-    return _summarizeUsageCache!;
+    return _summarizeUsageCache ??
+        SummarizeDailyUsage(
+          count: 0,
+          limit: StudyLimits.freeDailySummarizeActions,
+          isPremium: plan.isPaid,
+        );
   }
 
   Future<bool> canSummarize(SubscriptionPlan plan) async {

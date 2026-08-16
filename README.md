@@ -13,7 +13,17 @@ AI Professors teach like real faculty, with full lectures, speech-synced visuals
 3. Confirm Firebase apps use package ID **`com.gradeglow.app`** (see [LAUNCH.md](LAUNCH.md)).
 4. **Deploy Firestore + Storage rules**:
    - Firebase Console → Rules, or `firebase deploy --only firestore:rules,storage`
-5. Run `flutter run`
+5. Run `flutter run` (phone) or `flutter run -d edge` / `flutter run -d chrome` (website)
+
+## Host the website
+
+The web app is ready for Firebase Hosting:
+
+```powershell
+.\scripts\deploy_web.ps1
+```
+
+That builds `build/web` and deploys it. After `firebase login`, the site is at https://ai-studybuddy-1fad1.web.app.
 
 See [LAUNCH.md](LAUNCH.md) for store-ready checklist.
 

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../models/chat_message.dart';
 import '../theme/study_theme.dart';
 import '../utils/voice_duration_format.dart';
+import 'local_or_network_image.dart';
 import 'tutor_markdown_body.dart';
 
 /// ChatGPT-style user message (dark pill + timestamp & actions).
@@ -49,14 +48,15 @@ class TutorUserBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (message.hasMedia && message.mediaType == ChatMediaType.image)
+              if (message.hasMedia &&
+                  message.mediaType == ChatMediaType.image &&
+                  message.mediaPath != null)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.file(
-                    File(message.mediaPath!),
+                  child: LocalOrNetworkImage(
+                    path: message.mediaPath!,
                     height: 140,
                     width: double.infinity,
-                    fit: BoxFit.cover,
                   ),
                 ),
               if (message.hasMedia && message.mediaType == ChatMediaType.video)
@@ -134,14 +134,15 @@ class TutorVoiceUserBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              if (message.hasMedia && message.mediaType == ChatMediaType.image)
+              if (message.hasMedia &&
+                  message.mediaType == ChatMediaType.image &&
+                  message.mediaPath != null)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.file(
-                    File(message.mediaPath!),
+                  child: LocalOrNetworkImage(
+                    path: message.mediaPath!,
                     height: 140,
                     width: double.infinity,
-                    fit: BoxFit.cover,
                   ),
                 ),
               if (message.text.isNotEmpty)

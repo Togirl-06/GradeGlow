@@ -164,6 +164,10 @@ class ChatService extends ChangeNotifier {
     );
   }
 
+  List<ChatMessage> _ensureDemoMessages(String sessionId) {
+    return _demoMessagesBySession.putIfAbsent(sessionId, () => <ChatMessage>[]);
+  }
+
   Future<void> _migrateLegacyMessages(String uid) async {
     final QuerySnapshot<Map<String, dynamic>> legacy = await FirebaseFirestore.instance
         .collection('users')
@@ -378,22 +382,32 @@ class ChatService extends ChangeNotifier {
       String? mediaPath;
       ChatMediaType mediaType = ChatMediaType.none;
 
-      if (request.videoPath != null) {
+      if (request.videoPath != null && !kIsWeb) {
         mediaPath = request.videoPath;
         mediaType = ChatMediaType.video;
-        final String? frame = await VideoThumbnail.thumbnailFile(
-          video: request.videoPath!,
-          imageFormat: ImageFormat.JPEG,
-          maxHeight: 720,
-          quality: 80,
-        );
-        if (frame != null) {
-          visionPaths.add(frame);
+        try {
+          final String? frame = await VideoThumbnail.thumbnailFile(
+            video: request.videoPath!,
+            imageFormat: ImageFormat.JPEG,
+            maxHeight: 720,
+            quality: 80,
+          );
+          if (frame != null) {
+            visionPaths.add(frame);
+          }
+        } catch (_) {
+          // Emulators often cannot decode the video; send without a preview frame.
         }
         if (displayText.isEmpty) {
           displayText = 'Please help me with this video.';
         } else {
           displayText = '$displayText\n(Attached video — using a preview frame for vision.)';
+        }
+      } else if (request.videoPath != null) {
+        mediaPath = request.videoPath;
+        mediaType = ChatMediaType.video;
+        if (displayText.isEmpty) {
+          displayText = 'Please help me with this video.';
         }
       } else if (request.imagePaths.isNotEmpty) {
         mediaPath = request.imagePaths.first;
@@ -418,7 +432,7 @@ class ChatService extends ChangeNotifier {
           _auth.isDemoMode ? _buildDemoHistory(sessionId) : await _loadHistory(uid, sessionId);
 
       if (_auth.isDemoMode) {
-        _demoMessagesBySession[sessionId]!.add(userMessage);
+        _ensureDemoMessages(sessionId).add(userMessage);
         _touchDemoSession(sessionId, displayText);
         notifyListeners();
       } else {
@@ -446,7 +460,7 @@ class ChatService extends ChangeNotifier {
       );
 
       if (_auth.isDemoMode) {
-        _demoMessagesBySession[sessionId]!.add(aiMessage);
+        _ensureDemoMessages(sessionId).add(aiMessage);
         _touchDemoSession(sessionId, null);
       } else {
         await _saveMessage(uid, sessionId, aiMessage);
@@ -743,7 +757,7 @@ class ChatService extends ChangeNotifier {
       );
 
       if (_auth.isDemoMode) {
-        _demoMessagesBySession[sessionId]!.add(userMessage);
+        _ensureDemoMessages(sessionId).add(userMessage);
         _touchDemoSession(sessionId, trimmed);
         notifyListeners();
       } else {
@@ -769,7 +783,7 @@ class ChatService extends ChangeNotifier {
       );
 
       if (_auth.isDemoMode) {
-        _demoMessagesBySession[sessionId]!.add(aiMessage);
+        _ensureDemoMessages(sessionId).add(aiMessage);
         _touchDemoSession(sessionId, null);
       } else {
         await _saveMessage(uid, sessionId, aiMessage);
@@ -777,7 +791,7 @@ class ChatService extends ChangeNotifier {
       }
 
       final List<ChatMessage> newTail = _auth.isDemoMode
-          ? _demoMessagesBySession[sessionId]!.sublist(messageIndex)
+          ? _ensureDemoMessages(sessionId).sublist(messageIndex)
           : <ChatMessage>[userMessage, aiMessage];
 
       if (slot.versions.isEmpty || !_tailsEqual(slot.versions.last, newTail)) {
@@ -875,7 +889,7 @@ class ChatService extends ChangeNotifier {
       );
 
       if (_auth.isDemoMode) {
-        _demoMessagesBySession[sessionId]!.add(aiMessage);
+        _ensureDemoMessages(sessionId).add(aiMessage);
       } else {
         await _saveMessage(uid, sessionId, aiMessage);
       }

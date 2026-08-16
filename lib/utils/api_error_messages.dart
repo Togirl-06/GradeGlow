@@ -29,6 +29,14 @@ class ApiErrorMessages {
     if (raw.toLowerCase().contains('not configured') || raw.contains('OPENAI_API_KEY')) {
       return missingApiKey;
     }
+    if (raw.toLowerCase().contains('null check operator') ||
+        raw.toLowerCase().contains("type 'null' is not a subtype") ||
+        raw.toLowerCase().contains('null value')) {
+      return const ApiErrorInfo(
+        title: 'Something went wrong',
+        message: 'The tutor hit an internal error. Try sending your message again.',
+      );
+    }
     return ApiErrorInfo(title: 'Something went wrong', message: raw);
   }
 

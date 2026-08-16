@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../config/app_config.dart';
@@ -101,7 +101,20 @@ class OpenAiService {
 
   Future<String?> _fileToDataUrl(String path) async {
     try {
-      final List<int> bytes = await File(path).readAsBytes();
+      if (path.startsWith('data:')) return path;
+      final List<int> bytes;
+      if (kIsWeb ||
+          path.startsWith('blob:') ||
+          path.startsWith('http://') ||
+          path.startsWith('https://')) {
+        final http.Response response = await http.get(Uri.parse(path));
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          return null;
+        }
+        bytes = response.bodyBytes;
+      } else {
+        bytes = await File(path).readAsBytes();
+      }
       final String ext = path.split('.').last.toLowerCase();
       final String mime = switch (ext) {
         'png' => 'image/png',
@@ -696,11 +709,13 @@ class OpenAiService {
 
     final Map<String, dynamic> data = jsonDecode(response.body) as Map<String, dynamic>;
     final List<dynamic> choices = data['choices'] as List<dynamic>? ?? <dynamic>[];
-    if (choices.isEmpty) {
+    if (choices.isEmpty || choices.first is! Map) {
       throw Exception('OpenAI returned an empty response.');
     }
-    final Map<String, dynamic> message =
-        (choices.first as Map<String, dynamic>)['message'] as Map<String, dynamic>;
+    final Object? message = (choices.first as Map)['message'];
+    if (message is! Map) {
+      throw Exception('OpenAI returned an empty response.');
+    }
     final dynamic content = message['content'];
     if (content is String) return content;
     return content?.toString() ?? '';
