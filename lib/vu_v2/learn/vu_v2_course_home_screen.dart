@@ -174,8 +174,10 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
       case 3:
         return _LabsPanel(
           subjectId: widget.subjectId,
+          courseTitle: course.title,
           lessons: _lessons,
           modules: _modules,
+          completedLessons: widget.progress.completedLessonIds.length,
         );
       case 4:
         return _QuizzesPanel(
@@ -1022,13 +1024,17 @@ class _QuizzesPanel extends StatelessWidget {
 class _LabsPanel extends StatelessWidget {
   const _LabsPanel({
     required this.subjectId,
+    required this.courseTitle,
     required this.lessons,
     required this.modules,
+    required this.completedLessons,
   });
 
   final String subjectId;
+  final String courseTitle;
   final List<VuV2RoadmapLesson> lessons;
   final List<VuV2RoadmapModule> modules;
+  final int completedLessons;
 
   @override
   Widget build(BuildContext context) {
@@ -1105,6 +1111,11 @@ class _LabsPanel extends StatelessWidget {
                         context: context,
                         link: e.link,
                         subjectId: subjectId,
+                        courseTitle: courseTitle,
+                        topicTitle: e.lesson.title,
+                        labLevel: VuV2LessonActivityRouter.levelFor(
+                          completedLessons,
+                        ),
                       ),
                     );
                   },

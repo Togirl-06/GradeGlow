@@ -7,10 +7,9 @@ import '../../services/auth_service.dart';
 import '../../services/subscription_service.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
-import '../design/vu_v2_components.dart';
-import '../design/vu_v2_theme.dart';
+import 'vu_v2_registrar_style.dart';
 
-/// Campus account: identity, study targets, appearance, and billing.
+/// University account settings — identity, study load, appearance, billing.
 class VuV2AccountScreen extends StatefulWidget {
   const VuV2AccountScreen({
     super.key,
@@ -52,7 +51,7 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
     if (!mounted) return;
     setState(() => _saving = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Campus name saved')),
+      const SnackBar(content: Text('Name updated on the academic record')),
     );
   }
 
@@ -81,85 +80,63 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
       premiumTools = context.watch<SubscriptionService>().isPremium;
     } catch (_) {}
 
-    return Scaffold(
-      backgroundColor: VuV2Colors.navy,
-      appBar: AppBar(title: const Text('Account')),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 36),
+    return RegistrarScaffold(
+      title: 'Account',
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
         children: <Widget>[
-          VuV2Surface(
+          const RegistrarSection('Identity'),
+          RegistrarCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  'SIGNED IN AS',
-                  style: TextStyle(
-                    color: VuV2Colors.mint,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 11,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  email,
-                  style: const TextStyle(
-                    color: VuV2Colors.ink,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '$authLabel · ${session.majorLabel}',
-                  style: const TextStyle(color: VuV2Colors.mute),
-                ),
-                const SizedBox(height: 16),
+                RegistrarRow(label: 'Sign-in', value: '$authLabel · $email'),
+                RegistrarRow(label: 'Program', value: session.majorLabel),
+                const SizedBox(height: 12),
                 TextField(
                   controller: _name,
-                  style: const TextStyle(color: VuV2Colors.ink),
-                  decoration: InputDecoration(
-                    labelText: 'Campus display name',
-                    labelStyle: const TextStyle(color: VuV2Colors.mute),
-                    filled: true,
-                    fillColor: VuV2Colors.navyElevated,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                  style: RegistrarType.body,
+                  decoration: const InputDecoration(
+                    labelText: 'Name on record',
+                    labelStyle: RegistrarType.label,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: RegistrarColors.rule),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: RegistrarColors.navy),
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: FilledButton(
+                  child: TextButton(
                     onPressed: _saving ? null : _saveName,
+                    style: TextButton.styleFrom(
+                      foregroundColor: RegistrarColors.navy,
+                    ),
                     child: Text(_saving ? 'Saving…' : 'Save name'),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 18),
-          const VuV2SectionTitle('Study targets'),
-          const SizedBox(height: 8),
-          VuV2Surface(
+          const SizedBox(height: 22),
+          const RegistrarSection('Study load'),
+          RegistrarCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '${session.weeklyMinutes} minutes / week',
-                  style: const TextStyle(
-                    color: VuV2Colors.ink,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  '${session.weeklyMinutes} minutes per week',
+                  style: RegistrarType.body.copyWith(fontWeight: FontWeight.w600),
                 ),
                 Slider(
-                  value: session.weeklyMinutes.toDouble().clamp(30, 600),
+                  value: session.weeklyMinutes.toDouble().clamp(30, 360),
                   min: 30,
                   max: 360,
                   divisions: 11,
                   label: '${session.weeklyMinutes} min',
-                  activeColor: VuV2Colors.mint,
                   onChanged: (double v) {
                     setState(() => session.weeklyMinutes = v.round());
                   },
@@ -168,28 +145,23 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
                   },
                 ),
                 const Text(
-                  'Used to pace lectures and labs. Changing it does not erase progress.',
-                  style: TextStyle(color: VuV2Colors.mute, fontSize: 12, height: 1.4),
+                  'Used to pace lectures and laboratories. Changing it does not erase grades.',
+                  style: TextStyle(color: RegistrarColors.mute, height: 1.4, fontSize: 13),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 18),
-          const VuV2SectionTitle('Appearance'),
-          const SizedBox(height: 8),
-          VuV2Surface(
+          const SizedBox(height: 22),
+          const RegistrarSection('Display'),
+          RegistrarCard(
             child: SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text(
-                'Light campus theme',
-                style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
-              ),
+              title: const Text('Light campus boards', style: RegistrarType.body),
               subtitle: const Text(
-                'Optional lighter boards. Default campus is dark.',
-                style: TextStyle(color: VuV2Colors.mute),
+                'Optional. Records pages stay on this letterhead either way.',
+                style: TextStyle(color: RegistrarColors.mute, fontSize: 13),
               ),
               value: progress.preferLightTheme,
-              activeThumbColor: VuV2Colors.mint,
               onChanged: (bool v) async {
                 await progress.setPreferLightTheme(v);
                 widget.onThemeChanged(v);
@@ -197,30 +169,29 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
               },
             ),
           ),
-          const SizedBox(height: 18),
-          const VuV2SectionTitle('Campus plan'),
-          const SizedBox(height: 8),
-          _PlanCard(
-            title: 'Virtual University',
+          const SizedBox(height: 22),
+          const RegistrarSection('Tuition & tools'),
+          _PlanBlock(
+            title: 'Virtual University campus',
             price: r'$0',
             badge: 'INCLUDED',
             bullets: const <String>[
-              'All lectures, labs, notes, quizzes, and certificates',
+              'Lectures, laboratories, notes, examinations, certificates',
               'AI Professor on campus',
               'No tuition for the degree catalog',
             ],
-            cta: 'Your campus access',
+            cta: 'Campus access is active',
           ),
           const SizedBox(height: 12),
-          _PlanCard(
+          _PlanBlock(
             title: 'Premium study tools',
-            price: '${BillingConfig.premiumMonthlyPrice}/mo',
-            accent: true,
+            price: '${BillingConfig.premiumMonthlyPrice}/month',
             badge: premiumTools ? 'ACTIVE' : BillingConfig.trialLabel,
-            bullets: const <String>[
+            accent: true,
+            bullets: <String>[
               '${BillingConfig.freeTrialDays}-day free trial, then ${BillingConfig.premiumMonthlyPrice}/month',
               'Unlimited tutor chat, live voice, extra uploads',
-              'Campus stays free either way',
+              'Campus remains free either way',
             ],
             cta: premiumTools
                 ? 'Premium tools are active'
@@ -252,25 +223,17 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
           ),
           const SizedBox(height: 10),
           Text(
-            '${BillingConfig.priceFootnote} ${progress.completedLessonIds.length} campus lessons completed.',
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.45, fontSize: 13),
+            '${BillingConfig.priceFootnote} ${progress.completedLessonIds.length} campus lessons on record.',
+            style: const TextStyle(
+              color: RegistrarColors.mute,
+              height: 1.45,
+              fontSize: 13,
+            ),
           ),
           const SizedBox(height: 22),
-          const VuV2SectionTitle('Help'),
-          const SizedBox(height: 8),
-          VuV2Surface(
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.mail_outline_rounded, color: VuV2Colors.mint),
-              title: const Text(
-                'Support',
-                style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
-              ),
-              subtitle: Text(
-                LegalUrls.supportEmail,
-                style: const TextStyle(color: VuV2Colors.mute),
-              ),
-            ),
+          const RegistrarSection('Correspondence'),
+          RegistrarCard(
+            child: RegistrarRow(label: 'Support', value: LegalUrls.supportEmail),
           ),
         ],
       ),
@@ -278,8 +241,8 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
   }
 }
 
-class _PlanCard extends StatelessWidget {
-  const _PlanCard({
+class _PlanBlock extends StatelessWidget {
+  const _PlanBlock({
     required this.title,
     required this.price,
     required this.bullets,
@@ -299,7 +262,7 @@ class _PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return VuV2Surface(
+    return RegistrarCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -308,53 +271,45 @@ class _PlanCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    color: VuV2Colors.ink,
-                    fontWeight: FontWeight.w900,
+                  style: RegistrarType.body.copyWith(
+                    fontFamily: 'Georgia',
                     fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
               if (badge != null)
-                Text(
-                  badge!,
-                  style: TextStyle(
-                    color: VuV2Colors.orange,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 11,
-                  ),
-                ),
+                Text(badge!, style: RegistrarType.kicker),
             ],
           ),
           const SizedBox(height: 6),
           Text(
             price,
             style: TextStyle(
-              color: accent ? VuV2Colors.orange : VuV2Colors.ink,
-              fontWeight: FontWeight.w900,
-              fontSize: 26,
+              fontFamily: 'Georgia',
+              fontSize: 24,
+              color: accent ? RegistrarColors.gold : RegistrarColors.ink,
             ),
           ),
           const SizedBox(height: 10),
           ...bullets.map(
             (String b) => Padding(
               padding: const EdgeInsets.only(bottom: 6),
-              child: Text('• $b', style: const TextStyle(color: VuV2Colors.mute)),
+              child: Text('• $b', style: RegistrarType.body.copyWith(color: RegistrarColors.mute)),
             ),
           ),
           const SizedBox(height: 8),
           SizedBox(
             width: double.infinity,
-            child: FilledButton(
+            child: OutlinedButton(
               onPressed: onTap,
-              style: FilledButton.styleFrom(
-                backgroundColor:
-                    accent ? VuV2Colors.orange : VuV2Colors.navyElevated,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor:
-                    VuV2Colors.navyElevated.withValues(alpha: 0.55),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: RegistrarColors.navy,
+                side: const BorderSide(color: RegistrarColors.navy),
+                minimumSize: const Size.fromHeight(44),
+                shape: const RoundedRectangleBorder(),
               ),
-              child: Text(cta, style: const TextStyle(fontWeight: FontWeight.w800)),
+              child: Text(cta),
             ),
           ),
         ],

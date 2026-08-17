@@ -261,6 +261,11 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
       context: context,
       link: lab,
       subjectId: subjectId,
+      courseTitle: courseTitle,
+      topicTitle: lesson.title,
+      labLevel: VuV2LessonActivityRouter.levelFor(
+        _store(context)?.completedLessonIds.length ?? 0,
+      ),
     );
     if (!context.mounted || result == null) return;
     await _store(context)?.markStep(
@@ -769,6 +774,11 @@ abstract final class VuV2AiTutorLauncher {
           context: context,
           link: linkedLab,
           subjectId: subjectId,
+          courseTitle: courseTitle,
+          topicTitle: lessonTitle,
+          labLevel: VuV2LessonActivityRouter.levelFor(
+            VuV2Scope.maybeOf(context)?.progress.completedLessonIds.length ?? 0,
+          ),
         );
         if (result == null) return;
         if (!context.mounted) return;

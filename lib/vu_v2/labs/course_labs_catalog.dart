@@ -9,9 +9,10 @@ import '../career_labs/playable/science/chemistry/chemistry_lab_home.dart';
 import '../career_labs/playable/science/physics/physics_lab_home.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
+import '../../data/university_learning_engine.dart';
+import 'simulation/university_sim_flow.dart';
 import 'university_practical/practical_catalog.dart';
 import 'university_practical/practical_mission.dart';
-import 'university_practical/university_practical_lab.dart';
 import 'vu_v2_cs_coding_arena.dart';
 import 'winning_career_showcases.dart';
 import 'winning_major_showcases.dart';
@@ -156,7 +157,23 @@ abstract final class CourseLabsCatalog {
     BuildContext context,
     UniversityPracticalMission mission,
   ) {
-    return UniversityPracticalLabScreen.open(context, mission: mission);
+    final UniversityLabLink link = UniversityLabLink(
+      labId: mission.courseId,
+      stationId: 'practical',
+      title: mission.title,
+      purpose: mission.briefingBody,
+      objectives: mission.steps.map((PracticalStep s) => s.phaseLabel).toList(),
+      estimatedMinutes: 32,
+      difficulty: 'Professional',
+    );
+    return UniversitySimulationFlow.open(
+      context: context,
+      link: link,
+      subjectId: mission.courseId,
+      courseTitle: mission.courseId,
+      topicTitle: mission.title,
+      level: 3,
+    );
   }
 
   // ── Biology (5+) ──────────────────────────────────────────────────────────

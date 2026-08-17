@@ -10,6 +10,7 @@ import 'vu_v2_community_screen.dart';
 import 'vu_v2_notifications_screen.dart';
 import 'vu_v2_practice_tab.dart';
 import 'vu_v2_profile_screen.dart';
+import 'vu_v2_registrar_style.dart';
 import 'vu_v2_search_screen.dart';
 import 'vu_v2_study_center_screen.dart';
 
@@ -62,9 +63,11 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
     final bool wide = MediaQuery.sizeOf(context).width >= 900;
     final int railIndex = vuV2NavDestinations.indexOf(_dest).clamp(0, vuV2NavDestinations.length - 1);
     return Scaffold(
-      backgroundColor: VuV2Colors.navy,
+      backgroundColor:
+          _dest == VuV2Dest.profile ? RegistrarColors.paper : VuV2Colors.navy,
       appBar: AppBar(
-        backgroundColor: VuV2Colors.navy,
+        backgroundColor:
+            _dest == VuV2Dest.profile ? RegistrarColors.navy : VuV2Colors.navy,
         title: Text(
           wide ? 'Virtual University' : _dest.label,
           style: const TextStyle(fontWeight: FontWeight.w900),
