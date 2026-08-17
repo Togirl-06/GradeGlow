@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../data/science_diagram_catalog.dart';
 import '../../../../widgets/science/anatomy_asset_canvas.dart';
+import 'career_workspaces.dart';
 import 'lab_blueprint.dart';
 import 'lab_session.dart';
 import 'pro_workspaces.dart';
@@ -53,6 +54,8 @@ class LabWorkspaceHost extends StatelessWidget {
         return GeographyWorkspace(session: session);
       case LabDiscipline.architecture:
         return ArchitectureWorkspace(session: session);
+      case LabDiscipline.careerPractice:
+        return CareerWorkspace(session: session);
     }
   }
 }
@@ -589,6 +592,27 @@ class _PhysicsWorkspaceState extends State<PhysicsWorkspace>
   void initState() {
     super.initState();
     widget.session.addListener(_onSession);
+    _c.addStatusListener((AnimationStatus status) {
+      if (status != AnimationStatus.completed) return;
+      final double angle = widget.session.getv<double>('angle') ?? 42;
+      final double v0 = widget.session.getv<double>('v0') ?? 18;
+      final double rad = angle * math.pi / 180;
+      final double range = (v0 * v0 * math.sin(2 * rad)) / 9.81;
+      final List<dynamic> trials = List<dynamic>.from(
+        widget.session.getv<List<dynamic>>('trials') ?? <dynamic>[],
+      )..add(<double>[angle, range]);
+      widget.session.setVar('trials', trials);
+      widget.session.note(
+        'Trial ${trials.length}: θ=${angle.toStringAsFixed(0)}°  range≈${range.toStringAsFixed(2)} m',
+      );
+      if (trials.length >= 3) {
+        widget.session.act(
+          'hypothesize',
+          inspect:
+              '${trials.length} trials on the table. Max range should be near 45°. Defend the residual.',
+        );
+      }
+    });
   }
 
   @override
@@ -622,28 +646,53 @@ class _PhysicsWorkspaceState extends State<PhysicsWorkspace>
   Widget build(BuildContext context) {
     final double angle = widget.session.getv<double>('angle') ?? 42;
     final double v0 = widget.session.getv<double>('v0') ?? 18;
+    final List<dynamic> trials =
+        widget.session.getv<List<dynamic>>('trials') ?? const <dynamic>[];
     return AnimatedBuilder(
       animation: _c,
       builder: (BuildContext context, _) {
-        return GestureDetector(
-          onHorizontalDragUpdate: (DragUpdateDetails d) {
-            widget.session.setVar(
-              'angle',
-              (angle - d.delta.dx * 0.2).clamp(15, 75),
-              inspectorText: 'θ = ${angle.toStringAsFixed(0)}°',
-            );
-            setState(() {});
-          },
-          onTap: _launch,
-          child: CustomPaint(
-            painter: _ProjectilePainter(
-              t: _c.value,
-              angle: angle * math.pi / 180,
-              v0: v0,
-              path: _path,
+        return Column(
+          children: <Widget>[
+            Expanded(
+              child: GestureDetector(
+                onHorizontalDragUpdate: (DragUpdateDetails d) {
+                  widget.session.setVar(
+                    'angle',
+                    (angle - d.delta.dx * 0.2).clamp(15, 75),
+                    inspectorText: 'θ = ${angle.toStringAsFixed(0)}°',
+                  );
+                  setState(() {});
+                },
+                onTap: _launch,
+                child: CustomPaint(
+                  painter: _ProjectilePainter(
+                    t: _c.value,
+                    angle: angle * math.pi / 180,
+                    v0: v0,
+                    path: _path,
+                  ),
+                  child: const SizedBox.expand(),
+                ),
+              ),
             ),
-            child: const SizedBox.expand(),
-          ),
+            Container(
+              width: double.infinity,
+              color: Colors.black87,
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                trials.isEmpty
+                    ? 'Drag to set angle. Tap to launch. Repeat. The table keeps noisy trials.'
+                    : trials
+                        .map(
+                          (dynamic e) => e is List && e.length >= 2
+                              ? 'θ ${e[0]}°  R ${e[1]} m'
+                              : '$e',
+                        )
+                        .join('   ·   '),
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+            ),
+          ],
         );
       },
     );

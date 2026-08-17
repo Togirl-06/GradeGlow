@@ -550,29 +550,11 @@ abstract final class TextbookPacks {
   }
 
   static String _genericEssay(String topic, String course) {
-    return 'University instruction has a shape that study-app cards erase. First you meet '
-            'a problem a professional would actually have. Then you get the distinctions '
-            'that make the problem solvable. Then a mechanism with verbs. Then a figure that '
-            'is used, not captioned. Then a worked path. Then the ways novices collapse the '
-            'distinctions. Then questions that cannot be answered by hunting a bolded '
-            'sentence.\n\n'
-            '**$topic** in **$course** follows that shape on purpose. Your job as a reader '
-            'is to produce, from memory, the distinction, the causal chain, the first '
-            'professional move, and the misconception repair. If you can only reproduce the '
-            'heading, you have not read the chapter.\n\n'
-            'Worked reasoning always states the unknown, the governing rule, the '
-            'substitution or the analogical mapping, and a sanity check: units, laterality, '
-            'opposite-party facts, a limit as a variable goes to zero. Application questions '
-            'ask you to teach a peer who holds the misconception. Case questions ask you to '
-            'write like a junior person on call: objective, observations, interpretation, '
-            'action, uncertainty.\n\n'
-            'Labs in this university will not reward clicking the labeled organelle. They '
-            'will ask you to prepare, observe, hypothesize, test, and report. Lectures will '
-            'not read this chapter aloud. The professor will hide labels and ask what you '
-            'would need to see to abandon your first hypothesis. Assessment will ask whether '
-            'you learned **$topic**, not whether you recognized its name.\n\n'
-            'If a sentence in your notes could be pasted into a different chapter unchanged, '
-            'rewrite it. Fields stay honest through distinctions. That is the standing order '
-            'for every remaining page of **$course**.';
+    return 'Open **$topic** in **$course** the way a supervisor would: name the problem a junior person is actually handed, '
+            'the distinction that makes it solvable, the causal chain with verbs, and the first observation you would demand before trusting a conclusion.\n\n'
+            'A worked path always states the unknown, the governing rule, the substitution or analogical mapping, and a sanity check: units, laterality, opposite-party facts, a limit as a variable goes to zero. '
+            'Misconceptions in this field usually collapse that path into a slogan. Repair the slogan with the mechanism, not with “that’s wrong.”\n\n'
+            'When you finish the chapter, you should be able to enter the laboratory and perform **$topic** — prepare, observe, decide, record, and report — without hunting a labeled answer. '
+            'If a sentence in your notes could be pasted into a different chapter unchanged, rewrite it. That is the standing order for **$course**.';
   }
 }

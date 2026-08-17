@@ -4,44 +4,104 @@ import 'package:flutter/material.dart';
 
 import 'lab_session.dart';
 
-class CsWorkspace extends StatelessWidget {
+class CsWorkspace extends StatefulWidget {
   const CsWorkspace({super.key, required this.session});
   final LabSession session;
 
   @override
+  State<CsWorkspace> createState() => _CsWorkspaceState();
+}
+
+class _CsWorkspaceState extends State<CsWorkspace> {
+  static const String _broken = '''
+Node insert(Node n, int v) {
+  if (n == null) return Node(v);
+  if (v > n.value) n.left = insert(n.left, v); // reversed comparator
+  else n.right = insert(n.right, v);
+  return n;
+}
+''';
+
+  late final TextEditingController _code = TextEditingController(text: _broken);
+
+  @override
+  void dispose() {
+    _code.dispose();
+    super.dispose();
+  }
+
+  void _run() {
+    final String src = _code.text.replaceAll(' ', '');
+    final bool fixed = src.contains('v<n.value') && !src.contains('v>n.value');
+    widget.session.setVar('patched', fixed);
+    if (fixed) {
+      widget.session.act(
+        'test_pass',
+        inspect: 'insert(5), insert(3), insert(7) — left < node < right holds.',
+        say: 'Tests passed because you repaired the comparator, not because you pressed a Patch chip.',
+      );
+      widget.session.act('patch');
+    } else {
+      widget.session.act(
+        'trace_miss',
+        pause: true,
+        say: 'The tree still violates BST. Left children must be smaller. Run after you edit the source.',
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bool patched = session.getv<bool>('patched') ?? false;
+    final bool patched = widget.session.getv<bool>('patched') ?? false;
     final List<int> order = patched
         ? const <int>[5, 3, 7, 2, 4]
         : const <int>[5, 7, 3, 4, 2];
-    return GestureDetector(
-      onTapDown: (TapDownDetails d) {
-        session.act(
-          'inspect',
-          inspect: patched
-              ? 'Invariant holds on the selected node.'
-              : 'This insert path violates left < node < right. Patch the comparator.',
-        );
-      },
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: CustomPaint(
-              painter: _BstPainter(values: order, broken: !patched),
-              child: const SizedBox.expand(),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: CustomPaint(
+            painter: _BstPainter(values: order, broken: !patched),
+            child: const SizedBox.expand(),
+          ),
+        ),
+        ColoredBox(
+          color: const Color(0xFF0D1117),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 8, 10, 4),
+            child: Row(
+              children: <Widget>[
+                const Expanded(
+                  child: Text(
+                    'Broken insert. Edit the comparator, then Run.',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                ),
+                FilledButton(onPressed: _run, child: const Text('Run tests')),
+              ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              patched
-                  ? 'insert: left < node < right'
-                  : 'insert: comparison reversed — tree violates BST',
-              style: const TextStyle(color: Colors.white70),
+        ),
+        Expanded(
+          flex: 3,
+          child: TextField(
+            controller: _code,
+            maxLines: null,
+            expands: true,
+            style: const TextStyle(
+              fontFamily: 'monospace',
+              color: Color(0xFFC9D1D9),
+              fontSize: 13,
+            ),
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Color(0xFF0D1117),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.all(12),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -353,12 +413,26 @@ class AccountingWorkspace extends StatelessWidget {
                     onTap: () {
                       session.setVar('doc', d, inspectorText: 'Opened $d');
                       session.act('open', data: d);
+                      final Set<String> seen = (session.getv<List<dynamic>>('seen') ?? <dynamic>[])
+                          .map((dynamic e) => e.toString())
+                          .toSet()
+                        ..add(d);
+                      session.setVar('seen', seen.toList());
                       if (d == 'Invoice') {
                         session.act(
-                          'audit_found',
+                          'inspect',
                           inspect:
-                              'Invoice dated 3 Jan, goods shipped 28 Dec. Cutoff. That is the \$48,000.',
-                          say: 'You found the break in the documents — not in a multiple-choice stem.',
+                              'INV-4419 dated 3 Jan. Goods shipped 28 Dec. Do not stop at one document.',
+                        );
+                      } else if (d == 'Journal') {
+                        session.act(
+                          'inspect',
+                          inspect: 'Dec 31 credit to Revenue \$48,000. No shipping document in December.',
+                        );
+                      } else if (d == 'Trial balance') {
+                        session.act(
+                          'inspect',
+                          inspect: 'January cash is \$48,000 higher than the subledger unless cutoff is reversed.',
                         );
                       }
                     },
@@ -373,10 +447,10 @@ class AccountingWorkspace extends StatelessWidget {
             padding: const EdgeInsets.all(18),
             child: Text(
               open.isEmpty
-                  ? 'Select a source document.'
+                  ? 'Open Invoice, Journal, and Trial balance. Then use Flag cutoff — do not guess from one line.'
                   : open == 'Invoice'
-                      ? 'INV-4419  ·  dated 3 Jan  ·  shipped 28 Dec  ·  \$48,000\nBooked in January cash, December revenue. Cutoff error.'
-                      : '$open\nLines tie except the January cash from INV-4419.',
+                      ? 'INV-4419  ·  dated 3 Jan  ·  shipped 28 Dec  ·  \$48,000\nCash booked January. Shipping December. Compare the journal before you call cutoff.'
+                      : '$open\nLines almost tie except January cash from INV-4419. Keep tracing.'
               style: const TextStyle(color: Colors.black87, height: 1.5, fontSize: 16),
             ),
           ),
@@ -398,12 +472,20 @@ class BusinessWorkspace extends StatelessWidget {
       child: GestureDetector(
         onTapDown: (TapDownDetails d) {
           final double x = d.localPosition.dx;
+          final String view = session.getv<String>('view') ?? 'company';
           if (x < 200) {
             session.setVar('view', 'region', inspectorText: 'Region A +4% · Region B −31%');
             session.act('drill');
-          } else {
-            session.setVar('view', 'product', inspectorText: 'Product X −42% after price change');
+          } else if (view == 'region') {
+            session.setVar('view', 'product', inspectorText: 'Product X −42% after the 12 Mar price change');
             session.act('drill');
+          } else {
+            session.setVar(
+              'view',
+              'complaints',
+              inspectorText: 'Complaint volume +61% in Region B, Product X. Price, not weather.',
+            );
+            session.act('inspect');
           }
         },
         child: const SizedBox.expand(),

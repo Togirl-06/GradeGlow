@@ -145,6 +145,32 @@ void main() {
     expect(link.title, isNotEmpty);
   });
 
+  test('career programs open a workplace lab, never a biology microscope', () {
+    expect(
+      LabCatalog.fromSubject('resume_writing'),
+      LabDiscipline.careerPractice,
+    );
+    expect(
+      LabCatalog.fromSubject('physics'),
+      LabDiscipline.physics,
+    );
+    expect(
+      UniversityLearningEngine.labForLesson(
+        subjectId: 'resume_writing',
+        lessonTitle: 'Achievement Writing',
+      ),
+      isNotNull,
+    );
+    expect(
+      UniversityLearningEngine.labForLesson(
+        subjectId: 'public_speaking',
+        lessonTitle: 'Speech Structure',
+      )!
+          .labId,
+      'career_practice',
+    );
+  });
+
   test('lab engine maps every major to a workspace blueprint', () {
     const UniversityLabLink link = UniversityLabLink(
       labId: 'lab',

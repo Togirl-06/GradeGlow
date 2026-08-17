@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../curriculum/textbook_engine.dart';
+import '../curriculum/textbook_fields.dart';
 import 'vu_v2_cs_notes_code.dart';
 import 'vu_v2_topic_content_models.dart';
 
@@ -370,6 +371,109 @@ abstract final class VuV2TopicContent {
 
   // ── MCQ bank ─────────────────────────────────────────────────────────────
 
+  static List<VuV2Mcq> _contentMcqs(
+    String subjectId,
+    String t,
+    String c,
+    String examTag,
+  ) {
+    final TextbookKind kind = TextbookField.forTopic(subjectId, t).kind;
+    switch (kind) {
+      case TextbookKind.skeletal:
+        return <VuV2Mcq>[
+          VuV2Mcq(
+            id: 'axapp',
+            prompt: 'A fall on an outstretched hand is first an injury of which division?$examTag',
+            choices: const <String>[
+              'The axial skeleton, because the arm is near the midline',
+              'The appendicular skeleton — girdle and upper limb, not “the skeletal system”',
+              'Only the vertebral column',
+              'Whatever bone hurts the most, axial or not',
+            ],
+            correctIndex: 1,
+            explanation:
+                'FOOSH is appendicular. Midline proximity does not make the clavicle or radius axial.',
+          ),
+        ];
+      case TextbookKind.membrane:
+        return <VuV2Mcq>[
+          VuV2Mcq(
+            id: 'sglt',
+            prompt: 'Oral rehydration solution contains glucose and sodium because$examTag',
+            choices: const <String>[
+              'Sugar tastes better so children drink more water',
+              'SGLT couples glucose to sodium; water follows osmotically',
+              'Glucose pumps water with ATP directly at the apical membrane',
+              'Sodium cannot be absorbed without sucrose',
+            ],
+            correctIndex: 1,
+            explanation: 'Secondary active transport (SGLT) is the teaching reason for ORS.',
+          ),
+        ];
+      case TextbookKind.chemistry:
+        return <VuV2Mcq>[
+          VuV2Mcq(
+            id: 'overshoot',
+            prompt: 'You passed the phenolphthalein window on trial 3. What do you do?$examTag',
+            choices: const <String>[
+              'Edit the volume so the mean looks professional',
+              'Keep the trial, note the overshoot, and repeat — M is biased high',
+              'Discard all trials and guess 22.4 mL',
+              'Call the indicator broken',
+            ],
+            correctIndex: 1,
+            explanation: 'Overshoot stays in the notebook. Honesty is part of the method.',
+          ),
+        ];
+      case TextbookKind.physics:
+        return <VuV2Mcq>[
+          VuV2Mcq(
+            id: 'gtable',
+            prompt: 'Why is one calculated g of 9.81 not an experiment?$examTag',
+            choices: const <String>[
+              'Because the accepted value is 9.80',
+              'Because scatter, timing error, and drag must appear in the table and the story',
+              'Because you need a multiple-choice stem',
+              'Because height is irrelevant',
+            ],
+            correctIndex: 1,
+            explanation: 'A physicist turns noisy trials into a claim with an error budget.',
+          ),
+        ];
+      case TextbookKind.clinical:
+        return <VuV2Mcq>[
+          VuV2Mcq(
+            id: 'vitalsfirst',
+            prompt: 'Chest discomfort. First professional move in the room?$examTag',
+            choices: const <String>[
+              'Recite the normal heart-rate range',
+              'ABC then vitals — numbers that change the next ten minutes',
+              'Order a stress test for next week',
+              'Ask a trivia question about tropomyosin',
+            ],
+            correctIndex: 1,
+            explanation: 'The encounter is prioritization, not a vocabulary quiz.',
+          ),
+        ];
+      default:
+        return <VuV2Mcq>[
+          VuV2Mcq(
+            id: 'model',
+            prompt: 'You are ready to enter the lab on "$t" in $c when you can$examTag',
+            choices: const <String>[
+              'Repeat the heading in different words',
+              'Name an observation that would force you to drop your first claim',
+              'Underline the first paragraph of the notes',
+              'Memorize three synonyms',
+            ],
+            correctIndex: 1,
+            explanation:
+                'A model earns its keep by naming what would kill it — then you go perform it.',
+          ),
+        ];
+    }
+  }
+
   static List<VuV2Mcq> _buildMcqs({
     required String subjectId,
     required String facultyTitle,
@@ -388,6 +492,7 @@ abstract final class VuV2TopicContent {
     );
 
     final List<VuV2Mcq> bank = <VuV2Mcq>[
+      ..._contentMcqs(subjectId, t, c, examTag),
       VuV2Mcq(
         id: 'def',
         prompt: 'Which statement best captures a university-level definition of "$t"?$examTag',

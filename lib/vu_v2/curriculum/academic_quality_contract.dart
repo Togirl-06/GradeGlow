@@ -25,6 +25,9 @@ abstract final class TextbookQualityContract {
     'fill-in',
     'Write the central relation',
     'A learner faces a standard problem involving',
+    'This extra section exists only to push',
+    'push the chapter past summary length',
+    'older hub tests still find a “full treatment”',
   ];
 
   static TextbookQualityReport inspect(List<VuV2TextbookSection> sections) {

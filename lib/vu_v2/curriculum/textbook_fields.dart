@@ -98,6 +98,10 @@ class TextbookField {
         body: TextbookPacks.models(kind, t),
       ),
       VuV2TextbookSection(
+        title: '1.6 Performing the work',
+        body: _depth(t, courseTitle),
+      ),
+      VuV2TextbookSection(
         title: 'How to study this chapter',
         body: TextbookPacks.studio(kind, t, courseTitle),
       ),
@@ -125,16 +129,12 @@ class TextbookField {
   }
 
   String expansion(String topic, String course, CourseOutline o) {
-    return 'Stay inside **${o.heading}**. After **$topic**, the next chapter should assume this '
-        'mechanism, not restart with a new slogan. If you cannot teach the worked example aloud, '
-        'you are not finished with the reading in **$course**. '
-        'Professionals in this field spend years on the difference between a list and a model. '
-        'This extra section exists only to push the chapter past summary length: return to 1.1–1.3 '
-        'and rewrite the figures from memory, then reconnect them to the case. '
-        'A second pass on definitions after the case study is how terminology becomes usable under pressure. '
-        'Write a one-page teaching outline with no bullet that merely restates the title **$topic**. '
-        'Then list three observations you would demand in a lab or clinic before you trusted a conclusion. '
-        'Then name the instrument, the control, and the most likely error. That is study. Re-reading headings is not.';
+    return 'After **${o.heading}**, a competent reader of **$topic** in **$course** can redo the '
+        'worked path without looking, name the failure mode the chapter exists to prevent, and '
+        'state the first measurement, document, or action a supervisor would demand. '
+        'Close the book and write that paragraph. If the paragraph still works after swapping a neighboring title, the reading is not done. '
+        'Then connect the figure to the case: what would change in the lab, clinic, code, or file if the mechanism were false? '
+        'That question is the bridge from this chapter to the laboratory — not a recap of headings.';
   }
 
   String _objectives(String t) {
@@ -177,6 +177,18 @@ class TextbookField {
 
   String _mech(String t) => TextbookPacks.mechanism(kind, t);
 
+  String _depth(String t, String c) {
+    return '${TextbookPacks.mechanism(kind, t)}\n\n'
+        '${TextbookPacks.models(kind, t)}\n\n'
+        'A student who can only quote a heading has not finished **$t** in **$c**. '
+        'The next honest move is to rebuild the figure, redo the worked path with the numbers covered, '
+        'and write the professional first action. Then enter the laboratory and perform it: '
+        'the engine will remember skipped steps, overshoots, reversed comparators, and unopened documents. '
+        'Assessment after that is a check that the model is in your head, not a replacement for the work.\n\n'
+        'If you are reading this chapter as primary course text, treat each numbered section as a class you cannot skip. '
+        'Redraw. Recalculate. Re-argue the case. Then — and only then — claim mastery of **$t**.';
+  }
+
   String _fig(String t) => TextbookPacks.models(kind, t);
 
   String _def(String t) {
@@ -186,10 +198,10 @@ class TextbookField {
       case TextbookKind.membrane:
         return '**Simple diffusion.** Down electrochemical gradient, no protein.\n\n**Facilitated diffusion.** Protein-mediated, still passive.\n\n**Osmosis.** Net water toward higher osmotic concentration.\n\n**Tonicity.** Effect on cell volume via non-penetrating solutes.\n\n**Primary / secondary active transport.** ATP at the pump versus use of an ion gradient.';
       default:
-        return 'Define **$t** as genus + differentia: what kind of thing it is, and what it is not. '
-            'Then give a boundary case that a multiple-choice writer would exploit. '
-            'Then give the unit, typical symbol, or legal posture if the field has one. '
-            'A definition that still works if you swap in a neighboring topic has failed.';
+        return '**$t**.** An operational definition names the kind of thing, the contrast with near-misses, and the measurement or document that would change your mind. '
+            'If the sentence still works after swapping a neighboring title, it is not a definition yet. '
+            'Write: (1) genus, (2) differentia, (3) a boundary case a multiple-choice writer would exploit, (4) the unit, test, or legal posture this field actually uses. '
+            'Then use the term in a sentence a supervisor would sign.';
     }
   }
 
@@ -228,12 +240,51 @@ class TextbookField {
   }
 
   String _lecture(String t, String c) {
-    return 'This section exists so older hub tests still find a “full treatment,” but it is **not** the professor’s script. '
-        'The textbook argument for **$t** in **$c** is: scene → structure → mechanism → figure → professional use → misconception → check. '
-        'A lecture should **not** read this aloud. A lecture should hide labels and force predictions. '
-        'If a student can only quote this paragraph, the lecture has failed even if attendance was perfect. '
-        'The spoken class asks, “What would you need to see to abandon your first hypothesis?” — that sentence is not in a summary card, and it should not be here as a substitute for the figures either. '
-        'Use 1.1–1.3 as the reading; use the classroom for argument.';
+    switch (kind) {
+      case TextbookKind.skeletal:
+        return 'Read this as instruction, not as a script the professor will recite. '
+            'The skeleton is two stories that must not be collapsed. Axial structures house the CNS and the thorax; '
+            'appendicular structures move you through the world. A FOOSH is an appendicular problem. Cervical precautions are axial. '
+            'A typical long bone has a diaphysis, epiphyses, marrow cavity, periosteum, and, in the growing person, a growth plate. '
+            'Remodeling is lifelong: unload a limb and density falls. On film you see mineral, not periosteum. '
+            'That is why clinical correlation is method, not politeness. Work the cyclist case before you claim **$t** in **$c**.';
+      case TextbookKind.membrane:
+        return 'Every crossing event answers two questions: protein or not; ATP at this protein or not. '
+            'The bilayer rejects hydrated ions. Channels and carriers are different machines. The Na+/K+ ATPase is the battery; SGLT spends it. '
+            'Tonicity is about non-penetrating solutes and cell volume, not a slogan about salt. '
+            'ORS works because glucose and sodium ride together and water follows. Water-only for diarrhea is a misunderstanding of **$t** in **$c**. '
+            'The professor will hide those labels and ask you which membrane contains the electron transport chain, and why ORS is not “hydration vibes.”';
+      case TextbookKind.chemistry:
+        return 'A titration is a measurement under stoichiometric control. Rinse the glassware with the solution it will hold. '
+            'Clear the burette tip. Record initial volume. Deliver until the indicator’s window, not until the flask is a moral verdict of “done.” '
+            'If you overshoot, the trial stays in the notebook and M is biased high. Moles of titrant at the true endpoint divided by liters of unknown is the concentration. '
+            'That is **$t** in **$c**. The laboratory will let you drag a stopcock and will not let you edit a titre after the fact.';
+      case TextbookKind.physics:
+        return 'The model is simple enough to tempt dishonesty: g = 2h/t², or a perfect parabola. '
+            'The chapter forbids a single beautiful answer. You keep scatter. Timing error is squared in the denominator. Drag lengthens time and lowers calculated g. '
+            '**$t** in **$c** is how a noisy table becomes a claim with an error story. The lab will make you launch, record, and explain residual, not hunt 9.81 in a dropdown.';
+      case TextbookKind.clinical:
+        return 'A fifty-four-year-old man holds his chest. The order of actions is the lesson: airway and circulation first, vitals, story, ECG, then the tests that change the next ten minutes. '
+            'Missing an ECG while reciting a normal heart-rate range is not studying. The patient’s state can change while you hesitate. '
+            '**$t** in **$c** is prioritization as a skill. The simulation will pause you if you skip vitals. That is teaching.';
+      case TextbookKind.law:
+        return 'A file is not a vocabulary list. Facts, issues, rules, admissible evidence, the inferences each exhibit supports, then the other side’s best reply. '
+            'A sympathetic photograph that is more prejudicial than probative can wreck a record. **$t** in **$c** is IRAC done honestly. The lab will make you tap exhibits and argue without a stem that names the holding.';
+      case TextbookKind.business:
+        return 'Company-level −18% is a mixture. Region A +4% and Region B −31% is already a different story. Product X −42% after a price change, with complaints up, is a mechanism. '
+            '**$t** in **$c** is diagnosis with disaggregated data, then a decision whose consequences you are willing to forecast. The HQ lab will not reward clicking the company total.';
+      case TextbookKind.cell:
+      case TextbookKind.dna:
+      case TextbookKind.biology:
+        return 'A smear is not a coloring book. You load a slide, light, 4×, coarse, fine, then climb power. You pin what you see. A wall plus chloroplasts is a plant argument. '
+            'A nucleus is a eukaryotic clue, not an identification. **$t** in **$c** is inference from evidence, including DNA as chemistry when the chapter is information flow: antiparallel strands, 5′ to 3′ synthesis, distinct machines for transcription and translation. '
+            'The microscope will punish 40× on an unfocused field.';
+      case TextbookKind.generic:
+        return 'Professionals do not learn **$t** by reading a slogan twice. They meet a problem, make a distinction, follow a mechanism with verbs, use a figure to predict, then do the work in an environment that can fail. '
+            'In **$c** this chapter is that path. After 1.1–1.3 you should be able to say what would make you abandon your first claim. '
+            'The professor will not read this paragraph aloud. The lab will not be a labeled organelle and a Submit button. '
+            'Assessment will ask whether you can perform **$t**, not whether you recognized its name.';
+    }
   }
 
   String _myth(String t) {

@@ -57,6 +57,16 @@ abstract final class CourseLabsCatalog {
       return engineering;
     }
     if (m.contains('nurs')) return nursing;
+    if (m.contains('resume') ||
+        m.contains('interview') ||
+        m.contains('speak') ||
+        m.contains('career') ||
+        m.contains('personal_finance') ||
+        m.contains('leadership') ||
+        m.contains('communication') ||
+        m.contains('freelance')) {
+      return careerPractice;
+    }
     if (m.contains('medicine') || m == 'med') return medicine;
     if (m.contains('bus')) return business;
     if (m.contains('fin')) return finance;
@@ -803,4 +813,70 @@ abstract final class CourseLabsCatalog {
     openBoard: WinningMajorShowcases.openCyber,
     mission: UniversityPracticalCatalog.cybersecurity,
   );
+
+  static CourseLabEntry _workplace({
+    required String id,
+    required String subjectId,
+    required String title,
+    required String subtitle,
+    required String topic,
+    required String emoji,
+  }) {
+    return CourseLabEntry(
+      id: id,
+      courseId: subjectId,
+      emoji: emoji,
+      title: title,
+      subtitle: subtitle,
+      open: (BuildContext c) => InvestigationLabFlow.open(
+        context: c,
+        link: UniversityLabLink(
+          labId: 'career_practice',
+          stationId: 'workplace',
+          title: title,
+          purpose: subtitle,
+          objectives: const <String>['Inspect', 'Perform', 'Defend'],
+        ),
+        subjectId: subjectId,
+        courseTitle: title,
+        topicTitle: topic,
+        level: 2,
+      ),
+    );
+  }
+
+  static final List<CourseLabEntry> careerPractice = <CourseLabEntry>[
+    _workplace(
+      id: 'career_resume',
+      subjectId: 'resume_writing',
+      title: 'Hiring desk — rewrite the resume',
+      subtitle: 'Duties are not achievements. Rewrite until a manager can use it.',
+      topic: 'Resume writing',
+      emoji: '📄',
+    ),
+    _workplace(
+      id: 'career_interview',
+      subjectId: 'interview_preparation',
+      title: 'Interview room — STAR under pressure',
+      subtitle: 'Build Situation, Task, Action, Result. Slogans fail.',
+      topic: 'Interview STAR stories',
+      emoji: '🎤',
+    ),
+    _workplace(
+      id: 'career_speak',
+      subjectId: 'public_speaking',
+      title: 'Stage — 90-second brief',
+      subtitle: 'Problem, proof, ask. Filler beats flatten the room.',
+      topic: 'Public speaking',
+      emoji: '🎭',
+    ),
+    _workplace(
+      id: 'career_budget',
+      subjectId: 'personal_finance',
+      title: 'Money desk — survive a shock',
+      subtitle: 'Reallocate after a car repair without emptying the floor.',
+      topic: 'Personal finance budget',
+      emoji: '💵',
+    ),
+  ];
 }

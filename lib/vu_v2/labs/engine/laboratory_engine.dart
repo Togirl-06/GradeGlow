@@ -539,11 +539,22 @@ class _LaboratoryEngineScreenState extends State<LaboratoryEngineScreen> {
       session.setVar('launched', true);
       session.act('run', inspect: 'Campaign is live. Read CAC and ROAS on the board.');
     } else if (t.contains('run')) {
-      session.act('run');
+      if (session.blueprint.discipline == LabDiscipline.computerScience) {
+        session.act(
+          'inspect',
+          say: 'Use Run tests on the editor. A toolbar chip cannot compile your source.',
+        );
+      } else {
+        session.act('run');
+      }
     } else if (t.contains('reset')) {
       session.vars.clear();
       session.act('reset', inspect: 'Workspace reset.');
     } else if (t.contains('ecg') || t.contains('lead')) {
+      if (!session.events.any((LabEvent e) => e.id == 'vitals')) {
+        session.act('skip_vitals', pause: true, say: 'Leads are not the first move. Obtain vitals.');
+        return;
+      }
       session.setVar('leads', true);
       session.act('ecg', inspect: 'Leads on the chest wall.');
     } else if (t.contains('vital') || t.contains('cuff')) {
@@ -559,9 +570,27 @@ class _LaboratoryEngineScreenState extends State<LaboratoryEngineScreen> {
       }
       session.act('call', say: 'You brought a pattern, not a vibe.');
     } else if (t.contains('patch') || t.contains('comparison')) {
-      session.setVar('patched', true);
-      session.act('patch', inspect: 'Comparator restored. Run the inserts.');
-      session.act('test_pass');
+      session.act(
+        'inspect',
+        say: 'I will not patch it for you. Edit the comparator in the editor, then Run tests.',
+      );
+    } else if (t.contains('flag') || t.contains('cutoff')) {
+      final Set<String> seen = (session.getv<List<dynamic>>('seen') ?? <dynamic>[])
+          .map((dynamic e) => e.toString())
+          .toSet();
+      if (seen.contains('Invoice') && seen.contains('Journal')) {
+        session.act(
+          'audit_found',
+          inspect:
+              'Invoice dated 3 Jan, goods shipped 28 Dec. Cutoff. That is the \$48,000.',
+          say: 'You found the break by tracing documents — not by clicking a lucky card.',
+        );
+      } else {
+        session.act(
+          'inspect',
+          say: 'Open the invoice and the journal before you call cutoff. One document is a guess.',
+        );
+      }
     } else if (t.contains('load')) {
       final int n = (session.getv<List<dynamic>>('joints') ?? <dynamic>[]).length;
       if (n < 4) {
@@ -585,7 +614,18 @@ class _LaboratoryEngineScreenState extends State<LaboratoryEngineScreen> {
     } else if (t.contains('argue') || t.contains('hearing')) {
       session.act('decide', inspect: 'Hearing: argue the writing. Expect the March 3 conversation.');
     } else if (t.contains('decide') || t.contains('strategy')) {
-      session.act('decide', inspect: 'Strategy locked. The model will project consequences from Region B / Product X.');
+      final String view = session.getv<String>('view') ?? 'company';
+      if (view != 'complaints' && view != 'product') {
+        session.act(
+          'inspect',
+          say: 'Do not lock a strategy on a company average. Drill region, then product, then the complaint file.',
+        );
+      } else {
+        session.act(
+          'decide',
+          inspect: 'Strategy locked from $view. Forecast: restoring the old price recovers volume and compresses margin.',
+        );
+      }
     } else {
       session.act('tool', data: raw, inspect: 'Using $raw on the workspace.');
     }

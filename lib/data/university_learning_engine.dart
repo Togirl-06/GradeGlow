@@ -424,13 +424,84 @@ abstract final class UniversityLearningEngine {
         ],
       );
     }
-    // Fallback: still give every mapped faculty a graded practical CTA.
-    final UniversityLabLink? fromMajor = _fallbackBySubject(s, lessonTitle);
-    return fromMajor;
+    return _fallbackBySubject(s, lessonTitle) ??
+        UniversityLabLink(
+          labId: subjectId,
+          stationId: 'practical',
+          title: 'Applied laboratory — $lessonTitle',
+          purpose:
+              'Perform the work of this topic in a live workspace — mission, tools, consequences, report.',
+          objectives: const <String>[
+            'Inspect the environment',
+            'Use the discipline tools',
+            'Record observations and submit a report',
+          ],
+        );
   }
 
   static UniversityLabLink? _fallbackBySubject(String s, String lessonTitle) {
-    if (s.contains('design') || s.contains('journal') || s.contains('history') ||
+    if (s.contains('resume') ||
+        s.contains('interview') ||
+        s.contains('speak') ||
+        s.contains('career') ||
+        s.contains('personal_finance') ||
+        s.contains('leadership') ||
+        s.contains('communication') ||
+        s.contains('freelance') ||
+        s.contains('time_manage') ||
+        s.contains('productivity')) {
+      return UniversityLabLink(
+        labId: 'career_practice',
+        stationId: 'workplace',
+        title: 'Workplace practice — $lessonTitle',
+        purpose: 'Do the professional task on a live desk. No lecture. No multiple-choice.',
+        objectives: const <String>[
+          'Inspect the artifacts',
+          'Perform the procedure',
+          'Defend the result',
+        ],
+      );
+    }
+    if (s.contains('histor')) {
+      return UniversityLabLink(
+        labId: 'history',
+        stationId: 'archive',
+        title: 'Primary-source investigation — $lessonTitle',
+        purpose: 'Compare incomplete accounts and write a claim the sources actually support.',
+        objectives: const <String>[
+          'Build a timeline',
+          'Contrast two sources',
+          'State what you cannot yet know',
+        ],
+      );
+    }
+    if (s.contains('geograph') || s.contains('environ')) {
+      return UniversityLabLink(
+        labId: 'geography',
+        stationId: 'gis',
+        title: 'Spatial analysis — $lessonTitle',
+        purpose: 'Toggle map layers and defend a spatial claim.',
+        objectives: const <String>[
+          'Pan and zoom',
+          'Compare layers',
+          'Write a spatial claim',
+        ],
+      );
+    }
+    if (s.contains('architect')) {
+      return UniversityLabLink(
+        labId: 'architecture',
+        stationId: 'studio',
+        title: 'Design under constraints — $lessonTitle',
+        purpose: 'Orbit the massing, change sun and material, meet the brief.',
+        objectives: const <String>[
+          'Orbit the model',
+          'Study sunlight',
+          'Defend the brief',
+        ],
+      );
+    }
+    if (s.contains('design') || s.contains('journal') ||
         s.contains('socio') || s.contains('philo') || s.contains('public_health') ||
         s.contains('nutrition') || s.contains('entrepreneur')) {
       return UniversityLabLink(

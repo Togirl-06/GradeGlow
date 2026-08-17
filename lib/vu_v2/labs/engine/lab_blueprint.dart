@@ -21,6 +21,7 @@ enum LabDiscipline {
   history,
   geography,
   architecture,
+  careerPractice,
 }
 
 class LabBlueprint {
@@ -170,6 +171,19 @@ abstract final class LabCatalog {
     if (_has(topic, const <String>['massing', 'floor plan', 'elevation'])) {
       return LabDiscipline.architecture;
     }
+    if (_has(topic, const <String>[
+      'resume',
+      'interview',
+      'star stor',
+      'public speak',
+      'budget',
+      'cover letter',
+      'negotiation',
+      'freelancer',
+      'leadership',
+    ])) {
+      return LabDiscipline.careerPractice;
+    }
     return fromSubject(subjectId);
   }
 
@@ -184,6 +198,7 @@ abstract final class LabCatalog {
     if (s.contains('nurs')) return LabDiscipline.nursing;
     if (s.contains('architect')) return LabDiscipline.architecture;
     if (s.contains('geograph')) return LabDiscipline.geography;
+    if (s.contains('careerpractice')) return LabDiscipline.careerPractice;
     if (s.contains('histor')) return LabDiscipline.history;
     if (s.contains('psych')) return LabDiscipline.psychology;
     if (s.contains('market')) return LabDiscipline.marketing;
@@ -201,7 +216,20 @@ abstract final class LabCatalog {
     if (s.contains('engin')) return LabDiscipline.engineering;
     if (s == 'law' || s.contains('legal')) return LabDiscipline.law;
     if (s.contains('bio')) return LabDiscipline.biology;
-    return LabDiscipline.biology;
+    if (s.contains('resume') ||
+        s.contains('interview') ||
+        s.contains('speak') ||
+        s.contains('career') ||
+        s.contains('personalfinance') ||
+        s.contains('personal_finance') ||
+        s.contains('leadership') ||
+        s.contains('communication') ||
+        s.contains('freelance') ||
+        s.contains('time') ||
+        s.contains('productivity')) {
+      return LabDiscipline.careerPractice;
+    }
+    return LabDiscipline.careerPractice;
   }
 
   static LabBlueprint forLesson({
@@ -449,7 +477,7 @@ class _Pack {
             'Re-run the test sequence',
           ],
           knowledge: <String>[topic, 'BST invariant: left < node < right'],
-          tools: const <String>['Run', 'Step', 'Edit comparison'],
+          tools: const <String>['Editor', 'Run tests', 'Inspect node'],
           materials: const <String>['Failing insert sequence'],
           layers: const <String>['Tree', 'Call stack', 'Tests'],
           safety: 'Do not ship an unbalanced lie as a balanced tree.',
@@ -593,7 +621,7 @@ class _Pack {
             'Post the correcting idea',
           ],
           knowledge: <String>[topic, 'Debits and credits', 'Revenue recognition'],
-          tools: const <String>['Documents', 'Ledger', 'Filter'],
+          tools: const <String>['Invoice', 'Journal', 'Flag cutoff'],
           materials: const <String>['Invoices', 'Bank rec', 'TB'],
           layers: const <String>['TB', 'Journals', 'Docs'],
           safety: 'Do not overwrite the original entry — document the correction.',
@@ -800,6 +828,35 @@ class _Pack {
           ],
           bottom: const <String>['orbit', 'sun', 'material'],
           environment: 'Design studio',
+        );
+      case LabDiscipline.careerPractice:
+        return _Pack(
+          title: 'Workplace practice — $topic',
+          unit: 'Career and Life Skills',
+          role: 'Practitioner on a live desk',
+          mission:
+              'A real professional task is on the desk. Inspect the artifacts, make a call, and defend it. There is no lecture to recite.',
+          scenario:
+              'You were hired to do the work, not to answer trivia about the work. The environment will remember what you skip.',
+          objectives: const <String>[
+            'Inspect the actual artifacts on the desk',
+            'Use professional tools in a real sequence',
+            'Make a decision the environment can punish or reward',
+            'Write why the result holds',
+          ],
+          knowledge: <String>[topic, 'Outcome language', 'Sequence under pressure'],
+          tools: const <String>['Inspect', 'Rewrite', 'Decide', 'Shock'],
+          materials: const <String>['Draft', 'Client brief', 'Notebook'],
+          layers: const <String>['Brief', 'Artifacts', 'Score'],
+          safety: 'A slogan that would fit any job is not a result. Be specific.',
+          hints: const <String>[
+            'Duties are not achievements — lead with a number.',
+            'STAR is Situation, Task, Action, Result in that order.',
+            'A shock is a test of the system, not a reason to freeze.',
+            'I will walk the next professional move if you spend the last hint.',
+          ],
+          bottom: const <String>['inspect', 'record', 'decide'],
+          environment: 'Workplace desk',
         );
     }
   }
