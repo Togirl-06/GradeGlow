@@ -21,8 +21,9 @@ if (-not (Get-Command firebase -ErrorAction SilentlyContinue)) {
 flutter build web --release
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-firebase deploy --only hosting:gradeglow --project ai-studybuddy-1fad1
+firebase deploy --only hosting --project ai-studybuddy-1fad1
 Write-Host ""
-Write-Host "Site: https://gradeglow-virtualuniversity.web.app" -ForegroundColor Green
+Write-Host "Campus site: https://gradeglow-virtualuniversity.web.app" -ForegroundColor Green
+Write-Host "Default site: https://ai-studybuddy-1fad1.web.app"
 Write-Host "If Google sign-in says the domain is not authorized, add it here:"
 Write-Host "  https://console.firebase.google.com/project/ai-studybuddy-1fad1/authentication/settings"
