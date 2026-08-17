@@ -25,6 +25,8 @@ The web app is ready for Firebase Hosting:
 
 That builds `build/web` and deploys it. After `firebase login`, the site is at https://ai-studybuddy-1fad1.web.app.
 
+If Firebase App Hosting is connected to GitHub, a push to `main` now builds Flutter web with the root `Dockerfile` and serves it on Cloud Run.
+
 See [LAUNCH.md](LAUNCH.md) for store-ready checklist.
 
 ## Account deletion
