@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../models/account_deletion_status.dart';
@@ -5,6 +6,7 @@ import '../screens/account_recovery_screen.dart';
 import '../screens/app_shell.dart';
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
+import '../vu_v2/vu_v2_app.dart';
 
 /// Routes authenticated users to the app, recovery screen, or final deletion.
 class AuthenticatedGate extends StatefulWidget {
@@ -74,6 +76,6 @@ class _AuthenticatedGateState extends State<AuthenticatedGate> {
       );
     }
 
-    return const AppShell();
+    return kIsWeb ? const VuV2App() : const AppShell();
   }
 }
