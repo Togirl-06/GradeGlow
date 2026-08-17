@@ -110,6 +110,25 @@ class VuV2Session extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateAccount({
+    String? name,
+    int? weeklyMinutes,
+    int? streakGoal,
+  }) async {
+    if (name != null) {
+      final String trimmed = name.trim();
+      if (trimmed.isNotEmpty) displayName = trimmed;
+    }
+    if (weeklyMinutes != null) {
+      this.weeklyMinutes = weeklyMinutes.clamp(30, 600);
+    }
+    if (streakGoal != null) {
+      this.streakGoal = streakGoal.clamp(1, 14);
+    }
+    await _persist();
+    notifyListeners();
+  }
+
   Future<void> setContinue({
     required String title,
     required String subtitle,

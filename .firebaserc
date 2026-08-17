@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "ai-studybuddy-1fad1"
-  }
+  },
+  "targets": {
+    "ai-studybuddy-1fad1": {
+      "hosting": {
+        "gradeglow": [
+          "gradeglow-virtualuniversity"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

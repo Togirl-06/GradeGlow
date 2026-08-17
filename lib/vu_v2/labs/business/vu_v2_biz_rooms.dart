@@ -2353,7 +2353,7 @@ class VuV2BizMultiplayerRoom extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 8),
                     child: Text(
-                      'Upgrade to Premium to join the waitlist when multiplayer goes live.',
+                      'Open to every student when multiplayer goes live.',
                       style: TextStyle(
                         color: VuV2BizColors.gold,
                         fontWeight: FontWeight.w700,

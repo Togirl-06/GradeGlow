@@ -7,7 +7,10 @@ import 'package:ai_study_buddy/screens/health/health_faculty_home_screen.dart';
 import 'package:ai_study_buddy/services/business_school_progress_service.dart';
 import 'package:ai_study_buddy/services/health_faculty_progress_service.dart';
 import 'package:ai_study_buddy/services/virtual_university_dashboard_service.dart';
+import 'package:ai_study_buddy/models/subscription_plan.dart';
+import 'package:ai_study_buddy/utils/plan_features.dart';
 import 'package:ai_study_buddy/utils/virtual_university_premium.dart';
+import 'package:ai_study_buddy/vu_v2/data/vu_v2_topic_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -70,16 +73,20 @@ void main() {
     expect(hits, isNotEmpty);
   });
 
-  test('premium AI limits enforce free cap', () async {
+  test('campus AI Professor is free with no daily cap', () async {
     expect(await VirtualUniversityPremium.canAskAiProfessor(true), isTrue);
     for (
       int i = 0;
-      i < VirtualUniversityPremium.freeAiProfessorQuestionsPerDay;
+      i < VirtualUniversityPremium.freeAiProfessorQuestionsPerDay + 2;
       i++
     ) {
       await VirtualUniversityPremium.recordAiQuestion();
     }
-    expect(await VirtualUniversityPremium.canAskAiProfessor(false), isFalse);
+    expect(await VirtualUniversityPremium.canAskAiProfessor(false), isTrue);
+    expect(
+      await VirtualUniversityPremium.canUseLectureTts(false, additionalMinutes: 40),
+      isTrue,
+    );
   });
 
   test('all catalog courses are open without Premium', () {
@@ -108,6 +115,37 @@ void main() {
       isTrue,
     );
     expect(VirtualUniversityPremium.canAccessAllCourses(false), isTrue);
+  });
+
+  test('virtual university labs are unlimited on the free plan', () {
+    expect(PlanFeatures.unlimitedPracticeLabs(SubscriptionPlan.free), isTrue);
+    expect(PlanFeatures.unlimitedPracticeLabs(SubscriptionPlan.premium), isTrue);
+  });
+
+  test('lecture notes are a full textbook chapter', () {
+    final pack = VuV2TopicContent.forLesson(
+      subjectId: 'biology',
+      facultyTitle: 'Biology',
+      facultyEmoji: '🧬',
+      trackTitle: 'Core',
+      courseTitle: 'Cell Biology',
+      topicTitle: 'Membrane Transport',
+    );
+    expect(pack.sections.length, greaterThanOrEqualTo(16));
+    expect(
+      pack.sections.map((s) => s.title),
+      containsAll(<String>[
+        'Lecture — full treatment',
+        'Precise definitions',
+        'Worked example 1 — guided',
+        'Practice problems',
+      ]),
+    );
+    final int words = pack.sections.fold<int>(
+      0,
+      (int n, s) => n + s.body.split(RegExp(r'\s+')).length,
+    );
+    expect(words, greaterThan(1800));
   });
 
   test('intro course detection', () {

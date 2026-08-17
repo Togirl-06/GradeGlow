@@ -58,7 +58,7 @@ class VuV2TopicPackage {
       (int n, VuV2TextbookSection s) =>
           n + s.title.split(RegExp(r'\s+')).length + s.body.split(RegExp(r'\s+')).length,
     );
-    final int minutes = (words / 180).ceil().clamp(8, 45);
+    final int minutes = (words / 170).ceil().clamp(12, 90);
     return '~$minutes min read';
   }
 }

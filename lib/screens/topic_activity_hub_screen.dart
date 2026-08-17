@@ -8,7 +8,6 @@ import '../models/practice_lab_topic.dart';
 import '../models/practice_lab_unit.dart';
 import '../models/topic_activity.dart';
 import '../services/practice_lab_service.dart';
-import '../services/subscription_service.dart';
 import '../theme/practice_lab_game_theme.dart';
 import '../utils/practice_lab_limits.dart';
 import '../utils/topic_activity_navigation.dart';
@@ -102,7 +101,6 @@ class _TopicActivityHubScreenState extends State<TopicActivityHubScreen> {
   Widget build(BuildContext context) {
     final Map<String, List<TopicActivity>> grouped = _grouped;
     final PracticeLabService labs = context.watch<PracticeLabService>();
-    final bool isPremium = context.watch<SubscriptionService>().isPremium;
     final PracticeLabUsage? usage = labs.usage;
 
     return Scaffold(
@@ -159,7 +157,7 @@ class _TopicActivityHubScreenState extends State<TopicActivityHubScreen> {
             PracticeLabUsageBanner(
               remaining: usage.remaining,
               limit: PracticeLabLimits.freeSimulationsPerMonth,
-              isPremium: isPremium,
+              isPremium: usage.isPremium,
             ),
           if (usage != null) const SizedBox(height: 14),
           TextField(

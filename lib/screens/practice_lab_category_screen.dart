@@ -8,7 +8,6 @@ import '../data/practice_lab_scenarios.dart';
 import '../models/practice_lab.dart';
 import '../models/practice_lab_topic.dart';
 import '../services/practice_lab_service.dart';
-import '../services/subscription_service.dart';
 import '../theme/leetcode_theme.dart';
 import '../theme/study_theme.dart';
 import '../utils/practice_lab_helpers.dart';
@@ -115,7 +114,6 @@ class _PracticeLabCategoryScreenState extends State<PracticeLabCategoryScreen> {
     final Brightness brightness = Theme.of(context).brightness;
     final Color textSecondary = StudyColors.textSecondary(brightness);
     final PracticeLabUsage? usage = context.watch<PracticeLabService>().usage;
-    final bool isPremium = context.watch<SubscriptionService>().isPremium;
     final int totalLabs = PracticeLabTopicsCatalog.totalLabCountFor(
       category.id,
       groupId: category.groupId,
@@ -155,7 +153,7 @@ class _PracticeLabCategoryScreenState extends State<PracticeLabCategoryScreen> {
             ),
           ),
         ],
-        if (usage != null && !isPremium) ...<Widget>[
+        if (usage != null && !usage.isPremium) ...<Widget>[
           const SizedBox(height: 14),
           PracticeLabUsageBanner(
             remaining: usage.remaining,

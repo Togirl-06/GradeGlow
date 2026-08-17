@@ -61,8 +61,7 @@ abstract final class VirtualUniversityPremium {
   }
 
   static Future<bool> canAskAiProfessor(bool isPremium) async {
-    if (isPremium) return true;
-    return (await aiQuestionsUsedToday()) < freeAiProfessorQuestionsPerDay;
+    return true;
   }
 
   static Future<int> ttsMinutesUsedToday() async {
@@ -82,30 +81,24 @@ abstract final class VirtualUniversityPremium {
     bool isPremium, {
     int additionalMinutes = 1,
   }) async {
-    if (isPremium) return true;
-    final int used = await ttsMinutesUsedToday();
-    return used + additionalMinutes <= freeLectureTtsMinutesPerDay;
+    return true;
   }
 
   static const ApiErrorInfo dailyAiLimitReached = ApiErrorInfo(
-    title: 'Daily AI Professor limit reached',
+    title: 'Campus AI is included',
     message:
-        'Free accounts can ask the AI Professor $freeAiProfessorQuestionsPerDay questions per day. '
-        'Upgrade to Premium for unlimited questions.',
+        'The Virtual University AI Professor is free for every student.',
     steps: <String>[
-      'Open Plans & features and upgrade to Premium',
-      'Or try again tomorrow',
+      'Ask another question',
     ],
   );
 
   static const ApiErrorInfo dailyTtsLimitReached = ApiErrorInfo(
-    title: 'Daily lecture audio limit reached',
+    title: 'Lecture audio is included',
     message:
-        'Free accounts can play $freeLectureTtsMinutesPerDay minutes of lecture audio per day. '
-        'Upgrade to Premium for unlimited lecture TTS.',
+        'Campus lecture audio is free for every student.',
     steps: <String>[
-      'Open Plans & features and upgrade to Premium',
-      'Or try again tomorrow',
+      'Play the lecture again',
     ],
   );
 }

@@ -17,7 +17,8 @@ class PlanFeatures {
   static bool dailyStreaks(SubscriptionPlan plan) => true;
   static bool basicPerformanceInsights(SubscriptionPlan plan) => true;
   static bool flashcardsAndQuiz(SubscriptionPlan plan) => true;
-  static bool unlimitedPracticeLabs(SubscriptionPlan plan) => isPremium(plan);
+  /// Campus labs, lectures, and simulations are free for every student.
+  static bool unlimitedPracticeLabs(SubscriptionPlan plan) => true;
   static bool unlimitedAiPracticeMode(SubscriptionPlan plan) => isPremium(plan);
 
   static int practiceLabMonthlyLimit(SubscriptionPlan plan) =>

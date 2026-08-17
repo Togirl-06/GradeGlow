@@ -16,6 +16,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
+    "target": "gradeglow",
     "public": "build/web",
     "ignore": [
       "firebase.json",

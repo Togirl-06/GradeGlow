@@ -5,7 +5,7 @@ $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $projectRoot
 
-Write-Host "GradeGlow — build web and deploy hosting" -ForegroundColor Cyan
+Write-Host "GradeGlow: build web and deploy hosting" -ForegroundColor Cyan
 
 if (-not (Get-Command flutter -ErrorAction SilentlyContinue)) {
     Write-Host "Flutter not found on PATH." -ForegroundColor Yellow
@@ -21,6 +21,8 @@ if (-not (Get-Command firebase -ErrorAction SilentlyContinue)) {
 flutter build web --release
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-firebase deploy --only hosting --project ai-studybuddy-1fad1
+firebase deploy --only hosting:gradeglow --project ai-studybuddy-1fad1
 Write-Host ""
-Write-Host "Site: https://ai-studybuddy-1fad1.web.app" -ForegroundColor Green
+Write-Host "Site: https://gradeglow-virtualuniversity.web.app" -ForegroundColor Green
+Write-Host "If Google sign-in says the domain is not authorized, add it here:"
+Write-Host "  https://console.firebase.google.com/project/ai-studybuddy-1fad1/authentication/settings"

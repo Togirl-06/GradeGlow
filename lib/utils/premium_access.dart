@@ -47,9 +47,9 @@ class PremiumAccess {
         plan,
       ),
       PremiumFeature.unlimitedChat => PlanFeatures.unlimitedTutorMedia(plan),
-      PremiumFeature.vuAiProfessor => PlanFeatures.isPremium(plan),
-      PremiumFeature.vuLectureTts => PlanFeatures.liveVoiceTutor(plan),
-      PremiumFeature.vuAdvancedSims => PlanFeatures.unlimitedPracticeLabs(plan),
+      PremiumFeature.vuAiProfessor => true,
+      PremiumFeature.vuLectureTts => true,
+      PremiumFeature.vuAdvancedSims => true,
     };
   }
 

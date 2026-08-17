@@ -34,7 +34,7 @@ class PracticeLabUsageBanner extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                'Premium — unlimited Virtual University practice with AI tutoring',
+                'Virtual University labs are free for every student',
                 style: TextStyle(color: lab.textPrimary, fontSize: 12, fontWeight: FontWeight.w700),
               ),
             ),

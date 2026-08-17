@@ -13,6 +13,7 @@ import '../models/practice_lab.dart';
 import '../models/practice_lab_question.dart';
 import '../models/subscription_plan.dart';
 import '../models/visual_learning_lab.dart';
+import '../utils/plan_features.dart';
 import '../utils/practice_lab_helpers.dart';
 import '../utils/practice_lab_limits.dart';
 import '../utils/premium_access.dart';
@@ -1008,7 +1009,7 @@ class PracticeLabService extends ChangeNotifier {
   }
 
   Future<void> _incrementUsageCounter(SubscriptionPlan plan) async {
-    if (plan.isPaid) return;
+    if (PlanFeatures.unlimitedPracticeLabs(plan)) return;
 
     final String month = _monthKey();
     final String? uid = _auth.uid;
@@ -1056,7 +1057,7 @@ class PracticeLabService extends ChangeNotifier {
   }
 
   Future<PracticeLabUsage> _loadUsage(SubscriptionPlan plan) async {
-    if (plan.isPaid) {
+    if (PlanFeatures.unlimitedPracticeLabs(plan)) {
       return PracticeLabUsage(
         count: 0,
         limit: PracticeLabLimits.freeSimulationsPerMonth,

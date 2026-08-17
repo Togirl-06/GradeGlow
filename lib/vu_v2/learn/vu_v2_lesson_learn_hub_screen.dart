@@ -28,9 +28,8 @@ import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
 import '../labs/university_lab_result.dart';
-import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_lesson_activity_router.dart';
-import 'vu_v2_lesson_classroom_screen.dart';
+import 'vu_v2_textbook_reader_screen.dart';
 
 /// Lesson hub: Professor teaches → professional lab → knowledge check.
 class VuV2LessonLearnHubScreen extends StatelessWidget {
@@ -180,8 +179,8 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
             emoji: '📘',
             title: 'Lecture notes',
             subtitle:
-                'Key concepts, examples, and common mistakes from this class.',
-            cta: 'Open notes',
+                'Full textbook chapter — definitions, lecture, worked examples, and practice.',
+            cta: 'Open textbook notes',
             status: 'Optional',
             done: store?.isStepComplete(lesson.id, VuV2LessonStep.coreNotes) ??
                 false,
@@ -201,15 +200,13 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
     if (!context.mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => VuV2LessonClassroomScreen(
-          session: session,
+        builder: (_) => VuV2TextbookReaderScreen(
           subjectId: subjectId,
           facultyTitle: facultyTitle,
           facultyEmoji: facultyEmoji,
           trackTitle: trackTitle,
           courseTitle: courseTitle,
           topicTitle: lesson.title,
-          topicId: lesson.id,
           topicSubtitle: lesson.subtitle,
         ),
       ),

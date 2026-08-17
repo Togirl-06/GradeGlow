@@ -231,13 +231,16 @@ class AuthService extends ChangeNotifier {
 
   String _googleSignInErrorMessage(String? message) {
     final String detail = (message ?? 'Google sign-in failed.').trim();
-    if (detail.contains('origin_mismatch') ||
-        detail.contains('unauthorized-domain') ||
-        detail.contains('auth/unauthorized-domain')) {
-      return 'This page URL is not authorized for Google sign-in. '
-          'Open Firebase Console → Authentication → Settings → Authorized domains '
-          'and add the host you are using (localhost is included by default for dev). '
-          'Then reload and try again.';
+    final String lower = detail.toLowerCase();
+    if (lower.contains('origin_mismatch') ||
+        lower.contains('unauthorized-domain') ||
+        lower.contains('auth/unauthorized-domain') ||
+        lower.contains('not authorized for oauth') ||
+        lower.contains('authorized domains')) {
+      return 'This site is not on the Firebase authorized-domains list. '
+          'In Firebase Console → Authentication → Settings → Authorized domains, '
+          'add gradeglow-virtualuniversity.web.app (and the matching .firebaseapp.com host), '
+          'then reload and try Google sign-in again.';
     }
     return detail.isEmpty ? 'Google sign-in failed.' : detail;
   }

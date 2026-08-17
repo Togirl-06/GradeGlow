@@ -1,4 +1,4 @@
-import '../utils/practice_lab_limits.dart';
+import '../config/billing_config.dart';
 import '../utils/study_limits.dart';
 
 class PlanFeature {
@@ -29,15 +29,17 @@ class MembershipPlanDetails {
 
 /// Free vs Premium catalog shown on Plans & features.
 class MembershipPlans {
-  static const String premiumRegularPrice = r'$14.99';
-  static const String premiumPromoPrice = r'$7.99';
+  static const String premiumRegularPrice = BillingConfig.premiumMonthlyPrice;
+  static const String premiumPromoPrice = BillingConfig.premiumMonthlyPrice;
 
   static final MembershipPlanDetails free = MembershipPlanDetails(
     name: 'Free',
-    tagline: 'Start learning by doing.',
+    tagline: 'The Virtual University is included.',
     priceAmount: '0',
     priceSuffix: '/ month',
     features: <PlanFeature>[
+      PlanFeature('Full Virtual University campus for everyone'),
+      PlanFeature('AI Professor lectures, labs, quizzes & certificates'),
       PlanFeature('AI Tutor Chat'),
       PlanFeature('AI summaries from PDFs, slides, notes, images & recordings'),
       PlanFeature(
@@ -46,9 +48,6 @@ class MembershipPlans {
       PlanFeature('Up to ${StudyLimits.freeStudySetsPerCourse} study sets per course'),
       PlanFeature('Up to ${StudyLimits.freeFlashcardsPerCourse} flashcards per course'),
       PlanFeature('Up to ${StudyLimits.freeQuizQuestionsPerCourse} quiz questions per course'),
-      PlanFeature(
-        '${PracticeLabLimits.freeSimulationsPerMonth} Virtual University sessions per month',
-      ),
       PlanFeature('Study planner & reminders'),
       PlanFeature('Progress tracking'),
       PlanFeature('Daily study streaks'),
@@ -58,14 +57,13 @@ class MembershipPlans {
 
   static final MembershipPlanDetails premium = MembershipPlanDetails(
     name: 'Premium',
-    tagline: 'Unlimited hands-on practice for every subject.',
-    priceAmount: '7.99',
-    priceSuffix: '/ month',
-    strikethroughPrice: premiumRegularPrice,
-    promoLabel: 'LIMITED TIME',
+    tagline: 'Unlimited study tools after a 30-day free trial.',
+    priceAmount: BillingConfig.premiumPriceAmount,
+    priceSuffix: '/ month after trial',
+    promoLabel: BillingConfig.trialLabel,
     features: <PlanFeature>[
-      PlanFeature('Everything in Free'),
-      PlanFeature('Unlimited Virtual University simulations'),
+      PlanFeature('Everything in Free, including campus'),
+      PlanFeature('${BillingConfig.freeTrialDays}-day free trial, then ${BillingConfig.premiumMonthlyPrice}/month'),
       PlanFeature('Unlimited AI Tutor Chat'),
       PlanFeature('Live voice conversations with AI Tutor'),
       PlanFeature('Unlimited study sets'),

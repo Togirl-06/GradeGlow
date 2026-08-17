@@ -8,6 +8,7 @@ import '../data/vu_v2_session.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../data/vu_v2_topic_content_models.dart';
 import '../design/vu_v2_components.dart';
+import '../design/vu_v2_rich_text.dart';
 import '../design/vu_v2_theme.dart';
 import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_cs_try_it_panel.dart';
@@ -569,7 +570,7 @@ class _BeatCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              _RichTeachBody(text: beat.body, accent: _accent),
+              VuV2RichTeachBody(text: beat.body, accent: _accent),
               if (beat.kind == VuV2BeatKind.teach &&
                   beat.moreBody != null &&
                   beat.moreBody!.trim().isNotEmpty) ...<Widget>[
@@ -584,7 +585,7 @@ class _BeatCard extends StatelessWidget {
                       color: VuV2Colors.yellow.withValues(alpha: 0.3),
                     ),
                   ),
-                  child: _RichTeachBody(
+                  child: VuV2RichTeachBody(
                     text: beat.moreBody!,
                     accent: VuV2Colors.yellow,
                   ),
@@ -658,134 +659,6 @@ class _BeatCard extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Renders notes with **bold** and ```code fences``` as editor blocks.
-class _RichTeachBody extends StatelessWidget {
-  const _RichTeachBody({required this.text, required this.accent});
-
-  final String text;
-  final Color accent;
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[];
-    final List<String> parts = text.split('```');
-    for (int i = 0; i < parts.length; i++) {
-      final String chunk = parts[i];
-      if (chunk.isEmpty) continue;
-      if (i.isOdd) {
-        String code = chunk;
-        // Drop optional language tag on first line.
-        final int nl = code.indexOf('\n');
-        if (nl > 0 && !code.substring(0, nl).contains(' ')) {
-          code = code.substring(nl + 1);
-        }
-        children.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0B1220),
-                borderRadius: BorderRadius.circular(VuV2Radii.md),
-                border: Border.all(color: accent.withValues(alpha: 0.35)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      _Dot(const Color(0xFFF87171)),
-                      const SizedBox(width: 5),
-                      _Dot(const Color(0xFFFBBF24)),
-                      const SizedBox(width: 5),
-                      _Dot(const Color(0xFF4ADE80)),
-                      const Spacer(),
-                      Text(
-                        'CODE',
-                        style: TextStyle(
-                          color: accent.withValues(alpha: 0.85),
-                          fontWeight: FontWeight.w900,
-                          fontSize: 10,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SelectableText(
-                    code.trimRight(),
-                    style: const TextStyle(
-                      color: Color(0xFF86EFAC),
-                      fontFamily: 'monospace',
-                      fontSize: 13,
-                      height: 1.45,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      } else {
-        children.add(
-          Text.rich(
-            TextSpan(children: _boldSpans(chunk.trim())),
-            style: const TextStyle(
-              color: VuV2Colors.ink,
-              height: 1.5,
-              fontSize: 15,
-            ),
-          ),
-        );
-      }
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: children,
-    );
-  }
-
-  static List<InlineSpan> _boldSpans(String raw) {
-    final List<InlineSpan> spans = <InlineSpan>[];
-    final RegExp re = RegExp(r'\*\*(.+?)\*\*');
-    int start = 0;
-    for (final RegExpMatch m in re.allMatches(raw)) {
-      if (m.start > start) {
-        spans.add(TextSpan(text: raw.substring(start, m.start)));
-      }
-      spans.add(
-        TextSpan(
-          text: m.group(1),
-          style: const TextStyle(
-            color: Color(0xFF86EFAC),
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      );
-      start = m.end;
-    }
-    if (start < raw.length) {
-      spans.add(TextSpan(text: raw.substring(start)));
-    }
-    return spans;
-  }
-}
-
-class _Dot extends StatelessWidget {
-  const _Dot(this.color);
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
   }
 }

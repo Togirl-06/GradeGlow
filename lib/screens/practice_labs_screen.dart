@@ -18,7 +18,6 @@ import '../services/health_faculty_progress_service.dart';
 import '../services/mathematics_progress_service.dart';
 import '../services/openai_service.dart';
 import '../services/practice_lab_service.dart';
-import '../services/subscription_service.dart';
 import '../services/virtual_university_dashboard_service.dart';
 import '../theme/university_dashboard_colors.dart';
 import '../utils/practice_lab_limits.dart';
@@ -360,7 +359,6 @@ class _PracticeLabsScreenState extends State<PracticeLabsScreen> {
         .toList();
     final ColorScheme scheme = Theme.of(context).colorScheme;
     final PracticeLabService labs = context.watch<PracticeLabService>();
-    final bool isPremium = context.watch<SubscriptionService>().isPremium;
     final PracticeLabUsage? usage = labs.usage;
     final UniversityDashboardColors dashboard = UniversityDashboardColors.of(
       context,
@@ -428,26 +426,12 @@ class _PracticeLabsScreenState extends State<PracticeLabsScreen> {
                 ),
               ),
             ),
-            if (!isPremium && usage != null) ...<Widget>[
+            if (usage != null) ...<Widget>[
               const SizedBox(height: 16),
               PracticeLabUsageBanner(
                 remaining: usage.remaining,
                 limit: PracticeLabLimits.freeSimulationsPerMonth,
-                isPremium: isPremium,
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const MembershipScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text('Upgrade for unlimited Virtual University'),
-                ),
+                isPremium: usage.isPremium,
               ),
             ],
             if (isSearching && deepHits.isNotEmpty) ...<Widget>[

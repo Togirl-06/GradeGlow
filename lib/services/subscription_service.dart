@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
+import '../config/billing_config.dart';
 import '../models/subscription_plan.dart';
 import 'auth_service.dart';
 
@@ -19,8 +20,8 @@ class SubscriptionService extends ChangeNotifier {
   SubscriptionPlan get plan => _plan;
   bool get isPremium => _plan.isPaid;
 
-  /// True when real IAP / Play Billing is wired. Until then, upgrade CTAs explain waitlist.
-  static const bool billingLive = false;
+  /// Stripe checkout is live. Native App Store / Play IAP is not wired yet.
+  static const bool billingLive = true;
 
   void syncFromPlanString(String? value) {
     _plan = SubscriptionPlan.fromString(value);
@@ -62,24 +63,23 @@ class SubscriptionService extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Called after a verified store purchase (when billing is live).
+  /// Called after a verified store purchase (when IAP is live).
   Future<void> activateAfterPayment(SubscriptionPlan plan) => setPlan(plan);
 
-  /// Purchase Premium via store — not available until [billingLive].
-  Future<bool> purchasePremium() async {
-    if (!billingLive) {
-      debugPrint('Premium purchase blocked — billing not live yet.');
+  /// Opens Stripe checkout for Premium ($11.99/mo after a 30-day trial).
+  /// Does not locally unlock Premium — Stripe / backend confirm the plan.
+  Future<bool> purchasePremium() => startPremiumCheckout();
+
+  Future<bool> startPremiumCheckout() async {
+    try {
+      return await BillingConfig.openStripeCheckout();
+    } catch (error) {
+      debugPrint('Stripe checkout failed: $error');
       return false;
     }
-    await activateAfterPayment(SubscriptionPlan.premium);
-    return true;
   }
 
-  Future<bool> purchasePremiumPlus() async {
-    if (!billingLive) return false;
-    await activateAfterPayment(SubscriptionPlan.premiumPlus);
-    return true;
-  }
+  Future<bool> purchasePremiumPlus() => startPremiumCheckout();
 
   Future<void> restoreFree() => setPlan(SubscriptionPlan.free);
 

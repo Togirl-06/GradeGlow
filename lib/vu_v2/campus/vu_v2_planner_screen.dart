@@ -118,9 +118,8 @@ class _VuV2PlannerScreenState extends State<VuV2PlannerScreen> {
           const SizedBox(height: 8),
           VuV2Surface(
             child: Text(
-              widget.progress.isPremium
-                  ? 'AI recommendation: Focus Module 1 whiteboard lessons before Friday quiz.'
-                  : 'AI recommendation (Free): Complete one Notes lesson and one quiz this week. Upgrade for personalized schedules.',
+              'AI recommendation: Complete one Notes lesson and one quiz this week. '
+              'Focus Module 1 whiteboard lessons before Friday quiz.',
               style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
             ),
           ),

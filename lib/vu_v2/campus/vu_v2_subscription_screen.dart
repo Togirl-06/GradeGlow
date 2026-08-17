@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../config/billing_config.dart';
+import '../../services/subscription_service.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
@@ -17,63 +20,59 @@ class VuV2SubscriptionScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
         children: <Widget>[
           const Text(
-            'Campus Premium unlocks unlimited AI Professor lessons and certificates. '
-            'Store billing is coming soon — until then, use Free campus access.',
+            'The Virtual University is free for every student — lectures, labs, '
+            'AI Professor, quizzes, and certificates. Premium is optional study-tool extras.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.4),
           ),
           const SizedBox(height: 16),
           _PlanCard(
-            title: 'Free',
-            price: '\$0',
+            title: 'Campus',
+            price: r'$0',
             bullets: const <String>[
-              'Lessons & notes',
-              'AI Professor (fair-use limits)',
-              'Quizzes & practice',
+              'Full Virtual University access',
+              'AI Professor lectures',
+              'Professional labs',
+              'Quizzes, exams & certificates',
             ],
-            selected: !progress.isPremium,
-            cta: progress.isPremium ? 'Switch to Free' : 'Your current plan',
-            onTap: progress.isPremium
-                ? () async {
-                    await progress.setPremium(false);
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Switched to Free plan')),
-                      );
-                    }
-                  }
-                : null,
+            selected: true,
+            cta: 'Included for everyone',
           ),
           const SizedBox(height: 12),
           _PlanCard(
             title: 'Premium',
-            price: '\$12 / mo',
+            price: '${BillingConfig.premiumMonthlyPrice} / mo',
             bullets: const <String>[
-              'Unlimited AI Professor',
-              'Full university access',
-              'Quizzes & exams',
-              'Certificates of completion',
+              '${BillingConfig.freeTrialDays}-day free trial',
+              'Then ${BillingConfig.premiumMonthlyPrice}/month',
+              'Unlimited tutor chat, live voice & study tools',
+              'Campus stays free either way',
             ],
-            selected: progress.isPremium,
             accent: true,
-            cta: progress.isPremium ? 'Your current plan' : 'Enable Premium (demo)',
-            onTap: progress.isPremium
-                ? null
-                : () async {
-                    await progress.setPremium(true);
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Premium unlocked for campus demo'),
-                        ),
-                      );
-                    }
-                  },
+            cta: BillingConfig.checkoutCta,
+            onTap: () async {
+              final SubscriptionService subs = context.read<SubscriptionService>();
+              final bool ok = await subs.startPremiumCheckout();
+              if (!context.mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    ok
+                        ? BillingConfig.checkoutOpenedMessage()
+                        : 'Could not open checkout. Try Plans & features from Settings.',
+                  ),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 16),
           const Text(
-            'Premium can be enabled here for demos so paywalls do not block the '
-            'clinical showcase path. Production billing ships via App Store / Play later.',
+            BillingConfig.priceFootnote,
             style: TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${progress.completedLessonIds.length} campus lessons completed — all included at no cost.',
+            style: const TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
           ),
         ],
       ),
@@ -86,8 +85,8 @@ class _PlanCard extends StatelessWidget {
     required this.title,
     required this.price,
     required this.bullets,
-    required this.selected,
     required this.cta,
+    this.selected = false,
     this.onTap,
     this.accent = false,
   });
@@ -120,7 +119,7 @@ class _PlanCard extends StatelessWidget {
               ),
               if (selected)
                 Text(
-                  'CURRENT',
+                  'INCLUDED',
                   style: TextStyle(
                     color: VuV2Colors.orange,
                     fontWeight: FontWeight.w900,

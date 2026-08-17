@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/billing_config.dart';
 import '../config/virtual_university.dart';
 import '../models/membership_plans.dart';
 import '../models/subscription_plan.dart';
@@ -31,31 +32,13 @@ class MembershipScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Pick the plan that fits your learning journey.',
+            'The Virtual University is free for everyone. Premium is optional — '
+            '${BillingConfig.premiumMonthlyPrice}/month after a ${BillingConfig.freeTrialDays}-day trial.',
             style: TextStyle(
               color: StudyColors.textSecondary(Theme.of(context).brightness),
               height: 1.4,
             ),
           ),
-          if (!SubscriptionService.billingLive) ...<Widget>[
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: StudyColors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                'In-app purchases are not live yet. Enjoy the Free plan — '
-                'Premium will unlock when App Store / Play Billing is connected.',
-                style: TextStyle(
-                  color: StudyColors.textSecondary(Theme.of(context).brightness),
-                  height: 1.4,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
           const SizedBox(height: 18),
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
@@ -83,25 +66,22 @@ class MembershipScreen extends StatelessWidget {
                 isHighlighted: true,
                 buttonLabel: isPremium
                     ? 'Your current plan'
-                    : SubscriptionService.billingLive
-                        ? 'Upgrade to Premium'
-                        : 'Premium coming soon',
-                filledButton: !isPremium && SubscriptionService.billingLive,
-                enabled: !isPremium && SubscriptionService.billingLive,
-                onPressed: !isPremium && SubscriptionService.billingLive
+                    : BillingConfig.checkoutCta,
+                filledButton: !isPremium,
+                enabled: !isPremium,
+                onPressed: !isPremium
                     ? () async {
-                        final bool ok = await subs.purchasePremium();
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                ok
-                                    ? 'Premium activated'
-                                    : 'Could not complete purchase. Try again.',
-                              ),
+                        final bool ok = await subs.startPremiumCheckout();
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              ok
+                                  ? BillingConfig.checkoutOpenedMessage()
+                                  : 'Could not open checkout. Try again or visit buy.stripe.com from a browser.',
                             ),
-                          );
-                        }
+                          ),
+                        );
                       }
                     : null,
               );
@@ -130,8 +110,8 @@ class MembershipScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'Premium is ${MembershipPlans.premiumRegularPrice}/month after the promo. '
-            'Cancel anytime.',
+            'Campus is free. Premium is ${BillingConfig.premiumMonthlyPrice}/month '
+            'after a ${BillingConfig.freeTrialDays}-day trial. Cancel anytime.',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: StudyColors.textSecondary(Theme.of(context).brightness),
@@ -421,8 +401,8 @@ class MembershipTeaserCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       isPremium
-                          ? 'Study without limits'
-                          : 'Free study tools · Premium ${MembershipPlans.premiumPromoPrice}/mo',
+                          ? 'Study tools without limits'
+                          : 'Campus is free · Premium ${MembershipPlans.premiumPromoPrice}/mo after ${BillingConfig.freeTrialDays}-day trial',
                       style: TextStyle(
                         color: StudyColors.textSecondary(brightness),
                         fontSize: 12,

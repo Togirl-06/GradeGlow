@@ -90,7 +90,7 @@ class VuV2CampusHome extends StatelessWidget {
                 ),
               ),
               child: Text(
-                progress.isPremium ? 'PREMIUM' : 'FREE',
+                'FREE CAMPUS',
                 style: const TextStyle(
                   color: VuV2Colors.mint,
                   fontWeight: FontWeight.w900,

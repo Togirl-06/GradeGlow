@@ -344,11 +344,14 @@ abstract final class VuV2TopicContent {
     final String field = facultyTitle;
     final String lens = discipline.label;
     final String why = discipline.whyMatters(topic, courseTitle);
+    final String lecture = discipline.lectureNarrative(topic, courseTitle, field);
     final String deep = discipline.deepExplanation(topic, courseTitle, field);
     final String method = discipline.method(topic, courseTitle);
     final String rules = discipline.rulesAndFormulas(topic, courseTitle);
     final String example1 = discipline.workedExample(topic, courseTitle, 1);
     final String example2 = discipline.workedExample(topic, courseTitle, 2);
+    final String contrast = discipline.compareAndContrast(topic, courseTitle);
+    final String problems = discipline.practiceProblems(topic, courseTitle);
     final String pitfalls = discipline.misconceptions(topic);
     final String apps = discipline.applications(topic, field);
     final String advanced = discipline.advanced(topic, courseTitle);
@@ -361,11 +364,10 @@ abstract final class VuV2TopicContent {
             '**$topic**\n'
             '$courseTitle · $trackTitle · $field · Virtual University\n\n'
             '${subtitle == null || subtitle.isEmpty ? '' : '$subtitle\n\n'}'
-            'This is a full university chapter — not a summary. Read it as you would '
-            'a required textbook unit: learn precise definitions, understand mechanisms '
-            'in detail, work the examples without peeking, then prove mastery on the '
-            'end-of-topic quiz. A course final exam waits after you finish every topic '
-            'in **$courseTitle**.',
+            'This chapter is a full university textbook unit on **$topic**. Read it slowly, '
+            'the way you would a required chapter in **$courseTitle**: mark definitions, '
+            'work examples with the answers covered, write questions in the margin, and only '
+            'then take the quiz. Skimming headings is not studying.',
       ),
       VuV2TextbookSection(
         title: 'Learning outcomes',
@@ -387,6 +389,10 @@ abstract final class VuV2TopicContent {
       VuV2TextbookSection(
         title: 'Why this topic matters',
         body: why,
+      ),
+      VuV2TextbookSection(
+        title: 'Lecture — full treatment',
+        body: lecture,
       ),
       VuV2TextbookSection(
         title: 'Prerequisites',
@@ -414,15 +420,23 @@ abstract final class VuV2TopicContent {
             'non-example that looks similar but fails a key condition, and (c) use it '
             'to make a decision, prediction, proof, diagnosis, or design choice inside '
             '**$courseTitle**.\n\n'
+            '**Necessary conditions.** List the conditions that *must* be true before you '
+            'are allowed to invoke **$topic**. If any condition is missing, stop and pick '
+            'a different tool. Most exam traps hide a missing condition.\n\n'
+            '**Sufficient conditions.** Name what is *enough* to conclude that **$topic** '
+            'applies. Distinguish “often associated with” from “enough to prove.”\n\n'
             '**Related vocabulary.** '
             'Separate **$topic** from nearby terms that students often collapse: '
             'causes vs effects, models vs reality, rules vs exceptions, correlation vs '
             'causation, syntax vs semantics, symptoms vs diagnosis — whichever pair '
             'fits this $lens topic. Write one sentence that contrasts them.\n\n'
+            '**Notation and representation.** How is **$topic** written, drawn, coded, or '
+            'cited in **$courseTitle**? Copy the canonical form once, then reproduce it '
+            'from memory.\n\n'
             '**Scope boundary.** '
             'This chapter covers what a first-pass university treatment of **$topic** '
-            'must include. Research frontiers and rare edge cases appear in the '
-            'Advanced section; do not skip foundations to chase them.',
+            'must include. Research frontiers and rare edge cases appear later; do not '
+            'skip foundations to chase them.',
       ),
       VuV2TextbookSection(
         title: 'Deep explanation',
@@ -464,6 +478,14 @@ abstract final class VuV2TopicContent {
       VuV2TextbookSection(
         title: 'Worked example 2 — independent style',
         body: example2,
+      ),
+      VuV2TextbookSection(
+        title: 'Compare and contrast',
+        body: contrast,
+      ),
+      VuV2TextbookSection(
+        title: 'Practice problems',
+        body: problems,
       ),
       VuV2TextbookSection(
         title: 'Edge cases & exceptions',
@@ -1354,6 +1376,182 @@ enum _Discipline {
         'is a mark of a strong Virtual University student.\n\n'
         'Before the course final exam, draw a mini-map: prior topics → **$topic** → next '
         'topics. Study the arrows, not only the boxes.';
+  }
+
+  String lectureNarrative(String topic, String course, String field) {
+    return switch (this) {
+      _Discipline.stem =>
+        'Imagine sitting in a university lecture hall for **$course**. The professor does '
+        'not start with a formula. They start with a situation in $field where something '
+        'must be predicted, conserved, classified, or explained — and **$topic** is the '
+        'idea that makes that work possible.\n\n'
+        'First the instructor names the **system**: what is inside the boundary, what is '
+        'outside, what is being measured. They insist that sloppy system definition is '
+        'how people apply the right equation to the wrong object. Write your system in '
+        'one sentence before you write any symbols.\n\n'
+        'Next comes **intuition**. In plain language: if **$topic** is true, what must '
+        'happen, and what cannot happen? Good lectures force a prediction you can feel. '
+        'If doubling an input should double an output, say so. If a quantity is conserved, '
+        'say what cannot appear from nowhere.\n\n'
+        'Only then does the lecture **formalize**. Every symbol is defined. Units are '
+        'stated. Assumptions (steady state, linearity, isolated system, ideal gas, '
+        'continuous function — whatever fits) are listed as contracts, not decorations. '
+        'The derivation or classification is shown slowly enough that you could reconstruct '
+        'it tonight without the slides.\n\n'
+        'The professor then runs a **worked demonstration**: a standard case, then a '
+        'mutation that should *almost* work but fails a condition. That mutation is the '
+        'exam. Students who only copy the happy-path example fail the mutated one.\n\n'
+        'Finally the lecture closes on **meaning**. What would you observe, measure, or '
+        'compute differently if **$topic** were false? If you cannot answer that, you have '
+        'symbols without science. Re-read this chapter until that question is easy.\n\n'
+        'Take notes in four columns: definition · assumptions · method · check. Leave the '
+        'right margin for questions you will ask after the lecture.',
+      _Discipline.health =>
+        'A clinical lecture on **$topic** in **$course** is not a vocabulary parade. It is '
+        'a walk through how a $field professional keeps someone safe when time, data, and '
+        'attention are limited.\n\n'
+        'The instructor typically opens with a **patient or client snapshot** — a brief '
+        'story with vital cues hidden in it. Your job is not to guess the ending. Your job '
+        'is to notice what you would collect first, what would make you worry, and what '
+        'you would refuse to do until you know more.\n\n'
+        'Then the lecture maps **$topic** onto a reasoning spine: frame the goal, gather '
+        'structured data, generate a short differential, prioritize, act with rationale, '
+        'reassess with a measurable endpoint, and hand off in precise language. **$topic** '
+        'is the piece of that spine this chapter deepens.\n\n'
+        'Pay special attention to **red flags** and **first actions**. Exams and practice '
+        'punish delay on life-threats and punish reckless action without assessment. Write '
+        'both: the thing you must not miss, and the first defensible move.\n\n'
+        'The second half of a good lecture is **why the action works** — anatomy, physiology, '
+        'pathology, pharmacology, or psychosocial mechanism. If you can do the motion but '
+        'cannot explain the mechanism, you cannot adapt when the presentation is atypical.\n\n'
+        'Close the chapter by writing a 90-second teach-back as if handing off to the next '
+        'clinician: situation, background, assessment, recommendation. If you cannot do '
+        'SBAR on **$topic**, you are not ready.',
+      _Discipline.law =>
+        'A doctrinal lecture on **$topic** in **$course** trains a habit: **issue, rule, '
+        'application, conclusion** — every time, in that order, with facts from the record '
+        'only.\n\n'
+        'The professor will often start with a **cold-call hypothetical**. They are not '
+        'asking whether you “feel” a party should win. They are asking whether you can '
+        'state the issue as a question, recite the elements without collapsing them, and '
+        'match each element to a fact.\n\n'
+        'Listen for **black-letter rule** versus **policy**. Policy may explain why a '
+        'doctrine exists; it does not replace elements. Students who argue fairness without '
+        'elements fail. Students who recite elements without applying facts also fail.\n\n'
+        'Work **$topic** element-by-element on paper. For each element write: (1) the legal '
+        'test, (2) the strongest fact for it, (3) the strongest opposing fact, (4) which '
+        'way you hold and why. That table is the lecture, distilled.\n\n'
+        'Expect the instructor to change one fact and ask whether the holding flips. That '
+        'is how you learn which element is doing the work. If flipping a fact never changes '
+        'your answer, you are concluding first and rationalizing after.\n\n'
+        'After class, write a one-page outline of **$topic** as if you had to teach it '
+        'tomorrow: rule, elements, key cases or illustrations, common defenses, and the '
+        'classic exam trap.',
+      _Discipline.business =>
+        'In **$course**, a lecture on **$topic** is a decision meeting, not a slogan session. '
+        'The professor plays a skeptical CFO, client, or board member: “So what? What do we '
+        'do Monday, and how do we know it worked?”\n\n'
+        'Start by naming the **decision** **$topic** is supposed to improve — price, hire, '
+        'invest, cut, launch, hedge, expand. If you cannot name a decision, you are studying '
+        'a buzzword.\n\n'
+        'Then specify **inputs**. What data, time horizon, and definitions do you need? Bad '
+        'lectures skip this and jump to a framework. Good lectures force you to define the '
+        'metric so two analysts would compute the same number.\n\n'
+        'Walk **options and trade-offs**. Speed versus quality, margin versus growth, cash '
+        'versus accounting profit, customer versus employee. **$topic** is useful only if it '
+        'helps you choose under constraint.\n\n'
+        'The instructor will usually insert a **trap**: vanity metrics, sunk cost, selection '
+        'bias, or an ignored second-order effect. Circle that trap in your notes. Course '
+        'exams love it.\n\n'
+        'End with a **one-page memo** structure: recommendation, why, key number, main risk, '
+        'kill-criterion. If **$topic** cannot survive that memo, you do not understand it '
+        'yet.',
+      _Discipline.cs =>
+        'A computing lecture on **$topic** in **$course** should feel like a code review plus '
+        'a whiteboard interview. The instructor defines **behavior**, not vibes.\n\n'
+        'Begin with the **contract**: inputs, outputs, illegal inputs, and invariants that '
+        'must remain true. If you cannot write the function signature and the promise, you '
+        'cannot implement **$topic**.\n\n'
+        'Then walk a **small example** by hand — three items in a structure, two recursive '
+        'calls, a tiny state machine. Experts do this silently; students must do it on '
+        'paper until it is automatic.\n\n'
+        'Next, attack **edge cases**: empty, one, duplicates, overflow, null, concurrent '
+        'mutation, invalid encoding. Lectures that skip edges produce software that fails '
+        'in production and interviews that die on follow-ups.\n\n'
+        'Discuss **complexity** in terms of input size, and **correctness** in terms of tests '
+        'or proofs. “It worked on my example” is not a lecture outcome.\n\n'
+        'Finally, contrast a **wrong implementation** that looks plausible. Name the bug. '
+        'That contrast is how you remember **$topic** six weeks later on the exam.',
+      _Discipline.engineering =>
+        'Engineering lectures on **$topic** in **$course** train a discipline: requirement → '
+        'model → calculation → check → decision. The professor will not accept “it looks '
+        'strong enough.”\n\n'
+        'Open with the **requirement**. What performance, safety, cost, or reliability target '
+        'are we designing against? **$topic** is a tool toward that target.\n\n'
+        'Build the **model** with units visible. List assumptions as if they will be audited: '
+        'linearity, steady state, ideal joints, neglected friction, small angles. Circle the '
+        'assumption most likely to fail in the field.\n\n'
+        'Compute a **nominal result**, then apply **factor of safety / tolerance / uncertainty**. '
+        'Ask what failure mode appears if you are wrong by 20%.\n\n'
+        'The lecture usually includes a **sanity check**: orders of magnitude, limiting cases, '
+        'and “does this number even make sense?” Students who skip sanity checks fail labs '
+        'and harm systems.\n\n'
+        'Close by writing the **design note** you would put in a notebook: given, find, '
+        'assumptions, governing relation, result, check, recommendation.',
+      _Discipline.humanities =>
+        'A serious lecture on **$topic** in **$course** is an argument, not a vibe. The '
+        'instructor defines terms, shows a mechanism or interpretive frame, presents evidence, '
+        'and then steelmans a counterargument.\n\n'
+        'Start with an **operational definition** — what would count as an instance of '
+        '**$topic** in the world, and what would not. Without that, discussion is theater.\n\n'
+        'Then trace **how it works**: incentives, institutions, texts, power, cognition, '
+        'culture — whichever mechanisms $field uses. A lecture that only labels **$topic** '
+        'does not explain it.\n\n'
+        'Demand **evidence**. Cases, data, primary sources, or competing interpretations. '
+        'Write who produced the evidence, what it can and cannot show, and what is missing.\n\n'
+        'Sit with the **counterargument** for a full paragraph. If you cannot state the best '
+        'objection, you do not understand the claim.\n\n'
+        'End with **stakes**: who is affected, what a careful analyst would do next, and '
+        'where uncertainty remains. That is textbook thinking.',
+      _Discipline.general =>
+        'Treat this lecture on **$topic** in **$course** as three passes: intuition, '
+        'structure, and application. First explain it to a smart friend. Then write the '
+        'formal version used in $field. Then solve a new case with assumptions and a check. '
+        'Repeat the three passes until none of them need the notes.',
+    };
+  }
+
+  String compareAndContrast(String topic, String course) {
+    return 'University mastery of **$topic** in **$course** includes knowing what it is '
+        '*not*. Build a two-column table:\n\n'
+        '**$topic vs a lookalike.** Name the nearest concept students confuse with it. '
+        'Write the shared surface features, then the decisive difference (a condition, '
+        'an element, a unit, a time scale, a duty, an invariant).\n\n'
+        '**$topic vs a broader category.** Is this a special case of a larger idea? If yes, '
+        'what extra constraint makes it **$topic** rather than the parent category?\n\n'
+        '**When to switch tools.** Describe a prompt where a novice would apply **$topic** '
+        'and a expert would refuse. That refusal is sophistication.\n\n'
+        '**Exam sentence.** “I am using **$topic** rather than ___ because ___.” Practice '
+        'that sentence until it is automatic.';
+  }
+
+  String practiceProblems(String topic, String course) {
+    return 'Work these on paper with the answers covered. Then uncover and grade yourself '
+        'harshly — method points count.\n\n'
+        '**Problem 1 — definition under pressure.** In two sentences, define **$topic** '
+        'for **$course** and state one non-example that fails a necessary condition.\n\n'
+        '**Problem 2 — guided application.** Invent a realistic prompt with three givens '
+        'and one unknown. Apply the six-step method. Show every intermediate move.\n\n'
+        '**Problem 3 — mutation.** Change one given so that **$topic** either stops applying '
+        'or changes the result. Explain which condition flipped.\n\n'
+        '**Problem 4 — communication.** Write the result as a supervisor would need it: '
+        'a labeled calculation, IRAC paragraph, SBAR handoff, memo rec, or docstring — '
+        'as fits the field.\n\n'
+        '**Self-check answers (after you try).**\n'
+        '1. Definition + non-example must mention a failed necessary condition, not a vibe.\n'
+        '2. Application must name the principle *before* arithmetic or conclusions.\n'
+        '3. Mutation must identify the exact condition that changed — not “it got harder.”\n'
+        '4. Communication must be auditable by a peer who was not in your head.';
   }
 
   List<VuV2Mcq> extraMcqs({
