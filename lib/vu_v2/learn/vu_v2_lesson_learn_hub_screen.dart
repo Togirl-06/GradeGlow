@@ -28,6 +28,7 @@ import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
 import '../labs/university_lab_result.dart';
+import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_lesson_activity_router.dart';
 import 'vu_v2_textbook_reader_screen.dart';
 
