@@ -1,4 +1,3 @@
-import '../../../config/vu_schools_catalog.dart';
 import '../../curriculum/academic_quality_contract.dart';
 import '../../../data/university_learning_engine.dart';
 
@@ -63,20 +62,6 @@ abstract final class InvestigationCatalog {
     String labId = '',
   }) {
     final String s = '${subjectId}_${topicTitle}_$labId'.toLowerCase();
-    if (VuSchoolsCatalog.isPracticeOnly(subjectId) ||
-        s.contains('career_desk') ||
-        s.contains('resume_desk') ||
-        s.contains('interview_suite') ||
-        s.contains('pitch_stage') ||
-        s.contains('money_desk') ||
-        s.contains('team_standup') ||
-        s.contains('hard_conversation') ||
-        s.contains('client_studio') ||
-        s.contains('project_war') ||
-        s.contains('week_board') ||
-        s.contains('remote_floor')) {
-      return InvestigationKind.generic;
-    }
     if (s.contains('law') ||
         s.contains('contract') ||
         s.contains('tort') ||

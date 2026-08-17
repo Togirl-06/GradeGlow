@@ -178,17 +178,6 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
               school.blurb!,
               style: TextStyle(color: VuV2Colors.mute, height: 1.4),
             ),
-            if (school.practiceOnly) ...<Widget>[
-              const SizedBox(height: 8),
-              Text(
-                'No lectures. Labs and real-world workplace practice only.',
-                style: TextStyle(
-                  color: VuV2Colors.orange,
-                  fontWeight: FontWeight.w800,
-                  height: 1.4,
-                ),
-              ),
-            ],
             const SizedBox(height: 16),
           ],
           ...school.programs.map((VuSchoolProgram program) {
@@ -259,10 +248,8 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
                               const SizedBox(height: 6),
                               Text(
                                 enrolled
-                                    ? 'Enrolled · ${roadmap.lessonCount} missions'
-                                    : school.practiceOnly
-                                        ? 'Tap to enroll · labs & workplace practice'
-                                        : 'Tap to enroll · ${roadmap.lessonCount} lessons',
+                                    ? 'Enrolled · ${roadmap.lessonCount} lessons'
+                                    : 'Tap to enroll · ${roadmap.lessonCount} lessons',
                                 style: TextStyle(
                                   color: enrolled
                                       ? VuV2Colors.success

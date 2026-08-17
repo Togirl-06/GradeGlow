@@ -1,8 +1,6 @@
 /// Virtual University — lecture + lab architecture (final product spec).
 library;
 
-import '../vu_v2/labs/career_practice_labs.dart';
-
 /// Canonical learning loop for every course.
 enum UniversityLearningPhase {
   classroom,
@@ -212,10 +210,6 @@ abstract final class UniversityLearningEngine {
     final String blob =
         '${lessonTitle.toLowerCase()} ${moduleTitle?.toLowerCase() ?? ''}';
     final String s = subjectId.toLowerCase();
-
-    if (CareerPracticeLabs.matches(subjectId)) {
-      return CareerPracticeLabs.labFor(subjectId, lessonTitle);
-    }
 
     if (s.contains('biology') || s == 'biology') {
       return _biologyLab(blob, lessonTitle);

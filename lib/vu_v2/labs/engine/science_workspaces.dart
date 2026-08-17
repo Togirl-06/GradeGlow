@@ -53,8 +53,6 @@ class LabWorkspaceHost extends StatelessWidget {
         return GeographyWorkspace(session: session);
       case LabDiscipline.architecture:
         return ArchitectureWorkspace(session: session);
-      case LabDiscipline.careerPractice:
-        return CareerDeskWorkspace(session: session);
     }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../config/vu_schools_catalog.dart';
 import '../career_labs/playable/playable_router.dart';
 import '../career_labs/playable/science/biology/anatomy_3d_viewer_screen.dart';
 import '../career_labs/playable/science/biology/biology_anatomy_3d_lab.dart';
@@ -11,7 +10,6 @@ import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import '../../data/university_learning_engine.dart';
 import 'investigation/investigation_flow.dart';
-import 'career_practice_labs.dart';
 import 'university_practical/practical_catalog.dart';
 import 'university_practical/practical_mission.dart';
 import 'vu_v2_cs_coding_arena.dart';
@@ -42,9 +40,6 @@ class CourseLabEntry {
 abstract final class CourseLabsCatalog {
   static List<CourseLabEntry> forMajor(String majorId) {
     final String m = majorId.toLowerCase();
-    if (VuSchoolsCatalog.isPracticeOnly(majorId)) {
-      return CareerPracticeLabs.catalog(majorId);
-    }
     if (m.contains('bio')) return biology;
     if (m.contains('chem')) return chemistry;
     if (m.contains('phys')) return physics;

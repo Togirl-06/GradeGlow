@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../config/vu_schools_catalog.dart';
 import '../../data/bio_101_curriculum.dart';
 import '../../data/diagram_misconception_catalog.dart';
 import '../../data/diagram_misconception_store.dart';
@@ -15,7 +14,6 @@ import '../data/vu_v2_mixed_quiz.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
-import '../labs/career_practice_labs.dart';
 import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_lesson_activity_router.dart';
 import 'vu_v2_lesson_learn_hub_screen.dart';
@@ -51,29 +49,15 @@ class VuV2CourseHomeScreen extends StatefulWidget {
 class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
   int _tab = 0;
 
-  bool get _practiceOnly =>
-      VuSchoolsCatalog.isPracticeOnly(widget.subjectId);
-
-  static const List<({String id, IconData icon, String label})> _academicTabs =
-      <({String id, IconData icon, String label})>[
-    (id: 'overview', icon: Icons.dashboard_outlined, label: 'Overview'),
-    (id: 'lectures', icon: Icons.smart_display_outlined, label: 'Lectures'),
-    (id: 'textbook', icon: Icons.menu_book_outlined, label: 'Textbook'),
-    (id: 'labs', icon: Icons.science_outlined, label: 'Labs'),
-    (id: 'quizzes', icon: Icons.checklist_rtl_rounded, label: 'Quizzes'),
-    (id: 'grades', icon: Icons.grade_outlined, label: 'Grades'),
+  static const List<({IconData icon, String label})> _tabs =
+      <({IconData icon, String label})>[
+    (icon: Icons.dashboard_outlined, label: 'Overview'),
+    (icon: Icons.smart_display_outlined, label: 'Lectures'),
+    (icon: Icons.menu_book_outlined, label: 'Textbook'),
+    (icon: Icons.science_outlined, label: 'Labs'),
+    (icon: Icons.checklist_rtl_rounded, label: 'Quizzes'),
+    (icon: Icons.grade_outlined, label: 'Grades'),
   ];
-
-  static const List<({String id, IconData icon, String label})> _practiceTabs =
-      <({String id, IconData icon, String label})>[
-    (id: 'overview', icon: Icons.dashboard_outlined, label: 'Overview'),
-    (id: 'labs', icon: Icons.science_outlined, label: 'Labs'),
-    (id: 'practice', icon: Icons.work_outline_rounded, label: 'Practice'),
-    (id: 'grades', icon: Icons.grade_outlined, label: 'Grades'),
-  ];
-
-  List<({String id, IconData icon, String label})> get _tabs =>
-      _practiceOnly ? _practiceTabs : _academicTabs;
 
   VuV2Session get session => widget.session;
   VuV2ProgressStore get progress => widget.progress;
@@ -136,11 +120,8 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
             code: '$_courseCode · ${course.resolvedMinutes ~/ 15} credits',
             title: course.title,
             blurb: course.subtitle ??
-                (_practiceOnly
-                    ? 'Labs and real-world workplace practice — no lectures.'
-                    : 'AI-led lectures, diagrams, labs, and quizzes built around this course.'),
-            professor: _practiceOnly ? 'Workplace coach' : _professorName,
-            roleLabel: _practiceOnly ? 'Coach' : 'Professor',
+                'AI-led lectures, diagrams, labs, and quizzes built around this course.',
+            professor: _professorName,
             done: done,
             total: _lessonIds.length,
             pct: _pct,
@@ -172,10 +153,8 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
   }
 
   Widget _tabBody() {
-    final String tabId =
-        (_tab >= 0 && _tab < _tabs.length) ? _tabs[_tab].id : 'overview';
-    switch (tabId) {
-      case 'lectures':
+    switch (_tab) {
+      case 1:
         return _ModulesPanel(
           modules: _modules,
           session: session,
@@ -187,7 +166,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           course: course,
           lessonIds: _lessonIds,
         );
-      case 'textbook':
+      case 2:
         return _TextbookPanel(
           subjectId: widget.subjectId,
           facultyTitle: widget.facultyTitle,
@@ -196,63 +175,15 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           course: course,
           modules: _modules,
         );
-      case 'labs':
+      case 3:
         return _LabsPanel(
           subjectId: widget.subjectId,
           courseTitle: course.title,
           lessons: _lessons,
           modules: _modules,
           completedLessons: widget.progress.completedLessonIds.length,
-          practiceOnly: _practiceOnly,
         );
-      case 'practice':
-        return Column(
-          children: <Widget>[
-            VuV2Surface(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Real-world practice',
-                    style: TextStyle(
-                      color: VuV2Colors.ink,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Same skills as the lab, on a live workplace floor — hiring desks, interviews, pitches, money, teams.',
-                    style: TextStyle(color: VuV2Colors.mute, height: 1.45),
-                  ),
-                  const SizedBox(height: 12),
-                  VuV2PrimaryButton(
-                    label: 'Enter the workplace',
-                    trailingArrow: true,
-                    onPressed: () => CareerPracticeLabs.openWorkplace(
-                      context,
-                      widget.subjectId,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            _ModulesPanel(
-              modules: _modules,
-              session: session,
-              progress: progress,
-              subjectId: widget.subjectId,
-              facultyTitle: widget.facultyTitle,
-              facultyEmoji: widget.facultyEmoji,
-              trackTitle: widget.trackTitle,
-              course: course,
-              lessonIds: _lessonIds,
-              compact: true,
-            ),
-          ],
-        );
-      case 'quizzes':
+      case 4:
         return _QuizzesPanel(
           modules: _modules,
           course: course,
@@ -264,7 +195,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           session: session,
           lessons: _lessons,
         );
-      case 'grades':
+      case 5:
         return VuV2Surface(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,7 +211,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
               const SizedBox(height: 10),
               Text(
                 'Course progress ${(_pct * 100).round()}%\n'
-                'Missions complete: '
+                'Lessons complete: '
                 '${_lessonIds.where(progress.completedLessonIds.contains).length}'
                 ' / ${_lessonIds.length}',
                 style: TextStyle(color: VuV2Colors.mute, height: 1.5),
@@ -288,7 +219,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
             ],
           ),
         );
-      case 'overview':
+      case 0:
       default:
         return _OverviewPanel(
           objectives: course.id == 'general_biology'
@@ -335,7 +266,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                _practiceOnly ? 'Your coach' : 'Your Professor',
+                'Your Professor',
                 style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
@@ -358,16 +289,14 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          _practiceOnly ? 'Workplace coach' : _professorName,
+                          _professorName,
                           style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
                         Text(
-                          _practiceOnly
-                              ? 'Practice studios · ${widget.facultyTitle}'
-                              : 'Professor of ${widget.facultyTitle}',
+                          'Professor of ${widget.facultyTitle}',
                           style: TextStyle(
                             color: VuV2Colors.mute,
                             fontSize: 12,
@@ -391,11 +320,9 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
               ),
               const SizedBox(height: 12),
               VuV2PrimaryButton(
-                label: _practiceOnly
-                    ? 'Start first lab'
-                    : (course.id == 'general_biology'
-                        ? 'Start BIO-101 AI Professor'
-                        : 'Start First Lesson'),
+                label: course.id == 'general_biology'
+                    ? 'Start BIO-101 AI Professor'
+                    : 'Start First Lesson',
                 trailingArrow: true,
                 onPressed: _lessons.isEmpty
                     ? null
@@ -453,7 +380,6 @@ class _CourseHero extends StatelessWidget {
     required this.title,
     required this.blurb,
     required this.professor,
-    this.roleLabel = 'Professor',
     required this.done,
     required this.total,
     required this.pct,
@@ -464,7 +390,6 @@ class _CourseHero extends StatelessWidget {
   final String title;
   final String blurb;
   final String professor;
-  final String roleLabel;
   final int done;
   final int total;
   final double pct;
@@ -532,7 +457,7 @@ class _CourseHero extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  '$roleLabel  $professor',
+                  'Professor  $professor',
                   style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w700,
@@ -561,7 +486,7 @@ class _CourseTabBar extends StatelessWidget {
     required this.onChanged,
   });
 
-  final List<({String id, IconData icon, String label})> tabs;
+  final List<({IconData icon, String label})> tabs;
   final int index;
   final ValueChanged<int> onChanged;
 
@@ -1107,7 +1032,6 @@ class _LabsPanel extends StatelessWidget {
     required this.lessons,
     required this.modules,
     required this.completedLessons,
-    this.practiceOnly = false,
   });
 
   final String subjectId;
@@ -1115,7 +1039,6 @@ class _LabsPanel extends StatelessWidget {
   final List<VuV2RoadmapLesson> lessons;
   final List<VuV2RoadmapModule> modules;
   final int completedLessons;
-  final bool practiceOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -1140,11 +1063,9 @@ class _LabsPanel extends StatelessWidget {
     }
 
     if (linked.isEmpty) {
-      return _ComingPanel(
+      return const _ComingPanel(
         title: 'Labs',
-        body: practiceOnly
-            ? 'Workplace labs for this course will appear here as you open missions.'
-            : 'Practical laboratories for this course will appear here as lectures unlock.',
+        body: 'Practical laboratories for this course will appear here as lectures unlock.',
       );
     }
 
@@ -1162,7 +1083,7 @@ class _LabsPanel extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Each lab is a live desk: mission, artifacts, a decision, and a report. Not a lecture and not a quiz.',
+            'Each lab is an investigation: mission, equipment, decisions, data, and a report. Not a quiz.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.45),
           ),
           const SizedBox(height: 14),

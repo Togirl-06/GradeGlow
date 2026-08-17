@@ -29,7 +29,6 @@ class VuSchool {
     required this.emoji,
     required this.programs,
     this.blurb,
-    this.practiceOnly = false,
   });
 
   final String id;
@@ -37,9 +36,6 @@ class VuSchool {
   final String emoji;
   final String? blurb;
   final List<VuSchoolProgram> programs;
-
-  /// No AI lectures or textbooks — labs and workplace practice only.
-  final bool practiceOnly;
 }
 
 /// Canonical school → program tree for Grade Glow Virtual University.
@@ -926,7 +922,6 @@ abstract final class VuSchoolsCatalog {
       title: 'School of Career and Life Skills',
       emoji: '🚀',
       blurb: 'Professional readiness and personal effectiveness.',
-      practiceOnly: true,
       programs: <VuSchoolProgram>[
         VuSchoolProgram(
           id: 'resume_writing',
@@ -1146,10 +1141,6 @@ abstract final class VuSchoolsCatalog {
     }
     return null;
   }
-
-  /// Career and Life Skills: students do labs and workplace practice, not lectures.
-  static bool isPracticeOnly(String subjectId) =>
-      schoolForProgramId(subjectId)?.practiceOnly ?? false;
 
   static int get schoolCount => schools.length;
 

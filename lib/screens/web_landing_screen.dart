@@ -233,7 +233,7 @@ class _HeroBand extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Sign in to GradeGlow. Open campus from there. Lectures lead into live labs. Career and Life Skills is labs and real-world practice only — not A/B/C/D.',
+                          'Sign in to open your registrar profile. Lectures lead into live labs: a scenario, tools, consequences, and a supervisor — not A/B/C/D.',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.78),
                             fontSize: compact ? 16 : 18,
@@ -317,12 +317,8 @@ class _NowOnCampusBand extends StatelessWidget {
         'Lecture notes are full chapters, not slide summaries.',
       ),
       (
-        'Interactive labs',
-        'Mission, equipment, decisions, and a report — a workspace, not a quiz.',
-      ),
-      (
-        'Career & Life Skills',
-        'No lectures. Resume, interview, speaking, and money skills as workplace practice.',
+        'Workplace labs',
+        'Enter a lab, get a scenario, act on the board, watch it react, then take the debrief.',
       ),
     ];
     return ColoredBox(

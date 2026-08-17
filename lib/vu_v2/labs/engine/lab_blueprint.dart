@@ -1,7 +1,5 @@
-import '../../../config/vu_schools_catalog.dart';
 import '../../../data/university_learning_engine.dart';
 import '../../curriculum/academic_quality_contract.dart';
-import '../career_practice_labs.dart';
 
 enum LabDiscipline {
   anatomy,
@@ -23,7 +21,6 @@ enum LabDiscipline {
   history,
   geography,
   architecture,
-  careerPractice,
 }
 
 class LabBlueprint {
@@ -91,9 +88,6 @@ abstract final class LabCatalog {
     required String topicTitle,
     String labId = '',
   }) {
-    if (VuSchoolsCatalog.isPracticeOnly(subjectId)) {
-      return LabDiscipline.careerPractice;
-    }
     final String topic = _norm('$topicTitle $labId');
 
     // Topic wins when it names a concrete academic object.
@@ -180,11 +174,7 @@ abstract final class LabCatalog {
   }
 
   static LabDiscipline fromSubject(String subjectId) {
-    if (VuSchoolsCatalog.isPracticeOnly(subjectId)) {
-      return LabDiscipline.careerPractice;
-    }
     final String s = _norm(subjectId).replaceAll(' ', '');
-    if (s.contains('career')) return LabDiscipline.careerPractice;
     if (s.contains('computerscience') ||
         s == 'cs' ||
         s.contains('softwareeng') ||
@@ -221,15 +211,6 @@ abstract final class LabCatalog {
     required UniversityLabLink link,
     required int level,
   }) {
-    if (VuSchoolsCatalog.isPracticeOnly(subjectId)) {
-      return CareerPracticeLabs.blueprint(
-        subjectId: subjectId,
-        courseTitle: courseTitle,
-        topicTitle: topicTitle,
-        title: link.title,
-        level: level,
-      );
-    }
     final LabDiscipline d = disciplineFor(
       subjectId: subjectId,
       topicTitle: topicTitle,
@@ -791,39 +772,6 @@ class _Pack {
           ],
           bottom: const <String>['layer', 'compare', 'record'],
           environment: 'GIS studio',
-        );
-      case LabDiscipline.careerPractice:
-        return _Pack(
-          title: 'Workplace desk',
-          unit: 'Professional practice',
-          role: 'Practitioner on a live task',
-          mission:
-              'A real task is on the desk. Inspect the artifacts, make a call, and write why it holds.',
-          scenario:
-              'No lecture hall. A desk, a brief, and a person waiting on your decision.',
-          objectives: const <String>[
-            'Open the brief',
-            'Inspect the artifacts',
-            'Make one professional call',
-            'Write the reason in a sentence',
-          ],
-          knowledge: <String>[
-            topic,
-            'The artifacts beat the slogan',
-            'A decision needs a reason',
-          ],
-          tools: const <String>['Brief', 'Artifacts', 'Call', 'Note'],
-          materials: const <String>['Live packet'],
-          layers: const <String>['Brief', 'Evidence', 'Call', 'Note'],
-          safety: 'Do not hide behind theory. The desk is the test.',
-          hints: const <String>[
-            'Read the brief first.',
-            'Point at evidence before you decide.',
-            'One call, not five.',
-            'Write the why.',
-          ],
-          bottom: const <String>['open', 'inspect', 'decide'],
-          environment: 'Workplace desk',
         );
       case LabDiscipline.architecture:
         return _Pack(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../config/vu_schools_catalog.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_roadmap_models.dart';
 import '../data/vu_v2_roadmap_sync.dart';
@@ -349,24 +348,20 @@ class VuV2CampusHome extends StatelessWidget {
         VuV2Surface(
           child: Column(
             children: <Widget>[
-              if (!VuSchoolsCatalog.isPracticeOnly(session.majorId)) ...<Widget>[
-                _ScheduleRow(
-                  time: '09:00',
-                  title: 'Lecture',
-                  subtitle: 'AI Professor · ${session.majorLabel}',
-                  icon: Icons.smart_display_outlined,
-                  onTap: () => MajorWowRouter.openContinue(
-                    context,
-                    session: session,
-                    progress: progress,
-                  ),
-                ),
-                Divider(color: VuV2Colors.stroke, height: 22),
-              ],
               _ScheduleRow(
-                time: VuSchoolsCatalog.isPracticeOnly(session.majorId)
-                    ? '09:00'
-                    : '11:00',
+                time: '09:00',
+                title: 'Lecture',
+                subtitle: 'AI Professor · ${session.majorLabel}',
+                icon: Icons.smart_display_outlined,
+                onTap: () => MajorWowRouter.openContinue(
+                  context,
+                  session: session,
+                  progress: progress,
+                ),
+              ),
+              Divider(color: VuV2Colors.stroke, height: 22),
+              _ScheduleRow(
+                time: '11:00',
                 title: 'Lab',
                 subtitle: MajorWowRouter.labsHeroTitle(session.majorId),
                 icon: Icons.science_outlined,
@@ -379,12 +374,8 @@ class VuV2CampusHome extends StatelessWidget {
               ),
               Divider(color: VuV2Colors.stroke, height: 22),
               _ScheduleRow(
-                time: VuSchoolsCatalog.isPracticeOnly(session.majorId)
-                    ? '11:00'
-                    : '14:00',
-                title: VuSchoolsCatalog.isPracticeOnly(session.majorId)
-                    ? 'Real-world practice'
-                    : 'Career practical',
+                time: '14:00',
+                title: 'Career practical',
                 subtitle: MajorWowRouter.continueLabel(session.majorId)
                     .replaceFirst('Enter ', ''),
                 icon: Icons.work_outline_rounded,
@@ -395,21 +386,19 @@ class VuV2CampusHome extends StatelessWidget {
                   progress: progress,
                 ),
               ),
-              if (!VuSchoolsCatalog.isPracticeOnly(session.majorId)) ...<Widget>[
-                Divider(color: VuV2Colors.stroke, height: 22),
-                _ScheduleRow(
-                  time: '16:00',
-                  title: 'Adaptive review',
-                  subtitle: progress.dueAdaptiveReviews > 0
-                      ? 'Fix ${progress.dueAdaptiveReviews} open confusion(s)'
-                      : 'Mastery drill for weak spots',
-                  icon: Icons.psychology_alt_outlined,
-                  onTap: () => VuV2AdaptiveReviewDrillScreen.open(
-                    context,
-                    progress: progress,
-                  ),
+              Divider(color: VuV2Colors.stroke, height: 22),
+              _ScheduleRow(
+                time: '16:00',
+                title: 'Adaptive review',
+                subtitle: progress.dueAdaptiveReviews > 0
+                    ? 'Fix ${progress.dueAdaptiveReviews} open confusion(s)'
+                    : 'Mastery drill for weak spots',
+                icon: Icons.psychology_alt_outlined,
+                onTap: () => VuV2AdaptiveReviewDrillScreen.open(
+                  context,
+                  progress: progress,
                 ),
-              ],
+              ),
             ],
           ),
         ),
