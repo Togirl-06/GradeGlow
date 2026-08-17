@@ -222,7 +222,7 @@ class _HeroBand extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'A virtual campus with live labs — and Career Skills with no lectures',
+                          'Student records and workplace labs — not a quiz app',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: compact ? 32 : 48,
@@ -233,7 +233,7 @@ class _HeroBand extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Sign in to campus. Academic programs still use professor plus lab. School of Career and Life Skills is labs and real-world practice only.',
+                          'Sign in to GradeGlow. Open campus from there. Lectures lead into live labs. Career and Life Skills is labs and real-world practice only — not A/B/C/D.',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.78),
                             fontSize: compact ? 16 : 18,
