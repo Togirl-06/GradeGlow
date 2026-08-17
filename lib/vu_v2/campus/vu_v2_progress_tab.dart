@@ -50,7 +50,7 @@ class VuV2ProgressPanel extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             session.majorLabel,
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 14),
         ],
@@ -70,7 +70,7 @@ class VuV2ProgressPanel extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 '${(degreePct * 100).round()}%',
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
                   fontSize: 32,
@@ -81,7 +81,7 @@ class VuV2ProgressPanel extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 '${progress.completedLessonIds.intersection(lessonIds.toSet()).length} / ${lessonIds.length} lessons',
-                style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
               ),
             ],
           ),
@@ -146,7 +146,7 @@ class VuV2ProgressPanel extends StatelessWidget {
                 gpaForecast.hasQuizzes
                     ? '${gpaForecast.gpaLabel} / 4.00 · ${gpaForecast.letter} · ${gpaForecast.trendLabel}'
                     : 'No quiz scores yet',
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
@@ -155,7 +155,7 @@ class VuV2ProgressPanel extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 gpaForecast.nextStep,
-                style: const TextStyle(color: VuV2Colors.mute, fontSize: 12, height: 1.35),
+                style: TextStyle(color: VuV2Colors.mute, fontSize: 12, height: 1.35),
               ),
             ],
           ),
@@ -215,11 +215,11 @@ class _StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(label, style: const TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text(label, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
           const SizedBox(height: 6),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 18,

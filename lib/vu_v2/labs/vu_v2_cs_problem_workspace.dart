@@ -310,7 +310,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
           Center(
             child: Text(
               '${_index + 1}/${widget.playlist.length}',
-              style: const TextStyle(fontSize: 12, color: VuV2Colors.mute),
+              style: TextStyle(fontSize: 12, color: VuV2Colors.mute),
             ),
           ),
           IconButton(
@@ -369,7 +369,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
       children: <Widget>[
         Text(
           '${view.id}. ${view.title}',
-          style: const TextStyle(
+          style: TextStyle(
             color: LeetCodeTheme.textPrimary,
             fontWeight: FontWeight.w800,
             fontSize: 22,
@@ -388,7 +388,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
             ),
             Text(
               'Acceptance $acceptance',
-              style: const TextStyle(
+              style: TextStyle(
                 color: LeetCodeTheme.textSecondary,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -396,7 +396,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
             ),
             Text(
               '${_index + 1} / ${widget.playlist.length}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: LeetCodeTheme.textSecondary,
                 fontSize: 12,
               ),
@@ -410,7 +410,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                 ),
                 child: Text(
                   view.tags[i],
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: LeetCodeTheme.textSecondary,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
@@ -438,7 +438,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
             const SizedBox(height: 8),
             Text(
               'Explanation:',
-              style: const TextStyle(
+              style: TextStyle(
                 color: LeetCodeTheme.textPrimary,
                 fontWeight: FontWeight.w700,
                 fontSize: 13,
@@ -447,7 +447,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
             const SizedBox(height: 4),
             Text(
               view.examples[i].explanation!,
-              style: const TextStyle(
+              style: TextStyle(
                 color: LeetCodeTheme.textSecondary,
                 height: 1.45,
                 fontSize: 13,
@@ -474,7 +474,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                 Expanded(
                   child: Text(
                     view.constraints[i],
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: LeetCodeTheme.consoleGreen,
                       fontFamily: 'monospace',
                       fontSize: 12.5,
@@ -490,7 +490,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
         const SizedBox(height: 8),
         Text(
           view.followUp,
-          style: const TextStyle(
+          style: TextStyle(
             color: LeetCodeTheme.textSecondary,
             height: 1.45,
             fontSize: 13,
@@ -520,7 +520,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
                       'Hint ${i + 1}: ${view.hints[i]}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: LeetCodeTheme.textSecondary,
                         height: 1.4,
                         fontSize: 13,
@@ -549,7 +549,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                 ),
                 child: Text(
                   view.tags[i],
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: LeetCodeTheme.textSecondary,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -578,7 +578,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
         ),
         Container(
           height: 110,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Color(0xFF1E1E1E),
             border: Border(
               top: BorderSide(color: Color(0xFF3C3C3C), width: 1),
@@ -617,7 +617,7 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                 child: SingleChildScrollView(
                   child: Text(
                     _console,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'monospace',
                       color: Color(0xFFCCCCCC),
                       fontSize: 12,
@@ -701,7 +701,7 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         color: LeetCodeTheme.textPrimary,
         fontWeight: FontWeight.w800,
         fontSize: 15,
@@ -753,7 +753,7 @@ class _IoBlock extends StatelessWidget {
       ),
       child: SelectableText(
         '$label: $value',
-        style: const TextStyle(
+        style: TextStyle(
           color: LeetCodeTheme.consoleGreen,
           fontFamily: 'monospace',
           fontSize: 12.5,
@@ -779,7 +779,7 @@ class _Markdownish extends StatelessWidget {
         spans.add(
           TextSpan(
             text: text.substring(start, m.start),
-            style: const TextStyle(
+            style: TextStyle(
               color: LeetCodeTheme.textPrimary,
               height: 1.55,
               fontSize: 14,
@@ -790,7 +790,7 @@ class _Markdownish extends StatelessWidget {
       spans.add(
         TextSpan(
           text: m.group(1),
-          style: const TextStyle(
+          style: TextStyle(
             color: LeetCodeTheme.consoleGreen,
             fontFamily: 'monospace',
             fontSize: 13.5,
@@ -804,7 +804,7 @@ class _Markdownish extends StatelessWidget {
       spans.add(
         TextSpan(
           text: text.substring(start),
-          style: const TextStyle(
+          style: TextStyle(
             color: LeetCodeTheme.textPrimary,
             height: 1.55,
             fontSize: 14,
@@ -815,7 +815,7 @@ class _Markdownish extends StatelessWidget {
     if (spans.isEmpty) {
       return Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           color: LeetCodeTheme.textPrimary,
           height: 1.55,
           fontSize: 14,

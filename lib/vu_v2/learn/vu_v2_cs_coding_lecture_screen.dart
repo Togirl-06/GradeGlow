@@ -169,7 +169,7 @@ class _VuV2CsCodingLectureScreenState extends State<VuV2CsCodingLectureScreen> {
                   const SizedBox(height: 6),
                   Text(
                     'Now code ${widget.spec.topicTitle} yourself',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.ink,
                       fontWeight: FontWeight.w900,
                       fontSize: 18,
@@ -210,7 +210,7 @@ class _VuV2CsCodingLectureScreenState extends State<VuV2CsCodingLectureScreen> {
             child: Center(
               child: Text(
                 '⚡ $_xp',
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.yellow,
                   fontWeight: FontWeight.w900,
                 ),
@@ -231,7 +231,7 @@ class _VuV2CsCodingLectureScreenState extends State<VuV2CsCodingLectureScreen> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Mimo-style lesson',
                       style: TextStyle(
                         color: VuV2Colors.mute,
@@ -242,7 +242,7 @@ class _VuV2CsCodingLectureScreenState extends State<VuV2CsCodingLectureScreen> {
                     const Spacer(),
                     Text(
                       '${_step + 1}/${_lecture.steps.length}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         fontWeight: FontWeight.w800,
                         fontSize: 12,
@@ -439,7 +439,7 @@ class _CoachBubble extends StatelessWidget {
               color: VuV2Colors.orange.withValues(alpha: 0.18),
               shape: BoxShape.circle,
             ),
-            child: Text(emoji, style: const TextStyle(fontSize: 24)),
+            child: Text(emoji, style: TextStyle(fontSize: 24)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -448,7 +448,7 @@ class _CoachBubble extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
@@ -458,7 +458,7 @@ class _CoachBubble extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   coach,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.mute,
                     height: 1.4,
                     fontSize: 14.5,
@@ -503,7 +503,7 @@ class _CodeStage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Row(
+          Row(
             children: <Widget>[
               _Traffic(Color(0xFFF87171)),
               SizedBox(width: 5),
@@ -528,7 +528,7 @@ class _CodeStage extends StatelessWidget {
           else
             SelectableText(
               shown,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFF86EFAC),
                 fontFamily: 'monospace',
                 fontSize: 14,
@@ -553,7 +553,7 @@ class _BlankHighlightText extends StatelessWidget {
     if (i < 0) {
       return Text(
         code,
-        style: const TextStyle(
+        style: TextStyle(
           color: Color(0xFF86EFAC),
           fontFamily: 'monospace',
           fontSize: 14,
@@ -563,7 +563,7 @@ class _BlankHighlightText extends StatelessWidget {
     }
     return Text.rich(
       TextSpan(
-        style: const TextStyle(
+        style: TextStyle(
           color: Color(0xFF86EFAC),
           fontFamily: 'monospace',
           fontSize: 14,
@@ -633,7 +633,7 @@ class _ArrangeTray extends StatelessWidget {
         ),
       ),
       child: tokens.isEmpty
-          ? const Text(
+          ? Text(
               'Your line appears here…',
               style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
             )
@@ -653,7 +653,7 @@ class _ArrangeTray extends StatelessWidget {
                       ),
                       child: Text(
                         t,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontFamily: 'monospace',
                           fontWeight: FontWeight.w700,
@@ -697,7 +697,7 @@ class _ChipButton extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontFamily: 'monospace',
               fontWeight: FontWeight.w700,
@@ -745,7 +745,7 @@ class _ChoiceTile extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w700,
               height: 1.35,

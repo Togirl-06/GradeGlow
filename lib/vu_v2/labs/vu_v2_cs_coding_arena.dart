@@ -146,7 +146,7 @@ class _VuV2CsCodingArenaScreenState extends State<VuV2CsCodingArenaScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Solve algorithm problems like a coding interview — '
                   'read the prompt, write code, run tests, submit. '
                   'No duplicate problems in this list.',
@@ -154,10 +154,10 @@ class _VuV2CsCodingArenaScreenState extends State<VuV2CsCodingArenaScreen> {
                 ),
                 const SizedBox(height: 12),
                 TextField(
-                  style: const TextStyle(color: VuV2Colors.ink),
+                  style: TextStyle(color: VuV2Colors.ink),
                   decoration: InputDecoration(
                     hintText: 'Search problems…',
-                    hintStyle: const TextStyle(color: VuV2Colors.mute),
+                    hintStyle: TextStyle(color: VuV2Colors.mute),
                     prefixIcon: const Icon(Icons.search_rounded),
                     filled: true,
                     fillColor: VuV2Colors.navyElevated,
@@ -256,7 +256,7 @@ class _VuV2CsCodingArenaScreenState extends State<VuV2CsCodingArenaScreen> {
                                   width: 36,
                                   child: Text(
                                     p.id,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: VuV2Colors.mute,
                                       fontWeight: FontWeight.w700,
                                       fontSize: 12,
@@ -270,7 +270,7 @@ class _VuV2CsCodingArenaScreenState extends State<VuV2CsCodingArenaScreen> {
                                     children: <Widget>[
                                       Text(
                                         p.title,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: VuV2Colors.ink,
                                           fontWeight: FontWeight.w900,
                                           fontSize: 15,
@@ -306,7 +306,7 @@ class _VuV2CsCodingArenaScreenState extends State<VuV2CsCodingArenaScreen> {
                                           for (final String t in p.tags.take(3))
                                             Text(
                                               t,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: VuV2Colors.mute,
                                                 fontSize: 11,
                                               ),

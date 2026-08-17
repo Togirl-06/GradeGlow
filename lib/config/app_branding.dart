@@ -14,7 +14,7 @@ class AppBranding {
   static const String logoAsset = 'assets/images/gradeglow_logo.png';
 
   /// Interlocking-G mark is wider than tall — don't force a square box.
-  static const double logoAspectRatio = 1.5;
+  static const double logoAspectRatio = 1193 / 757;
 
   /// Logo palette — warm orange gradient mark.
   static const Color navy = Color(0xFF0F172A);

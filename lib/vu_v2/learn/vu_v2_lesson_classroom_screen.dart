@@ -154,7 +154,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
             children: <Widget>[
               CircularProgressIndicator(color: VuV2Colors.orange),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Loading your live lesson…',
                 style: TextStyle(color: VuV2Colors.mute),
               ),
@@ -212,7 +212,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     '${_beatIndex + 1}/${_beats.length}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.mute,
                       fontWeight: FontWeight.w800,
                       fontSize: 12,
@@ -293,7 +293,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
             children: <Widget>[
               Text('💔', style: TextStyle(fontSize: 42)),
               const SizedBox(height: 12),
-              const Text(
+              Text(
                 'Out of hearts',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -302,7 +302,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'No worries — refill and try the tricky questions again.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: VuV2Colors.mute, height: 1.4),
@@ -419,7 +419,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
                   _isCs
                       ? 'W3Schools-style lesson done · streak $_streak'
                       : 'Interactive notes done · streak $_streak',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
@@ -430,7 +430,7 @@ class _VuV2LessonClassroomScreenState extends State<VuV2LessonClassroomScreen> {
                   _isCs
                       ? 'Nice work on ${widget.topicTitle}. Try the code yourself, then take the quiz.'
                       : 'Nice work on ${widget.topicTitle}. Take the quiz when you\'re ready.',
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.45),
                 ),
                 const SizedBox(height: 14),
                 Row(
@@ -544,7 +544,7 @@ class _BeatCard extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Text(beat.emoji, style: const TextStyle(fontSize: 26)),
+                  Text(beat.emoji, style: TextStyle(fontSize: 26)),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -562,7 +562,7 @@ class _BeatCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 beat.title,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
                   fontSize: 22,
@@ -595,7 +595,7 @@ class _BeatCard extends StatelessWidget {
                 const SizedBox(height: 14),
                 Text(
                   beat.pulsePrompt ?? '',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w800,
                     fontSize: 16,
@@ -637,7 +637,7 @@ class _BeatCard extends StatelessWidget {
                           ),
                           child: Text(
                             c.label,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: VuV2Colors.ink,
                               fontWeight: FontWeight.w700,
                               height: 1.35,
@@ -709,7 +709,7 @@ class _Bubble extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 height: 1.4,
                 fontWeight: FontWeight.w600,

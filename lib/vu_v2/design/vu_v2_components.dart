@@ -81,12 +81,12 @@ class VuV2EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Icon(Icons.school_outlined, size: 48, color: VuV2Colors.mute),
+            Icon(Icons.school_outlined, size: 48, color: VuV2Colors.mute),
             const SizedBox(height: 14),
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
@@ -96,7 +96,7 @@ class VuV2EmptyState extends StatelessWidget {
             Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.4),
             ),
             if (actionLabel != null && onAction != null) ...<Widget>[
               const SizedBox(height: 18),
@@ -118,7 +118,7 @@ class VuV2SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         color: VuV2Colors.ink,
         fontWeight: FontWeight.w900,
         fontSize: 17,

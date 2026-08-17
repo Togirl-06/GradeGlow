@@ -69,7 +69,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
           const SizedBox(height: 6),
           Text(
             'W3Schools-style coding lab · ${spec.languageLabel}',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 16,
@@ -78,7 +78,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
           const SizedBox(height: 8),
           Text(
             spec.task,
-            style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+            style: TextStyle(color: VuV2Colors.ink, height: 1.45),
           ),
           const SizedBox(height: 12),
           _miniLabel('Example'),
@@ -97,7 +97,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Text(
                       '• $b',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         height: 1.35,
                         fontSize: 13,
@@ -120,7 +120,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
               controller: _code,
               maxLines: 14,
               minLines: 10,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFF86EFAC),
                 fontFamily: 'monospace',
                 fontSize: 13,
@@ -181,7 +181,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
             const SizedBox(height: 10),
             Text(
               'Goal: ${spec.runContext}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.mute,
                 fontSize: 12,
                 height: 1.35,
@@ -202,7 +202,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
   Widget _miniLabel(String text) {
     return Text(
       text.toUpperCase(),
-      style: const TextStyle(
+      style: TextStyle(
         color: VuV2Colors.mute,
         fontWeight: FontWeight.w900,
         fontSize: 11,
@@ -222,7 +222,7 @@ class _VuV2CsTryItPanelState extends State<VuV2CsTryItPanel> {
       ),
       child: SelectableText(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           color: Color(0xFF86EFAC),
           fontFamily: 'monospace',
           fontSize: 12.5,

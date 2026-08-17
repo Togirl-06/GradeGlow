@@ -19,7 +19,7 @@ class VuV2SubscriptionScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
         children: <Widget>[
-          const Text(
+          Text(
             'The Virtual University is free for every student — lectures, labs, '
             'AI Professor, quizzes, and certificates. Premium is optional study-tool extras.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.4),
@@ -65,14 +65,14 @@ class VuV2SubscriptionScreen extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             BillingConfig.priceFootnote,
             style: TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
           ),
           const SizedBox(height: 8),
           Text(
             '${progress.completedLessonIds.length} campus lessons completed — all included at no cost.',
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
           ),
         ],
       ),
@@ -110,7 +110,7 @@ class _PlanCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
@@ -141,7 +141,7 @@ class _PlanCard extends StatelessWidget {
           ...bullets.map(
             (String b) => Padding(
               padding: const EdgeInsets.only(bottom: 6),
-              child: Text('• $b', style: const TextStyle(color: VuV2Colors.mute)),
+              child: Text('• $b', style: TextStyle(color: VuV2Colors.mute)),
             ),
           ),
           const SizedBox(height: 12),
@@ -154,7 +154,7 @@ class _PlanCard extends StatelessWidget {
                 foregroundColor: Colors.white,
                 disabledBackgroundColor: VuV2Colors.navyElevated.withValues(alpha: 0.5),
               ),
-              child: Text(cta, style: const TextStyle(fontWeight: FontWeight.w800)),
+              child: Text(cta, style: TextStyle(fontWeight: FontWeight.w800)),
             ),
           ),
         ],

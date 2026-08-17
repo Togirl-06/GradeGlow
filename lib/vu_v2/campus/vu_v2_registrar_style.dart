@@ -1,45 +1,46 @@
 import 'package:flutter/material.dart';
 
-/// Adult records-office look — not a game card.
+import '../design/vu_v2_theme.dart';
+
+/// Records-office chrome, but it follows GradeGlow light/dark and accent.
 abstract final class RegistrarColors {
-  static const Color paper = Color(0xFFF7F4EE);
-  static const Color panel = Color(0xFFFFFFFF);
-  static const Color ink = Color(0xFF1A2332);
-  static const Color mute = Color(0xFF5C6570);
-  static const Color rule = Color(0xFFD8D0C4);
-  static const Color navy = Color(0xFF17324D);
-  static const Color gold = Color(0xFF8A6A32);
-  static const Color danger = Color(0xFF8B2E2E);
+  static Color get paper => VuV2Colors.navy;
+  static Color get panel => VuV2Colors.card;
+  static Color get ink => VuV2Colors.ink;
+  static Color get mute => VuV2Colors.mute;
+  static Color get rule => VuV2Colors.stroke;
+  static Color get navy => VuV2Colors.navyElevated;
+  static Color get gold => VuV2Colors.gold;
+  static Color get danger => VuV2Colors.danger;
 }
 
 abstract final class RegistrarType {
-  static const TextStyle serifName = TextStyle(
-    fontFamily: 'Georgia',
-    fontSize: 28,
-    height: 1.15,
-    fontWeight: FontWeight.w600,
-    color: RegistrarColors.ink,
-  );
+  static TextStyle get serifName => TextStyle(
+        fontSize: 26,
+        height: 1.15,
+        fontWeight: FontWeight.w800,
+        color: RegistrarColors.ink,
+      );
 
-  static const TextStyle kicker = TextStyle(
-    fontSize: 10,
-    letterSpacing: 1.6,
-    fontWeight: FontWeight.w700,
-    color: RegistrarColors.gold,
-  );
+  static TextStyle get kicker => TextStyle(
+        fontSize: 10,
+        letterSpacing: 1.4,
+        fontWeight: FontWeight.w800,
+        color: VuV2Colors.mint,
+      );
 
-  static const TextStyle label = TextStyle(
-    fontSize: 11,
-    letterSpacing: 0.8,
-    fontWeight: FontWeight.w700,
-    color: RegistrarColors.mute,
-  );
+  static TextStyle get label => TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w600,
+        color: RegistrarColors.mute,
+      );
 
-  static const TextStyle body = TextStyle(
-    fontSize: 14,
-    height: 1.45,
-    color: RegistrarColors.ink,
-  );
+  static TextStyle get body => TextStyle(
+        fontSize: 14,
+        height: 1.45,
+        fontWeight: FontWeight.w700,
+        color: RegistrarColors.ink,
+      );
 }
 
 class RegistrarScaffold extends StatelessWidget {
@@ -58,43 +59,18 @@ class RegistrarScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        scaffoldBackgroundColor: RegistrarColors.paper,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: RegistrarColors.navy,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: false,
-          titleTextStyle: TextStyle(
-            fontFamily: 'Georgia',
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        sliderTheme: SliderTheme.of(context).copyWith(
-          activeTrackColor: RegistrarColors.navy,
-          thumbColor: RegistrarColors.navy,
-        ),
-        switchTheme: SwitchThemeData(
-          thumbColor: WidgetStateProperty.resolveWith((Set<WidgetState> s) {
-            return s.contains(WidgetState.selected)
-                ? RegistrarColors.navy
-                : RegistrarColors.mute;
-          }),
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: RegistrarColors.paper,
-        appBar: showAppBar
-            ? AppBar(
-                title: Text(title),
-                actions: actions,
-              )
-            : null,
-        body: child,
-      ),
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: showAppBar
+          ? AppBar(
+              title: Text(title),
+              actions: actions,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              foregroundColor: scheme.onSurface,
+            )
+          : null,
+      body: child,
     );
   }
 }
@@ -112,6 +88,7 @@ class RegistrarCard extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: RegistrarColors.panel,
+        borderRadius: BorderRadius.circular(VuV2Radii.lg),
         border: Border.all(color: RegistrarColors.rule),
       ),
       child: child,
@@ -128,10 +105,7 @@ class RegistrarSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 4),
-      child: Text(
-        text.toUpperCase(),
-        style: RegistrarType.kicker.copyWith(color: RegistrarColors.navy),
-      ),
+      child: Text(text.toUpperCase(), style: RegistrarType.kicker),
     );
   }
 }
@@ -145,18 +119,15 @@ class RegistrarRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(
-            width: 128,
-            child: Text(label, style: RegistrarType.label),
-          ),
-          Expanded(
+          Expanded(child: Text(label, style: RegistrarType.label)),
+          Flexible(
             child: Text(
               value,
-              style: RegistrarType.body.copyWith(fontWeight: FontWeight.w600),
+              textAlign: TextAlign.end,
+              style: RegistrarType.body,
             ),
           ),
         ],

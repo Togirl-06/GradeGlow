@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../config/vu_schools_catalog.dart';
 import '../career_labs/playable/science/biology/biology_anatomy_3d_lab.dart';
 import '../career_labs/playable/science/biology/clinical_viva_quiz_screen.dart';
 import '../data/vu_v2_progress_store.dart';
@@ -13,6 +14,9 @@ abstract final class MajorWowRouter {
   static String continueLabel(String majorId) {
     final int n = CourseLabsCatalog.forMajor(majorId).length;
     final String m = majorId.toLowerCase();
+    if (VuSchoolsCatalog.isPracticeOnly(majorId)) {
+      return 'Open labs & workplace practice ($n)';
+    }
     if (m.contains('bio')) return 'Open biology labs ($n)';
     if (m.contains('chem')) return 'Open chemistry labs ($n)';
     if (m.contains('phys')) return 'Open physics labs ($n)';
@@ -100,6 +104,7 @@ abstract final class MajorWowRouter {
 
   static String studyQuizTitle(String majorId) {
     final String m = majorId.toLowerCase();
+    if (VuSchoolsCatalog.isPracticeOnly(majorId)) return 'Workplace labs';
     if (m.contains('bio')) return 'Clinical Viva Quiz';
     if (m.contains('chem')) return 'Chemistry labs';
     if (m.contains('phys')) return 'Physics labs';
@@ -120,6 +125,9 @@ abstract final class MajorWowRouter {
 
   static String labsHeroTitle(String majorId) {
     final int n = CourseLabsCatalog.forMajor(majorId).length;
+    if (VuSchoolsCatalog.isPracticeOnly(majorId)) {
+      return '$n workplace labs — desks, interviews, and live practice';
+    }
     return '$n labs for your major — board practicals, benches, and workplaces';
   }
 

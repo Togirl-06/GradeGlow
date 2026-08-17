@@ -74,7 +74,7 @@ class _VuV2PlannerScreenState extends State<VuV2PlannerScreen> {
                 const SizedBox(height: 8),
                 Text(
                   '$goal min / week · ${widget.session.majorLabel}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
@@ -85,7 +85,7 @@ class _VuV2PlannerScreenState extends State<VuV2PlannerScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'Logged ${widget.progress.studyMinutes} min total · keep your streak alive.',
-                  style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                  style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
                 ),
               ],
             ),
@@ -104,7 +104,7 @@ class _VuV2PlannerScreenState extends State<VuV2PlannerScreen> {
                     Expanded(
                       child: Text(
                         e.value,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontWeight: FontWeight.w700,
                         ),
@@ -120,7 +120,7 @@ class _VuV2PlannerScreenState extends State<VuV2PlannerScreen> {
             child: Text(
               'AI recommendation: Complete one Notes lesson and one quiz this week. '
               'Focus Module 1 whiteboard lessons before Friday quiz.',
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.45),
             ),
           ),
           const SizedBox(height: 16),

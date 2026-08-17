@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../config/vu_schools_catalog.dart';
 import '../../data/diagram_misconception_store.dart';
 import '../../utils/gpa_predictor.dart';
 import 'vu_v2_lesson_flow.dart';
@@ -232,6 +233,18 @@ class VuV2ProgressStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> keepOnlyEnrolled(String degreeId) async {
+    if (degreeId.isEmpty) return;
+    if (enrolledDegreeIds.length == 1 && enrolledDegreeIds.contains(degreeId)) {
+      return;
+    }
+    enrolledDegreeIds
+      ..clear()
+      ..add(degreeId);
+    await _persist();
+    notifyListeners();
+  }
+
   /// Enroll every program id so Lecture Halls open without per-program gates.
   Future<void> enrollAll(Iterable<String> degreeIds) async {
     var changed = false;
@@ -302,17 +315,24 @@ class VuV2ProgressStore extends ChangeNotifier {
     return null;
   }
 
-  bool areAllHubStepsComplete(String lessonId) {
-    for (final VuV2LessonStep step in VuV2LessonFlowPlan.hubSteps) {
+  bool areAllHubStepsComplete(String lessonId, {String? subjectId}) {
+    for (final VuV2LessonStep step
+        in VuV2LessonFlowPlan.hubStepsFor(subjectId ?? '')) {
       if (!isStepComplete(lessonId, step)) return false;
     }
     return true;
   }
 
-  /// Lecture alone is not mastery. Professor + check (+ lab when required).
-  bool meetsMastery(String lessonId, {bool requiresLab = true}) {
-    for (final VuV2LessonStep step
-        in VuV2LessonFlowPlan.masterySteps(requiresLab: requiresLab)) {
+  /// Lecture alone is not mastery. Practice-only schools: lab + workplace.
+  bool meetsMastery(
+    String lessonId, {
+    bool requiresLab = true,
+    String? subjectId,
+  }) {
+    for (final VuV2LessonStep step in VuV2LessonFlowPlan.masterySteps(
+      requiresLab: requiresLab,
+      subjectId: subjectId,
+    )) {
       if (!isStepComplete(lessonId, step)) return false;
     }
     return true;
@@ -337,7 +357,11 @@ class VuV2ProgressStore extends ChangeNotifier {
       _markAttendanceToday();
     }
 
-    final bool finished = meetsMastery(lessonId, requiresLab: requiresLab);
+    final bool finished = meetsMastery(
+      lessonId,
+      requiresLab: requiresLab,
+      subjectId: subjectId,
+    );
     if (finished && !completedLessonIds.contains(lessonId)) {
       completedLessonIds.add(lessonId);
       studyMinutes += 8;
@@ -346,11 +370,14 @@ class VuV2ProgressStore extends ChangeNotifier {
         skills.add('Active learner');
       }
       lessonXp += 40; // completion bonus
+      final bool practiceOnly =
+          VuSchoolsCatalog.isPracticeOnly(subjectId ?? '');
       await pushNotification(
         id: 'lesson_flow_$lessonId',
         title: 'You can do this yourself',
-        body:
-            'You learned it from the professor, used it in the lab, and proved it.',
+        body: practiceOnly
+            ? 'You did the lab and the same skill on a live workplace floor.'
+            : 'You learned it from the professor, used it in the lab, and proved it.',
         kind: 'achievement',
       );
     }

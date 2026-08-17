@@ -57,7 +57,7 @@ class VuV2ModuleIntroScreen extends StatelessWidget {
         children: <Widget>[
           Text(
             '$facultyEmoji  $facultyTitle · $trackTitle',
-            style: const TextStyle(color: VuV2Colors.mute, fontSize: 13),
+            style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
           ),
           const SizedBox(height: 12),
           VuV2Surface(
@@ -76,7 +76,7 @@ class VuV2ModuleIntroScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   module.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
@@ -85,7 +85,7 @@ class VuV2ModuleIntroScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   '${module.lessonCount} lessons · ${course.title}',
-                  style: const TextStyle(color: VuV2Colors.mute),
+                  style: TextStyle(color: VuV2Colors.mute),
                 ),
               ],
             ),
@@ -96,7 +96,7 @@ class VuV2ModuleIntroScreen extends StatelessWidget {
           VuV2Surface(
             child: Text(
               why.replaceAll('**', ''),
-              style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+              style: TextStyle(color: VuV2Colors.ink, height: 1.45),
             ),
           ),
           const SizedBox(height: 14),
@@ -105,7 +105,7 @@ class VuV2ModuleIntroScreen extends StatelessWidget {
           VuV2Surface(
             child: Text(
               apps,
-              style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+              style: TextStyle(color: VuV2Colors.ink, height: 1.45),
             ),
           ),
           const SizedBox(height: 14),
@@ -119,8 +119,8 @@ class VuV2ModuleIntroScreen extends StatelessWidget {
                   (String i) => Chip(
                     label: Text(i),
                     backgroundColor: VuV2Colors.navyElevated,
-                    side: const BorderSide(color: VuV2Colors.stroke),
-                    labelStyle: const TextStyle(color: VuV2Colors.ink),
+                    side: BorderSide(color: VuV2Colors.stroke),
+                    labelStyle: TextStyle(color: VuV2Colors.ink),
                   ),
                 )
                 .toList(),

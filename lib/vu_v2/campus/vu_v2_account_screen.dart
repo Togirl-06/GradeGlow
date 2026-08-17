@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../../config/billing_config.dart';
 import '../../config/legal_urls.dart';
+import '../../services/appearance_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/subscription_service.dart';
+import '../../widgets/accent_color_picker_sheet.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import 'vu_v2_registrar_style.dart';
@@ -96,7 +98,7 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
                 TextField(
                   controller: _name,
                   style: RegistrarType.body,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Name on record',
                     labelStyle: RegistrarType.label,
                     enabledBorder: UnderlineInputBorder(
@@ -144,7 +146,7 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
                     session.updateAccount(weeklyMinutes: v.round());
                   },
                 ),
-                const Text(
+                Text(
                   'Used to pace lectures and laboratories. Changing it does not erase grades.',
                   style: TextStyle(color: RegistrarColors.mute, height: 1.4, fontSize: 13),
                 ),
@@ -154,19 +156,37 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
           const SizedBox(height: 22),
           const RegistrarSection('Display'),
           RegistrarCard(
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Light campus boards', style: RegistrarType.body),
-              subtitle: const Text(
-                'Optional. Records pages stay on this letterhead either way.',
-                style: TextStyle(color: RegistrarColors.mute, fontSize: 13),
-              ),
-              value: progress.preferLightTheme,
-              onChanged: (bool v) async {
-                await progress.setPreferLightTheme(v);
-                widget.onThemeChanged(v);
-                if (mounted) setState(() {});
-              },
+            child: Column(
+              children: <Widget>[
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text('Dark mode', style: RegistrarType.body),
+                  subtitle: Text(
+                    'Same setting as GradeGlow. Campus uses this theme.',
+                    style: TextStyle(color: RegistrarColors.mute, fontSize: 13),
+                  ),
+                  value: Theme.of(context).brightness == Brightness.dark,
+                  onChanged: (bool v) {
+                    context.read<AppearanceService>().setThemeMode(
+                          v ? ThemeMode.dark : ThemeMode.light,
+                        );
+                  },
+                ),
+                const Divider(height: 8),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text('App color', style: RegistrarType.body),
+                  subtitle: Text(
+                    'Buttons, links, and campus highlights',
+                    style: TextStyle(color: RegistrarColors.mute, fontSize: 13),
+                  ),
+                  trailing: CircleAvatar(
+                    radius: 12,
+                    backgroundColor: context.watch<AppearanceService>().primaryColor,
+                  ),
+                  onTap: () => AccentColorPickerSheet.show(context),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 22),
@@ -224,7 +244,7 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
           const SizedBox(height: 10),
           Text(
             '${BillingConfig.priceFootnote} ${progress.completedLessonIds.length} campus lessons on record.',
-            style: const TextStyle(
+            style: TextStyle(
               color: RegistrarColors.mute,
               height: 1.45,
               fontSize: 13,
@@ -305,7 +325,7 @@ class _PlanBlock extends StatelessWidget {
               onPressed: onTap,
               style: OutlinedButton.styleFrom(
                 foregroundColor: RegistrarColors.navy,
-                side: const BorderSide(color: RegistrarColors.navy),
+                side: BorderSide(color: RegistrarColors.navy),
                 minimumSize: const Size.fromHeight(44),
                 shape: const RoundedRectangleBorder(),
               ),

@@ -70,7 +70,7 @@ class VuV2NotificationsScreen extends StatelessWidget {
                                 const SizedBox(height: 4),
                                 Text(
                                   n.body,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.mute,
                                     height: 1.35,
                                   ),

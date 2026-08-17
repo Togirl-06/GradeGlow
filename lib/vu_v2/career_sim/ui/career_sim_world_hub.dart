@@ -75,7 +75,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
                     const SizedBox(height: 12),
                     Text(
                       'You are hired as\n${world.role.title}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 26,
                         fontWeight: FontWeight.w900,
@@ -153,7 +153,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
           Expanded(
             child: Text(
               v,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
@@ -250,7 +250,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
     return Scaffold(
       backgroundColor: const Color(0xFF06101C),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -323,7 +323,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
               '${world.role.title} · ${world.titleForLevel(level)} · Lv $level',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
               ),
@@ -347,7 +347,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
       ),
       child: Text(
         t,
-        style: const TextStyle(
+        style: TextStyle(
           color: Color(0xFF6EE7B7),
           fontWeight: FontWeight.w800,
           fontSize: 11,
@@ -397,7 +397,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
                       children: <Widget>[
                         Text(
                           unlocked ? loc.icon : '🔒',
-                          style: const TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -473,12 +473,12 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
             children: <Widget>[
               Text(
                 _loc.icon,
-                style: const TextStyle(fontSize: 32),
+                style: TextStyle(fontSize: 32),
               ),
               const Spacer(),
               Text(
                 _loc.name.toUpperCase(),
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
                   fontSize: 22,
@@ -531,7 +531,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
                   Expanded(
                     child: Text(
                       CareerSkillId.label(e.key),
-                      style: const TextStyle(color: Colors.white70),
+                      style: TextStyle(color: Colors.white70),
                     ),
                   ),
                   SizedBox(
@@ -549,7 +549,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
                   const SizedBox(width: 8),
                   Text(
                     '${e.value}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
                     ),
@@ -605,7 +605,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
           else ...<Widget>[
             Text(
               active.title,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
@@ -622,7 +622,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
             const SizedBox(height: 10),
             Text(
               'OBJECTIVE: ${active.objective}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFF6EE7B7),
                 fontWeight: FontWeight.w700,
               ),
@@ -648,7 +648,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
                 ),
                 child: Text(
                   'START SHIFT · Go to ${_locationName(active.startLocationId)}',
-                  style: const TextStyle(fontWeight: FontWeight.w900),
+                  style: TextStyle(fontWeight: FontWeight.w900),
                 ),
               ),
             ),
@@ -768,7 +768,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
         children: <Widget>[
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               color: Color(0xFF34D399),
               fontWeight: FontWeight.w900,
               letterSpacing: 0.8,
@@ -821,7 +821,7 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
           const SizedBox(height: 8),
           Text(
             world.role.supervisorName,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w900,
               fontSize: 18,
@@ -875,10 +875,10 @@ class _CareerSimWorldHubState extends State<CareerSimWorldHub> {
                   .take(8)
                   .map(
                     (String b) => Chip(
-                      label: Text(b, style: const TextStyle(fontSize: 11)),
+                      label: Text(b, style: TextStyle(fontSize: 11)),
                       backgroundColor:
                           const Color(0xFF10B981).withValues(alpha: 0.15),
-                      labelStyle: const TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
                       visualDensity: VisualDensity.compact,
                     ),
                   )

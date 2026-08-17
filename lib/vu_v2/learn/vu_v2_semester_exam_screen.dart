@@ -142,14 +142,14 @@ class _VuV2SemesterExamScreenState extends State<VuV2SemesterExamScreen> {
                   Text(
                     '$_score / ${widget.questions.length} · ${_percent.round()}% '
                     '(pass ≥${widget.passPercent}%)',
-                    style: const TextStyle(color: VuV2Colors.ink),
+                    style: TextStyle(color: VuV2Colors.ink),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     _passed
                         ? 'Certificate eligible — open your certificate.'
                         : 'Review modules and retry when ready.',
-                    style: const TextStyle(color: VuV2Colors.mute),
+                    style: TextStyle(color: VuV2Colors.mute),
                   ),
                 ],
               ),
@@ -207,19 +207,19 @@ class _VuV2SemesterExamScreenState extends State<VuV2SemesterExamScreen> {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
         children: <Widget>[
           Text(widget.title,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
               )),
-          Text(widget.subtitle, style: const TextStyle(color: VuV2Colors.mute)),
+          Text(widget.subtitle, style: TextStyle(color: VuV2Colors.mute)),
           const SizedBox(height: 12),
           VuV2ProgressBar(value: (_index + 1) / widget.questions.length),
           const SizedBox(height: 14),
           VuV2Surface(
             child: Text(
               _current.prompt,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 fontWeight: FontWeight.w800,
                 height: 1.4,
@@ -229,8 +229,8 @@ class _VuV2SemesterExamScreenState extends State<VuV2SemesterExamScreen> {
           const SizedBox(height: 12),
           if (short)
             TextField(
-              style: const TextStyle(color: VuV2Colors.ink),
-              decoration: const InputDecoration(
+              style: TextStyle(color: VuV2Colors.ink),
+              decoration: InputDecoration(
                 hintText: 'Short answer…',
                 hintStyle: TextStyle(color: VuV2Colors.mute),
                 border: OutlineInputBorder(),
@@ -263,7 +263,7 @@ class _VuV2SemesterExamScreenState extends State<VuV2SemesterExamScreen> {
                       ),
                       child: Text(
                         _current.choices[i],
-                        style: const TextStyle(color: VuV2Colors.ink),
+                        style: TextStyle(color: VuV2Colors.ink),
                       ),
                     ),
                   ),

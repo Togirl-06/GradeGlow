@@ -27,6 +27,7 @@ import '../data/vu_v2_mixed_quiz.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
+import '../labs/career_practice_labs.dart';
 import '../labs/university_lab_result.dart';
 import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_lesson_activity_router.dart';
@@ -68,6 +69,8 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
 
   bool get _requiresLab => _lab != null;
 
+  bool get _practiceOnly => VuV2LessonFlowPlan.isPracticeOnly(subjectId);
+
   @override
   Widget build(BuildContext context) {
     final VuV2ProgressStore? store = _store(context);
@@ -83,11 +86,20 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
         store?.isStepComplete(lesson.id, VuV2LessonStep.aiProfessor) ?? false;
     final bool labDone =
         store?.isStepComplete(lesson.id, VuV2LessonStep.realWorldLab) ?? false;
+    final bool practiceDone = store?.isStepComplete(
+          lesson.id,
+          VuV2LessonStep.interactivePractice,
+        ) ??
+        false;
     final bool checkDone =
         store?.isStepComplete(lesson.id, VuV2LessonStep.knowledgeCheck) ??
             false;
-    final bool mastered =
-        store?.meetsMastery(lesson.id, requiresLab: _requiresLab) ?? false;
+    final bool mastered = store?.meetsMastery(
+          lesson.id,
+          requiresLab: _practiceOnly || _requiresLab,
+          subjectId: subjectId,
+        ) ??
+        false;
     final UniversityLabLink? lab = _lab;
 
     return Scaffold(
@@ -97,12 +109,12 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
         children: <Widget>[
           Text(
             '$facultyEmoji  $facultyTitle',
-            style: const TextStyle(color: VuV2Colors.mute, fontSize: 13),
+            style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
           ),
           const SizedBox(height: 4),
           Text(
             '$trackTitle · $courseTitle',
-            style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+            style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
           ),
           const SizedBox(height: 14),
           VuV2Surface(
@@ -110,7 +122,9 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  mastered ? 'SKILL MASTERED' : 'LEARNING LOOP',
+                  mastered
+                      ? 'SKILL MASTERED'
+                      : (_practiceOnly ? 'PRACTICE LOOP' : 'LEARNING LOOP'),
                   style: TextStyle(
                     color: mastered ? VuV2Colors.success : StudyColors.primary,
                     fontWeight: FontWeight.w900,
@@ -121,7 +135,7 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   lesson.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
@@ -130,63 +144,95 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  mastered
-                      ? 'You learned it from the professor, used it in the lab, and proved it.'
-                      : 'Professor teaches → interactive visuals → professional lab → '
-                          'decisions have consequences → knowledge check.',
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+                  _practiceOnly
+                      ? (mastered
+                          ? 'You did the lab and the same skill on a live workplace floor.'
+                          : 'No lecture. Do the lab, then the same skill as real-world practice.')
+                      : (mastered
+                          ? 'You learned it from the professor, used it in the lab, and proved it.'
+                          : 'Professor teaches conversationally → you perform the laboratory → you prove it on the check.'),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.45),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
-          _PrivateProfessorHero(
-            lectureDone: lectureDone,
-            onStart: () => _openAiTutor(context),
-          ),
+          if (!_practiceOnly) ...<Widget>[
+            const SizedBox(height: 16),
+            _PrivateProfessorHero(
+              lectureDone: lectureDone,
+              onStart: () => _openAiTutor(context),
+            ),
+          ],
           if (lab != null) ...<Widget>[
             const SizedBox(height: 12),
             _JourneyStepCard(
-              step: 2,
+              step: 1,
               emoji: '🔬',
               title: lab.title,
-              subtitle:
-                  '${lab.purpose} Your choices change the simulation — then the professor debriefs.',
-              cta: labDone ? 'Replay lab' : 'Enter professional lab',
+              subtitle: _practiceOnly
+                  ? '${lab.purpose} A live desk, not a lecture and not a quiz.'
+                  : '${lab.purpose} Mission, equipment, decisions, data, report — not a quiz.',
+              cta: labDone ? 'Replay the lab' : 'Enter the laboratory',
               status: labDone
                   ? 'Complete'
-                  : (lectureDone ? 'Ready' : 'Best after the lecture'),
+                  : (_practiceOnly || lectureDone
+                      ? 'Ready'
+                      : 'Best after the lecture'),
               done: labDone,
               onTap: () => _openLab(context, lab),
             ),
           ],
-          const SizedBox(height: 12),
-          _JourneyStepCard(
-            step: lab == null ? 2 : 3,
-            emoji: '✅',
-            title: 'Knowledge check',
-            subtitle:
-                'Prove you can use the concept — not memorize a percentage.',
-            cta: checkDone ? 'Retake check' : 'Take knowledge check',
-            status: checkDone
-                ? 'Passed'
-                : (lectureDone ? 'Ready' : 'Best after the lecture'),
-            done: checkDone,
-            onTap: () => _openQuiz(context),
-          ),
-          const SizedBox(height: 12),
-          _JourneyStepCard(
-            step: null,
-            emoji: '📘',
-            title: 'Lecture notes',
-            subtitle:
-                'Full textbook chapter — definitions, lecture, worked examples, and practice.',
-            cta: 'Open textbook notes',
-            status: 'Optional',
-            done: store?.isStepComplete(lesson.id, VuV2LessonStep.coreNotes) ??
-                false,
-            onTap: () => _openNotes(context),
-          ),
+          if (_practiceOnly) ...<Widget>[
+            const SizedBox(height: 12),
+            _JourneyStepCard(
+              step: lab == null ? 1 : 2,
+              emoji: '🏢',
+              title: VuV2LessonFlowPlan.label(
+                VuV2LessonStep.interactivePractice,
+                subjectId: subjectId,
+              ),
+              subtitle: VuV2LessonFlowPlan.subtitle(
+                VuV2LessonStep.interactivePractice,
+                subjectId: subjectId,
+              ),
+              cta: practiceDone
+                  ? 'Replay workplace'
+                  : 'Enter real-world practice',
+              status: practiceDone ? 'Complete' : 'Ready',
+              done: practiceDone,
+              onTap: () => _openPractice(context),
+            ),
+          ],
+          if (!_practiceOnly) ...<Widget>[
+            const SizedBox(height: 12),
+            _JourneyStepCard(
+              step: lab == null ? 2 : 3,
+              emoji: '✅',
+              title: 'Knowledge check',
+              subtitle:
+                  'Prove you can use the concept — not memorize a percentage.',
+              cta: checkDone ? 'Retake check' : 'Take knowledge check',
+              status: checkDone
+                  ? 'Passed'
+                  : (lectureDone ? 'Ready' : 'Best after the lecture'),
+              done: checkDone,
+              onTap: () => _openQuiz(context),
+            ),
+            const SizedBox(height: 12),
+            _JourneyStepCard(
+              step: null,
+              emoji: '📘',
+              title: 'Textbook chapter',
+              subtitle:
+                  'Primary course reading — a full university chapter, not a summary card. The professor will not read this aloud.',
+              cta: 'Open textbook',
+              status: 'Optional',
+              done:
+                  store?.isStepComplete(lesson.id, VuV2LessonStep.coreNotes) ??
+                      false,
+              onTap: () => _openNotes(context),
+            ),
+          ],
         ],
       ),
     );
@@ -217,6 +263,7 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
       lesson.id,
       VuV2LessonStep.coreNotes,
       requiresLab: _requiresLab,
+      subjectId: subjectId,
     );
   }
 
@@ -245,6 +292,7 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
         lesson.id,
         VuV2LessonStep.aiProfessor,
         requiresLab: _requiresLab,
+        subjectId: subjectId,
       );
     }
   }
@@ -272,6 +320,24 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
       lesson.id,
       VuV2LessonStep.realWorldLab,
       requiresLab: true,
+      subjectId: subjectId,
+    );
+  }
+
+  Future<void> _openPractice(BuildContext context) async {
+    await session.setContinue(
+      title: lesson.title,
+      subtitle: '$facultyTitle · Real-world practice',
+      progress: 0.8,
+    );
+    if (!context.mounted) return;
+    await CareerPracticeLabs.openWorkplace(context, subjectId);
+    if (!context.mounted) return;
+    await _store(context)?.markStep(
+      lesson.id,
+      VuV2LessonStep.interactivePractice,
+      requiresLab: true,
+      subjectId: subjectId,
     );
   }
 
@@ -301,6 +367,7 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
                 lesson.id,
                 VuV2LessonStep.knowledgeCheck,
                 requiresLab: _requiresLab,
+                subjectId: subjectId,
               );
             }
           },
@@ -381,7 +448,7 @@ class _PrivateProfessorHero extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text(
+                        Text(
                           'AI Professor',
                           style: TextStyle(
                             color: VuV2Colors.ink,
@@ -406,7 +473,7 @@ class _PrivateProfessorHero extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              const Text(
+              Text(
                 'Your professor teaches the concept, highlights it as they speak, '
                 'asks you questions, then sends you into the professional lab.',
                 style: TextStyle(
@@ -435,7 +502,7 @@ class _PrivateProfessorHero extends StatelessWidget {
                       ),
                       child: Text(
                         '${_pillars[i].icon}  ${_pillars[i].label}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
@@ -461,7 +528,7 @@ class _PrivateProfessorHero extends StatelessWidget {
                   ),
                   label: Text(
                     lectureDone ? 'Replay lecture' : 'Start lecture',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                     ),
@@ -549,12 +616,12 @@ class _JourneyStepCard extends StatelessWidget {
                       ),
                     ),
                   if (step != null || done) const SizedBox(width: 10),
-                  Text(emoji, style: const TextStyle(fontSize: 26)),
+                  Text(emoji, style: TextStyle(fontSize: 26)),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w900,
                         fontSize: 18,
@@ -574,7 +641,7 @@ class _JourneyStepCard extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 subtitle,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.mute,
                   height: 1.45,
                   fontSize: 14,
@@ -592,7 +659,7 @@ class _JourneyStepCard extends StatelessWidget {
                   ),
                   child: Text(
                     cta,
-                    style: const TextStyle(fontWeight: FontWeight.w800),
+                    style: TextStyle(fontWeight: FontWeight.w800),
                   ),
                 ),
               ),
@@ -786,6 +853,7 @@ abstract final class VuV2AiTutorLauncher {
               lesson.id,
               VuV2LessonStep.realWorldLab,
               requiresLab: true,
+              subjectId: subjectId,
             );
       };
     }

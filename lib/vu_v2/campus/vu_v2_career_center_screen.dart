@@ -39,7 +39,7 @@ class VuV2CareerCenterScreen extends StatelessWidget {
         Text(
           'You want to become a professional in ${session.majorLabel}. '
           'Path: courses → labs → workplace simulations → portfolio.',
-          style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+          style: TextStyle(color: VuV2Colors.mute, height: 1.45),
         ),
         const SizedBox(height: 16),
         VuV2Surface(
@@ -61,7 +61,7 @@ class VuV2CareerCenterScreen extends StatelessWidget {
                     ? 'Complete a few lessons and a simulation. Coaching gets specific once there is evidence.'
                     : 'You have ${progress.completedLessonIds.length} lessons on record. '
                         'Next: run a workplace simulation and keep the debrief — that becomes portfolio proof.',
-                style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+                style: TextStyle(color: VuV2Colors.ink, height: 1.45),
               ),
             ],
           ),
@@ -78,17 +78,17 @@ class VuV2CareerCenterScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(VuV2Radii.md),
               ),
-              leading: Text(lab.emoji, style: const TextStyle(fontSize: 24)),
+              leading: Text(lab.emoji, style: TextStyle(fontSize: 24)),
               title: Text(
                 lab.title,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               subtitle: Text(
                 lab.role,
-                style: const TextStyle(color: VuV2Colors.mute),
+                style: TextStyle(color: VuV2Colors.mute),
               ),
               trailing: const Icon(Icons.play_arrow_rounded),
             ),
@@ -104,7 +104,7 @@ class VuV2CareerCenterScreen extends StatelessWidget {
                 : '${progress.completedLessonIds.length} lesson artifacts · '
                     '${progress.earnedCertificateIds.length} certificates. '
                     'Full portfolio builder is coming soon.',
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.45),
           ),
         ),
       ],

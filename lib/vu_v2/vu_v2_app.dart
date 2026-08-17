@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../services/appearance_service.dart';
 import '../services/auth_service.dart';
-import '../config/vu_schools_catalog.dart';
 import 'campus/vu_v2_campus_shell.dart';
 import 'data/vu_v2_progress_store.dart';
 import 'data/vu_v2_roadmap_sync.dart';
@@ -62,36 +61,30 @@ class _VuV2AppState extends State<VuV2App> {
         !_progress.enrolledDegreeIds.contains(_session.majorId)) {
       await _progress.enroll(_session.majorId);
     }
-    if (VuV2ProgressStore.unlockAllCourses) {
-      final Set<String> allIds = <String>{
-        for (final VuSchool school in VuSchoolsCatalog.schools)
-          for (final VuSchoolProgram program in school.programs)
-            program.roadmapSubjectId,
-      };
-      await _progress.enrollAll(allIds);
+    if (_progress.enrolledDegreeIds.length > 6 &&
+        _session.majorId.isNotEmpty) {
+      await _progress.keepOnlyEnrolled(_session.majorId);
     }
     if (mounted) setState(() => _ready = true);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Rebuild when the user changes their accent in Appearance settings.
     context.watch<AppearanceService>();
-    final ThemeData theme =
-        _progress.preferLightTheme ? vuV2LightTheme() : vuV2DarkTheme();
+    VuV2Colors.syncTo(Theme.of(context));
 
-    return Theme(
-      data: theme,
-      child: VuV2Scope(
-        session: _session,
-        progress: _progress,
-        child: !_ready
-            ? Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(color: VuV2Colors.orange),
+    return VuV2Scope(
+      session: _session,
+      progress: _progress,
+      child: !_ready
+          ? Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-              )
-            : ListenableBuilder(
+              ),
+            )
+          : ListenableBuilder(
                 listenable:
                     Listenable.merge(<Listenable>[_session, _progress]),
                 builder: (BuildContext context, _) {
@@ -122,7 +115,6 @@ class _VuV2AppState extends State<VuV2App> {
                   );
                 },
               ),
-      ),
     );
   }
 }

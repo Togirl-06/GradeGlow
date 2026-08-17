@@ -131,7 +131,7 @@ void main() {
       courseTitle: 'Cell Biology',
       topicTitle: 'Membrane Transport',
     );
-    expect(pack.sections.length, greaterThanOrEqualTo(16));
+    expect(pack.sections.length, greaterThanOrEqualTo(14));
     expect(
       pack.sections.map((s) => s.title),
       containsAll(<String>[
@@ -139,13 +139,20 @@ void main() {
         'Precise definitions',
         'Worked example 1 — guided',
         'Practice problems',
+        'Learning Objectives',
+        '1.1 Introduction',
+        'Case Study',
       ]),
     );
     final int words = pack.sections.fold<int>(
       0,
       (int n, s) => n + s.body.split(RegExp(r'\s+')).length,
     );
-    expect(words, greaterThan(1800));
+    expect(words, greaterThan(2800));
+    expect(
+      pack.sections.map((s) => s.body).join(),
+      isNot(contains('names the core idea this chapter teaches')),
+    );
   });
 
   test('intro course detection', () {

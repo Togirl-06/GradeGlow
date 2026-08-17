@@ -79,7 +79,7 @@ class VuV2QuizzesExamsHubScreen extends StatelessWidget {
                     color: VuV2Colors.mint.withValues(alpha: 0.5),
                   ),
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
@@ -121,7 +121,7 @@ class VuV2QuizzesExamsHubScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          const Text(
+          Text(
             'Course quizzes & timed exams',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -130,7 +130,7 @@ class VuV2QuizzesExamsHubScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Standard topic quizzes across your enrolled programs.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.4),
           ),

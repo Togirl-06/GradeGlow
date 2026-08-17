@@ -189,7 +189,7 @@ class _VuV2TopicSelectScreenState extends State<VuV2TopicSelectScreen> {
               children: <Widget>[
                 Text(
                   '${widget.course.facultyEmoji} ${widget.course.facultyTitle}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.mute,
                     fontWeight: FontWeight.w700,
                   ),
@@ -197,7 +197,7 @@ class _VuV2TopicSelectScreenState extends State<VuV2TopicSelectScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'Select topics · ${widget.heading}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
@@ -244,7 +244,7 @@ class _VuV2TopicSelectScreenState extends State<VuV2TopicSelectScreen> {
                         checkColor: Colors.black,
                         title: Text(
                           l.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w700,
                             fontSize: 14,
@@ -257,7 +257,7 @@ class _VuV2TopicSelectScreenState extends State<VuV2TopicSelectScreen> {
                 }),
                 if (widget.showDifficulty) ...<Widget>[
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     'Difficulty',
                     style: TextStyle(
                       color: VuV2Colors.ink,
@@ -364,7 +364,7 @@ class _VuV2FlashcardsSessionScreenState
                   ),
                   child: Text(
                     'Card ${_index + 1} / ${widget.cards.length}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.mute,
                       fontWeight: FontWeight.w700,
                       fontSize: 12,
@@ -385,7 +385,7 @@ class _VuV2FlashcardsSessionScreenState
                     widget.courseTitle.toUpperCase().length > 12
                         ? widget.courseTitle.toUpperCase().substring(0, 12)
                         : widget.courseTitle.toUpperCase(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.mint,
                       fontWeight: FontWeight.w800,
                       fontSize: 12,
@@ -413,7 +413,7 @@ class _VuV2FlashcardsSessionScreenState
                         children: <Widget>[
                           Text(
                             _showBack ? 'DEFINITION' : 'TERM',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: VuV2Colors.mint,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1.2,
@@ -433,7 +433,7 @@ class _VuV2FlashcardsSessionScreenState
                           ),
                           if (!_showBack) ...<Widget>[
                             const SizedBox(height: 14),
-                            const Text(
+                            Text(
                               'Click to flip',
                               style: TextStyle(color: VuV2Colors.mute),
                             ),
@@ -492,7 +492,7 @@ class _VuV2FlashcardsSessionScreenState
             const SizedBox(height: 8),
             Text(
               'Marked known: $_known',
-              style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+              style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
             ),
           ],
         ),
@@ -681,7 +681,7 @@ class _VuV2QuestionBankSessionScreenState
           Text(
             '${widget.course.course.title} · ${widget.difficulty} · '
             '$_correct/$_answered correct',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 12),
           Text(
@@ -694,7 +694,7 @@ class _VuV2QuestionBankSessionScreenState
           const SizedBox(height: 8),
           Text(
             q.prompt,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w800,
               fontSize: 17,
@@ -727,7 +727,7 @@ class _VuV2QuestionBankSessionScreenState
                     ),
                     child: Text(
                       q.choices[i],
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w700,
                       ),
@@ -741,7 +741,7 @@ class _VuV2QuestionBankSessionScreenState
             const SizedBox(height: 8),
             Text(
               _feedback!,
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.4),
             ),
           ],
           const SizedBox(height: 16),

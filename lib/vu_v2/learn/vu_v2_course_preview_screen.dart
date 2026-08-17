@@ -98,7 +98,7 @@ class _CourseHome extends StatelessWidget {
           flexibleSpace: FlexibleSpaceBar(
             title: Text(
               courseTitle,
-              style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
             ),
             background: Container(
               decoration: BoxDecoration(
@@ -117,7 +117,7 @@ class _CourseHome extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Text(subject.emoji, style: const TextStyle(fontSize: 40)),
+                      Text(subject.emoji, style: TextStyle(fontSize: 40)),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -148,7 +148,7 @@ class _CourseHome extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       '8% Complete',
                       style: TextStyle(
                         color: VuV2Colors.ink,
@@ -160,7 +160,7 @@ class _CourseHome extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       'Module 1 of ${subject.courses.length.clamp(1, 12)} · Grade —',
-                      style: const TextStyle(color: VuV2Colors.mute),
+                      style: TextStyle(color: VuV2Colors.mute),
                     ),
                   ],
                 ),
@@ -254,14 +254,14 @@ class _ModulesPane extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           modules[i],
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
                         Text(
                           i == 0 ? 'In progress' : 'Locked until Module $i complete',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.mute,
                             fontSize: 12,
                           ),
@@ -305,9 +305,9 @@ class _Line extends StatelessWidget {
       leading: Icon(Icons.event_outlined, color: VuV2Colors.orange),
       title: Text(
         title,
-        style: const TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
+        style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
       ),
-      subtitle: Text(subtitle, style: const TextStyle(color: VuV2Colors.mute)),
+      subtitle: Text(subtitle, style: TextStyle(color: VuV2Colors.mute)),
     );
   }
 }
@@ -335,7 +335,7 @@ class _LessonStage extends StatelessWidget {
             context: context,
             backgroundColor: VuV2Colors.navyElevated,
             showDragHandle: true,
-            builder: (_) => const Padding(
+            builder: (_) => Padding(
               padding: EdgeInsets.fromLTRB(20, 8, 20, 28),
               child: Text(
                 'Ask AI Tutor\n\n“Explain again”, “Give an example”, or “Quiz me” — full tutoring wires in the next slice. Context: this lesson is already attached.',
@@ -353,13 +353,13 @@ class _LessonStage extends StatelessWidget {
           VuV2Surface(
             child: Row(
               children: <Widget>[
-                Text(emoji, style: const TextStyle(fontSize: 36)),
+                Text(emoji, style: TextStyle(fontSize: 36)),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         'AI Professor',
                         style: TextStyle(
                           color: VuV2Colors.ink,
@@ -369,7 +369,7 @@ class _LessonStage extends StatelessWidget {
                       ),
                       Text(
                         subjectName,
-                        style: const TextStyle(color: VuV2Colors.mute),
+                        style: TextStyle(color: VuV2Colors.mute),
                       ),
                     ],
                   ),
@@ -380,7 +380,7 @@ class _LessonStage extends StatelessWidget {
           const SizedBox(height: 16),
           const VuV2SectionTitle('Learning goals'),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             '1. Understand the core idea for this orientation lesson.\n'
             '2. See a worked example.\n'
             '3. Pass a short knowledge check.',
@@ -396,7 +396,7 @@ class _LessonStage extends StatelessWidget {
               'practice with interactive work, then prove mastery on a check.\n\n'
               'This is the new V2 lesson stage — live streaming lectures and '
               'faculty simulations connect in the next build slices.',
-              style: const TextStyle(color: VuV2Colors.ink, height: 1.5),
+              style: TextStyle(color: VuV2Colors.ink, height: 1.5),
             ),
           ),
           const SizedBox(height: 16),

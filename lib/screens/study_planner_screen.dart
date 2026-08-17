@@ -338,6 +338,11 @@ class _StudyPlannerScreenState extends State<StudyPlannerScreen> {
               );
             },
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _openAddSheet(planner),
+        icon: const Icon(Icons.add_rounded),
+        label: const Text('Add event'),
+      ),
     );
   }
 
@@ -482,6 +487,12 @@ class _StudyPlannerScreenState extends State<StudyPlannerScreen> {
                 ),
               ),
             ),
+            const SizedBox(width: 8),
+            IconButton.filledTonal(
+              tooltip: 'Add event',
+              onPressed: () => _openAddSheet(planner),
+              icon: const Icon(Icons.add_rounded),
+            ),
           ],
         ),
         const SizedBox(height: 12),
@@ -520,6 +531,15 @@ class _StudyPlannerScreenState extends State<StudyPlannerScreen> {
                         SnackBar(content: Text('Removed ${e.title}')),
                       );
                     },
+            ),
+          ),
+          const SizedBox(height: 4),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => _openAddSheet(planner),
+              icon: const Icon(Icons.add_rounded),
+              label: const Text('Add another'),
             ),
           ),
       ],

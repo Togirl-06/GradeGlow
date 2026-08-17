@@ -94,14 +94,14 @@ class _VuV2AssessmentScreenState extends State<VuV2AssessmentScreen> {
         children: <Widget>[
           Text(
             widget.title,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 18,
             ),
           ),
           const SizedBox(height: 4),
-          Text(widget.subtitle, style: const TextStyle(color: VuV2Colors.mute)),
+          Text(widget.subtitle, style: TextStyle(color: VuV2Colors.mute)),
           const SizedBox(height: 12),
           VuV2ProgressBar(
             value: (_index + 1) / widget.questions.length,
@@ -121,7 +121,7 @@ class _VuV2AssessmentScreenState extends State<VuV2AssessmentScreen> {
           VuV2Surface(
             child: Text(
               _current.prompt,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 fontWeight: FontWeight.w800,
                 height: 1.4,
@@ -132,8 +132,8 @@ class _VuV2AssessmentScreenState extends State<VuV2AssessmentScreen> {
           const SizedBox(height: 12),
           if (short)
             TextField(
-              style: const TextStyle(color: VuV2Colors.ink),
-              decoration: const InputDecoration(
+              style: TextStyle(color: VuV2Colors.ink),
+              decoration: InputDecoration(
                 hintText: 'Type a short answer…',
                 hintStyle: TextStyle(color: VuV2Colors.mute),
                 border: OutlineInputBorder(),
@@ -166,7 +166,7 @@ class _VuV2AssessmentScreenState extends State<VuV2AssessmentScreen> {
                       ),
                       child: Text(
                         '${String.fromCharCode(65 + i)}. ${_current.choices[i]}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           height: 1.35,
                         ),
@@ -232,7 +232,7 @@ class _VuV2AssessmentScreenState extends State<VuV2AssessmentScreen> {
                 Text(
                   '$_score / ${widget.questions.length} correct · '
                   '${_percent.round()}% (pass ≥${widget.passPercent}%)',
-                  style: const TextStyle(color: VuV2Colors.ink, height: 1.4),
+                  style: TextStyle(color: VuV2Colors.ink, height: 1.4),
                 ),
                 const SizedBox(height: 12),
                 VuV2ProgressBar(value: _percent / 100),
@@ -272,16 +272,16 @@ class _VuV2AssessmentScreenState extends State<VuV2AssessmentScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'Your answer: $yours',
-                      style: const TextStyle(color: VuV2Colors.mute),
+                      style: TextStyle(color: VuV2Colors.mute),
                     ),
                     Text(
                       'Correct: $correct',
-                      style: const TextStyle(color: VuV2Colors.ink),
+                      style: TextStyle(color: VuV2Colors.ink),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       q.explanation,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         height: 1.4,
                       ),

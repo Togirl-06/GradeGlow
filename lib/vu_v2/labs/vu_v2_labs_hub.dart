@@ -51,13 +51,13 @@ class VuV2LabsHub extends StatelessWidget {
         Text(
           'Open a school, then a program. Your choices change the simulation.\n'
           '${session.majorLabel}: ${myLabs.length} labs ready.',
-          style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+          style: TextStyle(color: VuV2Colors.mute, height: 1.45),
         ),
         if (myLabs.isNotEmpty) ...<Widget>[
           const SizedBox(height: 16),
           VuV2SectionTitle('Your course · ${session.majorLabel}'),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Walk into this workplace and complete the mission.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.45),
           ),
@@ -78,7 +78,7 @@ class VuV2LabsHub extends StatelessWidget {
         const SizedBox(height: 22),
         const VuV2SectionTitle('Schools'),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'The ten Virtual University schools — including Biology, Chemistry, '
           'Physics, Math, Computer Science, Engineering, Medicine, Nursing, '
           'Psychology, Business, Accounting, Finance, Economics, Marketing, and Law.',
@@ -119,7 +119,7 @@ class VuV2LabsHub extends StatelessWidget {
                   ),
                   child: Row(
                     children: <Widget>[
-                      Text(school.emoji, style: const TextStyle(fontSize: 28)),
+                      Text(school.emoji, style: TextStyle(fontSize: 28)),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -127,7 +127,7 @@ class VuV2LabsHub extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               school.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: VuV2Colors.ink,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 15,
@@ -137,7 +137,7 @@ class VuV2LabsHub extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 school.blurb!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: VuV2Colors.mute,
                                   fontSize: 12,
                                   height: 1.35,
@@ -147,7 +147,7 @@ class VuV2LabsHub extends StatelessWidget {
                             const SizedBox(height: 6),
                             Text(
                               '${school.programs.length} programs',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: VuV2Colors.mint,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
@@ -156,7 +156,7 @@ class VuV2LabsHub extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.chevron_right_rounded,
                         color: VuV2Colors.mute,
                       ),
@@ -203,7 +203,7 @@ class _SchoolLabsScreen extends StatelessWidget {
           if (school.blurb != null)
             Text(
               school.blurb!,
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.45),
             ),
           const SizedBox(height: 16),
           ...programs.map((VuSchoolProgram program) {
@@ -271,7 +271,7 @@ class _LabCard extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              Text(emoji, style: const TextStyle(fontSize: 28)),
+              Text(emoji, style: TextStyle(fontSize: 28)),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -287,7 +287,7 @@ class _LabCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         height: 1.35,
                         fontSize: 13,

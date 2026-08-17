@@ -70,7 +70,7 @@ class VuV2RichTeachBody extends StatelessWidget {
       spans.add(
         TextSpan(
           text: m.group(1),
-          style: const TextStyle(
+          style: TextStyle(
             color: Color(0xFF86EFAC),
             fontWeight: FontWeight.w800,
           ),
@@ -133,7 +133,7 @@ class _CodeFence extends StatelessWidget {
             const SizedBox(height: 8),
             SelectableText(
               body.trimRight(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFF86EFAC),
                 fontFamily: 'monospace',
                 fontSize: 13,

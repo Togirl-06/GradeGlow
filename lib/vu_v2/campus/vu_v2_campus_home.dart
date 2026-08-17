@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../config/vu_schools_catalog.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_roadmap_models.dart';
 import '../data/vu_v2_roadmap_sync.dart';
@@ -61,7 +62,7 @@ class VuV2CampusHome extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     '$hourLabel,',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.mute,
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -69,7 +70,7 @@ class VuV2CampusHome extends StatelessWidget {
                   ),
                   Text(
                     session.displayName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.ink,
                       fontSize: 30,
                       fontWeight: FontWeight.w900,
@@ -91,7 +92,7 @@ class VuV2CampusHome extends StatelessWidget {
               ),
               child: Text(
                 'FREE CAMPUS',
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.mint,
                   fontWeight: FontWeight.w900,
                   fontSize: 11,
@@ -104,7 +105,7 @@ class VuV2CampusHome extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           '${session.majorLabel} · ${session.weeklyMinutes} min / week',
-          style: const TextStyle(color: VuV2Colors.mute, height: 1.35),
+          style: TextStyle(color: VuV2Colors.mute, height: 1.35),
         ),
         const SizedBox(height: 16),
         Container(
@@ -125,7 +126,7 @@ class VuV2CampusHome extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'CONTINUE LEARNING',
                 style: TextStyle(
                   color: VuV2Colors.mint,
@@ -137,7 +138,7 @@ class VuV2CampusHome extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 session.continueTitle ?? 'Start Orientation',
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
@@ -147,7 +148,7 @@ class VuV2CampusHome extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 session.continueSubtitle ?? session.majorLabel,
-                style: const TextStyle(color: VuV2Colors.mute),
+                style: TextStyle(color: VuV2Colors.mute),
               ),
               const SizedBox(height: 14),
               VuV2ProgressBar(value: session.continueProgress, height: 7),
@@ -167,7 +168,7 @@ class VuV2CampusHome extends StatelessWidget {
                   ),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: VuV2Colors.mint,
-                    side: const BorderSide(color: VuV2Colors.mint),
+                    side: BorderSide(color: VuV2Colors.mint),
                     minimumSize: const Size.fromHeight(44),
                   ),
                   icon: const Icon(Icons.psychology_alt_outlined, size: 18),
@@ -237,7 +238,7 @@ class VuV2CampusHome extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        const Text(
+        Text(
           'Quick access',
           style: TextStyle(
             color: VuV2Colors.ink,
@@ -338,7 +339,7 @@ class VuV2CampusHome extends StatelessWidget {
         const SizedBox(height: 22),
         Text(
           "Today's schedule · ${session.majorLabel}",
-          style: const TextStyle(
+          style: TextStyle(
             color: VuV2Colors.ink,
             fontWeight: FontWeight.w900,
             fontSize: 17,
@@ -348,20 +349,24 @@ class VuV2CampusHome extends StatelessWidget {
         VuV2Surface(
           child: Column(
             children: <Widget>[
-              _ScheduleRow(
-                time: '09:00',
-                title: 'Lecture',
-                subtitle: 'AI Professor · ${session.majorLabel}',
-                icon: Icons.smart_display_outlined,
-                onTap: () => MajorWowRouter.openContinue(
-                  context,
-                  session: session,
-                  progress: progress,
+              if (!VuSchoolsCatalog.isPracticeOnly(session.majorId)) ...<Widget>[
+                _ScheduleRow(
+                  time: '09:00',
+                  title: 'Lecture',
+                  subtitle: 'AI Professor · ${session.majorLabel}',
+                  icon: Icons.smart_display_outlined,
+                  onTap: () => MajorWowRouter.openContinue(
+                    context,
+                    session: session,
+                    progress: progress,
+                  ),
                 ),
-              ),
-              const Divider(color: VuV2Colors.stroke, height: 22),
+                Divider(color: VuV2Colors.stroke, height: 22),
+              ],
               _ScheduleRow(
-                time: '11:00',
+                time: VuSchoolsCatalog.isPracticeOnly(session.majorId)
+                    ? '09:00'
+                    : '11:00',
                 title: 'Lab',
                 subtitle: MajorWowRouter.labsHeroTitle(session.majorId),
                 icon: Icons.science_outlined,
@@ -372,10 +377,14 @@ class VuV2CampusHome extends StatelessWidget {
                   progress: progress,
                 ),
               ),
-              const Divider(color: VuV2Colors.stroke, height: 22),
+              Divider(color: VuV2Colors.stroke, height: 22),
               _ScheduleRow(
-                time: '14:00',
-                title: 'Career practical',
+                time: VuSchoolsCatalog.isPracticeOnly(session.majorId)
+                    ? '11:00'
+                    : '14:00',
+                title: VuSchoolsCatalog.isPracticeOnly(session.majorId)
+                    ? 'Real-world practice'
+                    : 'Career practical',
                 subtitle: MajorWowRouter.continueLabel(session.majorId)
                     .replaceFirst('Enter ', ''),
                 icon: Icons.work_outline_rounded,
@@ -386,19 +395,21 @@ class VuV2CampusHome extends StatelessWidget {
                   progress: progress,
                 ),
               ),
-              const Divider(color: VuV2Colors.stroke, height: 22),
-              _ScheduleRow(
-                time: '16:00',
-                title: 'Adaptive review',
-                subtitle: progress.dueAdaptiveReviews > 0
-                    ? 'Fix ${progress.dueAdaptiveReviews} open confusion(s)'
-                    : 'Mastery drill for weak spots',
-                icon: Icons.psychology_alt_outlined,
-                onTap: () => VuV2AdaptiveReviewDrillScreen.open(
-                  context,
-                  progress: progress,
+              if (!VuSchoolsCatalog.isPracticeOnly(session.majorId)) ...<Widget>[
+                Divider(color: VuV2Colors.stroke, height: 22),
+                _ScheduleRow(
+                  time: '16:00',
+                  title: 'Adaptive review',
+                  subtitle: progress.dueAdaptiveReviews > 0
+                      ? 'Fix ${progress.dueAdaptiveReviews} open confusion(s)'
+                      : 'Mastery drill for weak spots',
+                  icon: Icons.psychology_alt_outlined,
+                  onTap: () => VuV2AdaptiveReviewDrillScreen.open(
+                    context,
+                    progress: progress,
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
@@ -407,7 +418,7 @@ class VuV2CampusHome extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Learning path',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -420,7 +431,7 @@ class VuV2CampusHome extends StatelessWidget {
                 progress.completedLessonIds.isEmpty
                     ? 'Start Orientation in your major. Your AI professor is ready.'
                     : 'Keep the loop: lecture → lab → quiz → mastery.',
-                style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+                style: TextStyle(color: VuV2Colors.mute, height: 1.45),
               ),
               const SizedBox(height: 14),
               VuV2PrimaryButton(
@@ -481,7 +492,7 @@ class _MiniStat extends StatelessWidget {
         children: <Widget>[
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.mute,
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -490,7 +501,7 @@ class _MiniStat extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 16,
@@ -533,7 +544,7 @@ class _QuickTile extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w800,
                   fontSize: 13,
@@ -573,7 +584,7 @@ class _ScheduleRow extends StatelessWidget {
             width: 48,
             child: Text(
               time,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.mint,
                 fontWeight: FontWeight.w900,
                 fontSize: 12,
@@ -596,20 +607,20 @@ class _ScheduleRow extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 Text(
                   subtitle,
-                  style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                  style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
                 ),
               ],
             ),
           ),
           if (onTap != null)
-            const Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
+            Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
         ],
       ),
     );

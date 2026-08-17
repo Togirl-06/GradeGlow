@@ -56,7 +56,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
           backgroundColor: VuV2Colors.navyElevated,
           title: Text(
             'Hire date · ${_career.jobTitle}',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
             ),
@@ -67,7 +67,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
             '${_career.tagline}\n\n'
             'This is a job sim. Clear levels by dealing with real situations — '
             'patients, bosses, deadlines. No multiple-choice test mode.',
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.45),
           ),
           actions: <Widget>[
             FilledButton(
@@ -139,7 +139,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
                         children: <Widget>[
                           IconButton(
                             onPressed: () => Navigator.of(context).maybePop(),
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
                               color: VuV2Colors.ink,
                             ),
@@ -159,7 +159,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
                                 ),
                                 Text(
                                   _career.jobTitle,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.ink,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 20,
@@ -189,7 +189,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
                               children: <Widget>[
                                 Text(
                                   'VIRTUAL JOB · ${_career.bossName}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.ink,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 18,
@@ -214,7 +214,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
                                 const SizedBox(height: 12),
                                 Text(
                                   'Career progress $cleared / ${_career.levels.length} levels',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.mute,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -235,7 +235,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
                             ),
                           ),
                           const SizedBox(height: 18),
-                          const Text(
+                          Text(
                             'Level select',
                             style: TextStyle(
                               color: VuV2Colors.ink,
@@ -244,7 +244,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
                             ),
                           ),
                           const SizedBox(height: 6),
-                          const Text(
+                          Text(
                             'Walk into the shift. Make decisions. Live with the meters.',
                             style: TextStyle(
                               color: VuV2Colors.mute,
@@ -321,7 +321,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
             const SizedBox(height: 10),
             Text(
               lv.title,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 fontWeight: FontWeight.w900,
                 fontSize: 17,
@@ -330,7 +330,7 @@ class _VuV2SchoolLabCenterState extends State<VuV2SchoolLabCenter> {
             const SizedBox(height: 6),
             Text(
               lv.brief,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.mute,
                 height: 1.35,
                 fontSize: 13,

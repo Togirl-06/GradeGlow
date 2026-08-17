@@ -1,104 +1,193 @@
 import 'package:ai_study_buddy/data/university_learning_engine.dart';
-import 'package:ai_study_buddy/vu_v2/labs/simulation/university_sim_factory.dart';
+import 'package:ai_study_buddy/data/virtual_lecture_curriculum_script.dart';
+import 'package:ai_study_buddy/models/virtual_lecture.dart';
+import 'package:ai_study_buddy/vu_v2/curriculum/academic_quality_contract.dart';
+import 'package:ai_study_buddy/vu_v2/data/vu_v2_topic_content.dart';
+import 'package:ai_study_buddy/vu_v2/labs/engine/lab_blueprint.dart';
+import 'package:ai_study_buddy/vu_v2/labs/investigation/investigation_models.dart';
 import 'package:ai_study_buddy/vu_v2/labs/simulation/university_sim_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const UniversityLabLink link = UniversityLabLink(
-    labId: 'biology',
-    stationId: 'practical',
-    title: 'Cardiac emergency',
-    purpose: 'Identify the implicated structure and stabilize circulation.',
-    objectives: <String>['Identify', 'Intervene'],
-    estimatedMinutes: 30,
-    difficulty: 'Intermediate',
-  );
-
-  test('factory builds a lecture-linked mission, not a quiz bank', () {
-    final SimBriefing brief = UniversitySimFactory.fromLesson(
-      link: link,
+  test('membrane transport is a publishable textbook chapter, not a summary', () {
+    final pack = VuV2TopicContent.forLesson(
       subjectId: 'biology',
-      courseTitle: 'Human Anatomy',
-      topicTitle: 'The heart and circulation',
+      facultyTitle: 'Biology',
+      facultyEmoji: '🧬',
+      trackTitle: 'Cell Biology',
+      courseTitle: 'Cell Biology',
+      topicTitle: 'Membrane Transport',
+    );
+    final TextbookQualityReport report =
+        TextbookQualityContract.inspect(pack.sections);
+    expect(report.publishable, isTrue, reason: report.defects.join('; '));
+    expect(report.wordCount, greaterThan(2800));
+    expect(pack.sections.map((s) => s.title), containsAll(<String>[
+      'Learning Objectives',
+      '1.1 Introduction',
+      'Worked Example',
+      'Clinical Connection',
+      'Chapter Summary',
+      'Case Study',
+      'Lecture — full treatment',
+      'Precise definitions',
+      'Worked example 1 — guided',
+      'Practice problems',
+    ]));
+    final String blob =
+        pack.sections.map((s) => s.body).join('\n').toLowerCase();
+    expect(blob, contains('sglt'));
+    expect(blob, isNot(contains('names the core idea this chapter teaches')));
+    expect(blob, isNot(contains('consists of bones. bones provide support')));
+  });
+
+  test('skeletal chapter teaches axial vs appendicular instead of a caption', () {
+    final pack = VuV2TopicContent.forLesson(
+      subjectId: 'biology',
+      facultyTitle: 'Biology',
+      facultyEmoji: '🧬',
+      trackTitle: 'Anatomy',
+      courseTitle: 'Anatomy',
+      topicTitle: 'The Skeletal System',
+    );
+    final TextbookQualityReport report =
+        TextbookQualityContract.inspect(pack.sections);
+    expect(report.publishable, isTrue, reason: report.defects.join('; '));
+    final String blob = pack.sections.map((s) => s.body).join('\n');
+    expect(blob, contains('appendicular'));
+    expect(blob, contains('diaphysis'));
+    expect(blob.toLowerCase(), contains('x-ray'));
+  });
+
+  test('professor lecture is conversational, not a textbook clip', () {
+    final script = VirtualLectureCurriculumScript.build(
+      lessonTitle: 'Membrane Transport',
+      courseTitle: 'Cell Biology',
+      moduleTitle: 'Cell Biology',
+      courseId: 'general_biology',
+      lessonId: 'membrane',
+      mode: LectureMode.concept,
+      faculty: 'biology',
+    );
+    expect(script.segments.first.professorSpeech.toLowerCase(), contains('slow down'));
+    expect(
+      script.segments.any((s) => s.knowledgeCheck != null || s.beats.any((b) => b.studentChoice != null)),
+      isTrue,
+    );
+    expect(
+      script.segments.first.professorSpeech,
+      isNot(contains('names the core idea this chapter teaches')),
+    );
+  });
+
+  test('biology lab is an unknown-cell investigation, not a quiz', () {
+    const UniversityLabLink link = UniversityLabLink(
+      labId: 'biology',
+      stationId: 'practical',
+      title: 'Unknown cell investigation',
+      purpose: 'Identify the specimen.',
+      objectives: <String>['Observe', 'Hypothesize'],
+    );
+    final InvestigationSpec spec = InvestigationCatalog.forLesson(
+      subjectId: 'biology',
+      courseTitle: 'General Biology',
+      topicTitle: 'Cell Structure',
+      link: link,
       level: 2,
     );
-    expect(brief.mission.toLowerCase(), contains('heart'));
-    expect(brief.scenario, isNot(contains('Question 1')));
-    expect(brief.steps.length, greaterThanOrEqualTo(3));
-    expect(brief.steps.any((SimStep s) => s.kind == SimStepKind.locate), isTrue);
-    expect(brief.steps.any((SimStep s) => s.kind == SimStepKind.measure), isTrue);
-    expect(brief.steps.any((SimStep s) => s.kind == SimStepKind.applyTool), isTrue);
-    expect(brief.equipment, isNotEmpty);
-    expect(brief.role, isNotEmpty);
+    expect(spec.kind, InvestigationKind.biologyCell);
+    expect(spec.quality.publishable, isTrue, reason: spec.quality.defects.join('; '));
+    expect(spec.equipment, contains('Compound microscope'));
+    expect(spec.procedure.join(' ').toLowerCase(), contains('4×'));
+    expect(LabQualityContract.allowsQuizLab('click A correctIndex'), isFalse);
   });
 
-  test('higher levels add a live complication', () {
-    final SimBriefing guided = UniversitySimFactory.fromLesson(
-      link: link,
-      subjectId: 'biology',
-      courseTitle: 'Anatomy',
-      topicTitle: 'Skeletal system',
-      level: 1,
+  test('domain labs map to investigations with a quality contract', () {
+    const UniversityLabLink link = UniversityLabLink(
+      labId: 'x',
+      stationId: 'bench',
+      title: 'Lab',
+      purpose: 'Investigate',
+      objectives: <String>['Work'],
     );
-    final SimBriefing hard = UniversitySimFactory.fromLesson(
-      link: link,
-      subjectId: 'biology',
-      courseTitle: 'Anatomy',
-      topicTitle: 'Skeletal system',
-      level: 5,
+    expect(
+      InvestigationCatalog.kindFor(subjectId: 'chemistry', topicTitle: 'Titration'),
+      InvestigationKind.chemistryTitration,
     );
-    expect(guided.steps.length, lessThan(hard.steps.length));
-    expect(hard.difficulty, 'Professional');
+    expect(
+      InvestigationCatalog.kindFor(subjectId: 'physics', topicTitle: 'Gravity'),
+      InvestigationKind.physicsGravity,
+    );
+    expect(
+      InvestigationCatalog.kindFor(subjectId: 'nursing', topicTitle: 'Chest Pain'),
+      InvestigationKind.clinicalEd,
+    );
+    expect(
+      InvestigationCatalog.kindFor(subjectId: 'law', topicTitle: 'Contracts'),
+      InvestigationKind.lawTrial,
+    );
+    expect(
+      InvestigationCatalog.kindFor(subjectId: 'business', topicTitle: 'Revenue'),
+      InvestigationKind.businessHq,
+    );
+    for (final InvestigationKind kind in InvestigationKind.values) {
+      final InvestigationSpec spec = InvestigationCatalog.spec(
+        kind,
+        'Course',
+        'Topic',
+        'Lab',
+        2,
+      );
+      expect(spec.quality.publishable, isTrue, reason: spec.quality.defects.join('; '));
+    }
     expect(UniversitySimLevels.fromLessonCount(0), 1);
-    expect(UniversitySimLevels.fromLessonCount(8), 5);
+    expect(UniversitySimLevels.fromLessonCount(8), 4);
+    expect(link.title, isNotEmpty);
   });
 
-  test('wrong actions move the board', () {
-    final SimBriefing brief = UniversitySimFactory.fromLesson(
-      link: link,
-      subjectId: 'nursing',
-      courseTitle: 'Adult Health',
-      topicTitle: 'Airway management',
-      level: 3,
+  test('lab engine maps every major to a workspace blueprint', () {
+    const UniversityLabLink link = UniversityLabLink(
+      labId: 'lab',
+      stationId: 'bench',
+      title: 'Laboratory',
+      purpose: 'Perform the work',
+      objectives: <String>['Manipulate the academic object'],
     );
-    final SimPlayState play = SimPlayState(
-      briefing: brief,
-      startedAt: DateTime.now(),
+    expect(
+      LabCatalog.disciplineFor(subjectId: 'biology', topicTitle: 'The Skeletal System'),
+      LabDiscipline.anatomy,
     );
-    final double before = play.meter(brief.steps.first.failMeter);
-    play.bump(brief.steps.first.failMeter, brief.steps.first.failDelta);
-    expect(play.meter(brief.steps.first.failMeter), lessThan(before));
-  });
-
-  test('law and finance use different stations', () {
-    final SimBriefing law = UniversitySimFactory.fromLesson(
-      link: const UniversityLabLink(
-        labId: 'law_firm',
-        stationId: 'practical',
-        title: 'Hearing',
-        purpose: 'Issue-spot',
-        objectives: <String>['Evidence'],
-      ),
-      subjectId: 'law',
-      courseTitle: 'Torts',
-      topicTitle: 'Negligence',
-      level: 3,
+    expect(
+      LabCatalog.disciplineFor(subjectId: 'biology', topicTitle: 'Cell Structure'),
+      LabDiscipline.biology,
     );
-    final SimBriefing fin = UniversitySimFactory.fromLesson(
-      link: const UniversityLabLink(
-        labId: 'finance',
-        stationId: 'practical',
-        title: 'Desk',
-        purpose: 'Risk',
-        objectives: <String>['Size'],
-      ),
-      subjectId: 'finance',
-      courseTitle: 'Investments',
-      topicTitle: 'Duration risk',
-      level: 3,
+    expect(
+      LabCatalog.disciplineFor(subjectId: 'mathematics', topicTitle: 'The Derivative'),
+      LabDiscipline.mathematics,
     );
-    expect(law.domain, SimDomain.law);
-    expect(fin.domain, SimDomain.finance);
-    expect(law.boardTitle, isNot(equals(fin.boardTitle)));
+    expect(
+      LabCatalog.disciplineFor(subjectId: 'physics', topicTitle: 'Projectile Motion'),
+      LabDiscipline.physics,
+    );
+    expect(
+      LabCatalog.fromSubject('physics'),
+      LabDiscipline.physics,
+    );
+    expect(
+      LabCatalog.fromSubject('computerScience'),
+      LabDiscipline.computerScience,
+    );
+    for (final LabDiscipline d in LabDiscipline.values) {
+      final LabBlueprint bp = LabCatalog.forLesson(
+        subjectId: d.name,
+        courseTitle: 'Course',
+        topicTitle: d.name,
+        link: link,
+        level: 2,
+      );
+      expect(bp.quality.publishable, isTrue, reason: bp.quality.defects.join('; '));
+      expect(bp.tools, isNotEmpty);
+      expect(bp.layers, isNotEmpty);
+    }
   });
 }

@@ -119,7 +119,7 @@ class _VuV2AdaptiveReviewDrillScreenState
   @override
   Widget build(BuildContext context) {
     if (!_ready || (_queue.isEmpty && !_finished)) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: VuV2Colors.navy,
         body: Center(child: CircularProgressIndicator(color: VuV2Colors.mint)),
       );
@@ -138,12 +138,12 @@ class _VuV2AdaptiveReviewDrillScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const Icon(Icons.emoji_events_outlined, color: VuV2Colors.gold, size: 48),
+              Icon(Icons.emoji_events_outlined, color: VuV2Colors.gold, size: 48),
               const SizedBox(height: 16),
               Text(
                 '$_correct / ${_queue.length} correct',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
                   fontSize: 28,
@@ -155,7 +155,7 @@ class _VuV2AdaptiveReviewDrillScreenState
                     ? 'Cleared $_cleared confusion pair${_cleared == 1 ? '' : 's'}. Mastery streak: ${widget.progress.masteryClearStreak}.'
                     : 'Keep drilling — the AI Professor will re-teach weak pairs next lecture.',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+                style: TextStyle(color: VuV2Colors.mute, height: 1.4),
               ),
               const Spacer(),
               VuV2PrimaryButton(
@@ -183,7 +183,7 @@ class _VuV2AdaptiveReviewDrillScreenState
         children: <Widget>[
           Text(
             'Card ${_index + 1} of ${_queue.length}',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.mint,
               fontWeight: FontWeight.w800,
               fontSize: 12,
@@ -193,7 +193,7 @@ class _VuV2AdaptiveReviewDrillScreenState
           const SizedBox(height: 8),
           Text(
             'Tap ${cur.labelA} on the diagram',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 22,
@@ -203,7 +203,7 @@ class _VuV2AdaptiveReviewDrillScreenState
           const SizedBox(height: 8),
           Text(
             cur.keyPoints.join(' · '),
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.4),
           ),
           const SizedBox(height: 16),
           AspectRatio(
@@ -235,7 +235,7 @@ class _VuV2AdaptiveReviewDrillScreenState
                 _answeredOk!
                     ? 'Locked in. ${cur.keyPoints.first}'
                     : cur.reviewSpeech,
-                style: const TextStyle(color: VuV2Colors.ink, height: 1.4),
+                style: TextStyle(color: VuV2Colors.ink, height: 1.4),
               ),
             ),
           ],

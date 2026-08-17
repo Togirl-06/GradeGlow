@@ -128,7 +128,7 @@ class VuV2HackathonDemoScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(VuV2Radii.lg),
               border: Border.all(color: VuV2Colors.mint.withValues(alpha: 0.5)),
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
@@ -238,14 +238,14 @@ class VuV2HackathonDemoScreen extends StatelessWidget {
             },
             style: OutlinedButton.styleFrom(
               foregroundColor: VuV2Colors.mint,
-              side: const BorderSide(color: VuV2Colors.mint),
+              side: BorderSide(color: VuV2Colors.mint),
               minimumSize: const Size.fromHeight(48),
             ),
             icon: const Icon(Icons.psychology_alt_outlined),
             label: const Text('Skip to adaptive review wow'),
           ),
           const SizedBox(height: 22),
-          const Text(
+          Text(
             'Demo chapters (jump in anywhere)',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -325,7 +325,7 @@ class VuV2HackathonDemoScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
+                Text(
                   '90-second script',
                   style: TextStyle(
                     color: VuV2Colors.ink,
@@ -347,7 +347,7 @@ class VuV2HackathonDemoScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
                       line,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         height: 1.35,
                         fontSize: 13,
@@ -408,7 +408,7 @@ class _DemoJump extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontWeight: FontWeight.w800,
                         ),
@@ -416,7 +416,7 @@ class _DemoJump extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         body,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.mute,
                           fontSize: 12,
                           height: 1.3,
@@ -425,7 +425,7 @@ class _DemoJump extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
+                Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
               ],
             ),
           ),

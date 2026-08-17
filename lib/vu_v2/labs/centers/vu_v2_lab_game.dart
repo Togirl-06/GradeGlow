@@ -155,7 +155,7 @@ class VuV2LabGameHud extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             '${VuV2LabGame.xpIntoLevel(xp)} / 120 to next level · best streak $bestStreak',
-            style: const TextStyle(color: VuV2Colors.mute, fontSize: 11),
+            style: TextStyle(color: VuV2Colors.mute, fontSize: 11),
           ),
         ],
       ],

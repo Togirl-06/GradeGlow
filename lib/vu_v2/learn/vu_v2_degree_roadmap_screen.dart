@@ -56,10 +56,10 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 roadmap.title,
-                style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
               ),
               background: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -76,7 +76,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text(roadmap.emoji, style: const TextStyle(fontSize: 36)),
+                        Text(roadmap.emoji, style: TextStyle(fontSize: 36)),
                         const SizedBox(height: 8),
                         Text(
                           roadmap.tagline ?? 'University degree roadmap',
@@ -115,7 +115,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                       const SizedBox(height: 8),
                       Text(
                         roadmap.sourceLabel,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontWeight: FontWeight.w800,
                           height: 1.35,
@@ -195,7 +195,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                         children: <Widget>[
                           Text(
                             track.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: VuV2Colors.ink,
                               fontWeight: FontWeight.w900,
                               fontSize: 16,
@@ -205,7 +205,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                             const SizedBox(height: 4),
                             Text(
                               track.subtitle!,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: VuV2Colors.mute,
                                 fontSize: 12,
                                 height: 1.35,
@@ -272,7 +272,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
           child: Row(
             children: <Widget>[
               if (course.emoji != null) ...<Widget>[
-                Text(course.emoji!, style: const TextStyle(fontSize: 22)),
+                Text(course.emoji!, style: TextStyle(fontSize: 22)),
                 const SizedBox(width: 10),
               ] else ...<Widget>[
                 Icon(Icons.menu_book_outlined, color: VuV2Colors.orange),
@@ -284,7 +284,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                   children: <Widget>[
                     Text(
                       course.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w800,
                       ),
@@ -293,7 +293,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                       course.subtitle ?? '${course.lessonCount} lessons',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         fontSize: 12,
                       ),
@@ -301,7 +301,7 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
+              Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
             ],
           ),
         ),
@@ -365,13 +365,13 @@ class VuV2CourseRoadmapScreen extends StatelessWidget {
         children: <Widget>[
           Text(
             '$facultyTitle · $trackTitle',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           if (course.subtitle != null) ...<Widget>[
             const SizedBox(height: 6),
             Text(
               course.subtitle!,
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.4),
             ),
           ],
           const SizedBox(height: 14),
@@ -392,7 +392,7 @@ class VuV2CourseRoadmapScreen extends StatelessWidget {
                 Text(
                   '${allLessons.length} topics with rich textbook notes + '
                   'end-of-topic quizzes. Finish with the course final exam.',
-                  style: const TextStyle(color: VuV2Colors.ink, height: 1.4),
+                  style: TextStyle(color: VuV2Colors.ink, height: 1.4),
                 ),
                 const SizedBox(height: 12),
                 VuV2PrimaryButton(
@@ -549,7 +549,7 @@ class _LessonRow extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         lesson.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontWeight: FontWeight.w800,
                         ),
@@ -558,7 +558,7 @@ class _LessonRow extends StatelessWidget {
                         _subtitle,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.mute,
                           fontSize: 12,
                         ),
@@ -566,7 +566,7 @@ class _LessonRow extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Icon(Icons.play_circle_outline, color: VuV2Colors.mute),
+                Icon(Icons.play_circle_outline, color: VuV2Colors.mute),
               ],
             ),
           ),
@@ -595,7 +595,7 @@ class _StatChip extends StatelessWidget {
           children: <Widget>[
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.ink,
                 fontWeight: FontWeight.w900,
                 fontSize: 16,
@@ -603,7 +603,7 @@ class _StatChip extends StatelessWidget {
             ),
             Text(
               caption,
-              style: const TextStyle(color: VuV2Colors.mute, fontSize: 11),
+              style: TextStyle(color: VuV2Colors.mute, fontSize: 11),
             ),
           ],
         ),

@@ -28,7 +28,7 @@ class VuV2MyCoursesScreen extends StatelessWidget {
       children: <Widget>[
         const VuV2SectionTitle('My Courses'),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Programs you are enrolled in. Open a roadmap to continue Learn → Practice → Test.',
           style: TextStyle(color: VuV2Colors.mute, height: 1.4),
         ),
@@ -38,7 +38,7 @@ class VuV2MyCoursesScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
+                Text(
                   'No enrollments yet',
                   style: TextStyle(
                     color: VuV2Colors.ink,
@@ -46,7 +46,7 @@ class VuV2MyCoursesScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Browse Lecture Halls and enroll in a program.',
                   style: TextStyle(color: VuV2Colors.mute),
                 ),
@@ -103,7 +103,7 @@ class VuV2MyCoursesScreen extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           meta.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w900,
                             fontSize: 16,
@@ -112,14 +112,14 @@ class VuV2MyCoursesScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           meta.school,
-                          style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                          style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
                         ),
                         const SizedBox(height: 10),
                         VuV2ProgressBar(value: pct),
                         const SizedBox(height: 6),
                         Text(
                           '${(pct * 100).round()}% · ${lessonIds.length} lessons',
-                          style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                          style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
                         ),
                       ],
                     ),

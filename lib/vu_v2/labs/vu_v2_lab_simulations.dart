@@ -223,7 +223,7 @@ class _GravitySimState extends State<_GravitySim>
             const SizedBox(height: 10),
             Text(
               'Trial log:\n${_trials.map((String e) => '• $e').join('\n')}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.mute,
                 fontSize: 12,
                 height: 1.35,
@@ -607,7 +607,7 @@ class _PhSimState extends State<_PhSim> {
               Expanded(
                 child: Text(
                   'pH ${_ph.toStringAsFixed(1)} · $_label',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
@@ -656,7 +656,7 @@ class _MoleculeSimState extends State<_MoleculeSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Target: H₂O',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -785,7 +785,7 @@ class _AnatomySimState extends State<_AnatomySim> {
             const SizedBox(height: 14),
             Text(
               roleText,
-              style: const TextStyle(color: VuV2Colors.ink, height: 1.4),
+              style: TextStyle(color: VuV2Colors.ink, height: 1.4),
             ),
           ],
         ],
@@ -833,7 +833,7 @@ class _CellSimState extends State<_CellSim> {
           const SizedBox(height: 12),
           Text(
             _focus == null ? 'Tap an organelle to inspect.' : _roles[_focus]!,
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.4),
           ),
         ],
       ),
@@ -887,7 +887,7 @@ class _DnaSimState extends State<_DnaSim> {
         children: <Widget>[
           Text(
             'Template: ${_template.join(' · ')}',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 10),
           ...List<Widget>.generate(_template.length, (int i) {
@@ -899,13 +899,13 @@ class _DnaSimState extends State<_DnaSim> {
                     width: 28,
                     child: Text(
                       _template[i],
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
-                  const Text('→ ', style: TextStyle(color: VuV2Colors.mute)),
+                  Text('→ ', style: TextStyle(color: VuV2Colors.mute)),
                   Wrap(
                     spacing: 6,
                     children: <String>['A', 'T', 'C', 'G'].map((String b) {
@@ -988,7 +988,7 @@ class _CsEditorSimState extends State<_CsEditorSim> {
           TextField(
             controller: _code,
             maxLines: 5,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'monospace',
               color: VuV2Colors.ink,
               fontSize: 13,
@@ -1011,7 +1011,7 @@ class _CsEditorSimState extends State<_CsEditorSim> {
             const SizedBox(height: 10),
             Text(
               _out,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'monospace',
                 color: VuV2Colors.success,
               ),
@@ -1043,20 +1043,20 @@ class _CsDebugSimState extends State<_CsDebugSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Buggy snippet',
             style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
           ),
           const SizedBox(height: 6),
           Text(
             _bug,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'monospace',
               color: VuV2Colors.ink,
             ),
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'What fix prints 1 through 5?',
             style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
           ),
@@ -1095,7 +1095,7 @@ class _CsDebugSimState extends State<_CsDebugSim> {
                     ),
                     child: Text(
                       opts[i],
-                      style: const TextStyle(color: VuV2Colors.ink),
+                      style: TextStyle(color: VuV2Colors.ink),
                     ),
                   ),
                 ),
@@ -1142,15 +1142,15 @@ class _CsChallengeSimState extends State<_CsChallengeSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Challenge: What is the sum of integers from 1 to 5?',
             style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 10),
           TextField(
             controller: _ans,
-            style: const TextStyle(color: VuV2Colors.ink),
-            decoration: const InputDecoration(
+            style: TextStyle(color: VuV2Colors.ink),
+            decoration: InputDecoration(
               hintText: 'Your answer',
               hintStyle: TextStyle(color: VuV2Colors.mute),
             ),
@@ -1211,7 +1211,7 @@ class _NursingPatientSimState extends State<_NursingPatientSim> {
           const SizedBox(height: 6),
           Text(
             'HR $_hr · SpO₂ $_spo2% · RR $_rr · $_status',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w800,
               height: 1.35,
@@ -1237,7 +1237,7 @@ class _NursingPatientSimState extends State<_NursingPatientSim> {
             const SizedBox(height: 12),
             Text(
               'Timeline: ${_timeline.join(' → ')}',
-              style: const TextStyle(color: VuV2Colors.mute, fontSize: 12, height: 1.35),
+              style: TextStyle(color: VuV2Colors.mute, fontSize: 12, height: 1.35),
             ),
           ],
         ],
@@ -1247,7 +1247,7 @@ class _NursingPatientSimState extends State<_NursingPatientSim> {
 
   List<Widget> _stepAssess() {
     return <Widget>[
-      const Text(
+      Text(
         'Priority assessment — what do you do first?',
         style: TextStyle(color: VuV2Colors.mute),
       ),
@@ -1295,7 +1295,7 @@ class _NursingPatientSimState extends State<_NursingPatientSim> {
 
   List<Widget> _stepAct() {
     return <Widget>[
-      const Text(
+      Text(
         'Intervention — choose the next clinical move.',
         style: TextStyle(color: VuV2Colors.mute),
       ),
@@ -1336,7 +1336,7 @@ class _NursingPatientSimState extends State<_NursingPatientSim> {
         recovered
             ? 'Reassessment: SpO₂ recovering. Document response and notify provider as indicated.'
             : 'Reassessment: still unstable. Escalate — rapid response / provider now.',
-        style: const TextStyle(color: VuV2Colors.mute, height: 1.35),
+        style: TextStyle(color: VuV2Colors.mute, height: 1.35),
       ),
       const SizedBox(height: 8),
       _btn(
@@ -1417,7 +1417,7 @@ class _NursingScenarioSimState extends State<_NursingScenarioSim> {
           const SizedBox(height: 8),
           Text(
             _story,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w700,
               height: 1.4,
@@ -1498,7 +1498,7 @@ class _NursingScenarioSimState extends State<_NursingScenarioSim> {
             const SizedBox(height: 8),
             Text(
               'Path: ${_trail.join(' → ')}',
-              style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+              style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
             ),
           ],
         ],
@@ -1554,12 +1554,12 @@ class _NursingEquipSimState extends State<_NursingEquipSim> {
           ),
           title: Text(
             name,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w800,
             ),
           ),
-          subtitle: Text(use, style: const TextStyle(color: VuV2Colors.mute)),
+          subtitle: Text(use, style: TextStyle(color: VuV2Colors.mute)),
           onTap: () => widget.onNotify('$name: $use', progressBump: 0.1),
         ),
       );
@@ -1605,11 +1605,11 @@ class _BizCompanySimState extends State<_BizCompanySim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Hiring ${_hire.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Hiring ${_hire.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _hire, min: 0, max: 100, onChanged: (v) => setState(() => _hire = v)),
-          Text('Marketing ${_mkt.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Marketing ${_mkt.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _mkt, min: 0, max: 100, onChanged: (v) => setState(() => _mkt = v)),
-          Text('R&D ${_rd.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('R&D ${_rd.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _rd, min: 0, max: 100, onChanged: (v) => setState(() => _rd = v)),
           Text(
             'KPIs · Revenue ${_revenue.round()} · Morale ${_morale.round()}',
@@ -1652,11 +1652,11 @@ class _BizMarketingSimState extends State<_BizMarketingSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Social ${_social.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Social ${_social.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _social, min: 0, max: 100, onChanged: (v) => setState(() => _social = v)),
-          Text('Search ${_search.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Search ${_search.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _search, min: 0, max: 100, onChanged: (v) => setState(() => _search = v)),
-          Text('Email ${_email.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Email ${_email.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _email, min: 0, max: 100, onChanged: (v) => setState(() => _email = v)),
           FilledButton(onPressed: _launch, child: const Text('Launch campaign')),
           if (_result.isNotEmpty) ...<Widget>[
@@ -1699,11 +1699,11 @@ class _BizFinanceSimState extends State<_BizFinanceSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Safe ${_safe.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Safe ${_safe.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _safe, min: 0, max: 100, onChanged: (v) => setState(() => _safe = v)),
-          Text('Growth ${_growth.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Growth ${_growth.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _growth, min: 0, max: 100, onChanged: (v) => setState(() => _growth = v)),
-          Text('Speculative ${_spec.round()}', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Speculative ${_spec.round()}', style: TextStyle(color: VuV2Colors.mute)),
           Slider(value: _spec, min: 0, max: 100, onChanged: (v) => setState(() => _spec = v)),
           FilledButton(onPressed: _project, child: const Text('Project year')),
           if (_proj.isNotEmpty) ...<Widget>[
@@ -1753,7 +1753,7 @@ class _PsychMemorySimState extends State<_PsychMemorySim> {
         children: <Widget>[
           Text(
             _show ? 'Memorize: ${_seq.join(' · ')}' : 'Sequence hidden — recall it.',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 18,
@@ -1763,8 +1763,8 @@ class _PsychMemorySimState extends State<_PsychMemorySim> {
           if (!_show) ...<Widget>[
             TextField(
               controller: _recall,
-              style: const TextStyle(color: VuV2Colors.ink),
-              decoration: const InputDecoration(
+              style: TextStyle(color: VuV2Colors.ink),
+              decoration: InputDecoration(
                 hintText: 'e.g. 7 2 9 4 1',
                 hintStyle: TextStyle(color: VuV2Colors.mute),
               ),
@@ -1815,7 +1815,7 @@ class _MathGraphSimState extends State<_MathGraphSim> {
               fontSize: 18,
             ),
           ),
-          Text('Slope m', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Slope m', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _m,
             min: -3,
@@ -1826,7 +1826,7 @@ class _MathGraphSimState extends State<_MathGraphSim> {
             },
             onChangeEnd: (_) => widget.onNotify('Slope locked.', progressBump: 0.08),
           ),
-          Text('Intercept b', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Intercept b', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _b,
             min: -4,
@@ -1928,7 +1928,7 @@ class _PsychAttentionSimState extends State<_PsychAttentionSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Sustained attention · Tap only when the TARGET appears',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -1939,7 +1939,7 @@ class _PsychAttentionSimState extends State<_PsychAttentionSim> {
           const SizedBox(height: 10),
           Text(
             'Hits $_hits · False alarms $_falseAlarms · Rounds $_round',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 14),
           Container(
@@ -2016,7 +2016,7 @@ class _PsychBiasSimState extends State<_PsychBiasSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Bias desk · Base-rate neglect',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -2025,7 +2025,7 @@ class _PsychBiasSimState extends State<_PsychBiasSim> {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'A clinic test for a rare disease (1 in 1000) is 99% accurate. '
             'A patient tests positive. What should a careful analyst do?',
             style: TextStyle(color: VuV2Colors.mute, height: 1.4),
@@ -2055,7 +2055,7 @@ class _PsychBiasSimState extends State<_PsychBiasSim> {
                     padding: const EdgeInsets.all(12),
                     child: Text(
                       _options[i],
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2101,10 +2101,10 @@ class _MathQuadraticSimState extends State<_MathQuadraticSim> {
           Text(
             'Discriminant Δ = ${disc.toStringAsFixed(1)}'
             '${disc > 0 ? ' · two roots' : disc == 0 ? ' · one root' : ' · no real roots'}',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 6),
-          Text('a (opens up/down)', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('a (opens up/down)', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _a,
             min: -2,
@@ -2116,7 +2116,7 @@ class _MathQuadraticSimState extends State<_MathQuadraticSim> {
             onChangeEnd: (_) =>
                 widget.onNotify('Parabola a updated.', progressBump: 0.08),
           ),
-          Text('b', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('b', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _b,
             min: -4,
@@ -2125,7 +2125,7 @@ class _MathQuadraticSimState extends State<_MathQuadraticSim> {
             onChangeEnd: (_) =>
                 widget.onNotify('Linear term b updated.', progressBump: 0.06),
           ),
-          Text('c', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('c', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _c,
             min: -4,
@@ -2214,7 +2214,7 @@ class _MathProbabilitySimState extends State<_MathProbabilitySim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Fair coin · Law of large numbers',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -2225,7 +2225,7 @@ class _MathProbabilitySimState extends State<_MathProbabilitySim> {
           const SizedBox(height: 8),
           Text(
             'Trials $_trials · Heads $_heads · Empirical p = ${p.toStringAsFixed(3)}',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 8),
           ClipRRect(
@@ -2305,13 +2305,13 @@ class _WavesSimState extends State<_WavesSim> {
         children: <Widget>[
           Text(
             'Wave desk · A=${_amp.toStringAsFixed(1)}  f=${_freq.toStringAsFixed(1)}',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 16,
             ),
           ),
-          Text('Amplitude', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Amplitude', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _amp,
             min: 0.3,
@@ -2320,7 +2320,7 @@ class _WavesSimState extends State<_WavesSim> {
             onChangeEnd: (_) =>
                 widget.onNotify('Amplitude locked.', progressBump: 0.08),
           ),
-          Text('Frequency', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Frequency', style: TextStyle(color: VuV2Colors.mute)),
           Slider(
             value: _freq,
             min: 0.5,
@@ -2406,7 +2406,7 @@ class _TitrationSimState extends State<_TitrationSim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Titration bench · add base to acid',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -2417,7 +2417,7 @@ class _TitrationSimState extends State<_TitrationSim> {
           const SizedBox(height: 8),
           Text(
             '${_ml.toStringAsFixed(1)} mL base added · target ~$_end mL',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 10),
           Container(
@@ -2491,7 +2491,7 @@ class _EcologySimState extends State<_EcologySim> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Ecology bay · predator–prey balance',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -2500,7 +2500,7 @@ class _EcologySimState extends State<_EcologySim> {
             ),
           ),
           const SizedBox(height: 10),
-          Text('Prey $_prey', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Prey $_prey', style: TextStyle(color: VuV2Colors.mute)),
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
             child: LinearProgressIndicator(
@@ -2511,7 +2511,7 @@ class _EcologySimState extends State<_EcologySim> {
             ),
           ),
           const SizedBox(height: 10),
-          Text('Predators $_pred', style: const TextStyle(color: VuV2Colors.mute)),
+          Text('Predators $_pred', style: TextStyle(color: VuV2Colors.mute)),
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
             child: LinearProgressIndicator(

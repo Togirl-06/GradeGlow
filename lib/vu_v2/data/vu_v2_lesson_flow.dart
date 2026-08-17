@@ -1,4 +1,6 @@
-/// Shared Virtual University lesson journey — same steps for every faculty.
+import '../../config/vu_schools_catalog.dart';
+
+/// Shared Virtual University lesson journey.
 enum VuV2LessonStep {
   moduleIntro,
   coreNotes,
@@ -11,6 +13,7 @@ enum VuV2LessonStep {
 }
 
 /// Professor teaches → student uses it in lab → student proves it.
+/// Practice-only schools skip the lecture and textbook.
 abstract final class VuV2LessonFlowPlan {
   /// Steps shown inside the lesson hub (module intro opens from course home).
   static const List<VuV2LessonStep> hubSteps = <VuV2LessonStep>[
@@ -23,6 +26,12 @@ abstract final class VuV2LessonFlowPlan {
     VuV2LessonStep.summarySheet,
   ];
 
+  /// Career & Life Skills: lab + workplace practice only.
+  static const List<VuV2LessonStep> practiceOnlyHubSteps = <VuV2LessonStep>[
+    VuV2LessonStep.realWorldLab,
+    VuV2LessonStep.interactivePractice,
+  ];
+
   /// A lecture is not mastery. Required: professor + knowledge check
   /// (+ professional lab when one exists for the topic).
   static const List<VuV2LessonStep> masteryCore = <VuV2LessonStep>[
@@ -30,7 +39,23 @@ abstract final class VuV2LessonFlowPlan {
     VuV2LessonStep.knowledgeCheck,
   ];
 
-  static List<VuV2LessonStep> masterySteps({required bool requiresLab}) {
+  static bool isPracticeOnly(String? subjectId) =>
+      subjectId != null && VuSchoolsCatalog.isPracticeOnly(subjectId);
+
+  static List<VuV2LessonStep> hubStepsFor(String subjectId) {
+    if (isPracticeOnly(subjectId)) {
+      return List<VuV2LessonStep>.from(practiceOnlyHubSteps);
+    }
+    return List<VuV2LessonStep>.from(hubSteps);
+  }
+
+  static List<VuV2LessonStep> masterySteps({
+    required bool requiresLab,
+    String? subjectId,
+  }) {
+    if (isPracticeOnly(subjectId)) {
+      return List<VuV2LessonStep>.from(practiceOnlyHubSteps);
+    }
     if (!requiresLab) return List<VuV2LessonStep>.from(masteryCore);
     return <VuV2LessonStep>[
       VuV2LessonStep.aiProfessor,
@@ -39,16 +64,25 @@ abstract final class VuV2LessonFlowPlan {
     ];
   }
 
-  /// All required steps for lesson completion (same for every major).
+  /// Faculty flavor lives in note bodies + lab resolver.
   static List<VuV2LessonStep> forLesson({
     required String subjectId,
     required String topicTitle,
   }) {
-    // Faculty flavor lives in note bodies + lab resolver — step list is universal.
-    return List<VuV2LessonStep>.from(hubSteps);
+    return hubStepsFor(subjectId);
   }
 
-  static String label(VuV2LessonStep step) {
+  static String label(VuV2LessonStep step, {String? subjectId}) {
+    if (isPracticeOnly(subjectId)) {
+      switch (step) {
+        case VuV2LessonStep.realWorldLab:
+          return 'Workplace lab';
+        case VuV2LessonStep.interactivePractice:
+          return 'Real-world practice';
+        default:
+          break;
+      }
+    }
     switch (step) {
       case VuV2LessonStep.moduleIntro:
         return 'Module intro';
@@ -69,7 +103,17 @@ abstract final class VuV2LessonFlowPlan {
     }
   }
 
-  static String subtitle(VuV2LessonStep step) {
+  static String subtitle(VuV2LessonStep step, {String? subjectId}) {
+    if (isPracticeOnly(subjectId)) {
+      switch (step) {
+        case VuV2LessonStep.realWorldLab:
+          return 'Mission · inspect the artifacts · decide · defend why';
+        case VuV2LessonStep.interactivePractice:
+          return 'The same skill on a live workplace floor';
+        default:
+          break;
+      }
+    }
     switch (step) {
       case VuV2LessonStep.moduleIntro:
         return 'Why this module matters';

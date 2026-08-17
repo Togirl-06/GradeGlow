@@ -130,7 +130,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Lab progress',
                       style: TextStyle(
                         color: VuV2Colors.mute,
@@ -209,7 +209,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
         const SizedBox(height: 8),
         Text(
           exp.blurb,
-          style: const TextStyle(color: VuV2Colors.mute),
+          style: TextStyle(color: VuV2Colors.mute),
         ),
         const SizedBox(height: 10),
         VuV2LabSimulationArea(
@@ -250,7 +250,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
                   Expanded(
                     child: Text(
                       e.value,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         height: 1.4,
                       ),
@@ -273,7 +273,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
                 Icon(Icons.check_circle_outline, size: 18, color: VuV2Colors.orange),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(o, style: const TextStyle(color: VuV2Colors.mute, height: 1.35)),
+                  child: Text(o, style: TextStyle(color: VuV2Colors.mute, height: 1.35)),
                 ),
               ],
             ),
@@ -301,7 +301,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
         const SizedBox(height: 8),
         Text(
           'Check understanding after you experiment.',
-          style: const TextStyle(color: VuV2Colors.mute),
+          style: TextStyle(color: VuV2Colors.mute),
         ),
         const SizedBox(height: 14),
         ...exp.quiz.asMap().entries.map((MapEntry<int, VuV2LabQuizItem> e) {
@@ -316,7 +316,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
                 children: <Widget>[
                   Text(
                     item.prompt,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.ink,
                       fontWeight: FontWeight.w900,
                     ),
@@ -362,7 +362,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
                             ),
                             child: Text(
                               c.value,
-                              style: const TextStyle(color: VuV2Colors.ink),
+                              style: TextStyle(color: VuV2Colors.ink),
                             ),
                           ),
                         ),
@@ -384,7 +384,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
       children: <Widget>[
         const VuV2SectionTitle('Lab notes'),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Capture observations, hypotheses, and results.',
           style: TextStyle(color: VuV2Colors.mute),
         ),
@@ -392,7 +392,7 @@ class _VuV2LabSessionScreenState extends State<VuV2LabSessionScreen>
         TextField(
           controller: _notes,
           maxLines: 14,
-          style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+          style: TextStyle(color: VuV2Colors.ink, height: 1.45),
           onChanged: (_) => _bump(0.01),
           decoration: InputDecoration(
             filled: true,
@@ -440,7 +440,7 @@ class _ProfessorPanel extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.school_rounded, color: VuV2Colors.orange),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'AI Professor',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -478,8 +478,8 @@ class _ProfessorPanel extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: askController,
-                  style: const TextStyle(color: VuV2Colors.ink),
-                  decoration: const InputDecoration(
+                  style: TextStyle(color: VuV2Colors.ink),
+                  decoration: InputDecoration(
                     hintText: 'Ask your AI professor…',
                     hintStyle: TextStyle(color: VuV2Colors.mute),
                     isDense: true,

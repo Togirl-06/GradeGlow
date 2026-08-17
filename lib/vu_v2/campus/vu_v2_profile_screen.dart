@@ -5,11 +5,12 @@ import '../../config/vu_schools_catalog.dart';
 import '../../services/auth_service.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
+import '../design/vu_v2_theme.dart';
 import 'vu_v2_account_screen.dart';
 import 'vu_v2_certificate_screen.dart';
 import 'vu_v2_registrar_style.dart';
 
-/// Official student record — registrar office, not a game profile.
+/// Student record — GradeGlow profile card, not a registrar letterhead.
 class VuV2ProfileScreen extends StatelessWidget {
   const VuV2ProfileScreen({
     super.key,
@@ -29,133 +30,83 @@ class VuV2ProfileScreen extends StatelessWidget {
     final String email = _email(context);
     final String id = _studentId(context);
     final String standing = _standing();
-    final List<_EnrollmentRow> enrollments = _enrollments();
     final int credits = progress.completedLessonIds.length * 3;
     final String gpa = progress.quizScores.isEmpty ? '—' : progress.gpaLabel;
+    final String college = _college();
+    final String collegeShort = _collegeShort(college);
+    final ColorScheme scheme = Theme.of(context).colorScheme;
 
     return RegistrarScaffold(
-      title: 'Student record',
+      title: 'Profile',
       showAppBar: !embedded,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
         children: <Widget>[
-          if (embedded) ...<Widget>[
-            const Text(
-              'OFFICE OF THE REGISTRAR',
-              style: RegistrarType.kicker,
-            ),
-            const SizedBox(height: 6),
-            const Text('Student record', style: RegistrarType.serifName),
-            const SizedBox(height: 16),
-          ],
           RegistrarCard(
-            padding: EdgeInsets.zero,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Container(
-                  color: RegistrarColors.navy,
-                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'GRADE GLOW VIRTUAL UNIVERSITY',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 10,
-                          letterSpacing: 1.8,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Academic record',
-                        style: TextStyle(
-                          fontFamily: 'Georgia',
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 8),
-                  child: Text(session.displayName, style: RegistrarType.serifName),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Divider(color: RegistrarColors.rule, height: 1),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
-                  child: Column(
-                    children: <Widget>[
-                      RegistrarRow(label: 'Student ID', value: id),
-                      RegistrarRow(label: 'Email', value: email),
-                      RegistrarRow(label: 'College', value: _college()),
-                      RegistrarRow(label: 'Program', value: session.majorLabel),
-                      RegistrarRow(label: 'Standing', value: standing),
-                      RegistrarRow(label: 'Term GPA', value: gpa),
-                      RegistrarRow(
-                        label: 'Credits earned',
-                        value: credits == 0 ? 'None posted' : '$credits CH',
-                      ),
-                      RegistrarRow(
-                        label: 'Contact hours',
-                        value: '${progress.studyMinutes} recorded',
-                      ),
-                      RegistrarRow(
-                        label: 'Attendance',
-                        value: progress.attendanceDays.isEmpty
-                            ? 'No sessions posted'
-                            : '${progress.attendanceDays.length} session days',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 22),
-          const RegistrarSection('Current enrollment'),
-          RegistrarCard(
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
             child: Column(
               children: <Widget>[
-                const _TableHead(
-                  a: 'Program',
-                  b: 'Status',
-                ),
-                if (enrollments.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'No degree programs on file. Enroll from the Schools catalog.',
-                        style: RegistrarType.body,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _AvatarMark(name: session.displayName),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            session.displayName,
+                            style: TextStyle(
+                              color: scheme.onSurface,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              height: 1.15,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '$id · $college',
+                            style: TextStyle(
+                              color: scheme.onSurfaceVariant,
+                              fontSize: 13,
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                else
-                  ...enrollments.map(
-                    (_EnrollmentRow row) => _TableLine(a: row.title, b: row.status),
-                  ),
+                    const SizedBox(width: 8),
+                    _StatusPill(label: standing),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Divider(height: 1, color: scheme.outline),
+                const SizedBox(height: 6),
+                _FactGrid(
+                  pairs: <(String, String)>[
+                    ('Email', email),
+                    ('Student ID', id),
+                    ('Program', session.majorLabel),
+                    ('College', collegeShort),
+                    ('Term GPA', gpa),
+                    (
+                      'Contact hours',
+                      '${progress.studyMinutes} recorded',
+                    ),
+                    (
+                      'Credits earned',
+                      credits == 0 ? 'None posted' : '$credits CH',
+                    ),
+                    (
+                      'Attendance',
+                      progress.attendanceDays.isEmpty
+                          ? 'No sessions posted'
+                          : '${progress.attendanceDays.length} session day${progress.attendanceDays.length == 1 ? '' : 's'}',
+                    ),
+                  ],
+                ),
               ],
-            ),
-          ),
-          const SizedBox(height: 22),
-          const RegistrarSection('Transcript notes'),
-          RegistrarCard(
-            child: Text(
-              progress.completedLessonIds.isEmpty
-                  ? 'No coursework has been posted. Complete a lecture, laboratory, and examination to begin the official record.'
-                  : '${progress.completedLessonIds.length} lesson${progress.completedLessonIds.length == 1 ? '' : 's'} posted. '
-                      'Laboratory and examination grades contribute to the predicted term GPA ($gpa).',
-              style: RegistrarType.body,
             ),
           ),
           const SizedBox(height: 22),
@@ -168,7 +119,10 @@ class VuV2ProfileScreen extends StatelessWidget {
                   progress.earnedCertificateIds.isEmpty
                       ? 'No certificates issued. Course certificates are recorded here when requirements are complete.'
                       : '${progress.earnedCertificateIds.length} certificate${progress.earnedCertificateIds.length == 1 ? '' : 's'} on file.',
-                  style: RegistrarType.body,
+                  style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    height: 1.45,
+                  ),
                 ),
                 const SizedBox(height: 14),
                 OutlinedButton(
@@ -184,12 +138,6 @@ class VuV2ProfileScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: RegistrarColors.navy,
-                    side: const BorderSide(color: RegistrarColors.navy),
-                    minimumSize: const Size.fromHeight(44),
-                    shape: const RoundedRectangleBorder(),
-                  ),
                   child: Text(
                     progress.earnedCertificateIds.isEmpty
                         ? 'View certificate specimen'
@@ -212,13 +160,6 @@ class VuV2ProfileScreen extends StatelessWidget {
                 ),
               );
             },
-            style: OutlinedButton.styleFrom(
-              foregroundColor: RegistrarColors.ink,
-              side: const BorderSide(color: RegistrarColors.rule),
-              backgroundColor: RegistrarColors.panel,
-              minimumSize: const Size.fromHeight(48),
-              shape: const RoundedRectangleBorder(),
-            ),
             child: const Text('Account & billing'),
           ),
         ],
@@ -243,27 +184,14 @@ class VuV2ProfileScreen extends StatelessWidget {
     return 'Virtual University';
   }
 
-  List<_EnrollmentRow> _enrollments() {
-    final List<_EnrollmentRow> rows = <_EnrollmentRow>[];
-    for (final VuSchool school in VuSchoolsCatalog.schools) {
-      for (final VuSchoolProgram program in school.programs) {
-        if (progress.enrolledDegreeIds.contains(program.roadmapSubjectId) ||
-            progress.enrolledDegreeIds.contains(program.id)) {
-          rows.add(
-            _EnrollmentRow(
-              title: program.title,
-              status: 'Enrolled · ${school.title}',
-            ),
-          );
-        }
-      }
+  String _collegeShort(String college) {
+    if (college.contains('Technology')) return 'School of Technology & CS';
+    if (college.contains('Engineering')) return 'School of Engineering';
+    if (college.contains('Health') || college.contains('Medicine')) {
+      return 'School of Health';
     }
-    if (rows.isEmpty) {
-      rows.add(
-        _EnrollmentRow(title: session.majorLabel, status: 'Declared'),
-      );
-    }
-    return rows.take(12).toList();
+    if (college.contains('Business')) return 'School of Business';
+    return college;
   }
 
   String _standing() {
@@ -272,9 +200,9 @@ class VuV2ProfileScreen extends StatelessWidget {
       return 'Academic warning';
     }
     if (progress.quizScores.isNotEmpty && progress.gpa >= 3.5) {
-      return 'Good standing · Dean’s list eligible';
+      return 'Dean’s list';
     }
-    return 'Good academic standing';
+    return 'Good standing';
   }
 
   String _email(BuildContext context) {
@@ -298,60 +226,141 @@ class VuV2ProfileScreen extends StatelessWidget {
   }
 }
 
-class _EnrollmentRow {
-  const _EnrollmentRow({required this.title, required this.status});
-  final String title;
-  final String status;
-}
-
-class _TableHead extends StatelessWidget {
-  const _TableHead({required this.a, required this.b});
-  final String a;
-  final String b;
+class _AvatarMark extends StatelessWidget {
+  const _AvatarMark({required this.name});
+  final String name;
 
   @override
   Widget build(BuildContext context) {
+    final String trimmed = name.trim();
+    final String letter =
+        trimmed.isEmpty ? 'G' : trimmed.substring(0, 1).toUpperCase();
     return Container(
-      color: const Color(0xFFEEE8DC),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Text(a.toUpperCase(), style: RegistrarType.label),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(b.toUpperCase(), style: RegistrarType.label),
-          ),
-        ],
+      width: 56,
+      height: 56,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[
+            VuV2Colors.gold,
+            VuV2Colors.mint,
+          ],
+        ),
+      ),
+      child: Text(
+        letter,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
   }
 }
 
-class _TableLine extends StatelessWidget {
-  const _TableLine({required this.a, required this.b});
-  final String a;
-  final String b;
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.label});
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: RegistrarColors.rule)),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(99),
+        border: Border.all(color: VuV2Colors.mint.withValues(alpha: 0.7)),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: VuV2Colors.mint,
+          fontWeight: FontWeight.w800,
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+}
+
+class _FactGrid extends StatelessWidget {
+  const _FactGrid({required this.pairs});
+  final List<(String, String)> pairs;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints c) {
+        final bool two = c.maxWidth >= 520;
+        if (!two) {
+          return Column(
+            children: <Widget>[
+              for (final (String label, String value) pair in pairs)
+                _FactCell(label: pair.$1, value: pair.$2),
+            ],
+          );
+        }
+        final List<Widget> rows = <Widget>[];
+        for (int i = 0; i < pairs.length; i += 2) {
+          rows.add(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: _FactCell(label: pairs[i].$1, value: pairs[i].$2),
+                ),
+                const SizedBox(width: 18),
+                Expanded(
+                  child: i + 1 < pairs.length
+                      ? _FactCell(label: pairs[i + 1].$1, value: pairs[i + 1].$2)
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          );
+        }
+        return Column(children: rows);
+      },
+    );
+  }
+}
+
+class _FactCell extends StatelessWidget {
+  const _FactCell({required this.label, required this.value});
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            flex: 3,
-            child: Text(a, style: RegistrarType.body.copyWith(fontWeight: FontWeight.w600)),
+            child: Text(
+              label,
+              style: TextStyle(
+                color: scheme.onSurfaceVariant,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
-          Expanded(
-            flex: 2,
-            child: Text(b, style: RegistrarType.body.copyWith(color: RegistrarColors.mute)),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                color: scheme.onSurface,
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
         ],
       ),

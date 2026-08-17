@@ -277,7 +277,7 @@ class _VuV2OnboardingScreenState extends State<VuV2OnboardingScreen> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     _error!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.danger,
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
@@ -380,7 +380,7 @@ class _WelcomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 36),
-        const Text(
+        Text(
           'Welcome to Your',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -391,7 +391,7 @@ class _WelcomePage extends StatelessWidget {
           ),
         ),
         ShaderMask(
-          shaderCallback: (Rect bounds) => const LinearGradient(
+          shaderCallback: (Rect bounds) => LinearGradient(
             colors: <Color>[VuV2Colors.mint, VuV2Colors.gold],
           ).createShader(bounds),
           child: const Text(
@@ -406,7 +406,7 @@ class _WelcomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        const Text(
+        Text(
           'Not a chatbot. A real classroom.',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -416,7 +416,7 @@ class _WelcomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           'AI Professors teach · progressive diagrams · labs · '
           'adaptive review when you confuse radius and ulna.',
           textAlign: TextAlign.center,
@@ -427,7 +427,7 @@ class _WelcomePage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           'An AI-powered virtual university where you don\'t just study — '
           'you attend AI lectures, run virtual experiments, solve real '
           'professional cases, and build evidence of what you can do.',
@@ -455,7 +455,7 @@ class _GoalsPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
       children: <Widget>[
-        const Text(
+        Text(
           'What are you here to accomplish?',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -466,7 +466,7 @@ class _GoalsPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           'Choose your primary goal — we\'ll tailor your experience.',
           textAlign: TextAlign.center,
           style: TextStyle(color: VuV2Colors.mute, height: 1.4),
@@ -505,7 +505,7 @@ class _GoalsPage extends StatelessWidget {
                       Expanded(
                         child: Text(
                           g.label,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w800,
                             fontSize: 13,
@@ -551,7 +551,7 @@ class _FieldsPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
       children: <Widget>[
-        const Text(
+        Text(
           'Choose your fields of interest',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -562,7 +562,7 @@ class _FieldsPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           'Select all that appeal to you — you can choose multiple.',
           textAlign: TextAlign.center,
           style: TextStyle(color: VuV2Colors.mute, height: 1.4),
@@ -571,7 +571,7 @@ class _FieldsPage extends StatelessWidget {
         for (final _InterestGroup group in groups) ...<Widget>[
           Text(
             group.title,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.mint,
               fontWeight: FontWeight.w900,
               fontSize: 12,
@@ -644,7 +644,7 @@ class _PlanPage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
       children: <Widget>[
-        const Text(
+        Text(
           'Set up your profile',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -654,13 +654,13 @@ class _PlanPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           'Tell us your name and weekly study goal.',
           textAlign: TextAlign.center,
           style: TextStyle(color: VuV2Colors.mute),
         ),
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'Preferred name',
           style: TextStyle(
             color: VuV2Colors.ink,
@@ -673,30 +673,30 @@ class _PlanPage extends StatelessWidget {
           controller: nameController,
           onChanged: onNameChanged,
           textCapitalization: TextCapitalization.words,
-          style: const TextStyle(color: VuV2Colors.ink),
+          style: TextStyle(color: VuV2Colors.ink),
           decoration: InputDecoration(
             hintText: 'What should we call you?',
-            hintStyle: const TextStyle(color: VuV2Colors.mute),
+            hintStyle: TextStyle(color: VuV2Colors.mute),
             filled: true,
             fillColor: VuV2Colors.card,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(VuV2Radii.md),
-              borderSide: const BorderSide(color: VuV2Colors.stroke),
+              borderSide: BorderSide(color: VuV2Colors.stroke),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(VuV2Radii.md),
-              borderSide: const BorderSide(color: VuV2Colors.stroke),
+              borderSide: BorderSide(color: VuV2Colors.stroke),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(VuV2Radii.md),
-              borderSide: const BorderSide(color: VuV2Colors.mint, width: 1.4),
+              borderSide: BorderSide(color: VuV2Colors.mint, width: 1.4),
             ),
           ),
         ),
         const SizedBox(height: 24),
         Text(
           '$weeklyMinutes minutes / week',
-          style: const TextStyle(
+          style: TextStyle(
             color: VuV2Colors.mint,
             fontWeight: FontWeight.w900,
             fontSize: 22,
@@ -751,7 +751,7 @@ class _ReadyPage extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        const Text(
+        Text(
           'Your campus is ready',
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -767,7 +767,7 @@ class _ReadyPage extends StatelessWidget {
           'Weekly goal: $minutes minutes\n\n'
           'Your professor will teach the topic you open. Then you apply it in the lab.',
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             color: VuV2Colors.mute,
             height: 1.55,
             fontSize: 15,

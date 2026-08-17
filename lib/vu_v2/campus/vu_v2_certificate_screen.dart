@@ -64,7 +64,7 @@ class VuV2CertificateScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 18),
-                const Text(
+                Text(
                   'This certifies that',
                   style: TextStyle(color: VuV2Colors.mute),
                 ),
@@ -72,14 +72,14 @@ class VuV2CertificateScreen extends StatelessWidget {
                 Text(
                   studentName,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 26,
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                Text(
                   'has successfully completed',
                   style: TextStyle(color: VuV2Colors.mute),
                 ),
@@ -96,15 +96,15 @@ class VuV2CertificateScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'Completion date · $dateLabel',
-                  style: const TextStyle(color: VuV2Colors.mute, fontSize: 13),
+                  style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Verification ID · $verificationId',
-                  style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                  style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Learning achievement · beta (not an accredited credential)',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: VuV2Colors.mute, fontSize: 11),

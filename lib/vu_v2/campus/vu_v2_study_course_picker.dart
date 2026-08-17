@@ -131,7 +131,7 @@ class VuV2StudyCoursePickerScreen extends StatelessWidget {
         vuV2GroupCoursesByCategory(courses);
 
     final List<Widget> tiles = <Widget>[
-      const Text(
+      Text(
         'Choose a course',
         style: TextStyle(
           color: VuV2Colors.ink,
@@ -142,7 +142,7 @@ class VuV2StudyCoursePickerScreen extends StatelessWidget {
       const SizedBox(height: 8),
       Text(
         subtitle,
-        style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+        style: TextStyle(color: VuV2Colors.mute, height: 1.4),
       ),
       const SizedBox(height: 8),
     ];
@@ -164,7 +164,7 @@ class VuV2StudyCoursePickerScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   e.value.first.facultyEmoji,
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -180,7 +180,7 @@ class VuV2StudyCoursePickerScreen extends StatelessWidget {
                 ),
                 Text(
                   '${e.value.length}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.mute,
                     fontWeight: FontWeight.w700,
                     fontSize: 12,
@@ -202,11 +202,11 @@ class VuV2StudyCoursePickerScreen extends StatelessWidget {
                   onTap: () => onCourseSelected(context, c),
                   leading: Text(
                     c.course.emoji ?? c.facultyEmoji,
-                    style: const TextStyle(fontSize: 22),
+                    style: TextStyle(fontSize: 22),
                   ),
                   title: Text(
                     c.course.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.ink,
                       fontWeight: FontWeight.w800,
                     ),
@@ -214,9 +214,9 @@ class VuV2StudyCoursePickerScreen extends StatelessWidget {
                   subtitle: Text(
                     '${c.course.lessonCount} topics'
                     '${c.trackTitle.isNotEmpty ? ' · ${c.trackTitle}' : ''}',
-                    style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                    style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
                   ),
-                  trailing: const Icon(
+                  trailing: Icon(
                     Icons.chevron_right_rounded,
                     color: VuV2Colors.mute,
                   ),

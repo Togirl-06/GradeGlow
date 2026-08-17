@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../config/vu_schools_catalog.dart';
 import '../../data/bio_101_curriculum.dart';
 import '../../data/diagram_misconception_catalog.dart';
 import '../../data/diagram_misconception_store.dart';
@@ -14,11 +15,13 @@ import '../data/vu_v2_mixed_quiz.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
+import '../labs/career_practice_labs.dart';
 import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_lesson_activity_router.dart';
 import 'vu_v2_lesson_learn_hub_screen.dart';
 import 'vu_v2_module_intro_screen.dart';
 import 'vu_v2_semester_exam_screen.dart';
+import 'vu_v2_textbook_reader_screen.dart';
 
 /// Course dashboard matching the BIO-101 mockup (Overview · Lectures · …).
 class VuV2CourseHomeScreen extends StatefulWidget {
@@ -48,15 +51,29 @@ class VuV2CourseHomeScreen extends StatefulWidget {
 class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
   int _tab = 0;
 
-  static const List<({IconData icon, String label})> _tabs =
-      <({IconData icon, String label})>[
-    (icon: Icons.dashboard_outlined, label: 'Overview'),
-    (icon: Icons.smart_display_outlined, label: 'Lectures'),
-    (icon: Icons.menu_book_outlined, label: 'Textbook'),
-    (icon: Icons.science_outlined, label: 'Labs'),
-    (icon: Icons.checklist_rtl_rounded, label: 'Quizzes'),
-    (icon: Icons.grade_outlined, label: 'Grades'),
+  bool get _practiceOnly =>
+      VuSchoolsCatalog.isPracticeOnly(widget.subjectId);
+
+  static const List<({String id, IconData icon, String label})> _academicTabs =
+      <({String id, IconData icon, String label})>[
+    (id: 'overview', icon: Icons.dashboard_outlined, label: 'Overview'),
+    (id: 'lectures', icon: Icons.smart_display_outlined, label: 'Lectures'),
+    (id: 'textbook', icon: Icons.menu_book_outlined, label: 'Textbook'),
+    (id: 'labs', icon: Icons.science_outlined, label: 'Labs'),
+    (id: 'quizzes', icon: Icons.checklist_rtl_rounded, label: 'Quizzes'),
+    (id: 'grades', icon: Icons.grade_outlined, label: 'Grades'),
   ];
+
+  static const List<({String id, IconData icon, String label})> _practiceTabs =
+      <({String id, IconData icon, String label})>[
+    (id: 'overview', icon: Icons.dashboard_outlined, label: 'Overview'),
+    (id: 'labs', icon: Icons.science_outlined, label: 'Labs'),
+    (id: 'practice', icon: Icons.work_outline_rounded, label: 'Practice'),
+    (id: 'grades', icon: Icons.grade_outlined, label: 'Grades'),
+  ];
+
+  List<({String id, IconData icon, String label})> get _tabs =>
+      _practiceOnly ? _practiceTabs : _academicTabs;
 
   VuV2Session get session => widget.session;
   VuV2ProgressStore get progress => widget.progress;
@@ -119,8 +136,11 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
             code: '$_courseCode · ${course.resolvedMinutes ~/ 15} credits',
             title: course.title,
             blurb: course.subtitle ??
-                'AI-led lectures, diagrams, labs, and quizzes built around this course.',
-            professor: _professorName,
+                (_practiceOnly
+                    ? 'Labs and real-world workplace practice — no lectures.'
+                    : 'AI-led lectures, diagrams, labs, and quizzes built around this course.'),
+            professor: _practiceOnly ? 'Workplace coach' : _professorName,
+            roleLabel: _practiceOnly ? 'Coach' : 'Professor',
             done: done,
             total: _lessonIds.length,
             pct: _pct,
@@ -152,8 +172,10 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
   }
 
   Widget _tabBody() {
-    switch (_tab) {
-      case 1:
+    final String tabId =
+        (_tab >= 0 && _tab < _tabs.length) ? _tabs[_tab].id : 'overview';
+    switch (tabId) {
+      case 'lectures':
         return _ModulesPanel(
           modules: _modules,
           session: session,
@@ -165,21 +187,72 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           course: course,
           lessonIds: _lessonIds,
         );
-      case 2:
-        return _ComingPanel(
-          title: 'Textbook',
-          body:
-              'Chapter readings and figure callouts for ${course.title} open here.',
+      case 'textbook':
+        return _TextbookPanel(
+          subjectId: widget.subjectId,
+          facultyTitle: widget.facultyTitle,
+          facultyEmoji: widget.facultyEmoji,
+          trackTitle: widget.trackTitle,
+          course: course,
+          modules: _modules,
         );
-      case 3:
+      case 'labs':
         return _LabsPanel(
           subjectId: widget.subjectId,
           courseTitle: course.title,
           lessons: _lessons,
           modules: _modules,
           completedLessons: widget.progress.completedLessonIds.length,
+          practiceOnly: _practiceOnly,
         );
-      case 4:
+      case 'practice':
+        return Column(
+          children: <Widget>[
+            VuV2Surface(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Real-world practice',
+                    style: TextStyle(
+                      color: VuV2Colors.ink,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Same skills as the lab, on a live workplace floor — hiring desks, interviews, pitches, money, teams.',
+                    style: TextStyle(color: VuV2Colors.mute, height: 1.45),
+                  ),
+                  const SizedBox(height: 12),
+                  VuV2PrimaryButton(
+                    label: 'Enter the workplace',
+                    trailingArrow: true,
+                    onPressed: () => CareerPracticeLabs.openWorkplace(
+                      context,
+                      widget.subjectId,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            _ModulesPanel(
+              modules: _modules,
+              session: session,
+              progress: progress,
+              subjectId: widget.subjectId,
+              facultyTitle: widget.facultyTitle,
+              facultyEmoji: widget.facultyEmoji,
+              trackTitle: widget.trackTitle,
+              course: course,
+              lessonIds: _lessonIds,
+              compact: true,
+            ),
+          ],
+        );
+      case 'quizzes':
         return _QuizzesPanel(
           modules: _modules,
           course: course,
@@ -191,12 +264,12 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           session: session,
           lessons: _lessons,
         );
-      case 5:
+      case 'grades':
         return VuV2Surface(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Grades',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -207,15 +280,15 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
               const SizedBox(height: 10),
               Text(
                 'Course progress ${(_pct * 100).round()}%\n'
-                'Lessons complete: '
+                'Missions complete: '
                 '${_lessonIds.where(progress.completedLessonIds.contains).length}'
                 ' / ${_lessonIds.length}',
-                style: const TextStyle(color: VuV2Colors.mute, height: 1.5),
+                style: TextStyle(color: VuV2Colors.mute, height: 1.5),
               ),
             ],
           ),
         );
-      case 0:
+      case 'overview':
       default:
         return _OverviewPanel(
           objectives: course.id == 'general_biology'
@@ -241,7 +314,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Course Info',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -261,8 +334,8 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Your Professor',
+              Text(
+                _practiceOnly ? 'Your coach' : 'Your Professor',
                 style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
@@ -276,7 +349,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
                     backgroundColor: VuV2Colors.mint.withValues(alpha: 0.25),
                     child: Text(
                       widget.facultyEmoji,
-                      style: const TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: 24),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -285,15 +358,17 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          _professorName,
-                          style: const TextStyle(
+                          _practiceOnly ? 'Workplace coach' : _professorName,
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w900,
                           ),
                         ),
                         Text(
-                          'Professor of ${widget.facultyTitle}',
-                          style: const TextStyle(
+                          _practiceOnly
+                              ? 'Practice studios · ${widget.facultyTitle}'
+                              : 'Professor of ${widget.facultyTitle}',
+                          style: TextStyle(
                             color: VuV2Colors.mute,
                             fontSize: 12,
                           ),
@@ -308,7 +383,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
                 course.resolvedProfessorIntro,
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.mute,
                   height: 1.4,
                   fontSize: 13,
@@ -316,9 +391,11 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
               ),
               const SizedBox(height: 12),
               VuV2PrimaryButton(
-                label: course.id == 'general_biology'
-                    ? 'Start BIO-101 AI Professor'
-                    : 'Start First Lesson',
+                label: _practiceOnly
+                    ? 'Start first lab'
+                    : (course.id == 'general_biology'
+                        ? 'Start BIO-101 AI Professor'
+                        : 'Start First Lesson'),
                 trailingArrow: true,
                 onPressed: _lessons.isEmpty
                     ? null
@@ -354,11 +431,11 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: Text(label, style: const TextStyle(color: VuV2Colors.mute)),
+            child: Text(label, style: TextStyle(color: VuV2Colors.mute)),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w800,
             ),
@@ -376,6 +453,7 @@ class _CourseHero extends StatelessWidget {
     required this.title,
     required this.blurb,
     required this.professor,
+    this.roleLabel = 'Professor',
     required this.done,
     required this.total,
     required this.pct,
@@ -386,6 +464,7 @@ class _CourseHero extends StatelessWidget {
   final String title;
   final String blurb;
   final String professor;
+  final String roleLabel;
   final int done;
   final int total;
   final double pct;
@@ -407,7 +486,7 @@ class _CourseHero extends StatelessWidget {
                   color: VuV2Colors.mint,
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Text(emoji, style: const TextStyle(fontSize: 26)),
+                child: Text(emoji, style: TextStyle(fontSize: 26)),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -416,7 +495,7 @@ class _CourseHero extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       code,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mint,
                         fontWeight: FontWeight.w800,
                         fontSize: 12,
@@ -425,7 +504,7 @@ class _CourseHero extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w900,
                         fontSize: 22,
@@ -440,7 +519,7 @@ class _CourseHero extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             blurb,
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.45),
           ),
           const SizedBox(height: 14),
           Row(
@@ -448,13 +527,13 @@ class _CourseHero extends StatelessWidget {
               CircleAvatar(
                 radius: 14,
                 backgroundColor: VuV2Colors.mint.withValues(alpha: 0.2),
-                child: const Icon(Icons.person, size: 16, color: VuV2Colors.mint),
+                child: Icon(Icons.person, size: 16, color: VuV2Colors.mint),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Professor  $professor',
-                  style: const TextStyle(
+                  '$roleLabel  $professor',
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
@@ -463,7 +542,7 @@ class _CourseHero extends StatelessWidget {
               ),
               Text(
                 '$done/$total lessons · ${(pct * 100).round()}%',
-                style: const TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
               ),
             ],
           ),
@@ -482,7 +561,7 @@ class _CourseTabBar extends StatelessWidget {
     required this.onChanged,
   });
 
-  final List<({IconData icon, String label})> tabs;
+  final List<({String id, IconData icon, String label})> tabs;
   final int index;
   final ValueChanged<int> onChanged;
 
@@ -569,7 +648,7 @@ class _OverviewPanel extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Learning Objectives',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -588,13 +667,13 @@ class _OverviewPanel extends StatelessWidget {
                         width: 26,
                         height: 26,
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: VuV2Colors.mint,
                           shape: BoxShape.circle,
                         ),
                         child: Text(
                           '${i + 1}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Color(0xFF04110C),
                             fontWeight: FontWeight.w900,
                             fontSize: 12,
@@ -605,7 +684,7 @@ class _OverviewPanel extends StatelessWidget {
                       Expanded(
                         child: Text(
                           objectives[i],
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             height: 1.4,
                           ),
@@ -624,7 +703,7 @@ class _OverviewPanel extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
+                Text(
                   'Adaptive Review Queue',
                   style: TextStyle(
                     color: VuV2Colors.ink,
@@ -635,7 +714,7 @@ class _OverviewPanel extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   'The AI Professor re-teaches these pairs — or fix them now in a 2-minute drill.',
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.4),
                 ),
                 const SizedBox(height: 12),
                 ...progress.topDiagramMisconceptions.map((String id) {
@@ -672,13 +751,13 @@ class _OverviewPanel extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   '${def.labelA} vs ${def.labelB} · $count miss${count == 1 ? '' : 'es'}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.ink,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.chevron_right_rounded,
                                 color: VuV2Colors.mute,
                                 size: 20,
@@ -752,7 +831,7 @@ class _ModulesPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Course Modules',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -787,7 +866,7 @@ class _ModulesPanel extends StatelessWidget {
                     },
                     child: Text(
                       m.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.ink,
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
@@ -845,7 +924,7 @@ class _ModulesPanel extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 lesson.title,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: VuV2Colors.ink,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -853,7 +932,7 @@ class _ModulesPanel extends StatelessWidget {
                             ),
                             Text(
                               _mins(lesson),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: VuV2Colors.mute,
                                 fontSize: 12,
                               ),
@@ -942,7 +1021,7 @@ class _QuizzesPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Quizzes & Exam',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -954,10 +1033,10 @@ class _QuizzesPanel extends StatelessWidget {
           ...modules.map(
             (VuV2RoadmapModule m) => ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.quiz_outlined, color: VuV2Colors.mint),
+              leading: Icon(Icons.quiz_outlined, color: VuV2Colors.mint),
               title: Text(
                 '${m.title} quiz',
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w800,
                 ),
@@ -1028,6 +1107,7 @@ class _LabsPanel extends StatelessWidget {
     required this.lessons,
     required this.modules,
     required this.completedLessons,
+    this.practiceOnly = false,
   });
 
   final String subjectId;
@@ -1035,6 +1115,7 @@ class _LabsPanel extends StatelessWidget {
   final List<VuV2RoadmapLesson> lessons;
   final List<VuV2RoadmapModule> modules;
   final int completedLessons;
+  final bool practiceOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -1059,9 +1140,11 @@ class _LabsPanel extends StatelessWidget {
     }
 
     if (linked.isEmpty) {
-      return const _ComingPanel(
+      return _ComingPanel(
         title: 'Labs',
-        body: 'Practical laboratories for this course will appear here as lectures unlock.',
+        body: practiceOnly
+            ? 'Workplace labs for this course will appear here as you open missions.'
+            : 'Practical laboratories for this course will appear here as lectures unlock.',
       );
     }
 
@@ -1069,7 +1152,7 @@ class _LabsPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Course laboratories',
             style: TextStyle(
               color: VuV2Colors.ink,
@@ -1078,8 +1161,8 @@ class _LabsPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
-            'Each lab connects to a lecture. Complete the lesson, then enter the virtual laboratory.',
+          Text(
+            'Each lab is a live desk: mission, artifacts, a decision, and a report. Not a lecture and not a quiz.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.45),
           ),
           const SizedBox(height: 14),
@@ -1089,20 +1172,20 @@ class _LabsPanel extends StatelessWidget {
               child: ListTile(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: const BorderSide(color: VuV2Colors.stroke),
+                  side: BorderSide(color: VuV2Colors.stroke),
                 ),
                 tileColor: VuV2Colors.card,
-                leading: const Icon(Icons.science_outlined, color: VuV2Colors.mint),
+                leading: Icon(Icons.science_outlined, color: VuV2Colors.mint),
                 title: Text(
                   e.link.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 subtitle: Text(
                   'After: ${e.lesson.title}\n~${e.link.estimatedMinutes} min · ${e.link.difficulty}',
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.35),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.35),
                 ),
                 trailing: FilledButton(
                   onPressed: () {
@@ -1130,6 +1213,115 @@ class _LabsPanel extends StatelessWidget {
   }
 }
 
+class _TextbookPanel extends StatelessWidget {
+  const _TextbookPanel({
+    required this.subjectId,
+    required this.facultyTitle,
+    required this.facultyEmoji,
+    required this.trackTitle,
+    required this.course,
+    required this.modules,
+  });
+
+  final String subjectId;
+  final String facultyTitle;
+  final String facultyEmoji;
+  final String trackTitle;
+  final VuV2RoadmapCourse course;
+  final List<VuV2RoadmapModule> modules;
+
+  @override
+  Widget build(BuildContext context) {
+    return VuV2Surface(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Course textbook',
+            style: TextStyle(
+              color: VuV2Colors.ink,
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Course → Unit → Chapter. Each reading is a full instructional chapter, '
+            'not a summary. The AI professor teaches this material conversationally in lecture — '
+            'these pages are the reference.',
+            style: TextStyle(color: VuV2Colors.mute, height: 1.45),
+          ),
+          const SizedBox(height: 14),
+          ...modules.expand((VuV2RoadmapModule m) {
+            return <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 6),
+                child: Text(
+                  m.title,
+                  style: TextStyle(
+                    color: VuV2Colors.mint,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              ...m.lessons.map((VuV2RoadmapLesson lesson) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: VuV2Colors.stroke),
+                    ),
+                    tileColor: VuV2Colors.card,
+                    leading: Icon(
+                      Icons.menu_book_outlined,
+                      color: VuV2Colors.mint,
+                    ),
+                    title: Text(
+                      lesson.title,
+                      style: TextStyle(
+                        color: VuV2Colors.ink,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    subtitle: Text(
+                      lesson.subtitle ?? 'Required chapter reading',
+                      style: TextStyle(color: VuV2Colors.mute),
+                    ),
+                    trailing: Text(
+                      'READ',
+                      style: TextStyle(
+                        color: VuV2Colors.mint,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => VuV2TextbookReaderScreen(
+                            subjectId: subjectId,
+                            facultyTitle: facultyTitle,
+                            facultyEmoji: facultyEmoji,
+                            trackTitle: trackTitle,
+                            courseTitle: course.title,
+                            topicTitle: lesson.title,
+                            topicSubtitle: lesson.subtitle,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }),
+            ];
+          }),
+        ],
+      ),
+    );
+  }
+}
+
 class _ComingPanel extends StatelessWidget {
   const _ComingPanel({required this.title, required this.body});
   final String title;
@@ -1143,14 +1335,14 @@ class _ComingPanel extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 18,
             ),
           ),
           const SizedBox(height: 8),
-          Text(body, style: const TextStyle(color: VuV2Colors.mute, height: 1.45)),
+          Text(body, style: TextStyle(color: VuV2Colors.mute, height: 1.45)),
         ],
       ),
     );

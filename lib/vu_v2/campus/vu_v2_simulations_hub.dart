@@ -26,7 +26,7 @@ class VuV2SimulationsHub extends StatelessWidget {
       children: <Widget>[
         const VuV2SectionTitle('Simulations'),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'You are not taking a quiz. You are on the job.\n'
           'Role · environment · mission · decisions · consequences · evaluation.',
           style: TextStyle(color: VuV2Colors.mute, height: 1.45),
@@ -78,7 +78,7 @@ class _SimCard extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              Text(lab.emoji, style: const TextStyle(fontSize: 28)),
+              Text(lab.emoji, style: TextStyle(fontSize: 28)),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -107,7 +107,7 @@ class _SimCard extends StatelessWidget {
                       lab.subtitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         fontSize: 12,
                         height: 1.3,

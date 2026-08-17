@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../config/vu_schools_catalog.dart';
 import '../career_labs/playable/playable_router.dart';
 import '../career_labs/playable/science/biology/anatomy_3d_viewer_screen.dart';
 import '../career_labs/playable/science/biology/biology_anatomy_3d_lab.dart';
 import '../career_labs/playable/science/biology/biology_lab_home.dart';
-import '../career_labs/playable/science/biology/clinical_viva_quiz_screen.dart';
 import '../career_labs/playable/science/chemistry/chemistry_lab_home.dart';
 import '../career_labs/playable/science/physics/physics_lab_home.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import '../../data/university_learning_engine.dart';
-import 'simulation/university_sim_flow.dart';
+import 'investigation/investigation_flow.dart';
+import 'career_practice_labs.dart';
 import 'university_practical/practical_catalog.dart';
 import 'university_practical/practical_mission.dart';
 import 'vu_v2_cs_coding_arena.dart';
@@ -41,6 +42,9 @@ class CourseLabEntry {
 abstract final class CourseLabsCatalog {
   static List<CourseLabEntry> forMajor(String majorId) {
     final String m = majorId.toLowerCase();
+    if (VuSchoolsCatalog.isPracticeOnly(majorId)) {
+      return CareerPracticeLabs.catalog(majorId);
+    }
     if (m.contains('bio')) return biology;
     if (m.contains('chem')) return chemistry;
     if (m.contains('phys')) return physics;
@@ -166,7 +170,7 @@ abstract final class CourseLabsCatalog {
       estimatedMinutes: 32,
       difficulty: 'Professional',
     );
-    return UniversitySimulationFlow.open(
+    return InvestigationLabFlow.open(
       context: context,
       link: link,
       subjectId: mission.courseId,
@@ -228,9 +232,24 @@ abstract final class CourseLabsCatalog {
       id: 'bio_quiz',
       courseId: 'biology',
       emoji: '📝',
-      title: 'Clinical Viva Quiz battery',
-      subtitle: 'MCQs + live 3D diagnose items',
-      open: (BuildContext c) => ClinicalVivaQuizScreen.open(c),
+      title: 'Unknown cell — independent',
+      subtitle: 'Level 3: the problem, not the recipe',
+      open: (BuildContext c) => InvestigationLabFlow.open(
+        context: c,
+        link: const UniversityLabLink(
+          labId: 'bio_cell_independent',
+          stationId: 'microscope',
+          title: 'Unknown cell investigation',
+          purpose: 'Independent cell identification with a full report.',
+          objectives: <String>['Identify the unknown', 'Defend the hypothesis'],
+          estimatedMinutes: 40,
+          difficulty: 'Independent',
+        ),
+        subjectId: 'biology',
+        courseTitle: 'General Biology',
+        topicTitle: 'Cell Structure',
+        level: 3,
+      ),
     ),
     CourseLabEntry(
       id: 'bio_viewers',
@@ -254,12 +273,28 @@ abstract final class CourseLabsCatalog {
     CourseLabEntry(
       id: 'bio_cell',
       courseId: 'biology',
-      emoji: '🦠',
-      title: 'Animal cell investigation',
-      subtitle: 'Label organelles on the cell diagram',
-      open: (BuildContext c) => _push(
-        c,
-        const BiologyLabHomeScreen(initialStationId: 'cell'),
+      emoji: '🔬',
+      title: 'Unknown cell investigation',
+      subtitle: 'Microscope protocol → hypothesis → evidence → lab report',
+      open: (BuildContext c) => InvestigationLabFlow.open(
+        context: c,
+        link: const UniversityLabLink(
+          labId: 'bio_cell_unknown',
+          stationId: 'microscope',
+          title: 'Unknown cell investigation',
+          purpose: 'Identify an unlabeled specimen by procedure, not by clicking a label.',
+          objectives: <String>[
+            'Focus in magnification order',
+            'Hypothesis with a reason',
+            'Laboratory report',
+          ],
+          estimatedMinutes: 35,
+          difficulty: 'Assisted',
+        ),
+        subjectId: 'biology',
+        courseTitle: 'General Biology',
+        topicTitle: 'Cell Structure',
+        level: 2,
       ),
     ),
     CourseLabEntry(
@@ -290,11 +325,27 @@ abstract final class CourseLabsCatalog {
       id: 'chem_titration_bench',
       courseId: 'chemistry',
       emoji: '💧',
-      title: 'Titration bench',
-      subtitle: 'Hands-on titration station',
-      open: (BuildContext c) => _push(
-        c,
-        const ChemistryLabHome(initialStationId: 'titration'),
+      title: 'Acid–base titration',
+      subtitle: 'Unknown acid · endpoint consequences · molarity report',
+      open: (BuildContext c) => InvestigationLabFlow.open(
+        context: c,
+        link: const UniversityLabLink(
+          labId: 'chem_titration',
+          stationId: 'burette',
+          title: 'Acid–base titration',
+          purpose: 'Determine the concentration of an unknown acid.',
+          objectives: <String>[
+            'Prepare glassware',
+            'Titrate without erasing an overshoot',
+            'Calculate molarity',
+          ],
+          estimatedMinutes: 40,
+          difficulty: 'Assisted',
+        ),
+        subjectId: 'chemistry',
+        courseTitle: 'General Chemistry',
+        topicTitle: 'Titration',
+        level: 2,
       ),
     ),
     CourseLabEntry(
@@ -364,10 +415,28 @@ abstract final class CourseLabsCatalog {
       id: 'phys_motion',
       courseId: 'physics',
       emoji: '🚀',
-      title: 'Motion bay',
-      subtitle: 'Kinematics station',
-      open: (BuildContext c) =>
-          _push(c, const PhysicsLabHome(initialStationId: 'motion')),
+      title: 'Determine g from free fall',
+      subtitle: 'Noisy trials · table · graph · experimental error',
+      open: (BuildContext c) => InvestigationLabFlow.open(
+        context: c,
+        link: const UniversityLabLink(
+          labId: 'phys_gravity',
+          stationId: 'drop',
+          title: 'Determine g from free fall',
+          purpose: 'Estimate g from repeated drop times and explain the error.',
+          objectives: <String>[
+            'Five trials',
+            'Calculate g',
+            'Error story',
+          ],
+          estimatedMinutes: 35,
+          difficulty: 'Assisted',
+        ),
+        subjectId: 'physics',
+        courseTitle: 'Introductory Physics',
+        topicTitle: 'Gravity',
+        level: 2,
+      ),
     ),
     CourseLabEntry(
       id: 'phys_electricity',

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../data/university_learning_engine.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../data/vu_v2_topic_content_models.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_rich_text.dart';
 import '../design/vu_v2_theme.dart';
+import '../labs/engine/laboratory_engine.dart';
 
 /// Full textbook chapter reader — long-form notes, not slide cards.
 class VuV2TextbookReaderScreen extends StatefulWidget {
@@ -98,7 +100,7 @@ class _VuV2TextbookReaderScreenState extends State<VuV2TextbookReaderScreen> {
                 ),
                 title: Text(
                   pack.sections[i].title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w700,
                   ),
@@ -119,14 +121,14 @@ class _VuV2TextbookReaderScreenState extends State<VuV2TextbookReaderScreen> {
   Widget build(BuildContext context) {
     if (_loading) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Lecture notes')),
+        appBar: AppBar(title: const Text('Textbook chapter')),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               CircularProgressIndicator(color: VuV2Colors.orange),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Opening textbook chapter…',
                 style: TextStyle(color: VuV2Colors.mute),
               ),
@@ -139,9 +141,9 @@ class _VuV2TextbookReaderScreenState extends State<VuV2TextbookReaderScreen> {
     final VuV2TopicPackage? pack = _pack;
     if (pack == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Lecture notes')),
+        appBar: AppBar(title: const Text('Textbook chapter')),
         body: VuV2EmptyState(
-          title: 'Notes unavailable',
+          title: 'Chapter unavailable',
           subtitle: _error ?? 'Try this lesson again.',
           actionLabel: 'Close',
           onAction: () => Navigator.pop(context),
@@ -155,7 +157,7 @@ class _VuV2TextbookReaderScreenState extends State<VuV2TextbookReaderScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF0B1018),
       appBar: AppBar(
-        title: const Text('Textbook notes'),
+        title: const Text('Textbook chapter'),
         actions: <Widget>[
           IconButton(
             tooltip: 'Table of contents',
@@ -184,10 +186,40 @@ class _VuV2TextbookReaderScreenState extends State<VuV2TextbookReaderScreen> {
           if (index == sections.length + 1) {
             return Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: VuV2PrimaryButton(
-                label: 'Mark notes complete',
-                icon: Icons.check_rounded,
-                onPressed: () => Navigator.pop(context, true),
+              child: Column(
+                children: <Widget>[
+                  VuV2PrimaryButton(
+                    label: 'Apply this chapter in the laboratory',
+                    icon: Icons.science_outlined,
+                    onPressed: () {
+                      final UniversityLabLink link = UniversityLearningEngine.labForLesson(
+                            subjectId: widget.subjectId,
+                            lessonTitle: widget.topicTitle,
+                            moduleTitle: widget.courseTitle,
+                          ) ??
+                          UniversityLabLink(
+                            labId: widget.subjectId,
+                            stationId: 'engine',
+                            title: widget.topicTitle,
+                            purpose: 'Apply the chapter on the interactive workspace.',
+                            objectives: const <String>['Perform the work'],
+                          );
+                      LaboratoryEngine.open(
+                        context: context,
+                        link: link,
+                        subjectId: widget.subjectId,
+                        courseTitle: widget.courseTitle,
+                        topicTitle: widget.topicTitle,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  VuV2PrimaryButton(
+                    label: 'Mark chapter complete',
+                    icon: Icons.check_rounded,
+                    onPressed: () => Navigator.pop(context, true),
+                  ),
+                ],
               ),
             );
           }
@@ -249,7 +281,7 @@ class _Cover extends StatelessWidget {
         children: <Widget>[
           Text(
             '$emoji  $faculty',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.mint,
               fontWeight: FontWeight.w900,
               letterSpacing: 0.6,
@@ -259,7 +291,7 @@ class _Cover extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             course.toUpperCase(),
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.mute,
               fontWeight: FontWeight.w800,
               fontSize: 11,
@@ -269,7 +301,7 @@ class _Cover extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 26,
@@ -280,7 +312,7 @@ class _Cover extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               subtitle!,
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.4),
             ),
           ],
           const SizedBox(height: 16),
@@ -294,7 +326,7 @@ class _Cover extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          const Text(
+          Text(
             'Read this like a required textbook chapter: definitions, mechanisms, '
             'worked examples, then retrieval. Do not skim the headings.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.45, fontSize: 13),
@@ -327,7 +359,7 @@ class _MetaChip extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w700,
               fontSize: 12,
@@ -380,7 +412,7 @@ class _ChapterSection extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             section.title,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 20,

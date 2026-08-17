@@ -160,13 +160,13 @@ class _VuV2CustomExamSetupScreenState extends State<VuV2CustomExamSetupScreen> {
               children: <Widget>[
                 Text(
                   '${widget.facultyEmoji} ${widget.facultyTitle}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.mute,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Select topics',
                   style: TextStyle(
                     color: VuV2Colors.ink,
@@ -175,7 +175,7 @@ class _VuV2CustomExamSetupScreenState extends State<VuV2CustomExamSetupScreen> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   'Your exam questions are generated from the topics you check.',
                   style: TextStyle(color: VuV2Colors.mute, height: 1.4),
                 ),
@@ -209,7 +209,7 @@ class _VuV2CustomExamSetupScreenState extends State<VuV2CustomExamSetupScreen> {
                         checkColor: Colors.black,
                         title: Text(
                           l.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: VuV2Colors.ink,
                             fontWeight: FontWeight.w700,
                             fontSize: 14,
@@ -219,7 +219,7 @@ class _VuV2CustomExamSetupScreenState extends State<VuV2CustomExamSetupScreen> {
                             ? null
                             : Text(
                                 l.subtitle!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: VuV2Colors.mute,
                                   fontSize: 12,
                                 ),
@@ -230,7 +230,7 @@ class _VuV2CustomExamSetupScreenState extends State<VuV2CustomExamSetupScreen> {
                   );
                 }),
                 const SizedBox(height: 12),
-                const Text(
+                Text(
                   'Mode',
                   style: TextStyle(
                     color: VuV2Colors.ink,

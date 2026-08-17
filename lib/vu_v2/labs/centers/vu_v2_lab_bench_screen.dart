@@ -210,7 +210,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
           backgroundColor: VuV2Colors.navyElevated,
           title: Text(
             stars >= 3 ? 'PERFECT CLEAR!' : 'STAGE CLEAR!',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
             ),
@@ -235,7 +235,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                   '${comboBonus > 0 ? ' + combo $comboBonus' : ''}'
                   '${timeBonus > 0 ? ' + speed $timeBonus' : ''}'
                   '${stars > 0 ? ' + stars ${stars * 8}' : ''})',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.mute,
                     height: 1.4,
                     fontWeight: FontWeight.w700,
@@ -278,7 +278,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                 const SizedBox(height: 12),
                 Text(
                   debrief.paragraph,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.mute,
                     height: 1.45,
                   ),
@@ -310,7 +310,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
             width: 100,
             child: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 color: VuV2Colors.mute,
                 fontWeight: FontWeight.w700,
               ),
@@ -330,7 +330,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
           const SizedBox(width: 8),
           Text(
             '$score/4',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w800,
             ),
@@ -388,7 +388,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
               child: Center(
                 child: Text(
                   'COMBO x$_combo',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Color(0xFFFBBF24),
                     fontWeight: FontWeight.w900,
                   ),
@@ -504,7 +504,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                   if (best > 0)
                     Text(
                       'BEST $best',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Color(0xFFFBBF24),
                         fontWeight: FontWeight.w900,
                         fontSize: 12,
@@ -515,7 +515,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
               const SizedBox(height: 8),
               Text(
                 _mission,
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.ink,
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
@@ -525,7 +525,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
               const SizedBox(height: 8),
               Text(
                 exp.blurb,
-                style: const TextStyle(color: VuV2Colors.mute, height: 1.35),
+                style: TextStyle(color: VuV2Colors.mute, height: 1.35),
               ),
               const SizedBox(height: 8),
               Text(
@@ -545,7 +545,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'PLAYABLE APPARATUS',
                 style: TextStyle(
                   color: VuV2Colors.mute,
@@ -571,7 +571,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                 ),
                 child: Text(
                   _console,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontFamily: 'monospace',
                     fontSize: 12.5,
@@ -587,7 +587,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Run log (graded)',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -595,7 +595,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Write like a speedrun note: change → result → because… Numbers = more stars.',
                 style: TextStyle(
                   color: VuV2Colors.mute,
@@ -606,8 +606,8 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
               TextField(
                 controller: _notes,
                 maxLines: 8,
-                style: const TextStyle(color: VuV2Colors.ink, height: 1.4),
-                decoration: const InputDecoration(
+                style: TextStyle(color: VuV2Colors.ink, height: 1.4),
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Observation log…',
                   hintStyle: TextStyle(color: VuV2Colors.mute),
@@ -656,7 +656,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Text(
                         _log[i],
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.mute,
                           height: 1.35,
                           fontSize: 13,
@@ -671,8 +671,8 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                   Expanded(
                     child: TextField(
                       controller: _ask,
-                      style: const TextStyle(color: VuV2Colors.ink),
-                      decoration: const InputDecoration(
+                      style: TextStyle(color: VuV2Colors.ink),
+                      decoration: InputDecoration(
                         hintText: 'Ask coach / hint…',
                         hintStyle: TextStyle(color: VuV2Colors.mute),
                       ),
@@ -694,7 +694,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
+                Text(
                   'Boss check',
                   style: TextStyle(
                     color: VuV2Colors.ink,
@@ -704,7 +704,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                 const SizedBox(height: 8),
                 Text(
                   exp.quiz.first.prompt,
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.35),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.35),
                 ),
                 const SizedBox(height: 10),
                 for (int i = 0; i < exp.quiz.first.choices.length; i++)
@@ -730,7 +730,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                       },
                       child: Text(
                         exp.quiz.first.choices[i],
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: VuV2Colors.ink,
                           fontWeight: FontWeight.w700,
                         ),
@@ -745,7 +745,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'How to play',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -758,7 +758,7 @@ class _VuV2LabBenchScreenState extends State<VuV2LabBenchScreen>
                   padding: const EdgeInsets.only(bottom: 6),
                   child: Text(
                     '${i + 1}. ${exp.instructions[i]}',
-                    style: const TextStyle(color: VuV2Colors.mute, height: 1.35),
+                    style: TextStyle(color: VuV2Colors.mute, height: 1.35),
                   ),
                 ),
             ],

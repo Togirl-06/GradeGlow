@@ -40,14 +40,14 @@ class VuV2FacultyScreen extends StatelessWidget {
           Text(
             'Grade Glow Virtual University · ${VuSchoolsCatalog.schoolCount} schools · '
             '${VuSchoolsCatalog.programCount} programs',
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 15,
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Open a school, then enroll in any program and start its full roadmap.',
             style: TextStyle(color: VuV2Colors.mute, height: 1.4, fontSize: 13),
           ),
@@ -90,7 +90,7 @@ class VuV2FacultyScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: <Widget>[
-                        Text(school.emoji, style: const TextStyle(fontSize: 28)),
+                        Text(school.emoji, style: TextStyle(fontSize: 28)),
                         const SizedBox(width: 14),
                         Expanded(
                           child: Column(
@@ -98,7 +98,7 @@ class VuV2FacultyScreen extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 school.title,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: VuV2Colors.ink,
                                   fontWeight: FontWeight.w900,
                                   fontSize: 15,
@@ -108,7 +108,7 @@ class VuV2FacultyScreen extends StatelessWidget {
                                 const SizedBox(height: 4),
                                 Text(
                                   school.blurb!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.mute,
                                     fontSize: 12,
                                     height: 1.35,
@@ -127,7 +127,7 @@ class VuV2FacultyScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.chevron_right_rounded,
                           color: VuV2Colors.mute,
                         ),
@@ -176,8 +176,19 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
           if (school.blurb != null) ...<Widget>[
             Text(
               school.blurb!,
-              style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+              style: TextStyle(color: VuV2Colors.mute, height: 1.4),
             ),
+            if (school.practiceOnly) ...<Widget>[
+              const SizedBox(height: 8),
+              Text(
+                'No lectures. Labs and real-world workplace practice only.',
+                style: TextStyle(
+                  color: VuV2Colors.orange,
+                  fontWeight: FontWeight.w800,
+                  height: 1.4,
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
           ],
           ...school.programs.map((VuSchoolProgram program) {
@@ -228,7 +239,7 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 program.title,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: VuV2Colors.ink,
                                   fontWeight: FontWeight.w900,
                                   fontSize: 16,
@@ -238,7 +249,7 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
                                 const SizedBox(height: 4),
                                 Text(
                                   program.blurb!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: VuV2Colors.mute,
                                     fontSize: 12,
                                     height: 1.35,
@@ -248,8 +259,10 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
                               const SizedBox(height: 6),
                               Text(
                                 enrolled
-                                    ? 'Enrolled · ${roadmap.lessonCount} lessons'
-                                    : 'Tap to enroll · ${roadmap.lessonCount} lessons',
+                                    ? 'Enrolled · ${roadmap.lessonCount} missions'
+                                    : school.practiceOnly
+                                        ? 'Tap to enroll · labs & workplace practice'
+                                        : 'Tap to enroll · ${roadmap.lessonCount} lessons',
                                 style: TextStyle(
                                   color: enrolled
                                       ? VuV2Colors.success
@@ -261,7 +274,7 @@ class VuV2SchoolProgramsScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.chevron_right_rounded,
                           color: VuV2Colors.mute,
                         ),

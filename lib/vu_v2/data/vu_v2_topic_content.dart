@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import '../curriculum/textbook_engine.dart';
 import 'vu_v2_cs_notes_code.dart';
 import 'vu_v2_topic_content_models.dart';
 
@@ -27,7 +28,6 @@ abstract final class VuV2TopicContent {
             topic: topicTitle,
           )
         : _buildChapter(
-            discipline: d,
             subjectId: subjectId,
             facultyTitle: facultyTitle,
             trackTitle: trackTitle,
@@ -76,14 +76,26 @@ abstract final class VuV2TopicContent {
       VuV2TextbookSection(
         title: 'Definitions and concepts',
         body: pick(
-          const <String>['Precise definitions', 'Definition', 'Chapter overview'],
+          const <String>[
+            'Precise definitions',
+            'Definition',
+            'Chapter overview',
+            'Learning Objectives',
+            'Key Terms',
+          ],
           '**$topic** — core definitions for $course.',
         ),
       ),
       VuV2TextbookSection(
         title: 'Key principles',
         body: pick(
-          const <String>['Deep explanation', 'How it works', 'Step-by-step method'],
+          const <String>[
+            'Deep explanation',
+            'How it works',
+            'Step-by-step method',
+            '1.3 Mechanism and explanation',
+            '1.4 Instructional development',
+          ],
           'Key principles for applying **$topic** in $course.',
         ),
       ),
@@ -93,6 +105,7 @@ abstract final class VuV2TopicContent {
           const <String>[
             'Rules, formulas & governing principles',
             'How to apply it',
+            '1.2 Organization of the subject',
           ],
           'Governing rules and formulas for **$topic**.',
         ),
@@ -100,7 +113,11 @@ abstract final class VuV2TopicContent {
       VuV2TextbookSection(
         title: 'Diagrams and illustrations',
         body: pick(
-          const <String>['Conceptual model'],
+          const <String>[
+            'Conceptual model',
+            'Diagrams and figures',
+            '1.5 Models, figures, and professional use',
+          ],
           'Hold a clear mental model of **$topic** while you study $course.',
         ),
       ),
@@ -109,6 +126,7 @@ abstract final class VuV2TopicContent {
         body: pick(
           const <String>[
             'Worked example 1 — guided',
+            'Worked Example',
             'Worked example',
             'Worked example 2 — independent style',
           ],
@@ -333,7 +351,6 @@ abstract final class VuV2TopicContent {
   }
 
   static List<VuV2TextbookSection> _buildChapter({
-    required _Discipline discipline,
     required String subjectId,
     required String facultyTitle,
     required String trackTitle,
@@ -341,236 +358,14 @@ abstract final class VuV2TopicContent {
     required String topic,
     String? subtitle,
   }) {
-    final String field = facultyTitle;
-    final String lens = discipline.label;
-    final String why = discipline.whyMatters(topic, courseTitle);
-    final String lecture = discipline.lectureNarrative(topic, courseTitle, field);
-    final String deep = discipline.deepExplanation(topic, courseTitle, field);
-    final String method = discipline.method(topic, courseTitle);
-    final String rules = discipline.rulesAndFormulas(topic, courseTitle);
-    final String example1 = discipline.workedExample(topic, courseTitle, 1);
-    final String example2 = discipline.workedExample(topic, courseTitle, 2);
-    final String contrast = discipline.compareAndContrast(topic, courseTitle);
-    final String problems = discipline.practiceProblems(topic, courseTitle);
-    final String pitfalls = discipline.misconceptions(topic);
-    final String apps = discipline.applications(topic, field);
-    final String advanced = discipline.advanced(topic, courseTitle);
-    final String connect = discipline.connections(topic, courseTitle, trackTitle);
-
-    return <VuV2TextbookSection>[
-      VuV2TextbookSection(
-        title: 'Chapter overview',
-        body:
-            '**$topic**\n'
-            '$courseTitle · $trackTitle · $field · Virtual University\n\n'
-            '${subtitle == null || subtitle.isEmpty ? '' : '$subtitle\n\n'}'
-            'This chapter is a full university textbook unit on **$topic**. Read it slowly, '
-            'the way you would a required chapter in **$courseTitle**: mark definitions, '
-            'work examples with the answers covered, write questions in the margin, and only '
-            'then take the quiz. Skimming headings is not studying.',
-      ),
-      VuV2TextbookSection(
-        title: 'Learning outcomes',
-        body:
-            'By the end of this chapter you will be able to:\n\n'
-            '1. **Define** $topic in precise $lens language that a professor would accept '
-            'on an exam.\n'
-            '2. **Explain** the underlying mechanism / reasoning — not only the label — '
-            'so a peer who has never seen the topic can follow you.\n'
-            '3. **Apply** $topic to a realistic problem inside $courseTitle, showing '
-            'each step and stating assumptions.\n'
-            '4. **Diagnose** at least three common mistakes and correct them with the '
-            'right principle.\n'
-            '5. **Connect** $topic to earlier and later topics in $courseTitle and to '
-            'professional practice in $field.\n'
-            '6. **Assess** your own understanding by answering the self-check questions '
-            'and scoring ≥70% on the topic quiz.',
-      ),
-      VuV2TextbookSection(
-        title: 'Why this topic matters',
-        body: why,
-      ),
-      VuV2TextbookSection(
-        title: 'Lecture — full treatment',
-        body: lecture,
-      ),
-      VuV2TextbookSection(
-        title: 'Prerequisites',
-        body:
-            'Before you study **$topic**, make sure you can already:\n\n'
-            '• Restate the big story of **$courseTitle** in two or three sentences '
-            '(what the course trains you to do).\n'
-            '• Use the basic vocabulary of $field without freezing — if a word in this '
-            'chapter is unfamiliar, define it before moving on.\n'
-            '• Follow a multi-step argument: claim → evidence / derivation → conclusion.\n'
-            '• Work with units, citations, or code (as relevant to $lens) carefully.\n\n'
-            'If any of these feel shaky, skim the previous roadmap topics in '
-            '**$trackTitle**, then return here. Gaps in prerequisites cause most '
-            'failures on $topic assessments.',
-      ),
-      VuV2TextbookSection(
-        title: 'Precise definitions',
-        body:
-            '**$topic (working definition).** '
-            'In $field, **$topic** names the core idea this chapter teaches: the '
-            'object, process, rule, method, or relationship you must understand deeply '
-            'enough to use under exam pressure.\n\n'
-            '**Operational definition.** '
-            'You “know” $topic when you can (a) state it without notes, (b) give a '
-            'non-example that looks similar but fails a key condition, and (c) use it '
-            'to make a decision, prediction, proof, diagnosis, or design choice inside '
-            '**$courseTitle**.\n\n'
-            '**Necessary conditions.** List the conditions that *must* be true before you '
-            'are allowed to invoke **$topic**. If any condition is missing, stop and pick '
-            'a different tool. Most exam traps hide a missing condition.\n\n'
-            '**Sufficient conditions.** Name what is *enough* to conclude that **$topic** '
-            'applies. Distinguish “often associated with” from “enough to prove.”\n\n'
-            '**Related vocabulary.** '
-            'Separate **$topic** from nearby terms that students often collapse: '
-            'causes vs effects, models vs reality, rules vs exceptions, correlation vs '
-            'causation, syntax vs semantics, symptoms vs diagnosis — whichever pair '
-            'fits this $lens topic. Write one sentence that contrasts them.\n\n'
-            '**Notation and representation.** How is **$topic** written, drawn, coded, or '
-            'cited in **$courseTitle**? Copy the canonical form once, then reproduce it '
-            'from memory.\n\n'
-            '**Scope boundary.** '
-            'This chapter covers what a first-pass university treatment of **$topic** '
-            'must include. Research frontiers and rare edge cases appear later; do not '
-            'skip foundations to chase them.',
-      ),
-      VuV2TextbookSection(
-        title: 'Deep explanation',
-        body: deep,
-      ),
-      VuV2TextbookSection(
-        title: 'Step-by-step method',
-        body: method,
-      ),
-      VuV2TextbookSection(
-        title: 'Rules, formulas & governing principles',
-        body: rules,
-      ),
-      VuV2TextbookSection(
-        title: 'Conceptual model',
-        body:
-            'Hold this mental picture while you study **$topic**:\n\n'
-            '```\n'
-            'Context ($courseTitle)\n'
-            '   ↓\n'
-            'Inputs / evidence / givens\n'
-            '   ↓\n'
-            'Core process: $topic\n'
-            '   ↓\n'
-            'Check constraints & assumptions\n'
-            '   ↓\n'
-            'Output: answer · decision · design · diagnosis · argument\n'
-            '   ↓\n'
-            'Verify · explain · communicate\n'
-            '```\n\n'
-            'Every professional use of **$topic** follows this flow, even when experts '
-            'do it quickly. Slow the flow down until each arrow is conscious, then '
-            'speed up. If you cannot fill one box, that is exactly where your gap is.',
-      ),
-      VuV2TextbookSection(
-        title: 'Worked example 1 — guided',
-        body: example1,
-      ),
-      VuV2TextbookSection(
-        title: 'Worked example 2 — independent style',
-        body: example2,
-      ),
-      VuV2TextbookSection(
-        title: 'Compare and contrast',
-        body: contrast,
-      ),
-      VuV2TextbookSection(
-        title: 'Practice problems',
-        body: problems,
-      ),
-      VuV2TextbookSection(
-        title: 'Edge cases & exceptions',
-        body:
-            'University exams love boundaries. For **$topic**, study these edges:\n\n'
-            '1. **Missing information.** What can you still conclude, and what must '
-            'you refuse to invent?\n'
-            '2. **Conflicting cues.** Which principle in $courseTitle wins, and why?\n'
-            '3. **Scale change.** Does the same reasoning hold at a different size, '
-            'time scale, population, voltage, jurisdiction, or market?\n'
-            '4. **Near-miss lookalikes.** Name one situation that appears to be '
-            '**$topic** but fails a necessary condition.\n'
-            '5. **When the model breaks.** State when the simplified classroom model '
-            'of **$topic** is no longer safe to use without extra theory.\n\n'
-            'Write a short “exception card” for each item — two sentences max — and '
-            'review it before the course exam.',
-      ),
-      VuV2TextbookSection(
-        title: 'Common misconceptions (and corrections)',
-        body: pitfalls,
-      ),
-      VuV2TextbookSection(
-        title: 'Real-world applications',
-        body: apps,
-      ),
-      VuV2TextbookSection(
-        title: 'How this connects in your degree',
-        body: connect,
-      ),
-      VuV2TextbookSection(
-        title: 'Advanced extensions',
-        body: advanced,
-      ),
-      VuV2TextbookSection(
-        title: 'Study guide & memory anchors',
-        body:
-            '**Teach-back (2 minutes).** Close the notes. Explain **$topic** aloud as '
-            'if tutoring a classmate in $courseTitle. Record yourself if possible.\n\n'
-            '**One-page sheet.** On a blank page write: definition · 3 key steps · '
-            '1 formula/rule · 1 worked skeleton · 2 mistakes to avoid.\n\n'
-            '**Retrieval prompts.** Cover the page and answer:\n'
-            '• What is **$topic**?\n'
-            '• Why does $courseTitle require it?\n'
-            '• What is the first move when applying it?\n'
-            '• What evidence would falsify a wrong answer?\n\n'
-            '**Spaced review.** Revisit this chapter tomorrow and again before the '
-            '**$courseTitle** final exam. Recognition is not mastery — retrieval is.',
-      ),
-      VuV2TextbookSection(
-        title: 'Self-check (open response)',
-        body:
-            'Answer in writing before you open the quiz:\n\n'
-            '1. Define **$topic** in ≤40 words without circular language.\n'
-            '2. List the steps of the method for applying **$topic**.\n'
-            '3. Give one realistic $field scenario and solve/argue it in outline form.\n'
-            '4. Name two misconceptions and the correct principle for each.\n'
-            '5. Explain how **$topic** prepares you for a later topic in **$courseTitle**.\n\n'
-            'Compare your answers to the chapter. Gaps that remain become your quiz '
-            'study targets.',
-      ),
-      VuV2TextbookSection(
-        title: 'Chapter summary',
-        body:
-            '**$topic** is a required competency inside **$courseTitle** ($field). '
-            'You have definitions, a deep mechanism explanation, a reusable method, '
-            'governing principles, two worked examples, edge cases, misconception '
-            'repairs, applications, degree connections, and advanced extensions.\n\n'
-            'Mastery standard: you can teach **$topic**, apply it under time pressure, '
-            'and explain why wrong answers fail. Next: take the **end-of-topic quiz**. '
-            'After every topic in this course is complete, take the **course final exam**.',
-      ),
-      VuV2TextbookSection(
-        title: 'Mastery checklist',
-        body:
-            '□ I can define **$topic** without notes\n'
-            '□ I can explain the mechanism / reasoning in detail\n'
-            '□ I can apply the step-by-step method to a fresh problem\n'
-            '□ I can state the key rules / formulas / principles\n'
-            '□ I worked both examples without looking at the answer first\n'
-            '□ I can correct the main misconceptions\n'
-            '□ I can give a real-world $field application\n'
-            '□ I am ready for the topic quiz (≥70% to pass)\n'
-            '□ I will include this topic in my **$courseTitle** exam review',
-      ),
-    ];
+    return UniversityTextbookEngine.build(
+      subjectId: subjectId,
+      facultyTitle: facultyTitle,
+      trackTitle: trackTitle,
+      courseTitle: courseTitle,
+      topic: topic,
+      subtitle: subtitle,
+    );
   }
 
   // ── MCQ bank ─────────────────────────────────────────────────────────────

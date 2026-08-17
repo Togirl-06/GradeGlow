@@ -111,7 +111,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                     ? '${career.bossName} signed off Level ${level.levelNumber}. '
                         '${level.levelNumber < career.levels.length ? 'Next level unlocked.' : 'Career path complete.'}'
                     : 'You are pulled off the floor. Retry when ready — the job does not pause for pride.',
-                style: const TextStyle(color: VuV2Colors.mute, height: 1.45),
+                style: TextStyle(color: VuV2Colors.mute, height: 1.45),
               ),
               const SizedBox(height: 12),
               Text(
@@ -122,7 +122,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                 const SizedBox(height: 8),
                 Text(
                   'Unlocked: ${badges.join(', ')}',
-                  style: const TextStyle(color: Color(0xFFFBBF24)),
+                  style: TextStyle(color: Color(0xFFFBBF24)),
                 ),
               ],
             ],
@@ -168,7 +168,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                 const SizedBox(height: 6),
                 Text(
                   _beat.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 22,
@@ -190,7 +190,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                   ),
                   child: Text(
                     _beat.scene,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: VuV2Colors.ink,
                       height: 1.45,
                       fontSize: 16,
@@ -210,7 +210,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                   ),
                 ],
                 const SizedBox(height: 18),
-                const Text(
+                Text(
                   'WHAT DO YOU DO?',
                   style: TextStyle(
                     color: VuV2Colors.mute,
@@ -239,7 +239,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                             ),
                             child: Text(
                               c.label,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: VuV2Colors.ink,
                                 fontWeight: FontWeight.w800,
                                 height: 1.35,
@@ -263,7 +263,7 @@ class _VuV2JobShiftScreenState extends State<VuV2JobShiftScreen> {
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Text(
                       line,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: VuV2Colors.mute,
                         fontSize: 12,
                         height: 1.35,

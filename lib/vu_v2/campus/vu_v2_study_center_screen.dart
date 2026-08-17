@@ -34,7 +34,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
       children: <Widget>[
-        const Text(
+        Text(
           'Study Center',
           style: TextStyle(
             color: VuV2Colors.ink,
@@ -43,7 +43,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
           ),
         ),
         const SizedBox(height: 6),
-        const Text(
+        Text(
           'Flashcards, quizzes, adaptive review, and unlimited practice.',
           style: TextStyle(color: VuV2Colors.mute, height: 1.4),
         ),
@@ -54,7 +54,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
+                Text(
                   'Adaptive Review',
                   style: TextStyle(
                     color: VuV2Colors.ink,
@@ -67,7 +67,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
                   widget.progress.dueAdaptiveReviews > 0
                       ? '${widget.progress.dueAdaptiveReviews} confusion pair${widget.progress.dueAdaptiveReviews == 1 ? '' : 's'} ready — targeted diagram drills beat generic flashcards.'
                       : 'Practice weak pairs before they hit your next lecture.',
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.4),
                 ),
                 const SizedBox(height: 12),
                 VuV2PrimaryButton(
@@ -122,7 +122,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
               children: <Widget>[
                 Text(
                   MajorWowRouter.studyQuizTitle(widget.session.majorId),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: VuV2Colors.ink,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
@@ -131,7 +131,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
                 const SizedBox(height: 6),
                 Text(
                   MajorWowRouter.studyQuizBody(widget.session.majorId),
-                  style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+                  style: TextStyle(color: VuV2Colors.mute, height: 1.4),
                 ),
                 const SizedBox(height: 12),
                 VuV2PrimaryButton(
@@ -196,8 +196,8 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
                 ),
               );
             },
-            leading: const Icon(Icons.calendar_month_outlined, color: VuV2Colors.mint),
-            title: const Text(
+            leading: Icon(Icons.calendar_month_outlined, color: VuV2Colors.mint),
+            title: Text(
               'Study planner',
               style: TextStyle(
                 color: VuV2Colors.ink,
@@ -206,9 +206,9 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
             ),
             subtitle: Text(
               'Weekly slots · ${widget.progress.studyMinutes} min logged',
-              style: const TextStyle(color: VuV2Colors.mute),
+              style: TextStyle(color: VuV2Colors.mute),
             ),
-            trailing: const Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
+            trailing: Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
           ),
         ),
         const SizedBox(height: 12),
@@ -217,7 +217,7 @@ class _VuV2StudyCenterScreenState extends State<VuV2StudyCenterScreen> {
             'XP ${widget.progress.lessonXp} · streak ${widget.progress.streakDays}d · '
             'mastery clears ${widget.progress.masteryClearStreak} · '
             '${widget.progress.completedLessonIds.length} lessons done',
-            style: const TextStyle(color: VuV2Colors.mute, height: 1.4),
+            style: TextStyle(color: VuV2Colors.mute, height: 1.4),
           ),
         ),
       ],
@@ -303,7 +303,7 @@ class _FlashcardsPreview extends StatelessWidget {
                 borderRadius: BorderRadius.circular(99),
                 border: Border.all(color: VuV2Colors.stroke),
               ),
-              child: const Text(
+              child: Text(
                 'Card 1 / 15',
                 style: TextStyle(
                   color: VuV2Colors.mute,
@@ -324,7 +324,7 @@ class _FlashcardsPreview extends StatelessWidget {
                 session.majorLabel.toUpperCase().length > 10
                     ? session.majorId.toUpperCase().replaceAll('_', '-').substring(0, 7)
                     : session.majorLabel.toUpperCase(),
-                style: const TextStyle(
+                style: TextStyle(
                   color: VuV2Colors.mint,
                   fontWeight: FontWeight.w800,
                   fontSize: 12,
@@ -343,7 +343,7 @@ class _FlashcardsPreview extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: VuV2Colors.stroke),
           ),
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
@@ -486,14 +486,14 @@ class _ModeLaunchCard extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 18,
             ),
           ),
           const SizedBox(height: 8),
-          Text(body, style: const TextStyle(color: VuV2Colors.mute, height: 1.45)),
+          Text(body, style: TextStyle(color: VuV2Colors.mute, height: 1.45)),
           const SizedBox(height: 14),
           VuV2PrimaryButton(label: cta, trailingArrow: true, onPressed: onTap),
         ],

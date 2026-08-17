@@ -10,7 +10,6 @@ import 'vu_v2_community_screen.dart';
 import 'vu_v2_notifications_screen.dart';
 import 'vu_v2_practice_tab.dart';
 import 'vu_v2_profile_screen.dart';
-import 'vu_v2_registrar_style.dart';
 import 'vu_v2_search_screen.dart';
 import 'vu_v2_study_center_screen.dart';
 
@@ -60,14 +59,16 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
 
   @override
   Widget build(BuildContext context) {
+    VuV2Colors.syncTo(Theme.of(context));
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Color bg = Theme.of(context).scaffoldBackgroundColor;
     final bool wide = MediaQuery.sizeOf(context).width >= 900;
-    final int railIndex = vuV2NavDestinations.indexOf(_dest).clamp(0, vuV2NavDestinations.length - 1);
+    final int railIndex =
+        vuV2NavDestinations.indexOf(_dest).clamp(0, vuV2NavDestinations.length - 1);
     return Scaffold(
-      backgroundColor:
-          _dest == VuV2Dest.profile ? RegistrarColors.paper : VuV2Colors.navy,
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor:
-            _dest == VuV2Dest.profile ? RegistrarColors.navy : VuV2Colors.navy,
+        backgroundColor: bg,
         title: Text(
           wide ? 'Virtual University' : _dest.label,
           style: const TextStyle(fontWeight: FontWeight.w900),
@@ -99,7 +100,7 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
             icon: Badge(
               isLabelVisible: progress.unreadCount > 0,
               label: Text('${progress.unreadCount}'),
-              backgroundColor: VuV2Colors.mint,
+              backgroundColor: scheme.primary,
               child: const Icon(Icons.notifications_outlined),
             ),
           ),
@@ -119,7 +120,7 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
                     setState(() => _dest = vuV2NavDestinations[i]);
                   },
                   labelType: NavigationRailLabelType.all,
-                  backgroundColor: VuV2Colors.navyElevated,
+                  backgroundColor: scheme.surface,
                   destinations: <NavigationRailDestination>[
                     for (final VuV2Dest d in vuV2NavDestinations)
                       NavigationRailDestination(
@@ -129,7 +130,7 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
                       ),
                   ],
                 ),
-                const VerticalDivider(width: 1, color: VuV2Colors.stroke),
+                const VerticalDivider(width: 1),
                 Expanded(child: _page(_dest)),
               ],
             )
@@ -191,20 +192,21 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
     }
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: VuV2Colors.navyElevated,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       showDragHandle: true,
       builder: (BuildContext ctx) {
+        final ColorScheme scheme = Theme.of(ctx).colorScheme;
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               for (final VuV2Dest d in vuV2MoreDestinations)
                 ListTile(
-                  leading: Icon(d.icon, color: VuV2Colors.orange),
+                  leading: Icon(d.icon, color: scheme.primary),
                   title: Text(
                     d.label,
-                    style: const TextStyle(
-                      color: VuV2Colors.ink,
+                    style: TextStyle(
+                      color: scheme.onSurface,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

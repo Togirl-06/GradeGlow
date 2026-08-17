@@ -118,8 +118,8 @@ class _VuV2SearchScreenState extends State<VuV2SearchScreen> {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: TextField(
               autofocus: true,
-              style: const TextStyle(color: VuV2Colors.ink),
-              decoration: const InputDecoration(
+              style: TextStyle(color: VuV2Colors.ink),
+              decoration: InputDecoration(
                 hintText: 'Degrees, courses, lessons, notes…',
                 hintStyle: TextStyle(color: VuV2Colors.mute),
                 prefixIcon: Icon(Icons.search_rounded),
@@ -153,14 +153,14 @@ class _VuV2SearchScreenState extends State<VuV2SearchScreen> {
                             child: ListTile(
                               title: Text(
                                 h.title,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: VuV2Colors.ink,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
                               subtitle: Text(
                                 '${h.kind} · ${h.subtitle}',
-                                style: const TextStyle(color: VuV2Colors.mute),
+                                style: TextStyle(color: VuV2Colors.mute),
                               ),
                               trailing: const Icon(Icons.chevron_right_rounded),
                               onTap: h.onOpen,

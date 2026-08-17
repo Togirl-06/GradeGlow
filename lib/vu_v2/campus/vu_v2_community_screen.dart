@@ -25,7 +25,7 @@ class VuV2CommunityScreen extends StatelessWidget {
       children: <Widget>[
         const VuV2SectionTitle('Campus Pulse'),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Practice labs and professional simulations from across campus.',
           style: TextStyle(color: VuV2Colors.mute, height: 1.4),
         ),
@@ -34,7 +34,7 @@ class VuV2CommunityScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Career showcases',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -43,7 +43,7 @@ class VuV2CommunityScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'CS incident · Law case · Engineering bridge — graded practicals.',
                 style: TextStyle(color: VuV2Colors.mute, height: 1.4),
               ),
@@ -75,7 +75,7 @@ class VuV2CommunityScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
+              Text(
                 'Adaptive review',
                 style: TextStyle(
                   color: VuV2Colors.ink,
@@ -84,7 +84,7 @@ class VuV2CommunityScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Re-teach the exact confusion — radius vs ulna style drills.',
                 style: TextStyle(color: VuV2Colors.mute, height: 1.4),
               ),

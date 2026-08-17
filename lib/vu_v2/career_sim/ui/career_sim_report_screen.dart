@@ -33,7 +33,7 @@ class CareerSimReportScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               report.missionTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w900,
@@ -57,12 +57,12 @@ class CareerSimReportScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         CareerSkillId.label(e.key),
-                        style: const TextStyle(color: Colors.white70),
+                        style: TextStyle(color: Colors.white70),
                       ),
                     ),
                     Text(
                       '${e.value}%',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w800,
                       ),
@@ -92,7 +92,7 @@ class CareerSimReportScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     report.supervisorFeedback,
-                    style: const TextStyle(color: Colors.white, height: 1.45),
+                    style: TextStyle(color: Colors.white, height: 1.45),
                   ),
                 ],
               ),
@@ -109,12 +109,12 @@ class CareerSimReportScreen extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               report.nextChallenge,
-              style: const TextStyle(color: Colors.white, height: 1.4),
+              style: TextStyle(color: Colors.white, height: 1.4),
             ),
             const SizedBox(height: 16),
             Text(
               'XP +${report.xpEarned}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFF34D399),
                 fontWeight: FontWeight.w900,
                 fontSize: 18,
@@ -129,7 +129,7 @@ class CareerSimReportScreen extends StatelessWidget {
                       (String b) => Chip(
                         label: Text(b),
                         backgroundColor: VuV2Colors.orange.withValues(alpha: 0.2),
-                        labelStyle: const TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white),
                       ),
                     )
                     .toList(),

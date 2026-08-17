@@ -245,7 +245,7 @@ class SimPlayState {
 
 class UniversitySimLevels {
   static int fromLessonCount(int completed) =>
-      (1 + completed ~/ 2).clamp(1, 5);
+      (1 + completed ~/ 2).clamp(1, 4);
 
   static String label(int level) {
     switch (level) {
@@ -255,10 +255,8 @@ class UniversitySimLevels {
         return 'Level 2 · Assisted';
       case 3:
         return 'Level 3 · Independent';
-      case 4:
-        return 'Level 4 · Realistic scenario';
       default:
-        return 'Level 5 · Professional simulation';
+        return 'Level 4 · Professional simulation';
     }
   }
 
@@ -270,8 +268,6 @@ class UniversitySimLevels {
         return 'Assisted';
       case 3:
         return 'Independent';
-      case 4:
-        return 'Realistic';
       default:
         return 'Professional';
     }

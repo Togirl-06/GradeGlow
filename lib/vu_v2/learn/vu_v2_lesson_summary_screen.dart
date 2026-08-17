@@ -56,12 +56,12 @@ class VuV2LessonSummaryScreen extends StatelessWidget {
         children: <Widget>[
           Text(
             '$facultyEmoji  $facultyTitle',
-            style: const TextStyle(color: VuV2Colors.mute, fontSize: 13),
+            style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
           ),
           const SizedBox(height: 4),
           Text(
             topicTitle,
-            style: const TextStyle(
+            style: TextStyle(
               color: VuV2Colors.ink,
               fontWeight: FontWeight.w900,
               fontSize: 22,
@@ -70,7 +70,7 @@ class VuV2LessonSummaryScreen extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             '$courseTitle · cheat sheet',
-            style: const TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: VuV2Colors.mute),
           ),
           const SizedBox(height: 16),
           for (final VuV2TextbookSection block in blocks) ...<Widget>[
@@ -79,7 +79,7 @@ class VuV2LessonSummaryScreen extends StatelessWidget {
             VuV2Surface(
               child: Text(
                 block.body,
-                style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+                style: TextStyle(color: VuV2Colors.ink, height: 1.45),
               ),
             ),
             const SizedBox(height: 14),
@@ -90,7 +90,7 @@ class VuV2LessonSummaryScreen extends StatelessWidget {
             VuV2Surface(
               child: Text(
                 formulas.body,
-                style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+                style: TextStyle(color: VuV2Colors.ink, height: 1.45),
               ),
             ),
             const SizedBox(height: 14),
@@ -101,7 +101,7 @@ class VuV2LessonSummaryScreen extends StatelessWidget {
             VuV2Surface(
               child: Text(
                 mistakes.body,
-                style: const TextStyle(color: VuV2Colors.ink, height: 1.45),
+                style: TextStyle(color: VuV2Colors.ink, height: 1.45),
               ),
             ),
             const SizedBox(height: 14),
