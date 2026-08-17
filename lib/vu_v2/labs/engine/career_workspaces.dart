@@ -164,7 +164,7 @@ class _InterviewRoom extends StatelessWidget {
 
   static const List<String> cards = <String>[
     'S — Last quarter our biggest account froze after a price change.',
-    'T — I owned the save-plan in ten days with a $400k book at risk.',
+    'T — I owned the save-plan in ten days with a \$400k book at risk.',
     'A — I mapped stakeholders, ran three working sessions, and cut a 90-day usage path.',
     'R — They renewed. Churn in that segment dropped from 18% to 6%.',
     'I am a hard worker and a people person.',

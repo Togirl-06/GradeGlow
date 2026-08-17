@@ -450,7 +450,7 @@ class AccountingWorkspace extends StatelessWidget {
                   ? 'Open Invoice, Journal, and Trial balance. Then use Flag cutoff — do not guess from one line.'
                   : open == 'Invoice'
                       ? 'INV-4419  ·  dated 3 Jan  ·  shipped 28 Dec  ·  \$48,000\nCash booked January. Shipping December. Compare the journal before you call cutoff.'
-                      : '$open\nLines almost tie except January cash from INV-4419. Keep tracing.'
+                      : '$open\nLines almost tie except January cash from INV-4419. Keep tracing.',
               style: const TextStyle(color: Colors.black87, height: 1.5, fontSize: 16),
             ),
           ),
