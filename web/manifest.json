@@ -1,7 +1,7 @@
 {
     "name": "GradeGlow",
     "short_name": "GradeGlow",
-    "start_url": ".",
+    "start_url": "/?v=20260817f",
     "display": "standalone",
     "background_color": "#FFFFFF",
     "theme_color": "#F97316",

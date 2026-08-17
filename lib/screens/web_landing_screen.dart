@@ -74,6 +74,7 @@ class _WebLandingScreenState extends State<WebLandingScreen> {
                   onGetStarted: widget.onGetStarted,
                   onBrowseSchools: () => _scrollTo(_schoolsKey),
                 ),
+                const _NowOnCampusBand(),
                 KeyedSubtree(
                   key: _schoolsKey,
                   child: _SchoolsSection(dark: dark, scheme: scheme),
@@ -221,10 +222,10 @@ class _HeroBand extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          VirtualUniversity.heroHeadline,
+                          'Student records and workplace labs — not a quiz app',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: compact ? 36 : 52,
+                            fontSize: compact ? 32 : 48,
                             fontWeight: FontWeight.w900,
                             height: 1.08,
                             letterSpacing: -1.2,
@@ -232,7 +233,7 @@ class _HeroBand extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          VirtualUniversity.heroSubhead,
+                          'Sign in to open your registrar profile. Lectures lead into live labs: a scenario, tools, consequences, and a supervisor — not A/B/C/D.',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.78),
                             fontSize: compact ? 16 : 18,
@@ -295,6 +296,103 @@ class _HeroBand extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NowOnCampusBand extends StatelessWidget {
+  const _NowOnCampusBand();
+
+  @override
+  Widget build(BuildContext context) {
+    const List<(String, String)> items = <(String, String)>[
+      (
+        'Registrar profile',
+        'Official student record: ID, program, standing, GPA, credits. No game cards.',
+      ),
+      (
+        'Textbook notes',
+        'Lecture notes are full chapters, not slide summaries.',
+      ),
+      (
+        'Workplace labs',
+        'Enter a lab, get a scenario, act on the board, watch it react, then take the debrief.',
+      ),
+    ];
+    return ColoredBox(
+      color: const Color(0xFFF7F4EE),
+      child: WebSiteLayout.constrained(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 36, 0, 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'NOW ON CAMPUS',
+                style: TextStyle(
+                  fontSize: 11,
+                  letterSpacing: 1.6,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF8A6A32),
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'What changed',
+                style: TextStyle(
+                  fontFamily: 'Georgia',
+                  fontSize: 28,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF17324D),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                children: items
+                    .map(
+                      ((String, String) item) => SizedBox(
+                        width: 280,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: const Color(0xFFD8D0C4)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  item.$1,
+                                  style: const TextStyle(
+                                    fontFamily: 'Georgia',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF1A2332),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  item.$2,
+                                  style: const TextStyle(
+                                    color: Color(0xFF5C6570),
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );

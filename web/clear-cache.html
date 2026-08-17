@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GradeGlow — loading the current campus</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, "Times New Roman", serif;
+      background: #17324D;
+      color: #F7F4EE;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+    .card { max-width: 520px; }
+    h1 { font-size: 28px; font-weight: 600; margin: 0 0 12px; }
+    p { line-height: 1.5; color: #d8d0c4; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Clearing the old website copy…</h1>
+    <p>Your browser saved an earlier GradeGlow. This page removes it, then opens the current campus.</p>
+  </div>
+  <script>
+    (async function () {
+      try {
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(function (r) { return r.unregister(); }));
+        }
+        if (window.caches) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(function (k) { return caches.delete(k); }));
+        }
+      } catch (e) {}
+      location.replace('/?v=20260817f');
+    })();
+  </script>
+</body>
+</html>

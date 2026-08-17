@@ -48,8 +48,22 @@
 
   <title>GradeGlow — Virtual University</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    (function () {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (reg) { reg.unregister(); });
+        });
+      }
+      if (window.caches) {
+        caches.keys().then(function (keys) {
+          keys.forEach(function (key) { caches.delete(key); });
+        });
+      }
+    })();
+  </script>
 </head>
 <body>
-  <script src="flutter_bootstrap.js?v=20260817e" async=""></script>
+  <script src="flutter_bootstrap.js?v=20260817f" async=""></script>
 </body>
 </html>
