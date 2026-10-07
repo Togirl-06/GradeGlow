@@ -1,5 +1,7 @@
-# Deploy the GradeGlow website to Firebase Hosting.
-# Requires: Flutter SDK, npm install -g firebase-tools, firebase login
+# Deploy GradeGlow web to Firebase Hosting.
+# Does NOT bake OPENAI_API_KEY into client JS.
+# For web AI: enable Blaze billing, then this script deploys /api/openai Cloud Function
+# using functions/.env (gitignored) copied from the project .env.
 
 $ErrorActionPreference = "Stop"
 $projectRoot = Split-Path $PSScriptRoot -Parent
@@ -12,18 +14,52 @@ if (-not (Get-Command flutter -ErrorAction SilentlyContinue)) {
     exit 1
 }
 if (-not (Get-Command firebase -ErrorAction SilentlyContinue)) {
-    Write-Host "Firebase CLI not found. Install it:" -ForegroundColor Yellow
-    Write-Host "  npm install -g firebase-tools"
-    Write-Host "  firebase login"
+    Write-Host "Firebase CLI not found. Install firebase-tools and run firebase login." -ForegroundColor Yellow
     exit 1
 }
 
-flutter build web --release
+function Get-DotEnvValue([string]$Key) {
+    $envFile = Join-Path $projectRoot ".env"
+    if (-not (Test-Path $envFile)) { return "" }
+    foreach ($line in Get-Content $envFile) {
+        if ($line -match "^\s*#" -or $line -notmatch "=") { continue }
+        $parts = $line.Split("=", 2)
+        if ($parts[0].Trim() -eq $Key) {
+            return $parts[1].Trim().Trim('"').Trim("'")
+        }
+    }
+    return ""
+}
+
+$openAiKey = Get-DotEnvValue "OPENAI_API_KEY"
+$deployFunctions = $false
+if ((Get-Command npm -ErrorAction SilentlyContinue) -and -not [string]::IsNullOrWhiteSpace($openAiKey)) {
+    $fnEnv = Join-Path $projectRoot "functions\.env"
+    Set-Content -Path $fnEnv -Value "OPENAI_API_KEY=$openAiKey" -Encoding ascii
+    Push-Location (Join-Path $projectRoot "functions")
+    npm install --no-fund --no-audit | Out-Null
+    if ($LASTEXITCODE -eq 0) { $deployFunctions = $true }
+    Pop-Location
+}
+
+# Web release must not embed .env secrets. Local debug can still use flutter_dotenv.
+flutter build web --release --no-wasm-dry-run
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-firebase deploy --only hosting --project ai-studybuddy-1fad1
+if ($deployFunctions) {
+    Write-Host "Deploying hosting + openaiProxy function..." -ForegroundColor Cyan
+    firebase deploy --only functions:openaiProxy,hosting:gradeglow --project ai-studybuddy-1fad1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Functions deploy failed (enable Blaze billing for /api/openai). Deploying hosting only..." -ForegroundColor Yellow
+        firebase deploy --only hosting:gradeglow --project ai-studybuddy-1fad1
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
+} else {
+    firebase deploy --only hosting:gradeglow --project ai-studybuddy-1fad1
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
 Write-Host ""
-Write-Host "Campus site: https://gradeglow-virtualuniversity.web.app" -ForegroundColor Green
-Write-Host "Default site: https://ai-studybuddy-1fad1.web.app"
-Write-Host "If Google sign-in says the domain is not authorized, add it here:"
-Write-Host "  https://console.firebase.google.com/project/ai-studybuddy-1fad1/authentication/settings"
+Write-Host "GradeGlow: https://gradeglow-virtualuni.web.app" -ForegroundColor Green
+Write-Host "Web AI needs Blaze + openaiProxy. Enable billing, then rerun this script."
+Write-Host "Custom domain when Connected: https://gradeglowuniversity.com"

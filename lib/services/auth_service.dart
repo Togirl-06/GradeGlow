@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../config/app_config.dart';
+import '../config/auth_hosting.dart';
 import '../utils/apple_auth.dart';
 import '../utils/network_reachability.dart';
 
@@ -12,6 +13,13 @@ class AuthService extends ChangeNotifier {
   User? _firebaseUser;
   bool _demoSignedIn = false;
   bool _isLoading = true;
+
+  /// Web Hosting handler — [handleCodeInApp] stays false so Firebase does not
+  /// wrap these messages in Dynamic Links (shut down).
+  ActionCodeSettings get _emailActionSettings => ActionCodeSettings(
+        url: AuthHosting.emailActionContinueUrl,
+        handleCodeInApp: false,
+      );
 
   bool get isLoading => _isLoading;
   bool get isAuthenticated => _firebaseUser != null || _demoSignedIn;
@@ -88,7 +96,10 @@ class AuthService extends ChangeNotifier {
     }
 
     try {
-      await _auth!.sendPasswordResetEmail(email: trimmed);
+      await _auth!.sendPasswordResetEmail(
+        email: trimmed,
+        actionCodeSettings: _emailActionSettings,
+      );
     } on FirebaseAuthException catch (error) {
       throw Exception(_passwordResetErrorMessage(error));
     }
@@ -112,7 +123,7 @@ class AuthService extends ChangeNotifier {
     final String trimmed = email.trim();
     final UserCredential result =
         await _auth!.createUserWithEmailAndPassword(email: trimmed, password: password);
-    await result.user?.sendEmailVerification();
+    await result.user?.sendEmailVerification(_emailActionSettings);
     await reloadUser();
   }
 
@@ -127,7 +138,7 @@ class AuthService extends ChangeNotifier {
     _requireFirebase();
     final User? user = _auth!.currentUser;
     if (user == null) throw Exception('Sign in first.');
-    await user.sendEmailVerification();
+    await user.sendEmailVerification(_emailActionSettings);
   }
 
   Future<void> signInWithApple() async {
@@ -239,7 +250,7 @@ class AuthService extends ChangeNotifier {
         lower.contains('authorized domains')) {
       return 'This site is not on the Firebase authorized-domains list. '
           'In Firebase Console → Authentication → Settings → Authorized domains, '
-          'add gradeglow-virtualuniversity.web.app (and the matching .firebaseapp.com host), '
+          'add ${Uri.parse(AuthHosting.publicAppUrl).host} and ${AuthHosting.emailSenderDomain}, '
           'then reload and try Google sign-in again.';
     }
     return detail.isEmpty ? 'Google sign-in failed.' : detail;

@@ -1,18 +1,19 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../config/app_config.dart';
+import '../config/openai_endpoints.dart';
 import '../utils/api_error_messages.dart';
+import '../utils/io_file_bytes.dart';
 import '../utils/lecture_record_config.dart';
 import '../utils/wav_audio_chunker.dart';
 import '../utils/wav_header_repair.dart';
+import 'mic_capture_service.dart';
 
 /// OpenAI Whisper speech-to-text (Usage → Audio Transcriptions).
 class OpenAiWhisperService {
-  static const String _url = 'https://api.openai.com/v1/audio/transcriptions';
   static const int _maxUploadBytes = 24 * 1024 * 1024;
 
   Future<String> transcribeFile(String filePath) async {
@@ -27,15 +28,20 @@ class OpenAiWhisperService {
       );
     }
 
-    final File file = File(filePath);
-    if (!await file.exists()) {
-      throw Exception('Recording file not found.');
-    }
-    if (await file.length() < 300) {
-      throw Exception('Recording too short. Speak for at least 2 seconds, then tap ✓.');
+    if (kIsWeb) {
+      final Uint8List? cached = MicCaptureService.instance.lastWavBytes;
+      if (cached != null && cached.isNotEmpty) {
+        return _transcribeAudioBytes(cached, fileName: _fileNameFromPath(filePath));
+      }
+      throw Exception(
+        'Recording data is not available in this browser. Use Record again, or paste notes as text.',
+      );
     }
 
-    final Uint8List bytes = await file.readAsBytes();
+    final Uint8List bytes = await readFileBytes(filePath);
+    if (bytes.length < 300) {
+      throw Exception('Recording too short. Speak for at least 2 seconds, then tap ✓.');
+    }
     return _transcribeAudioBytes(bytes, fileName: _fileNameFromPath(filePath));
   }
 
@@ -88,8 +94,11 @@ class OpenAiWhisperService {
       throw Exception('Recording too short. Speak for at least 2 seconds, then tap ✓.');
     }
 
-    final http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(_url));
-    request.headers['Authorization'] = 'Bearer ${AppConfig.openAiApiKey}';
+    final http.MultipartRequest request = http.MultipartRequest(
+      'POST',
+      Uri.parse(OpenAiEndpoints.audioTranscriptions),
+    );
+    request.headers.addAll(OpenAiEndpoints.authHeadersOnly());
     request.fields['model'] = 'whisper-1';
     request.fields['prompt'] = 'Lecture recording, class notes, educational content.';
     request.fields['temperature'] = '0';

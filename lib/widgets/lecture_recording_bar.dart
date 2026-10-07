@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter/foundation.dart';
+
 import '../models/course.dart';
 import '../models/study_summary.dart';
 import '../services/lecture_recording_service.dart';
+import '../services/mic_capture_service.dart';
 import '../services/notes_summarizer_service.dart';
+import '../services/openai_whisper_service.dart';
 import '../services/recording_bin_service.dart';
 import '../theme/study_theme.dart';
 import '../utils/course_summary_actions.dart';
@@ -23,14 +27,28 @@ class LectureRecordingBar extends StatelessWidget {
     if (course == null || title == null) return;
 
     final String? path = await recording.validatedFilePath();
-    if (path == null || !context.mounted) return;
+    if ((path == null && MicCaptureService.instance.lastWavBytes == null) ||
+        !context.mounted) {
+      return;
+    }
 
     recording.beginSummarizing();
     try {
+      String? transcript;
+      if (kIsWeb) {
+        final bytes = MicCaptureService.instance.lastWavBytes;
+        if (bytes != null && bytes.isNotEmpty) {
+          transcript = await OpenAiWhisperService().transcribeBytes(
+            bytes,
+            fileName: 'lecture.wav',
+          );
+        }
+      }
       final StudySummary summary = await summarizer.summarizeForCourseFromAudio(
         course: course,
         title: title,
-        audioFilePath: path,
+        audioFilePath: path ?? 'lecture.wav',
+        transcript: transcript,
       );
       recording.complete();
       if (!context.mounted) return;

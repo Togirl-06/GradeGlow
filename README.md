@@ -23,9 +23,9 @@ The web app is ready for Firebase Hosting:
 .\scripts\deploy_web.ps1
 ```
 
-That builds `build/web` and deploys it. After `firebase login`, the site is at https://gradeglow-virtualuniversity.web.app.
+That builds `build/web` and deploys it. The public site is **https://gradeglow-virtualuni.web.app**. Add **https://gradeglowuniversity.com** in Hosting → Custom domain when DNS is ready.
 
-Google sign-in on that URL requires **Authorized domains** in Firebase Console → Authentication → Settings. Add `gradeglow-virtualuniversity.web.app` (and `gradeglow-virtualuniversity.firebaseapp.com`). Also add those HTTPS origins on the Google Cloud OAuth web client. Run `.\scripts\setup_web_auth.ps1` for the exact list.
+Google sign-in on that URL requires **Authorized domains** in Firebase Console → Authentication → Settings. Add `gradeglowuniversity.com` and `www.gradeglowuniversity.com`. Also add those HTTPS origins on the Google Cloud OAuth web client. Run `.\scripts\setup_web_auth.ps1` for the exact list.
 
 If Firebase App Hosting is connected to GitHub, a push to `main` now builds Flutter web with the root `Dockerfile` and serves it on Cloud Run.
 

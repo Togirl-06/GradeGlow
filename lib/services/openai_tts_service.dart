@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 
 import '../config/app_config.dart';
+import '../config/openai_endpoints.dart';
 import '../utils/api_error_messages.dart';
 import '../utils/speech_text.dart';
 
@@ -33,8 +34,6 @@ class OpenAiTtsVoices {
 
 /// OpenAI Audio API text-to-speech (shows under Usage → Audio Speeches).
 class OpenAiTtsService {
-  static const String _url = 'https://api.openai.com/v1/audio/speech';
-
   /// Prefer baking voice into audio; keep [speed] near 1.0 and use player rate
   /// for live speed changes so pause/unpause stays instant.
   Future<Uint8List> synthesizeBytes(
@@ -55,11 +54,8 @@ class OpenAiTtsService {
         OpenAiTtsVoices.isValid(voice) ? voice : OpenAiTtsVoices.defaultId;
 
     final http.Response response = await http.post(
-      Uri.parse(_url),
-      headers: <String, String>{
-        'Authorization': 'Bearer ${AppConfig.openAiApiKey}',
-        'Content-Type': 'application/json',
-      },
+      Uri.parse(OpenAiEndpoints.audioSpeech),
+      headers: OpenAiEndpoints.jsonHeaders(),
       body: jsonEncode(<String, dynamic>{
         'model': 'tts-1',
         'input': input,

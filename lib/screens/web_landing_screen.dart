@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../config/app_branding.dart';
-import '../config/billing_config.dart';
 import '../config/virtual_university.dart';
 import '../config/vu_schools_catalog.dart';
 import '../theme/study_theme.dart';
@@ -191,33 +190,6 @@ class _HeroBand extends StatelessWidget {
                             fontSize: compact ? 18 : 20,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.6,
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.08),
-                            borderRadius: BorderRadius.circular(999),
-                            border: Border.all(
-                              color: AppBranding.glowOrange.withValues(
-                                alpha: 0.55,
-                              ),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 8,
-                            ),
-                            child: Text(
-                              'Campus is free  ·  Premium ${BillingConfig.premiumMonthlyPrice}/mo after a ${BillingConfig.freeTrialDays}-day trial',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.92),
-                                fontSize: compact ? 12 : 13,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 0.15,
-                              ),
-                            ),
                           ),
                         ),
                         const SizedBox(height: 18),

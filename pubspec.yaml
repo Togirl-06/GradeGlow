@@ -72,7 +72,8 @@ flutter_native_splash:
 flutter:
   uses-material-design: true
   assets:
-    - .env
+    # Do not ship .env as an asset — it would embed secrets in web/mobile builds.
+    # Use --dart-define=OPENAI_API_KEY=... locally, or the /api/openai Cloud Function on web.
     - assets/images/gradeglow_logo.png
     - assets/anatomy/
     - assets/biology/

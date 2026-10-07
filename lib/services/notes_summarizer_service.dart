@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +8,7 @@ import '../models/course.dart';
 import '../models/study_summary.dart';
 import '../models/study_upload_input.dart';
 import '../models/summary_categories.dart';
+import '../utils/io_file_bytes.dart';
 import '../utils/pdf_text_extractor.dart';
 import '../utils/pptx_text_extractor.dart';
 import '../utils/premium_access.dart';
@@ -17,6 +17,7 @@ import '../utils/study_limits.dart';
 import '../widgets/my_courses_section.dart';
 import 'auth_service.dart';
 import 'flashcard_service.dart';
+import 'mic_capture_service.dart';
 import 'openai_service.dart';
 import 'openai_whisper_service.dart';
 import 'subscription_service.dart';
@@ -243,8 +244,13 @@ class NotesSummarizerService extends ChangeNotifier {
       final StudyUploadInput file = files.first;
       final String ext = file.fileName.split('.').last.toLowerCase();
       if (StudyFileTypes.isAudioVideo(ext)) {
-        final String path = file.filePath ?? await _writeTempBytes(file);
-        return summarizeForCourseFromAudio(course: course, title: title, audioFilePath: path);
+        final String transcript = await _transcribeUpload(file);
+        return summarizeForCourseFromAudio(
+          course: course,
+          title: title,
+          audioFilePath: file.filePath ?? file.fileName,
+          transcript: transcript,
+        );
       }
       return summarizeForCourse(
         course: course,
@@ -294,7 +300,9 @@ class NotesSummarizerService extends ChangeNotifier {
     }
 
     if (StudyFileTypes.isImage(ext)) {
-      final Uint8List bytes = file.bytes ?? await File(file.filePath!).readAsBytes();
+      final Uint8List? bytes = file.bytes ??
+          (file.filePath != null ? await readFileBytes(file.filePath!) : null);
+      if (bytes == null) throw Exception('Could not read ${file.fileName}.');
       return _openAi.extractTextFromImage(
         imageBytes: bytes,
         mimeType: _imageMimeType(ext),
@@ -303,25 +311,53 @@ class NotesSummarizerService extends ChangeNotifier {
     }
 
     if (StudyFileTypes.isAudioVideo(ext)) {
-      final String path = file.filePath ?? await _writeTempBytes(file);
-      return _whisper.transcribeFile(path);
+      return _transcribeUpload(file);
     }
 
     throw Exception('Unsupported file type: ${file.fileName}');
   }
 
-  Future<int> _uploadByteLength(StudyUploadInput file) async {
-    if (file.filePath != null) return File(file.filePath!).length();
-    if (file.bytes != null) return file.bytes!.length;
-    return 0;
+  Future<String> _transcribeUpload(StudyUploadInput file) async {
+    if (file.bytes != null && file.bytes!.isNotEmpty) {
+      return _whisper.transcribeBytes(file.bytes!, fileName: file.fileName);
+    }
+    if (kIsWeb) {
+      final Uint8List? cached = MicCaptureService.instance.lastWavBytes;
+      if (cached != null && cached.isNotEmpty) {
+        return _whisper.transcribeBytes(cached, fileName: file.fileName);
+      }
+      throw Exception(
+        'Recording data is not available in this browser. Use Record again, or paste notes as text.',
+      );
+    }
+    if (file.filePath != null && file.filePath!.isNotEmpty) {
+      return _whisper.transcribeFile(file.filePath!);
+    }
+    throw Exception('Could not read ${file.fileName}.');
   }
 
-  Future<String> _writeTempBytes(StudyUploadInput file) async {
-    if (file.filePath != null) return file.filePath!;
-    if (file.bytes == null) throw Exception('Could not read ${file.fileName}.');
-    final File temp = File('${Directory.systemTemp.path}/study_${DateTime.now().millisecondsSinceEpoch}_${file.fileName}');
-    await temp.writeAsBytes(file.bytes!);
-    return temp.path;
+  Future<String> _resolveAudioTranscript(String audioFilePath) async {
+    if (kIsWeb) {
+      if (audioFilePath.startsWith('blob:') ||
+          audioFilePath.startsWith('http://') ||
+          audioFilePath.startsWith('https://')) {
+        return _whisper.transcribeFile(audioFilePath);
+      }
+      final Uint8List? cached = MicCaptureService.instance.lastWavBytes;
+      if (cached != null && cached.isNotEmpty) {
+        return _whisper.transcribeBytes(cached, fileName: 'recording.wav');
+      }
+      throw Exception(
+        'Recording data is not available in this browser. Use Record again, or paste notes as text.',
+      );
+    }
+    return _whisper.transcribeFile(audioFilePath);
+  }
+
+  Future<int> _uploadByteLength(StudyUploadInput file) async {
+    if (file.bytes != null) return file.bytes!.length;
+    if (file.filePath != null) return fileByteLength(file.filePath!);
+    return 0;
   }
 
   static String _mimeTypeForFile(String fileName) {
@@ -470,8 +506,9 @@ class NotesSummarizerService extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final String resolvedTranscript =
-          transcript?.trim().isNotEmpty == true ? transcript!.trim() : await _whisper.transcribeFile(audioFilePath);
+      final String resolvedTranscript = transcript?.trim().isNotEmpty == true
+          ? transcript!.trim()
+          : await _resolveAudioTranscript(audioFilePath);
       final Map<String, dynamic> json = await _openAi.analyzeDocument(
         title: title,
         extractedText: resolvedTranscript,
@@ -549,9 +586,12 @@ class NotesSummarizerService extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final String extracted = filePath != null
-          ? await PdfTextExtractor.fromPath(filePath)
-          : await PdfTextExtractor.fromBytes(bytes!, fileName: fileName);
+      final String extracted = (bytes != null)
+          ? await PdfTextExtractor.fromBytes(bytes, fileName: fileName)
+          : await PdfTextExtractor.fromPath(filePath!);
+      if (extracted.startsWith('PDF text extraction is not available')) {
+        throw Exception(extracted);
+      }
       final Map<String, dynamic> json = await _openAi.analyzeDocument(
         title: title,
         extractedText: extracted,
@@ -607,9 +647,9 @@ class NotesSummarizerService extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final String extracted = filePath != null
-          ? await PptxTextExtractor.fromPath(filePath)
-          : await PptxTextExtractor.fromBytes(bytes!, fileName: fileName);
+      final String extracted = (bytes != null)
+          ? await PptxTextExtractor.fromBytes(bytes, fileName: fileName)
+          : await PptxTextExtractor.fromPath(filePath!);
       final Map<String, dynamic> json = await _openAi.analyzeDocument(
         title: title,
         extractedText: extracted,
@@ -744,7 +784,11 @@ class NotesSummarizerService extends ChangeNotifier {
       );
     }
     if (mimeType.startsWith('image/') || StudyFileTypes.isImage(ext)) {
-      final Uint8List imageBytes = bytes ?? await File(filePath!).readAsBytes();
+      final Uint8List? imageBytes =
+          bytes ?? (filePath != null ? await readFileBytes(filePath) : null);
+      if (imageBytes == null) {
+        throw Exception('Could not read that image.');
+      }
       return summarizeImage(
         title: title,
         bytes: imageBytes,

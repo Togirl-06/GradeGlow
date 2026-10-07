@@ -1,24 +1,24 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../models/course.dart';
 import '../models/study_summary.dart';
 import '../models/study_upload_input.dart';
+import '../screens/my_courses_screen.dart';
 import '../services/material_service.dart';
-import '../services/notes_summarizer_service.dart';
 import '../services/mic_capture_service.dart';
+import '../services/notes_summarizer_service.dart';
 import '../utils/course_summary_actions.dart';
+import '../utils/io_file_bytes.dart';
 import '../utils/study_messenger.dart';
 import '../widgets/file_picker_gate.dart';
 import '../widgets/paste_content_sheet.dart';
 import '../widgets/record_audio_summarize_dialog.dart';
-import '../screens/my_courses_screen.dart';
 import 'study_file_types.dart';
 
 /// Pick a course then run Upload / Paste / Record for summarization.
@@ -89,7 +89,7 @@ class StudyContentInputActions {
       type: FileType.custom,
       allowedExtensions: StudyFileTypes.uploadExtensions,
       allowMultiple: true,
-      withData: false,
+      withData: true,
       dialogTitle: 'Upload study material',
     );
     if (result == null || result.files.isEmpty || !context.mounted) return null;
@@ -104,13 +104,22 @@ class StudyContentInputActions {
           throw Exception('Unsupported file type: ${file.name}');
         }
 
-        final String? path = await _resolveFilePath(file);
-        Uint8List? bytes;
-        if (StudyFileTypes.isImage(ext) && path == null) {
-          bytes = await _readBytes(file);
+        final Uint8List? bytes = await _readBytes(file);
+        final String? path = (!kIsWeb && file.path != null && file.path!.isNotEmpty)
+            ? file.path
+            : null;
+
+        if (bytes == null && path == null) {
+          throw Exception('Could not read ${file.name}.');
         }
 
-        inputs.add(StudyUploadInput(fileName: file.name, filePath: path, bytes: bytes));
+        inputs.add(
+          StudyUploadInput(
+            fileName: file.name,
+            filePath: path,
+            bytes: bytes,
+          ),
+        );
       }
 
       final StudySummary summary = await summarizer.summarizeMultipleForCourse(
@@ -128,30 +137,12 @@ class StudyContentInputActions {
     }
   }
 
-  static Future<String?> _resolveFilePath(PlatformFile file) async {
-    if (file.path != null && file.path!.isNotEmpty) return file.path;
-    if (file.bytes != null) return _ensureFilePath(file);
+  static Future<Uint8List?> _readBytes(PlatformFile file) async {
+    if (file.bytes != null && file.bytes!.isNotEmpty) return file.bytes;
+    if (!kIsWeb && file.path != null && file.path!.isNotEmpty) {
+      return readFileBytes(file.path!);
+    }
     return null;
-  }
-
-  static Future<Uint8List> _readBytes(PlatformFile file) async {
-    if (file.bytes != null) return file.bytes!;
-    if (file.path != null && file.path!.isNotEmpty) {
-      return File(file.path!).readAsBytes();
-    }
-    throw Exception('Could not read that file.');
-  }
-
-  static Future<String> _ensureFilePath(PlatformFile file) async {
-    if (file.path != null && file.path!.isNotEmpty) {
-      return file.path!;
-    }
-    final Uint8List? bytes = file.bytes;
-    if (bytes == null) throw Exception('Could not read that file.');
-    final Directory dir = await getTemporaryDirectory();
-    final String path = '${dir.path}/${file.name}';
-    await File(path).writeAsBytes(bytes);
-    return path;
   }
 
   static Future<void> paste(

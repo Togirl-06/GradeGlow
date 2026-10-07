@@ -21,8 +21,8 @@ class AppConfig {
     return _env('OPENAI_API_KEY');
   }
 
-  /// Optional backend proxy base URL (Cloud Function). When set, OpenAI calls
-  /// should go through your server instead of shipping a client key.
+  /// Optional backend proxy base URL (Cloud Function / Hosting rewrite).
+  /// On web, callers also fall back to same-origin `/api/openai` when unset.
   static String get openAiProxyUrl {
     const String fromDefine = String.fromEnvironment('OPENAI_PROXY_URL');
     if (fromDefine.trim().isNotEmpty) return fromDefine.trim();
@@ -43,7 +43,10 @@ class AppConfig {
   /// True when [Firebase.initializeApp] succeeded via [DefaultFirebaseOptions].
   static bool get hasFirebase => AppBootstrap.firebaseReady;
 
-  static bool get hasOpenAi => openAiApiKey.isNotEmpty || usesOpenAiProxy;
+  /// Web uses the Hosting `/api/openai` proxy (server-side key).
+  /// Native/desktop need OPENAI_API_KEY via --dart-define or local .env load.
+  static bool get hasOpenAi =>
+      openAiApiKey.isNotEmpty || usesOpenAiProxy || kIsWeb;
 
   static void debugLogKeySource() {
     if (!kDebugMode) return;

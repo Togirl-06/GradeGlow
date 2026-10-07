@@ -1,11 +1,12 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../config/app_branding.dart';
 import '../theme/study_theme.dart';
+import '../utils/io_file_bytes.dart';
 import '../utils/study_file_types.dart';
 
 /// Opens the system file browser, then leaves a GradeGlow screen underneath
@@ -29,15 +30,16 @@ class FilePickerGate {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: StudyFileTypes.documentExtensions,
-      withData: false,
+      withData: true,
       dialogTitle: 'Select a file',
     );
     if (result == null || result.files.isEmpty) return null;
     final PlatformFile file = result.files.first;
-    if (file.path != null && file.path!.isNotEmpty) {
-      return File(file.path!).readAsBytes();
+    if (file.bytes != null && file.bytes!.isNotEmpty) return file.bytes;
+    if (!kIsWeb && file.path != null && file.path!.isNotEmpty) {
+      return readFileBytes(file.path!);
     }
-    return file.bytes;
+    return null;
   }
 }
 

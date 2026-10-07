@@ -42,6 +42,14 @@ app.*.map.json
 # Secrets
 .env
 
+# Cloud Functions
+functions/node_modules/
+functions/.env
+functions/.env.*
+!.env.example
+*.local
+.firebase/
+
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile

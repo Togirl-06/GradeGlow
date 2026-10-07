@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import '../config/app_config.dart';
 import '../models/study_material.dart';
 import '../utils/image_processor.dart';
+import '../utils/io_file_bytes.dart';
 import '../utils/study_file_types.dart';
 import 'auth_service.dart';
 import 'question_service.dart';
@@ -81,15 +82,16 @@ class MaterialService extends ChangeNotifier {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: StudyFileTypes.documentExtensions,
-      withData: false,
+      withData: true,
       dialogTitle: 'Select a file',
     );
     if (result == null || result.files.isEmpty) return null;
     final PlatformFile file = result.files.first;
-    if (file.path != null && file.path!.isNotEmpty) {
-      return File(file.path!).readAsBytes();
+    if (file.bytes != null && file.bytes!.isNotEmpty) return file.bytes;
+    if (!kIsWeb && file.path != null && file.path!.isNotEmpty) {
+      return readFileBytes(file.path!);
     }
-    return file.bytes;
+    return null;
   }
 
   Future<Uint8List?> pickImage(ImageSource source) async {

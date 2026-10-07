@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../config/app_config.dart';
+import '../config/openai_endpoints.dart';
 import '../utils/ai_json.dart';
+import '../utils/io_file_bytes.dart';
 import '../data/topic_profile_database.dart';
 import '../models/topic_profile.dart';
 import '../utils/topic_scope_validator.dart';
@@ -24,7 +25,6 @@ import '../data/ai_practice_catalog.dart';
 import 'ai_professor_prompts.dart';
 
 class OpenAiService {
-  static const String _baseUrl = 'https://api.openai.com/v1/chat/completions';
   static const String freeModel = 'gpt-4o-mini';
   static const String premiumModel = 'gpt-4o';
 
@@ -113,7 +113,7 @@ class OpenAiService {
         }
         bytes = response.bodyBytes;
       } else {
-        bytes = await File(path).readAsBytes();
+        bytes = await readFileBytes(path);
       }
       final String ext = path.split('.').last.toLowerCase();
       final String mime = switch (ext) {
@@ -693,11 +693,8 @@ class OpenAiService {
 
     final http.Response response = await http
         .post(
-          Uri.parse(_baseUrl),
-          headers: <String, String>{
-            'Authorization': 'Bearer ${AppConfig.openAiApiKey}',
-            'Content-Type': 'application/json',
-          },
+          Uri.parse(OpenAiEndpoints.chatCompletions),
+          headers: OpenAiEndpoints.jsonHeaders(),
           body: jsonEncode(body),
         )
         .timeout(const Duration(seconds: 120));
@@ -749,11 +746,9 @@ class OpenAiService {
     };
     if (maxTokens != null) body['max_tokens'] = maxTokens;
 
-    final http.Request request = http.Request('POST', Uri.parse(_baseUrl));
-    request.headers.addAll(<String, String>{
-      'Authorization': 'Bearer ${AppConfig.openAiApiKey}',
-      'Content-Type': 'application/json',
-    });
+    final http.Request request =
+        http.Request('POST', Uri.parse(OpenAiEndpoints.chatCompletions));
+    request.headers.addAll(OpenAiEndpoints.jsonHeaders());
     request.body = jsonEncode(body);
 
     final http.StreamedResponse response = await request.send();

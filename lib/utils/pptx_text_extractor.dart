@@ -1,32 +1,36 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:archive/archive.dart';
+import 'package:flutter/foundation.dart';
+
+import 'io_file_bytes.dart';
 
 /// Extract plain text from a PowerPoint (.pptx) file for OpenAI analysis.
 class PptxTextExtractor {
   static Future<String> fromBytes(Uint8List bytes, {String fileName = 'slides.pptx'}) async {
-    final Directory temp = Directory.systemTemp;
-    final File file = File('${temp.path}/study_buddy_${DateTime.now().millisecondsSinceEpoch}.pptx');
-    await file.writeAsBytes(bytes);
-    try {
-      return await fromPath(file.path);
-    } finally {
-      if (await file.exists()) await file.delete();
-    }
+    return _extractFromBytes(bytes);
   }
 
   static Future<String> fromPath(String path) async {
     try {
-      final Uint8List bytes = await File(path).readAsBytes();
+      final Uint8List bytes = await readFileBytes(path);
+      return _extractFromBytes(bytes);
+    } catch (_) {
+      return 'Could not read this PowerPoint file. Try saving as .pptx or PDF.';
+    }
+  }
+
+  static String _extractFromBytes(Uint8List bytes) {
+    try {
       final Archive archive = ZipDecoder().decodeBytes(bytes);
 
       final List<ArchiveFile> slideFiles = archive.files
           .where(
-            (ArchiveFile f) => f.isFile && f.name.startsWith('ppt/slides/slide') && f.name.endsWith('.xml'),
+            (ArchiveFile f) =>
+                f.isFile && f.name.startsWith('ppt/slides/slide') && f.name.endsWith('.xml'),
           )
           .toList();
-      slideFiles.sort((ArchiveFile a, ArchiveFile b) => _slideNumber(a.name).compareTo(_slideNumber(b.name)));
+      slideFiles.sort(
+        (ArchiveFile a, ArchiveFile b) => _slideNumber(a.name).compareTo(_slideNumber(b.name)),
+      );
 
       final List<String> slideTexts = <String>[];
       for (final ArchiveFile slide in slideFiles) {
@@ -43,6 +47,9 @@ class PptxTextExtractor {
       }
       return combined.trim();
     } catch (_) {
+      if (kIsWeb) {
+        return 'Could not read this PowerPoint in the browser. Try Paste text, or upload photos of the slides.';
+      }
       return 'Could not read this PowerPoint file. Try saving as .pptx or PDF.';
     }
   }
