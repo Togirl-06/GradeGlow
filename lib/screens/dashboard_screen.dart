@@ -16,7 +16,6 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({
     super.key,
     required this.onProgress,
-    required this.onUpload,
     required this.onAskAi,
     required this.onQuiz,
     required this.onFlashcards,
@@ -28,7 +27,6 @@ class DashboardScreen extends StatelessWidget {
   });
 
   final VoidCallback onProgress;
-  final VoidCallback onUpload;
   final VoidCallback onAskAi;
   final void Function([String? materialId]) onQuiz;
   final VoidCallback onFlashcards;
@@ -183,12 +181,6 @@ class DashboardScreen extends StatelessWidget {
                                 context,
                                 latest,
                               ),
-                    ),
-                    _ToolItem(
-                      icon: Icons.upload_file_outlined,
-                      title: 'Add material',
-                      subtitle: 'Upload notes or files',
-                      onTap: onUpload,
                     ),
                     _ToolItem(
                       icon: Icons.notes_outlined,
