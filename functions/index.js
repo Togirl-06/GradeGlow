@@ -1,21 +1,19 @@
 const { onRequest } = require("firebase-functions/v2/https");
-const { defineString } = require("firebase-functions/params");
-const { setGlobalOptions } = require("firebase-functions/v2");
+const { initializeApp } = require("firebase-admin/app");
+const { getFirestore, FieldValue } = require("firebase-admin/firestore");
+const Stripe = require("stripe");
 
-setGlobalOptions({ region: "us-central1" });
-
-// Set via functions/.env at deploy time (copied from project .env by deploy_web.ps1).
-// Requires Blaze billing for Cloud Functions.
-const openAiKey = defineString("OPENAI_API_KEY", { default: "" });
+initializeApp();
 
 /**
- * Proxies OpenAI API calls so the Flutter web app avoids CORS and never
- * ships the API key to the browser.
+ * Proxies OpenAI so the Flutter web app avoids CORS and keeps the key server-side.
+ * Hosting rewrite: /api/openai/** -> openaiProxy
  *
- * Hosting rewrite: /api/openai/** -> this function
+ * Key source: functions/.env (OPENAI_API_KEY=...) copied by deploy_web.ps1
  */
 exports.openaiProxy = onRequest(
   {
+    region: "us-central1",
     cors: true,
     timeoutSeconds: 300,
     memory: "512MiB",
@@ -31,11 +29,11 @@ exports.openaiProxy = onRequest(
       return;
     }
 
-    const key = openAiKey.value();
+    const key = process.env.OPENAI_API_KEY || "";
     if (!key) {
       res.status(500).json({
         error:
-          "OPENAI_API_KEY is not configured for the proxy. Add it to functions/.env and redeploy.",
+          "OPENAI_API_KEY is missing. Put it in functions/.env and redeploy.",
       });
       return;
     }
@@ -83,6 +81,124 @@ exports.openaiProxy = onRequest(
         error: "Upstream OpenAI request failed.",
         detail: String(error && error.message ? error.message : error),
       });
+    }
+  }
+);
+
+/**
+ * Stripe webhook — unlocks Premium on users/{uid}.plan after checkout.
+ *
+ * Setup:
+ * 1. functions/.env: STRIPE_SECRET_KEY=sk_... and STRIPE_WEBHOOK_SECRET=whsec_...
+ * 2. Stripe Dashboard → Developers → Webhooks → endpoint
+ *    https://us-central1-<project>.cloudfunctions.net/stripeWebhook
+ *    events: checkout.session.completed, customer.subscription.deleted
+ * 3. Payment Links must pass client_reference_id (= Firebase uid)
+ *    App opens: buy.stripe.com/...?client_reference_id=<uid>
+ */
+exports.stripeWebhook = onRequest(
+  {
+    region: "us-central1",
+    cors: false,
+    timeoutSeconds: 60,
+    memory: "256MiB",
+    invoker: "public",
+  },
+  async (req, res) => {
+    if (req.method !== "POST") {
+      res.status(405).send("POST only");
+      return;
+    }
+
+    const secret = process.env.STRIPE_SECRET_KEY || "";
+    const whSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
+    if (!secret || !whSecret) {
+      console.error("Missing STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET");
+      res.status(500).send("Stripe not configured");
+      return;
+    }
+
+    const stripe = new Stripe(secret);
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.rawBody,
+        req.headers["stripe-signature"],
+        whSecret
+      );
+    } catch (err) {
+      console.error("Webhook signature failed", err.message);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    const db = getFirestore();
+
+    try {
+      if (event.type === "checkout.session.completed") {
+        const session = event.data.object;
+        let uid = session.client_reference_id || "";
+        const email = (session.customer_details && session.customer_details.email) ||
+          session.customer_email ||
+          "";
+
+        if (!uid && email) {
+          const snap = await db
+            .collection("users")
+            .where("email", "==", email)
+            .limit(1)
+            .get();
+          if (!snap.empty) uid = snap.docs[0].id;
+        }
+
+        if (!uid) {
+          console.error("checkout.session.completed missing uid/email", session.id);
+          res.status(200).json({ received: true, unlocked: false });
+          return;
+        }
+
+        await db.collection("users").doc(uid).set(
+          {
+            plan: "premium",
+            planUpdatedAt: new Date().toISOString(),
+            stripeCustomerId: session.customer || null,
+            stripeCheckoutSessionId: session.id,
+            planSource: "stripe",
+            updatedAt: FieldValue.serverTimestamp(),
+          },
+          { merge: true }
+        );
+        console.log("Unlocked premium for", uid);
+      }
+
+      if (event.type === "customer.subscription.deleted") {
+        const sub = event.data.object;
+        const customerId = sub.customer;
+        if (customerId) {
+          const snap = await db
+            .collection("users")
+            .where("stripeCustomerId", "==", customerId)
+            .limit(1)
+            .get();
+          if (!snap.empty) {
+            await snap.docs[0].ref.set(
+              {
+                plan: "free",
+                planUpdatedAt: new Date().toISOString(),
+                planSource: "stripe_canceled",
+                updatedAt: FieldValue.serverTimestamp(),
+              },
+              { merge: true }
+            );
+            console.log("Reverted to free for", snap.docs[0].id);
+          }
+        }
+      }
+
+      res.status(200).json({ received: true });
+    } catch (err) {
+      console.error("stripeWebhook handler error", err);
+      res.status(500).json({ error: String(err.message || err) });
     }
   }
 );

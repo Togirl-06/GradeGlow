@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../game/ui/nursing_clinical_game_screen.dart';
 import '../shared/playable_models.dart';
 import '../shared/playable_workplace_screen.dart';
 import '../visual/visual_career_bridge.dart';
@@ -7,8 +8,13 @@ import 'nursing_career.dart';
 import 'nursing_lab1_shift.dart';
 import 'nursing_lab2_assessment.dart';
 
-/// Riverside Med ED playable workplace entry.
+/// Riverside Med — walkable clinical floor (primary) + classic workplace hub.
 Widget nursingPlayableScreen() {
+  return const NursingClinicalGameScreen();
+}
+
+/// Legacy immersive hub (floor map + staged labs) — still used from in-game menu if needed.
+Widget nursingPlayableWorkplaceHub() {
   return PlayableWorkplaceScreen(
     career: augmentCareerWithVisualLabs(nursingCareer),
     onOpenStage: (BuildContext context, PlayableStage stage) async {

@@ -2,7 +2,8 @@
 class DocumentTextChunker {
   DocumentTextChunker._();
 
-  static const int chunkSize = 14000;
+  /// Larger chunks → fewer API round-trips for long docs.
+  static const int chunkSize = 22000;
 
   static List<String> chunk(String text) {
     final String trimmed = text.trim();

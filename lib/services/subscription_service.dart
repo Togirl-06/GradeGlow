@@ -6,6 +6,8 @@ import '../config/billing_config.dart';
 import '../models/subscription_plan.dart';
 import 'auth_service.dart';
 
+export '../config/billing_config.dart' show BillingInterval;
+
 /// Subscription state stored on `users/{uid}.plan`.
 ///
 /// Client apps may **read** plan and restore to free locally for testing only
@@ -66,13 +68,18 @@ class SubscriptionService extends ChangeNotifier {
   /// Called after a verified store purchase (when IAP is live).
   Future<void> activateAfterPayment(SubscriptionPlan plan) => setPlan(plan);
 
-  /// Opens Stripe checkout for Premium ($11.99/mo after a 30-day trial).
-  /// Does not locally unlock Premium — Stripe / backend confirm the plan.
+  /// Opens Stripe checkout for Premium. Plan unlocks via Stripe webhook.
   Future<bool> purchasePremium() => startPremiumCheckout();
 
-  Future<bool> startPremiumCheckout() async {
+  Future<bool> startPremiumCheckout({
+    BillingInterval interval = BillingInterval.monthly,
+  }) async {
     try {
-      return await BillingConfig.openStripeCheckout();
+      return await BillingConfig.openStripeCheckout(
+        interval: interval,
+        userId: _auth.uid,
+        email: _auth.email,
+      );
     } catch (error) {
       debugPrint('Stripe checkout failed: $error');
       return false;

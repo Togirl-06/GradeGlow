@@ -1,5 +1,6 @@
 import '../config/billing_config.dart';
 import '../utils/study_limits.dart';
+import '../utils/tutor_limits.dart';
 
 class PlanFeature {
   const PlanFeature(this.label);
@@ -16,6 +17,7 @@ class MembershipPlanDetails {
     required this.priceSuffix,
     this.strikethroughPrice,
     this.promoLabel,
+    this.footerNote,
   });
 
   final String name;
@@ -25,6 +27,7 @@ class MembershipPlanDetails {
   final String priceSuffix;
   final String? strikethroughPrice;
   final String? promoLabel;
+  final String? footerNote;
 }
 
 /// Free vs Premium catalog shown on Plans & features.
@@ -32,56 +35,60 @@ class MembershipPlans {
   static const String premiumRegularPrice = BillingConfig.premiumMonthlyPrice;
   static const String premiumPromoPrice = BillingConfig.premiumMonthlyPrice;
 
-  static final MembershipPlanDetails free = MembershipPlanDetails(
+  static MembershipPlanDetails free = MembershipPlanDetails(
     name: 'Free',
     tagline: 'The Virtual University is included.',
     priceAmount: '0',
     priceSuffix: '/ month',
     features: <PlanFeature>[
-      PlanFeature('Full Virtual University campus for everyone'),
-      PlanFeature('AI Professor lectures, labs, quizzes & certificates'),
-      PlanFeature('AI Tutor Chat'),
-      PlanFeature('AI summaries from PDFs, slides, notes, images & recordings'),
+      const PlanFeature('Full Virtual University campus'),
+      const PlanFeature('AI Professor lectures, labs, quizzes & certificates'),
+      PlanFeature(
+        'AI Tutor Chat — ${TutorLimits.freeDailyMessages} messages/day',
+      ),
       PlanFeature(
         '${StudyLimits.freeDailySummarizeActions} uploads, pastes & recordings per day',
       ),
-      PlanFeature('Up to ${StudyLimits.freeStudySetsPerCourse} study sets per course'),
-      PlanFeature('Up to ${StudyLimits.freeFlashcardsPerCourse} flashcards per course'),
-      PlanFeature('Up to ${StudyLimits.freeQuizQuestionsPerCourse} quiz questions per course'),
-      PlanFeature('Study planner & reminders'),
-      PlanFeature('Progress tracking'),
-      PlanFeature('Daily study streaks'),
-      PlanFeature('Basic performance insights'),
+      PlanFeature(
+        'Up to ${StudyLimits.freeStudySetsPerCourse} study sets per course',
+      ),
+      PlanFeature(
+        'Up to ${StudyLimits.freeFlashcardsPerCourse} flashcards per course',
+      ),
+      PlanFeature(
+        'Up to ${StudyLimits.freeQuizQuestionsPerCourse} quiz questions per course',
+      ),
+      const PlanFeature('Study planner, streaks & basic insights'),
     ],
   );
 
-  static final MembershipPlanDetails premium = MembershipPlanDetails(
-    name: 'Premium',
-    tagline: 'Unlimited study tools after a 30-day free trial.',
-    priceAmount: BillingConfig.premiumPriceAmount,
-    priceSuffix: '/ month after trial',
-    promoLabel: BillingConfig.trialLabel,
-    features: <PlanFeature>[
-      PlanFeature('Everything in Free, including campus'),
-      PlanFeature('${BillingConfig.freeTrialDays}-day free trial, then ${BillingConfig.premiumMonthlyPrice}/month'),
-      PlanFeature('Unlimited AI Tutor Chat'),
-      PlanFeature('Live voice conversations with AI Tutor'),
-      PlanFeature('Unlimited study sets'),
-      PlanFeature('Unlimited file, image & recording uploads'),
-      PlanFeature(
-        'Generate up to ${StudyLimits.premiumFlashcardsPerGeneration} flashcards at once',
-      ),
-      PlanFeature(
-        'Generate up to ${StudyLimits.premiumQuizQuestionsPerGeneration} quiz questions at once',
-      ),
-      PlanFeature('AI-generated study guides & exam reviews'),
-      PlanFeature('Personalized study plans'),
-      PlanFeature('Grade Predictor & Exam Score Calculator'),
-      PlanFeature('Regenerate summaries, flashcards & quizzes anytime'),
-      PlanFeature('Download and export notes, recordings & study materials'),
-      PlanFeature('Faster AI responses'),
-      PlanFeature('No ads'),
-      PlanFeature('Early access to new features'),
-    ],
-  );
+  /// Premium selling points — keep to ~5 grouped benefits.
+  static MembershipPlanDetails premiumFor(BillingPlanOption plan) {
+    return MembershipPlanDetails(
+      name: 'Premium',
+      tagline: 'Unlimited study tools for exam season and beyond.',
+      priceAmount: plan.priceAmount,
+      priceSuffix: plan.suffix,
+      promoLabel: BillingConfig.trialLabel,
+      footerNote: BillingConfig.trialFooter,
+      features: const <PlanFeature>[
+        PlanFeature('Everything in Free'),
+        PlanFeature(
+          'Unlimited AI Tutor, including live voice conversations',
+        ),
+        PlanFeature('Unlimited study sets, flashcards and quizzes'),
+        PlanFeature(
+          'Unlimited uploads (files, images, recordings) plus export',
+        ),
+        PlanFeature(
+          'Exam prep tools: study guides, personalized plans, Grade Predictor',
+        ),
+        PlanFeature('Faster AI, no ads, early access'),
+      ],
+    );
+  }
+
+  /// Default monthly card (compat for older call sites).
+  static MembershipPlanDetails get premium =>
+      premiumFor(BillingConfig.planFor(BillingInterval.monthly));
 }

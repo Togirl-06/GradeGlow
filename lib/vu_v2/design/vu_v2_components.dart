@@ -18,6 +18,10 @@ class VuV2PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = FilledButton.styleFrom(
+      backgroundColor: VuV2Colors.mint,
+      foregroundColor: Colors.white,
+    );
     final Widget child = trailingArrow
         ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,11 +35,12 @@ class VuV2PrimaryButton extends StatelessWidget {
     if (icon != null && !trailingArrow) {
       return FilledButton.icon(
         onPressed: onPressed,
+        style: style,
         icon: Icon(icon),
         label: Text(label),
       );
     }
-    return FilledButton(onPressed: onPressed, child: child);
+    return FilledButton(onPressed: onPressed, style: style, child: child);
   }
 }
 
@@ -52,7 +57,7 @@ class VuV2ProgressBar extends StatelessWidget {
       child: LinearProgressIndicator(
         value: value.clamp(0.0, 1.0),
         minHeight: height,
-        color: VuV2Colors.orange,
+        color: VuV2Colors.dashPurple,
         backgroundColor: VuV2Colors.stroke,
       ),
     );

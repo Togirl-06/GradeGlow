@@ -47,11 +47,13 @@ class PlanFeatures {
       unlimitedStudySets(plan) ? 999999 : StudyLimits.freeStudySetsPerCourse;
 
   static int flashcardsPerCourseLimit(SubscriptionPlan plan) =>
-      isPremium(plan) ? StudyLimits.premiumFlashcardsPerGeneration : StudyLimits.freeFlashcardsPerCourse;
+      isPremium(plan)
+          ? StudyLimits.unlimitedSentinel
+          : StudyLimits.freeFlashcardsPerCourse;
 
   static int quizQuestionsPerCourseLimit(SubscriptionPlan plan) =>
       isPremium(plan)
-          ? StudyLimits.premiumQuizQuestionsPerGeneration
+          ? StudyLimits.unlimitedSentinel
           : StudyLimits.freeQuizQuestionsPerCourse;
 
   static int tutorMediaDailyLimit(SubscriptionPlan plan) =>

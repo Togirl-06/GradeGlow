@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../../data/bio_101_curriculum.dart';
 import '../../data/diagram_misconception_catalog.dart';
 import '../../data/diagram_misconception_store.dart';
-import '../../data/university_learning_engine.dart';
 import '../campus/vu_v2_adaptive_review_drill_screen.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_roadmap_models.dart';
@@ -54,7 +51,6 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
     (icon: Icons.dashboard_outlined, label: 'Overview'),
     (icon: Icons.smart_display_outlined, label: 'Lectures'),
     (icon: Icons.menu_book_outlined, label: 'Textbook'),
-    (icon: Icons.science_outlined, label: 'Labs'),
     (icon: Icons.checklist_rtl_rounded, label: 'Quizzes'),
     (icon: Icons.grade_outlined, label: 'Grades'),
   ];
@@ -176,14 +172,6 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           modules: _modules,
         );
       case 3:
-        return _LabsPanel(
-          subjectId: widget.subjectId,
-          courseTitle: course.title,
-          lessons: _lessons,
-          modules: _modules,
-          completedLessons: widget.progress.completedLessonIds.length,
-        );
-      case 4:
         return _QuizzesPanel(
           modules: _modules,
           course: course,
@@ -195,7 +183,7 @@ class _VuV2CourseHomeScreenState extends State<VuV2CourseHomeScreen> {
           session: session,
           lessons: _lessons,
         );
-      case 5:
+      case 4:
         return VuV2Surface(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1019,115 +1007,6 @@ class _QuizzesPanel extends StatelessWidget {
               );
             },
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LabsPanel extends StatelessWidget {
-  const _LabsPanel({
-    required this.subjectId,
-    required this.courseTitle,
-    required this.lessons,
-    required this.modules,
-    required this.completedLessons,
-  });
-
-  final String subjectId;
-  final String courseTitle;
-  final List<VuV2RoadmapLesson> lessons;
-  final List<VuV2RoadmapModule> modules;
-  final int completedLessons;
-
-  @override
-  Widget build(BuildContext context) {
-    final Map<String, String> lessonModules = <String, String>{};
-    for (final VuV2RoadmapModule m in modules) {
-      for (final VuV2RoadmapLesson l in m.lessons) {
-        lessonModules[l.id] = m.title;
-      }
-    }
-
-    final List<({VuV2RoadmapLesson lesson, UniversityLabLink link})> linked =
-        <({VuV2RoadmapLesson lesson, UniversityLabLink link})>[];
-    for (final VuV2RoadmapLesson lesson in lessons) {
-      final UniversityLabLink? link = UniversityLearningEngine.labForLesson(
-        subjectId: subjectId,
-        lessonTitle: lesson.title,
-        moduleTitle: lessonModules[lesson.id],
-      );
-      if (link != null) {
-        linked.add((lesson: lesson, link: link));
-      }
-    }
-
-    if (linked.isEmpty) {
-      return const _ComingPanel(
-        title: 'Labs',
-        body: 'Practical laboratories for this course will appear here as lectures unlock.',
-      );
-    }
-
-    return VuV2Surface(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Course laboratories',
-            style: TextStyle(
-              color: VuV2Colors.ink,
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'Each lab is an investigation: mission, equipment, decisions, data, and a report. Not a quiz.',
-            style: TextStyle(color: VuV2Colors.mute, height: 1.45),
-          ),
-          const SizedBox(height: 14),
-          ...linked.map((({VuV2RoadmapLesson lesson, UniversityLabLink link}) e) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: VuV2Colors.stroke),
-                ),
-                tileColor: VuV2Colors.card,
-                leading: Icon(Icons.science_outlined, color: VuV2Colors.mint),
-                title: Text(
-                  e.link.title,
-                  style: TextStyle(
-                    color: VuV2Colors.ink,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                subtitle: Text(
-                  'After: ${e.lesson.title}\n~${e.link.estimatedMinutes} min · ${e.link.difficulty}',
-                  style: TextStyle(color: VuV2Colors.mute, height: 1.35),
-                ),
-                trailing: FilledButton(
-                  onPressed: () {
-                    unawaited(
-                      VuV2LessonActivityRouter.openLinkedLab(
-                        context: context,
-                        link: e.link,
-                        subjectId: subjectId,
-                        courseTitle: courseTitle,
-                        topicTitle: e.lesson.title,
-                        labLevel: VuV2LessonActivityRouter.levelFor(
-                          completedLessons,
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text('ENTER LAB'),
-                ),
-              ),
-            );
-          }),
         ],
       ),
     );

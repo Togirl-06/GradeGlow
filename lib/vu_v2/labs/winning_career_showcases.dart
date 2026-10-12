@@ -1,65 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../career_labs/playable/cs_career/cs_career_playable.dart';
-import '../career_labs/playable/engineering/engineering_playable.dart';
-import '../career_labs/playable/law/law_playable.dart';
+import '../game/career/vu_career_world_router.dart';
+import '../game/career/vu_career_worlds.dart';
 import 'lab_mission_celebration.dart';
 import 'university_lab_result.dart';
-import 'university_practical/practical_catalog.dart';
-import 'university_practical/university_practical_lab.dart';
-import 'workplace_immersion.dart';
 
-/// Career showcases — walk into the real workplace, then run the graded viva.
+/// Entry points redirect to engine Career Worlds (old Labs retired).
 abstract final class WinningCareerShowcases {
   static Future<void> openCs(BuildContext context) {
-    return WorkplaceEntranceGate.openThen(
-      context,
-      kind: WorkplaceKind.incidentBridge,
-      builder: () => const CsIncidentShowcaseLab(),
-    );
+    return VuCareerWorldRouter.open(context, VuCareerWorlds.computerScience);
   }
 
   static Future<void> openLaw(BuildContext context) {
-    return WorkplaceEntranceGate.openThen(
-      context,
-      kind: WorkplaceKind.courtroom,
-      builder: () => const LawCaseShowcaseLab(),
-    );
+    return VuCareerWorldRouter.open(context, VuCareerWorlds.law);
   }
 
   static Future<void> openEngineering(BuildContext context) {
-    return WorkplaceEntranceGate.openThen(
-      context,
-      kind: WorkplaceKind.engSite,
-      builder: () => const EngineeringBridgeShowcaseLab(),
-    );
+    return VuCareerWorldRouter.open(context, VuCareerWorlds.engineering);
   }
 
   static Future<void> openFullWorkplace(BuildContext context, String labId) {
-    late final Widget screen;
-    late final WorkplaceKind kind;
-    switch (labId) {
-      case 'cs_career':
-        screen = csCareerPlayableScreen();
-        kind = WorkplaceKind.incidentBridge;
-      case 'law_firm':
-        screen = lawPlayableScreen();
-        kind = WorkplaceKind.courtroom;
-      case 'engineering':
-        screen = engineeringPlayableScreen();
-        kind = WorkplaceKind.engSite;
-      default:
-        return UniversityPracticalLabScreen.openCourse(
-          context,
-          courseId: labId,
-        );
-    }
-    return WorkplaceEntranceGate.openThen(
-      context,
-      kind: kind,
-      builder: () => screen,
-    );
+    final String id = switch (labId) {
+      'cs_career' => 'computer_science',
+      'law_firm' => 'law',
+      'nursing_ed' => 'nursing',
+      _ => labId,
+    };
+    return VuCareerWorldRouter.openById(context, id);
   }
 }
 
@@ -896,18 +864,11 @@ class _EngineeringBridgeShowcaseLabState
   }
 }
 
-/// Quick open for any remaining course via university practical catalog.
+/// Opens engine Career World for a course/major id (old practical labs retired).
 Future<void> openCourseWinningLab(BuildContext context, String courseId) {
-  final mission = UniversityPracticalCatalog.forCourse(courseId);
-  if (mission == null) {
-    return WinningCareerShowcases.openFullWorkplace(context, courseId);
+  final pack = VuCareerWorlds.forMajor(courseId) ?? VuCareerWorlds.byId(courseId);
+  if (pack != null) {
+    return VuCareerWorldRouter.open(context, pack);
   }
-  if (courseId.contains('computer') || courseId == 'cs' || courseId == 'cs_career') {
-    return WinningCareerShowcases.openCs(context);
-  }
-  if (courseId.contains('law')) return WinningCareerShowcases.openLaw(context);
-  if (courseId.contains('engin')) {
-    return WinningCareerShowcases.openEngineering(context);
-  }
-  return UniversityPracticalLabScreen.open(context, mission: mission);
+  return WinningCareerShowcases.openFullWorkplace(context, courseId);
 }

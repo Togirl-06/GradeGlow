@@ -38,7 +38,15 @@ class _CareerLabHomeScreenState extends State<CareerLabHomeScreen> {
       });
       return;
     }
-    _def = CareerLabRegistry.byId(widget.labId) ?? CareerLabRegistry.all.first;
+    _def = CareerLabRegistry.byId(widget.labId) ??
+        CareerLabDef(
+          id: widget.labId,
+          title: 'Career Lab',
+          subtitle: 'Unavailable while Virtual Labs are wiped',
+          emoji: '🔒',
+          role: 'Student',
+          available: false,
+        );
     _world = careerWorldById(widget.labId) ?? NursingEdWorld.build();
     _boot();
   }

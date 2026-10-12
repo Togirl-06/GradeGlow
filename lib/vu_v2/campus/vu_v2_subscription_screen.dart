@@ -41,11 +41,12 @@ class VuV2SubscriptionScreen extends StatelessWidget {
           _PlanCard(
             title: 'Premium',
             price: '${BillingConfig.premiumMonthlyPrice} / mo',
-            bullets: const <String>[
-              '${BillingConfig.freeTrialDays}-day free trial',
-              'Then ${BillingConfig.premiumMonthlyPrice}/month',
-              'Unlimited tutor chat, live voice & study tools',
-              'Campus stays free either way',
+            bullets: <String>[
+              'Unlimited AI Tutor + live voice',
+              'Unlimited study sets, flashcards & quizzes',
+              'Unlimited uploads + export',
+              'Study guides, plans & Grade Predictor',
+              BillingConfig.trialFooter,
             ],
             accent: true,
             cta: BillingConfig.checkoutCta,

@@ -209,9 +209,9 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
             badge: premiumTools ? 'ACTIVE' : BillingConfig.trialLabel,
             accent: true,
             bullets: <String>[
-              '${BillingConfig.freeTrialDays}-day free trial, then ${BillingConfig.premiumMonthlyPrice}/month',
-              'Unlimited tutor chat, live voice, extra uploads',
-              'Campus remains free either way',
+              'Unlimited AI Tutor + live voice',
+              'Unlimited study sets, flashcards, quizzes & uploads',
+              BillingConfig.trialFooter,
             ],
             cta: premiumTools
                 ? 'Premium tools are active'

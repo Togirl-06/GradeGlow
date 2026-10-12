@@ -4,6 +4,9 @@ import 'api_error_messages.dart';
 class TutorLimits {
   TutorLimits._();
 
+  /// Text chat messages per day on Free (Premium is unlimited).
+  static const int freeDailyMessages = 30;
+
   /// Photos, videos, and file attachments combined per day on Free.
   static const int freeDailyMediaAttachments = 5;
 

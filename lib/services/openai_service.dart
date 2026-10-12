@@ -25,8 +25,10 @@ import '../data/ai_practice_catalog.dart';
 import 'ai_professor_prompts.dart';
 
 class OpenAiService {
+  /// Fast default for notes, materials, tutor, and study generation.
+  /// (gpt-4o was too slow for interactive study flows.)
   static const String freeModel = 'gpt-4o-mini';
-  static const String premiumModel = 'gpt-4o';
+  static const String premiumModel = 'gpt-4o-mini';
 
   Future<String> tutorReply(
     List<Map<String, dynamic>> history,
@@ -46,6 +48,7 @@ class OpenAiService {
         'role': 'system',
         'content':
             'You are a friendly university tutor. Give clear, structured answers that are easy to scan — like a walkthrough script.\n\n'
+            'Keep answers concise (aim under ~400 words unless the student asks for depth).\n\n'
             'FORMATTING RULES (always follow):\n'
             '1. Use ## for main sections (e.g. "## Integration by parts — Overview").\n'
             '2. Use ### for sub-steps when breaking a topic into parts.\n'
@@ -70,7 +73,12 @@ class OpenAiService {
       await _buildUserMessage(userMessage, imageFilePaths),
     ];
 
-    final String content = await _chatDynamic(messages, temperature: 0.7, premium: premium);
+    final String content = await _chatDynamic(
+      messages,
+      temperature: 0.7,
+      maxTokens: 1200,
+      premium: premium,
+    );
     return content.trim();
   }
 
@@ -129,21 +137,17 @@ class OpenAiService {
   }
 
   static const String _comprehensiveNotesSystemPrompt =
-      'You are an expert university note-taker. Your job is to capture EVERY piece of information '
-      'from the source material — not a short summary.\n\n'
+      'You are a fast university note-taker. Write clear, scannable study notes — not a novel.\n\n'
       'RULES:\n'
-      '- Do NOT omit definitions, formulas, theorems, proofs, examples, numbers, dates, names, '
-      'steps, comparisons, exceptions, diagrams described in text, or professor tips.\n'
-      '- Prefer completeness over brevity. Longer detailed notes are better than short summaries.\n'
+      '- Cover the main definitions, formulas, steps, and examples from the source.\n'
+      '- Prefer clarity and speed over exhaustive length. Aim for tight notes a student can review quickly.\n'
       '- Use ## for main topics and ### for subtopics, following the source order.\n'
-      '- Use bullet lists with full explanations — not one-word bullets.\n'
-      '- Preserve ALL formulas in LaTeX: \$...\$ or \$\$...\$\$\n'
-      '- Include worked examples step-by-step when the source has them.\n'
-      '- If the source lists N items, include all N with context.\n'
-      '- Use > blockquotes for warnings, exam tips, or emphasized points.\n'
-      '- Use markdown tables when comparing multiple items.\n\n'
+      '- Use short bullet lists with enough context to study from.\n'
+      '- Preserve formulas in LaTeX: \$...\$ or \$\$...\$\$\n'
+      '- Include 1 worked example when the source has one; skip redundant examples.\n'
+      '- Use > blockquotes only for exam tips or warnings.\n\n'
       'Return ONLY JSON: {"summary":"markdown notes","keyPoints":["term1","term2"]}\n'
-      'keyPoints: 15-40 important terms/concepts as a quick index (all detail stays in summary).';
+      'keyPoints: 8-15 important terms/concepts as a quick index.';
 
   Future<Map<String, dynamic>> summarizeNotes({
     required String title,
@@ -152,7 +156,7 @@ class OpenAiService {
     return generateComprehensiveNotes(title: title, extractedText: contentHint);
   }
 
-  /// Exhaustive study notes from extracted document text (chunked when long).
+  /// Study notes from extracted document text (chunked when long; chunks run in parallel).
   Future<Map<String, dynamic>> generateComprehensiveNotes({
     required String title,
     required String extractedText,
@@ -171,17 +175,29 @@ class OpenAiService {
       );
     }
 
+    // Cap parallel fan-out so we stay under rate limits but still beat sequential waits.
+    const int maxParallel = 3;
+    final List<Map<String, dynamic>> parts = <Map<String, dynamic>>[];
+    for (int start = 0; start < chunks.length; start += maxParallel) {
+      final int end = (start + maxParallel).clamp(0, chunks.length);
+      final List<Future<Map<String, dynamic>>> batch = <Future<Map<String, dynamic>>>[
+        for (int i = start; i < end; i++)
+          _generateNotesFromChunk(
+            title: title,
+            chunkText: chunks[i],
+            partIndex: i,
+            partCount: chunks.length,
+            premium: premium,
+          ),
+      ];
+      parts.addAll(await Future.wait(batch));
+    }
+
     final List<String> sectionSummaries = <String>[];
     final List<String> allKeyPoints = <String>[];
 
-    for (int i = 0; i < chunks.length; i++) {
-      final Map<String, dynamic> part = await _generateNotesFromChunk(
-        title: title,
-        chunkText: chunks[i],
-        partIndex: i,
-        partCount: chunks.length,
-        premium: premium,
-      );
+    for (int i = 0; i < parts.length; i++) {
+      final Map<String, dynamic> part = parts[i];
       final String section = _coerceMarkdownField(part['summary'] ?? part['cheatSheet']).trim();
       if (section.isNotEmpty) {
         sectionSummaries.add('## Section ${i + 1} of ${chunks.length}\n\n$section');
@@ -219,14 +235,14 @@ class OpenAiService {
         <String, String>{
           'role': 'user',
           'content':
-              'Create exhaustive study notes$partLabel for "$title".\n'
-              '${partCount > 1 ? 'Capture every detail from THIS section only.\n' : ''}'
+              'Create clear study notes$partLabel for "$title".\n'
+              '${partCount > 1 ? 'Cover the important points from THIS section only.\n' : ''}'
               'Source material:\n\n$chunkText',
         },
       ],
-      temperature: 0.25,
-      maxTokens: 16384,
-      premium: premium,
+      temperature: 0.2,
+      maxTokens: 2500,
+      premium: false, // always use the fast model for notes
     );
 
     return decodeAiJson(content);
@@ -246,32 +262,32 @@ class OpenAiService {
         <String, dynamic>{
           'role': 'system',
           'content':
-              'Extract ALL readable content from this lecture slide or document photo. '
+              'Extract readable content from this lecture slide or document photo. '
               'Return plain text only — no JSON, no markdown fences. '
-              'Include headings, bullets, formulas (LaTeX ok), labels, chart values, and diagram descriptions.',
+              'Include headings, bullets, formulas (LaTeX ok), labels, and key diagram descriptions.',
         },
         <String, dynamic>{
           'role': 'user',
           'content': <Map<String, dynamic>>[
             <String, dynamic>{
               'type': 'text',
-              'text': 'Extract every piece of text and visual information from "$fileName".',
+              'text': 'Extract the important text and visuals from "$fileName".',
             },
             <String, dynamic>{
               'type': 'image_url',
-              'image_url': <String, dynamic>{'url': dataUrl, 'detail': 'high'},
+              'image_url': <String, dynamic>{'url': dataUrl, 'detail': 'low'},
             },
           ],
         },
       ],
       temperature: 0.1,
-      maxTokens: 8000,
+      maxTokens: 2000,
     );
 
     return content.trim();
   }
 
-  /// Vision-based exhaustive notes from slide/photo uploads.
+  /// Vision-based study notes from slide/photo uploads.
   Future<Map<String, dynamic>> analyzeDocumentFromImage({
     required String title,
     required Uint8List imageBytes,
@@ -289,25 +305,24 @@ class OpenAiService {
             <String, dynamic>{
               'type': 'text',
               'text':
-                  'Create exhaustive study notes from this lecture slide or document image for "$title". '
-                  'Read ALL visible text, formulas, diagrams, labels, charts, and bullet points. '
-                  'Describe diagram content in words. Do not skip anything.',
+                  'Create clear study notes from this lecture slide or document image for "$title". '
+                  'Read the visible text, formulas, labels, and key diagram ideas.',
             },
             <String, dynamic>{
               'type': 'image_url',
-              'image_url': <String, dynamic>{'url': dataUrl, 'detail': 'high'},
+              'image_url': <String, dynamic>{'url': dataUrl, 'detail': 'low'},
             },
           ],
         },
       ],
-      temperature: 0.25,
-      maxTokens: 16384,
+      temperature: 0.2,
+      maxTokens: 2500,
     );
 
     return decodeAiJson(content);
   }
 
-  /// Full document analysis: comprehensive notes, then flashcards + quiz.
+  /// Full document analysis: notes, then flashcards + quiz (single-pass when short).
   Future<Map<String, dynamic>> analyzeDocument({
     required String title,
     required String extractedText,
@@ -318,13 +333,27 @@ class OpenAiService {
   }) async {
     _requireKey();
 
+    // Cap first-pass materials so the second call stays fast; more can be added later.
+    final int fc = includeStudyMaterials ? flashcardCount.clamp(0, 12) : 0;
+    final int qc = includeStudyMaterials ? quizCount.clamp(0, 8) : 0;
+
+    final List<String> chunks = DocumentTextChunker.chunk(extractedText);
+    if (chunks.length == 1 && (fc > 0 || qc > 0)) {
+      return _analyzeDocumentSinglePass(
+        title: title,
+        extractedText: chunks.first,
+        flashcardCount: fc,
+        quizCount: qc,
+      );
+    }
+
     final Map<String, dynamic> notes = await generateComprehensiveNotes(
       title: title,
       extractedText: extractedText,
       premium: premium,
     );
 
-    if (!includeStudyMaterials) {
+    if (fc <= 0 && qc <= 0) {
       return <String, dynamic>{
         'summary': _coerceMarkdownField(notes['summary']),
         'keyPoints': notes['keyPoints'] ?? notes['keyConcepts'],
@@ -336,8 +365,8 @@ class OpenAiService {
     final Map<String, dynamic> materials = await generateStudyMaterials(
       title: title,
       summaryText: _coerceMarkdownField(notes['summary']),
-      flashcardCount: flashcardCount,
-      quizCount: quizCount,
+      flashcardCount: fc,
+      quizCount: qc,
       premium: premium,
     );
 
@@ -346,6 +375,48 @@ class OpenAiService {
       'keyPoints': notes['keyPoints'] ?? notes['keyConcepts'],
       'flashcards': materials['flashcards'],
       'quizQuestions': materials['quizQuestions'],
+    };
+  }
+
+  Future<Map<String, dynamic>> _analyzeDocumentSinglePass({
+    required String title,
+    required String extractedText,
+    required int flashcardCount,
+    required int quizCount,
+  }) async {
+    final String countsLine = <String>[
+      if (flashcardCount > 0) 'exactly $flashcardCount flashcards',
+      if (quizCount > 0) 'exactly $quizCount multiple-choice quiz questions',
+    ].join(' and ');
+
+    final String content = await _chat(
+      <Map<String, String>>[
+        <String, String>{
+          'role': 'system',
+          'content':
+              '$_comprehensiveNotesSystemPrompt\n'
+              'Also include $countsLine in the same JSON. '
+              'Shape: {"summary":"...","keyPoints":["..."],'
+              '"flashcards":[{"front":"Q","back":"A"}],'
+              '"quizQuestions":[{"prompt":"...","options":["A","B","C","D"],"correctIndex":0}]}. '
+              'Each quiz question needs 4 options and correctIndex 0-3.',
+        },
+        <String, String>{
+          'role': 'user',
+          'content': 'Create study notes and materials for "$title".\n\nSource:\n\n$extractedText',
+        },
+      ],
+      temperature: 0.25,
+      maxTokens: 3500,
+      premium: false,
+    );
+
+    final Map<String, dynamic> json = decodeAiJson(content);
+    return <String, dynamic>{
+      'summary': _coerceMarkdownField(json['summary'] ?? json['cheatSheet']),
+      'keyPoints': json['keyPoints'] ?? json['keyConcepts'] ?? <dynamic>[],
+      'flashcards': json['flashcards'] ?? <dynamic>[],
+      'quizQuestions': json['quizQuestions'] ?? <dynamic>[],
     };
   }
 
@@ -405,9 +476,9 @@ class OpenAiService {
           'content': 'Title: $title\n\nNotes:\n$summaryText',
         },
       ],
-      temperature: 0.35,
-      maxTokens: (flashcardCount * 100 + quizCount * 150).clamp(4000, 16384),
-      premium: premium,
+      temperature: 0.3,
+      maxTokens: (flashcardCount * 80 + quizCount * 100).clamp(800, 2800),
+      premium: false, // always use the fast model for materials
     );
 
     return decodeAiJson(content);

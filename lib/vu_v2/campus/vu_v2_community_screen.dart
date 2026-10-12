@@ -44,7 +44,7 @@ class VuV2CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'CS incident · Law case · Engineering bridge — graded practicals.',
+                'Jump into walkable Career Games — CS, Law, Engineering.',
                 style: TextStyle(color: VuV2Colors.mute, height: 1.4),
               ),
               const SizedBox(height: 12),

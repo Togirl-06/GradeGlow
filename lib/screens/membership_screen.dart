@@ -5,17 +5,29 @@ import '../config/billing_config.dart';
 import '../config/virtual_university.dart';
 import '../models/membership_plans.dart';
 import '../models/subscription_plan.dart';
+import '../services/auth_service.dart';
 import '../services/subscription_service.dart';
 import '../theme/study_theme.dart';
 
-/// Free vs Premium — side-by-side plan cards.
-class MembershipScreen extends StatelessWidget {
+/// Free vs Premium — side-by-side plan cards with billing interval toggle.
+class MembershipScreen extends StatefulWidget {
   const MembershipScreen({super.key});
+
+  @override
+  State<MembershipScreen> createState() => _MembershipScreenState();
+}
+
+class _MembershipScreenState extends State<MembershipScreen> {
+  BillingInterval _interval = BillingInterval.monthly;
 
   @override
   Widget build(BuildContext context) {
     final SubscriptionService subs = context.watch<SubscriptionService>();
+    final AuthService auth = context.watch<AuthService>();
     final bool isPremium = subs.plan.isPaid;
+    final BillingPlanOption billing = BillingConfig.planFor(_interval);
+    final MembershipPlanDetails premiumPlan = MembershipPlans.premiumFor(billing);
+    final bool edu = BillingConfig.isEduEmail(auth.email);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Plans & features')),
@@ -32,11 +44,66 @@ class MembershipScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'The Virtual University is free for everyone. Premium is optional — '
-            '${BillingConfig.premiumMonthlyPrice}/month after a ${BillingConfig.freeTrialDays}-day trial.',
+            'Campus is free for everyone. Premium study tools start at '
+            '${BillingConfig.premiumMonthlyPrice}/month after a '
+            '${BillingConfig.freeTrialDays}-day trial.',
             style: TextStyle(
               color: StudyColors.textSecondary(Theme.of(context).brightness),
               height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _BillingToggle(
+            selected: _interval,
+            onChanged: (BillingInterval v) => setState(() => _interval = v),
+          ),
+          if (billing.savingsLabel != null) ...<Widget>[
+            const SizedBox(height: 8),
+            Text(
+              '${billing.savingsLabel}'
+              '${billing.perMonthLabel != null ? ' · ${billing.perMonthLabel}' : ''}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: StudyColors.primary,
+                fontWeight: FontWeight.w800,
+                fontSize: 13,
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: StudyColors.primary.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: StudyColors.primary.withValues(alpha: 0.2),
+              ),
+            ),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.school_rounded,
+                  size: 18,
+                  color: StudyColors.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    edu
+                        ? 'Your .edu email qualifies for ${BillingConfig.eduDiscountPercent}% off at checkout.'
+                        : BillingConfig.eduDiscountLabel,
+                    style: TextStyle(
+                      color: StudyColors.textPrimary(
+                        Theme.of(context).brightness,
+                      ),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      height: 1.35,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 18),
@@ -46,7 +113,8 @@ class MembershipScreen extends StatelessWidget {
               final Widget freeCard = _PlanOfferCard(
                 plan: MembershipPlans.free,
                 isCurrent: !isPremium,
-                buttonLabel: isPremium ? 'Downgrade to Free' : 'Your current plan',
+                buttonLabel:
+                    isPremium ? 'Downgrade to Free' : 'Your current plan',
                 filledButton: false,
                 enabled: isPremium,
                 onPressed: isPremium
@@ -61,7 +129,7 @@ class MembershipScreen extends StatelessWidget {
                     : null,
               );
               final Widget premiumCard = _PlanOfferCard(
-                plan: MembershipPlans.premium,
+                plan: premiumPlan,
                 isCurrent: isPremium,
                 isHighlighted: true,
                 buttonLabel: isPremium
@@ -71,14 +139,16 @@ class MembershipScreen extends StatelessWidget {
                 enabled: !isPremium,
                 onPressed: !isPremium
                     ? () async {
-                        final bool ok = await subs.startPremiumCheckout();
+                        final bool ok = await subs.startPremiumCheckout(
+                          interval: _interval,
+                        );
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
                               ok
                                   ? BillingConfig.checkoutOpenedMessage()
-                                  : 'Could not open checkout. Try again or visit buy.stripe.com from a browser.',
+                                  : 'Could not open checkout. Try again or open Stripe from a browser.',
                             ),
                           ),
                         );
@@ -110,8 +180,18 @@ class MembershipScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'Campus is free. Premium is ${BillingConfig.premiumMonthlyPrice}/month '
-            'after a ${BillingConfig.freeTrialDays}-day trial. Cancel anytime.',
+            BillingConfig.trialFooter,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: StudyColors.textSecondary(Theme.of(context).brightness),
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              height: 1.45,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            BillingConfig.priceFootnoteFor(billing),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: StudyColors.textSecondary(Theme.of(context).brightness),
@@ -120,6 +200,94 @@ class MembershipScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _BillingToggle extends StatelessWidget {
+  const _BillingToggle({required this.selected, required this.onChanged});
+
+  final BillingInterval selected;
+  final ValueChanged<BillingInterval> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: StudyColors.surfaceElevated(brightness),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: StudyColors.border(brightness)),
+      ),
+      child: Row(
+        children: <Widget>[
+          for (final BillingPlanOption plan in BillingConfig.plans)
+            Expanded(
+              child: _ToggleChip(
+                label: plan.label,
+                selected: selected == plan.interval,
+                badge: plan.savingsLabel,
+                onTap: () => onChanged(plan.interval),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ToggleChip extends StatelessWidget {
+  const _ToggleChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    this.badge,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final String? badge;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: selected ? StudyColors.primary : Colors.transparent,
+      borderRadius: BorderRadius.circular(11),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(11),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            children: <Widget>[
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: selected
+                      ? Colors.white
+                      : StudyColors.textPrimary(Theme.of(context).brightness),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13,
+                ),
+              ),
+              if (badge != null && selected) ...<Widget>[
+                const SizedBox(height: 2),
+                Text(
+                  badge!,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.85),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -148,7 +316,8 @@ class _PlanOfferCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final Brightness brightness = Theme.of(context).brightness;
     final bool isDark = brightness == Brightness.dark;
-    final Color textPrimary = isHighlighted ? Colors.white : StudyColors.textPrimary(brightness);
+    final Color textPrimary =
+        isHighlighted ? Colors.white : StudyColors.textPrimary(brightness);
     final Color textMuted = isHighlighted
         ? Colors.white.withValues(alpha: 0.72)
         : StudyColors.textSecondary(brightness);
@@ -196,7 +365,8 @@ class _PlanOfferCard extends StatelessWidget {
               ),
               if (plan.promoLabel != null)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: isHighlighted ? 0.14 : 0.08),
                     borderRadius: BorderRadius.circular(999),
@@ -230,7 +400,12 @@ class _PlanOfferCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             plan.tagline,
-            style: TextStyle(color: textMuted, fontSize: 14, fontWeight: FontWeight.w600, height: 1.35),
+            style: TextStyle(
+              color: textMuted,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 16),
           ...plan.features.map(
@@ -248,28 +423,52 @@ class _PlanOfferCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       feature.label,
-                      style: TextStyle(color: textPrimary.withValues(alpha: 0.92), height: 1.35, fontSize: 13),
+                      style: TextStyle(
+                        color: textPrimary.withValues(alpha: 0.92),
+                        height: 1.35,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          if (plan.footerNote != null) ...<Widget>[
+            const SizedBox(height: 4),
+            Text(
+              plan.footerNote!,
+              style: TextStyle(
+                color: textMuted,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                height: 1.35,
+              ),
+            ),
+          ],
+          const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: filledButton
                 ? FilledButton(
                     onPressed: enabled ? onPressed : null,
                     style: FilledButton.styleFrom(
-                      backgroundColor: isHighlighted ? StudyColors.accent : StudyColors.primary,
+                      backgroundColor: isHighlighted
+                          ? StudyColors.accent
+                          : StudyColors.primary,
                       foregroundColor: const Color(0xFF1C1917),
-                      disabledBackgroundColor: Colors.white.withValues(alpha: 0.12),
+                      disabledBackgroundColor:
+                          Colors.white.withValues(alpha: 0.12),
                       disabledForegroundColor: textMuted,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                     ),
-                    child: Text(buttonLabel, style: const TextStyle(fontWeight: FontWeight.w800)),
+                    child: Text(
+                      buttonLabel,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
                   )
                 : OutlinedButton(
                     onPressed: enabled ? onPressed : null,
@@ -278,9 +477,14 @@ class _PlanOfferCard extends StatelessWidget {
                       disabledForegroundColor: textMuted.withValues(alpha: 0.7),
                       side: BorderSide(color: textMuted.withValues(alpha: 0.35)),
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                     ),
-                    child: Text(buttonLabel, style: const TextStyle(fontWeight: FontWeight.w700)),
+                    child: Text(
+                      buttonLabel,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
                   ),
           ),
         ],
@@ -304,8 +508,12 @@ class _PriceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color main = lightText ? Colors.white : StudyColors.textPrimary(Theme.of(context).brightness);
-    final Color muted = lightText ? Colors.white.withValues(alpha: 0.65) : StudyColors.textSecondary(Theme.of(context).brightness);
+    final Color main = lightText
+        ? Colors.white
+        : StudyColors.textPrimary(Theme.of(context).brightness);
+    final Color muted = lightText
+        ? Colors.white.withValues(alpha: 0.65)
+        : StudyColors.textSecondary(Theme.of(context).brightness);
 
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.end,
@@ -331,12 +539,21 @@ class _PriceRow extends StatelessWidget {
               padding: const EdgeInsets.only(top: 6),
               child: Text(
                 r'$',
-                style: TextStyle(color: main, fontSize: 16, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                  color: main,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             Text(
               amount,
-              style: TextStyle(color: main, fontSize: 40, fontWeight: FontWeight.w800, height: 1),
+              style: TextStyle(
+                color: main,
+                fontSize: 40,
+                fontWeight: FontWeight.w800,
+                height: 1,
+              ),
             ),
           ],
         ),
@@ -344,7 +561,11 @@ class _PriceRow extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 6),
           child: Text(
             suffix,
-            style: TextStyle(color: muted, fontSize: 12, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: muted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -354,7 +575,11 @@ class _PriceRow extends StatelessWidget {
 
 /// Compact upgrade teaser for profile / home.
 class MembershipTeaserCard extends StatelessWidget {
-  const MembershipTeaserCard({super.key, required this.onTap, this.plan = SubscriptionPlan.free});
+  const MembershipTeaserCard({
+    super.key,
+    required this.onTap,
+    this.plan = SubscriptionPlan.free,
+  });
 
   final VoidCallback onTap;
   final SubscriptionPlan plan;
@@ -374,18 +599,28 @@ class MembershipTeaserCard extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isPremium
-                  ? <Color>[StudyColors.accent.withValues(alpha: 0.25), StudyColors.accentTint(brightness)]
-                  : <Color>[StudyColors.primaryTint(brightness), StudyColors.primary.withValues(alpha: 0.08)],
+                  ? <Color>[
+                      StudyColors.accent.withValues(alpha: 0.25),
+                      StudyColors.accentTint(brightness),
+                    ]
+                  : <Color>[
+                      StudyColors.primaryTint(brightness),
+                      StudyColors.primary.withValues(alpha: 0.08),
+                    ],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isPremium ? StudyColors.accent.withValues(alpha: 0.4) : StudyColors.primary.withValues(alpha: 0.25),
+              color: isPremium
+                  ? StudyColors.accent.withValues(alpha: 0.4)
+                  : StudyColors.primary.withValues(alpha: 0.25),
             ),
           ),
           child: Row(
             children: <Widget>[
               Icon(
-                isPremium ? Icons.workspace_premium_rounded : Icons.auto_awesome_rounded,
+                isPremium
+                    ? Icons.workspace_premium_rounded
+                    : Icons.auto_awesome_rounded,
                 color: isPremium ? StudyColors.accentDark : StudyColors.primary,
                 size: 28,
               ),
@@ -395,14 +630,19 @@ class MembershipTeaserCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      isPremium ? 'Premium is active' : 'See Free & Premium plans',
-                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+                      isPremium
+                          ? 'Premium is active'
+                          : 'See Free & Premium plans',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       isPremium
                           ? 'Study tools without limits'
-                          : 'Campus is free · Premium ${MembershipPlans.premiumPromoPrice}/mo after ${BillingConfig.freeTrialDays}-day trial',
+                          : 'From ${MembershipPlans.premiumPromoPrice}/mo · ${BillingConfig.trialFooter}',
                       style: TextStyle(
                         color: StudyColors.textSecondary(brightness),
                         fontSize: 12,
@@ -411,7 +651,10 @@ class MembershipTeaserCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right_rounded, color: StudyColors.textSecondary(brightness)),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: StudyColors.textSecondary(brightness),
+              ),
             ],
           ),
         ),

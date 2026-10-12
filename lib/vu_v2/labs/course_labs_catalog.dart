@@ -38,7 +38,13 @@ class CourseLabEntry {
 
 /// Multiple working labs for every major — not one showcase and done.
 abstract final class CourseLabsCatalog {
+  /// Old quiz/workplace labs retired. Career Games use [VuCareerWorlds].
   static List<CourseLabEntry> forMajor(String majorId) {
+    return const <CourseLabEntry>[];
+  }
+
+  // ignore: unused_element
+  static List<CourseLabEntry> _legacyForMajor(String majorId) {
     final String m = majorId.toLowerCase();
     if (m.contains('bio')) return biology;
     if (m.contains('chem')) return chemistry;

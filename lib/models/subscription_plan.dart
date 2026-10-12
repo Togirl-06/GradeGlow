@@ -25,8 +25,8 @@ enum SubscriptionPlan {
 
   String get priceLabel => switch (this) {
         SubscriptionPlan.free => r'$0',
-        SubscriptionPlan.premium => r'$11.99/month',
-        SubscriptionPlan.premiumPlus => r'$11.99/month',
+        SubscriptionPlan.premium => r'$6.99/month',
+        SubscriptionPlan.premiumPlus => r'$6.99/month',
       };
 
   bool get isPaid => this != SubscriptionPlan.free;

@@ -4,6 +4,7 @@ import '../services/notes_summarizer_service.dart';
 import 'api_error_messages.dart';
 
 /// Free-plan caps for study sets (upload / paste / record).
+/// Premium removes per-course caps. Batch sizes are internal only.
 class StudyLimits {
   StudyLimits._();
 
@@ -14,8 +15,11 @@ class StudyLimits {
   static const int freeFlashcardsPerCourse = 10;
   static const int freeQuizQuestionsPerCourse = 15;
 
-  static const int premiumFlashcardsPerGeneration = 50;
-  static const int premiumQuizQuestionsPerGeneration = 50;
+  /// Internal AI batch size per generation (not a Premium life-time limit).
+  static const int premiumFlashcardsPerGeneration = 20;
+  static const int premiumQuizQuestionsPerGeneration = 15;
+
+  static const int unlimitedSentinel = 999999;
 
   static const ApiErrorInfo dailySummarizeLimitReached = ApiErrorInfo(
     title: 'Daily summarize limit reached',
@@ -91,6 +95,7 @@ class StudyLimits {
   static bool canCreateStudySet(CourseStudyUsage usage) =>
       usage.isPremium || usage.studySetCount < freeStudySetsPerCourse;
 
+  /// How many cards/questions to request from AI this run.
   static ({int flashcardCount, int quizCount}) generationBudget({
     required CourseStudyUsage usage,
     required bool isPremium,
@@ -103,10 +108,12 @@ class StudyLimits {
         quizCount: premiumQuizQuestionsPerGeneration,
       );
     }
-    final int flashcardCount = (freeFlashcardsPerCourse - usage.flashcardCount + existingFlashcards)
-        .clamp(0, freeFlashcardsPerCourse);
-    final int quizCount = (freeQuizQuestionsPerCourse - usage.quizCount + existingQuizQuestions)
-        .clamp(0, freeQuizQuestionsPerCourse);
+    final int flashcardCount =
+        (freeFlashcardsPerCourse - usage.flashcardCount + existingFlashcards)
+            .clamp(0, freeFlashcardsPerCourse);
+    final int quizCount =
+        (freeQuizQuestionsPerCourse - usage.quizCount + existingQuizQuestions)
+            .clamp(0, freeQuizQuestionsPerCourse);
     return (flashcardCount: flashcardCount, quizCount: quizCount);
   }
 }
@@ -128,19 +135,23 @@ class CourseStudyUsage {
       !isPremium && studySetCount >= StudyLimits.freeStudySetsPerCourse;
 
   int get studySetRemaining => isPremium
-      ? StudyLimits.freeStudySetsPerCourse
-      : (StudyLimits.freeStudySetsPerCourse - studySetCount).clamp(0, StudyLimits.freeStudySetsPerCourse);
+      ? StudyLimits.unlimitedSentinel
+      : (StudyLimits.freeStudySetsPerCourse - studySetCount)
+          .clamp(0, StudyLimits.freeStudySetsPerCourse);
 
   int get flashcardRemaining => isPremium
-      ? StudyLimits.premiumFlashcardsPerGeneration
-      : (StudyLimits.freeFlashcardsPerCourse - flashcardCount).clamp(0, StudyLimits.freeFlashcardsPerCourse);
+      ? StudyLimits.unlimitedSentinel
+      : (StudyLimits.freeFlashcardsPerCourse - flashcardCount)
+          .clamp(0, StudyLimits.freeFlashcardsPerCourse);
 
   int get quizRemaining => isPremium
-      ? StudyLimits.premiumQuizQuestionsPerGeneration
-      : (StudyLimits.freeQuizQuestionsPerCourse - quizCount).clamp(0, StudyLimits.freeQuizQuestionsPerCourse);
+      ? StudyLimits.unlimitedSentinel
+      : (StudyLimits.freeQuizQuestionsPerCourse - quizCount)
+          .clamp(0, StudyLimits.freeQuizQuestionsPerCourse);
 
   bool get isAtAnyLimit =>
-      isAtStudySetLimit || (!isPremium && flashcardRemaining == 0 && quizRemaining == 0);
+      isAtStudySetLimit ||
+      (!isPremium && flashcardRemaining == 0 && quizRemaining == 0);
 }
 
 class SummarizeDailyUsage {

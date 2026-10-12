@@ -15,7 +15,6 @@ import 'progress_screen.dart';
 import 'quiz_mode_screen.dart';
 import 'study_planner_screen.dart';
 import 'todos_screen.dart';
-import 'upload_screen.dart';
 import 'weakness_review_screen.dart';
 
 class AppShell extends StatefulWidget {
@@ -39,11 +38,6 @@ class _AppShellState extends State<AppShell> {
   Widget get _page => switch (_tab) {
         0 => DashboardScreen(
             onProgress: () => _goToTab(1),
-            onUpload: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const UploadScreen()),
-              );
-            },
             onAskAi: () => _goToTab(3),
             onQuiz: ([String? materialId]) {
               Navigator.of(context).push(
