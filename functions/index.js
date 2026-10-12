@@ -1,9 +1,4 @@
 const { onRequest } = require("firebase-functions/v2/https");
-const { initializeApp } = require("firebase-admin/app");
-const { getFirestore, FieldValue } = require("firebase-admin/firestore");
-const Stripe = require("stripe");
-
-initializeApp();
 
 /**
  * Proxies OpenAI so the Flutter web app avoids CORS and keeps the key server-side.
@@ -85,6 +80,14 @@ exports.openaiProxy = onRequest(
   }
 );
 
+let adminReady = false;
+function ensureAdmin() {
+  if (adminReady) return;
+  const { initializeApp, getApps } = require("firebase-admin/app");
+  if (getApps().length === 0) initializeApp();
+  adminReady = true;
+}
+
 /**
  * Stripe webhook — unlocks Premium on users/{uid}.plan after checkout.
  *
@@ -118,6 +121,10 @@ exports.stripeWebhook = onRequest(
       return;
     }
 
+    const Stripe = require("stripe");
+    const { getFirestore, FieldValue } = require("firebase-admin/firestore");
+    ensureAdmin();
+
     const stripe = new Stripe(secret);
     let event;
     try {
@@ -138,7 +145,8 @@ exports.stripeWebhook = onRequest(
       if (event.type === "checkout.session.completed") {
         const session = event.data.object;
         let uid = session.client_reference_id || "";
-        const email = (session.customer_details && session.customer_details.email) ||
+        const email =
+          (session.customer_details && session.customer_details.email) ||
           session.customer_email ||
           "";
 
@@ -152,7 +160,10 @@ exports.stripeWebhook = onRequest(
         }
 
         if (!uid) {
-          console.error("checkout.session.completed missing uid/email", session.id);
+          console.error(
+            "checkout.session.completed missing uid/email",
+            session.id
+          );
           res.status(200).json({ received: true, unlocked: false });
           return;
         }
