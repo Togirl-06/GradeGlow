@@ -5,12 +5,12 @@ import '../../services/appearance_service.dart';
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import '../design/vu_v2_theme.dart';
-import '../game/career/vu_career_world_pack.dart';
-import '../game/career/vu_career_world_router.dart';
-import '../game/career/vu_career_worlds.dart';
-import '../game/ui/campus_iso_preview.dart';
+import '../business_career/business_career_hub_screen.dart';
+import '../engineering_career/engineering_career_hub_screen.dart';
+import '../health_career/health_simulation_hub_screen.dart';
+import '../science_career/science_career_hub_screen.dart';
 
-/// Labs tab = Career Games (walkable engine worlds). Old Labs are not used.
+/// Labs tab = career simulation labs (Technology, Engineering, Business, Health).
 class VuV2LabsHub extends StatelessWidget {
   const VuV2LabsHub({
     super.key,
@@ -26,16 +26,55 @@ class VuV2LabsHub extends StatelessWidget {
     context.watch<AppearanceService>();
     VuV2Colors.syncTo(Theme.of(context));
 
-    final VuCareerWorldPack? yours = VuCareerWorlds.forMajor(session.majorId);
-    final List<VuCareerWorldPack> others = VuCareerWorlds.all
-        .where((VuCareerWorldPack w) => w.id != yours?.id)
-        .toList();
+    void openTechLab() {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => ScienceCareerHubScreen(
+            initialMajorId: _scienceMajorId(session.majorId),
+            playerName: session.displayName,
+          ),
+        ),
+      );
+    }
+
+    void openEngLab() {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => EngineeringCareerHubScreen(
+            initialMajorId: _engineeringMajorId(session.majorId),
+            playerName: session.displayName,
+          ),
+        ),
+      );
+    }
+
+    void openBizLab() {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => BusinessCareerHubScreen(
+            initialMajorId: 'business_administration',
+            playerName: session.displayName,
+          ),
+        ),
+      );
+    }
+
+    void openHealthLab() {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => HealthSimulationHubScreen(
+            initialCourseId: 'nursing',
+            playerName: session.displayName,
+          ),
+        ),
+      );
+    }
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 36),
       children: <Widget>[
         Text(
-          'Career Games',
+          'Labs',
           style: TextStyle(
             color: VuV2Colors.ink,
             fontWeight: FontWeight.w900,
@@ -45,64 +84,247 @@ class VuV2LabsHub extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Learn → Practice → Experience. Walk into the profession.',
+          'Immersive career simulations for Technology, Engineering, Business, and Health.',
           style: TextStyle(color: VuV2Colors.mute, height: 1.4),
         ),
         const SizedBox(height: 14),
-        CampusIsoPreview(
-          onExplore: yours == null
-              ? null
-              : () => VuCareerWorldRouter.open(context, yours),
-        ),
-        const SizedBox(height: 14),
-        _LoopStrip(),
-        const SizedBox(height: 18),
-        if (yours != null) ...<Widget>[
-          Text(
-            'Your career world',
-            style: TextStyle(
-              color: VuV2Colors.ink,
-              fontWeight: FontWeight.w900,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${session.majorLabel} · ${yours.role}',
-            style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
-          ),
-          const SizedBox(height: 10),
-          _WorldHero(
-            pack: yours,
-            badge: yours.id == 'nursing' ? 'FLAGSHIP CLINICAL' : 'PLAYABLE',
-            onEnter: () => VuCareerWorldRouter.open(context, yours),
-          ),
-          const SizedBox(height: 20),
-        ],
-        Text(
-          'All career worlds',
-          style: TextStyle(
-            color: VuV2Colors.ink,
-            fontWeight: FontWeight.w900,
-            fontSize: 18,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'Each major has its own walkable workplace, NPCs, and mission.',
-          style: TextStyle(color: VuV2Colors.mute, fontSize: 13),
+        _LabBanner(
+          title: 'School of Technology and Computer Science Lab',
+          subtitle:
+              'Coding Arena → Northwind interview → job offer → office ticket.',
+          colors: <Color>[
+            VuV2Colors.orange,
+            VuV2Colors.orangeDeep,
+            VuV2Colors.navy,
+          ],
+          icon: Icons.rocket_launch_rounded,
+          onEnter: openTechLab,
         ),
         const SizedBox(height: 10),
-        ...others.map(
-          (VuCareerWorldPack w) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: _WorldRow(
-              pack: w,
-              onEnter: () => VuCareerWorldRouter.open(context, w),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: FilledButton.icon(
+            onPressed: openTechLab,
+            style: FilledButton.styleFrom(
+              backgroundColor: VuV2Colors.orange,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.rocket_launch_rounded),
+            label: const Text(
+              'Enter Technology Lab',
+              style: TextStyle(fontWeight: FontWeight.w900),
             ),
           ),
         ),
+        const SizedBox(height: 22),
+        _LabBanner(
+          title: 'School of Engineering Lab',
+          subtitle: 'Build it. Test it. Get hired. — MechWorks Factory playable now.',
+          colors: <Color>[
+            const Color(0xFF3B82F6),
+            const Color(0xFF8B5CF6),
+            VuV2Colors.navy,
+          ],
+          icon: Icons.precision_manufacturing_rounded,
+          onEnter: openEngLab,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: FilledButton.icon(
+            onPressed: openEngLab,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF3B82F6),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.precision_manufacturing_rounded),
+            label: const Text(
+              'Enter School of Engineering Lab',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
+          ),
+        ),
+        const SizedBox(height: 22),
+        _LabBanner(
+          title: 'School of Business & Economics',
+          subtitle:
+              'Corporate HQ · The Declining Company — strategy, budget, consequences.',
+          colors: <Color>[
+            const Color(0xFF10B981),
+            const Color(0xFF3B82F6),
+            VuV2Colors.navy,
+          ],
+          icon: Icons.apartment_rounded,
+          onEnter: openBizLab,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: FilledButton.icon(
+            onPressed: openBizLab,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF10B981),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.apartment_rounded),
+            label: const Text(
+              'Enter School of Business & Economics',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
+          ),
+        ),
+        const SizedBox(height: 22),
+        _LabBanner(
+          title: 'School of Health and Medicine',
+          subtitle:
+              'Medical Simulation Hub — hospital, anatomy, clinical cases, lab, skills.',
+          colors: <Color>[
+            const Color(0xFF38BDF8),
+            const Color(0xFF8B5CF6),
+            VuV2Colors.navy,
+          ],
+          icon: Icons.medical_services_rounded,
+          onEnter: openHealthLab,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: FilledButton.icon(
+            onPressed: openHealthLab,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF38BDF8),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.medical_services_rounded),
+            label: const Text(
+              'Enter Medical Simulation Hub',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
+          ),
+        ),
+        const SizedBox(height: 18),
+        _LoopStrip(),
       ],
+    );
+  }
+}
+
+String _scienceMajorId(String? majorId) {
+  final String id = (majorId ?? '').toLowerCase();
+  if (id.contains('software')) return 'software_engineering';
+  if (id.contains('cyber')) return 'cybersecurity';
+  if (id.contains('data')) return 'data_science';
+  if (id.contains('ai') || id.contains('machine')) return 'ai_ml';
+  if (id.contains('web')) return 'web_development';
+  if (id.contains('mobile')) return 'mobile_development';
+  if (id.contains('information') || id.contains('it')) {
+    return 'information_technology';
+  }
+  if (id.contains('computer') || id.contains('cs')) return 'computer_science';
+  return 'software_engineering';
+}
+
+String _engineeringMajorId(String? majorId) {
+  final String id = (majorId ?? '').toLowerCase();
+  if (id.contains('civil')) return 'civil_engineering';
+  if (id.contains('electrical') || id.contains('ee')) {
+    return 'electrical_engineering';
+  }
+  if (id.contains('chemical') || id.contains('chem')) {
+    return 'chemical_engineering';
+  }
+  if (id.contains('aero') || id.contains('aerospace')) {
+    return 'aerospace_engineering';
+  }
+  if (id.contains('industrial') || id.contains('ie')) {
+    return 'industrial_engineering';
+  }
+  if (id.contains('mechanical') || id.contains('mech')) {
+    return 'mechanical_engineering';
+  }
+  return 'mechanical_engineering';
+}
+
+class _LabBanner extends StatelessWidget {
+  const _LabBanner({
+    required this.title,
+    required this.subtitle,
+    required this.colors,
+    required this.icon,
+    required this.onEnter,
+  });
+
+  final String title;
+  final String subtitle;
+  final List<Color> colors;
+  final IconData icon;
+  final VoidCallback onEnter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onEnter,
+        borderRadius: BorderRadius.circular(20),
+        child: Ink(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: colors,
+            ),
+            border: Border.all(color: colors.first.withValues(alpha: 0.4)),
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.92),
+                        fontSize: 13,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(icon, color: Colors.white),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -111,10 +333,10 @@ class _LoopStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const List<String> steps = <String>[
-      'Study',
-      'Lecture',
-      'Practice',
-      'Career game',
+      'Design',
+      'Simulate',
+      'Interview',
+      'Job',
       'XP',
     ];
     return Container(
@@ -134,7 +356,7 @@ class _LoopStrip extends StatelessWidget {
                 steps[i],
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: i == 3 ? VuV2Colors.mint : VuV2Colors.ink,
+                  color: VuV2Colors.ink,
                   fontWeight: FontWeight.w800,
                   fontSize: 11,
                 ),
@@ -142,180 +364,6 @@ class _LoopStrip extends StatelessWidget {
             ),
           ],
         ],
-      ),
-    );
-  }
-}
-
-class _WorldHero extends StatelessWidget {
-  const _WorldHero({
-    required this.pack,
-    required this.onEnter,
-    this.badge,
-  });
-
-  final VuCareerWorldPack pack;
-  final VoidCallback onEnter;
-  final String? badge;
-
-  @override
-  Widget build(BuildContext context) {
-    final Color accent = Color(pack.accent);
-    return Material(
-      color: VuV2Colors.card,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onEnter,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: accent.withValues(alpha: 0.5)),
-            gradient: LinearGradient(
-              colors: <Color>[
-                accent.withValues(alpha: 0.16),
-                VuV2Colors.card,
-              ],
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(pack.emoji, style: const TextStyle(fontSize: 34)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          pack.title,
-                          style: TextStyle(
-                            color: VuV2Colors.ink,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          pack.role,
-                          style: TextStyle(
-                            color: accent,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (badge != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: accent.withValues(alpha: 0.18),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Text(
-                        badge!,
-                        style: TextStyle(
-                          color: accent,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(
-                pack.subtitle,
-                style: TextStyle(
-                  color: VuV2Colors.mute,
-                  height: 1.4,
-                  fontSize: 13,
-                ),
-              ),
-              const SizedBox(height: 14),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: onEnter,
-                  icon: const Icon(Icons.play_arrow_rounded),
-                  label: Text(
-                    pack.id == 'nursing' ? 'Enter hospital' : 'Enter world',
-                  ),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: accent,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _WorldRow extends StatelessWidget {
-  const _WorldRow({required this.pack, required this.onEnter});
-
-  final VuCareerWorldPack pack;
-  final VoidCallback onEnter;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: VuV2Colors.card,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onEnter,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: VuV2Colors.stroke),
-          ),
-          child: Row(
-            children: <Widget>[
-              Text(pack.emoji, style: const TextStyle(fontSize: 24)),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      pack.title,
-                      style: TextStyle(
-                        color: VuV2Colors.ink,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      pack.subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: VuV2Colors.mute,
-                        fontSize: 12,
-                        height: 1.3,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.chevron_right_rounded, color: VuV2Colors.mute),
-            ],
-          ),
-        ),
       ),
     );
   }

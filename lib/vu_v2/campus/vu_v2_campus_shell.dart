@@ -404,7 +404,7 @@ class _SideNav extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 gradient: LinearGradient(
-                  colors: <Color>[VuV2Colors.mint, VuV2Colors.dashPink],
+                  colors: <Color>[VuV2Colors.mint, VuV2Colors.mintDeep],
                 ),
               ),
               child: const Icon(Icons.school_rounded, color: Colors.white),

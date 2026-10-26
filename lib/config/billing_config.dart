@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../utils/open_checkout.dart';
 
 /// Billing interval for Premium study tools.
 enum BillingInterval {
@@ -16,7 +17,7 @@ class BillingPlanOption {
     required this.priceAmount,
     required this.priceLabel,
     required this.suffix,
-    required this.checkoutPath,
+    required this.amountCents,
     this.perMonthLabel,
     this.savingsLabel,
   });
@@ -26,24 +27,26 @@ class BillingPlanOption {
   final String priceAmount;
   final String priceLabel;
   final String suffix;
-  /// Stripe Payment Link path after buy.stripe.com/
-  final String checkoutPath;
+  final int amountCents;
   final String? perMonthLabel;
   final String? savingsLabel;
 
-  Uri checkoutUri({String? clientReferenceId, String? email}) {
-    return Uri.https('buy.stripe.com', '/$checkoutPath', <String, String>{
-      if (clientReferenceId != null && clientReferenceId.isNotEmpty)
-        'client_reference_id': clientReferenceId,
-      if (email != null && email.isNotEmpty) 'prefilled_email': email,
-    });
+  String get apiInterval {
+    switch (interval) {
+      case BillingInterval.monthly:
+        return 'monthly';
+      case BillingInterval.semester:
+        return 'semester';
+      case BillingInterval.annual:
+        return 'annual';
+    }
   }
 }
 
 /// Public Stripe checkout for GradeGlow Premium.
 ///
-/// Create matching Payment Links in Stripe Dashboard for each price, then
-/// paste the link IDs below. Webhook `stripeWebhook` sets `users/{uid}.plan`.
+/// Checkout Sessions are created by `createStripeCheckout` (correct prices).
+/// `confirmStripeCheckout` + `stripeWebhook` set `users/{uid}.plan`.
 abstract final class BillingConfig {
   static const String premiumMonthlyPrice = r'$6.99';
   static const String premiumPriceAmount = '6.99';
@@ -53,21 +56,8 @@ abstract final class BillingConfig {
   static const String premiumAnnualAmount = '49.99';
 
   static const int freeTrialDays = 30;
-  static const String trialLabel = '30 DAYS FREE';
-  static const String trialFooter =
-      '30 days free · No card required · Cancel anytime';
-
-  /// Student discount when paying with a verified .edu email (Stripe coupon).
-  static const int eduDiscountPercent = 15;
-  static const String eduDiscountLabel =
-      '15% off with a .edu email (verify at checkout)';
-
-  /// Replace these with Payment Link IDs from Stripe Dashboard
-  /// (Products → Payment links). Until replaced, monthly still uses the
-  /// existing live link — update that product to $6.99/mo + 30-day trial.
-  static const String monthlyCheckoutPath = '5kQ14h1yc4b74fIdU8bV600';
-  static const String semesterCheckoutPath = '5kQ14h1yc4b74fIdU8bV600';
-  static const String annualCheckoutPath = '5kQ14h1yc4b74fIdU8bV600';
+  static const String trialLabel = '30-DAY FREE TRIAL';
+  static const String trialFooter = '30-day free trial · Cancel anytime';
 
   static const List<BillingPlanOption> plans = <BillingPlanOption>[
     BillingPlanOption(
@@ -75,16 +65,16 @@ abstract final class BillingConfig {
       label: 'Monthly',
       priceAmount: premiumPriceAmount,
       priceLabel: premiumMonthlyPrice,
-      suffix: '/ month after trial',
-      checkoutPath: monthlyCheckoutPath,
+      suffix: '/month after trial',
+      amountCents: 699,
     ),
     BillingPlanOption(
       interval: BillingInterval.semester,
       label: 'Semester',
       priceAmount: premiumSemesterAmount,
       priceLabel: premiumSemesterPrice,
-      suffix: '/ 4 months',
-      checkoutPath: semesterCheckoutPath,
+      suffix: '/4 months',
+      amountCents: 1999,
       perMonthLabel: r'~$5.00/mo',
       savingsLabel: 'Save 28%',
     ),
@@ -93,10 +83,10 @@ abstract final class BillingConfig {
       label: 'Annual',
       priceAmount: premiumAnnualAmount,
       priceLabel: premiumAnnualPrice,
-      suffix: '/ year',
-      checkoutPath: annualCheckoutPath,
+      suffix: '/year',
+      amountCents: 4999,
       perMonthLabel: r'~$4.17/mo',
-      savingsLabel: 'Save 40%',
+      savingsLabel: 'Best value',
     ),
   ];
 
@@ -104,14 +94,14 @@ abstract final class BillingConfig {
     return plans.firstWhere((BillingPlanOption p) => p.interval == interval);
   }
 
-  static const String checkoutCta = 'Start 30-day free trial';
+  static const String checkoutCta = 'Start free trial';
 
   static String priceFootnoteFor(BillingPlanOption plan) {
     switch (plan.interval) {
       case BillingInterval.monthly:
         return '${plan.priceLabel}/month after the 30-day free trial. Cancel anytime.';
       case BillingInterval.semester:
-        return '${plan.priceLabel} for 4 months after trial. Cancel anytime.';
+        return '${plan.priceLabel} covers 4 months of Premium. Secure checkout via Stripe.';
       case BillingInterval.annual:
         return '${plan.priceLabel}/year after trial. Cancel anytime.';
     }
@@ -121,28 +111,58 @@ abstract final class BillingConfig {
   static String get priceFootnote =>
       priceFootnoteFor(planFor(BillingInterval.monthly));
 
-  static Future<bool> openStripeCheckout({
-    BillingInterval interval = BillingInterval.monthly,
+  /// Direct Cloud Function URLs (more reliable than Hosting rewrites for JSON errors).
+  static const String _functionsBase =
+      'https://us-central1-ai-studybuddy-1fad1.cloudfunctions.net';
+
+  static Uri createCheckoutUri() =>
+      Uri.parse('$_functionsBase/createStripeCheckout');
+
+  static Uri confirmCheckoutUri() =>
+      Uri.parse('$_functionsBase/confirmStripeCheckout');
+
+  static String webSuccessUrl() {
+    final String origin = kIsWeb
+        ? Uri.base.origin
+        : 'https://gradeglow-virtualuni.web.app';
+    return '$origin/?billing=success&session_id={CHECKOUT_SESSION_ID}';
+  }
+
+  static String webCancelUrl() {
+    final String origin = kIsWeb
+        ? Uri.base.origin
+        : 'https://gradeglow-virtualuni.web.app';
+    return '$origin/?billing=cancel';
+  }
+
+  /// Legacy Payment Link (Dashboard). Prefer Checkout Sessions for correct prices.
+  static const String legacyPaymentLinkPath = '5kQ14h1yc4b74fIdU8bV600';
+
+  static Uri legacyPaymentLinkUri({String? userId, String? email}) {
+    return Uri.https('buy.stripe.com', '/$legacyPaymentLinkPath', <String, String>{
+      if (userId != null && userId.isNotEmpty) 'client_reference_id': userId,
+      if (email != null && email.isNotEmpty) 'prefilled_email': email,
+    });
+  }
+
+  /// Opens Stripe Checkout (hard redirect on web).
+  static Future<bool> openCheckoutUrl(String url) {
+    return openCheckoutInBrowser(url);
+  }
+
+  static Future<bool> openLegacyPaymentLink({
     String? userId,
     String? email,
   }) {
-    final BillingPlanOption plan = planFor(interval);
-    return launchUrl(
-      plan.checkoutUri(clientReferenceId: userId, email: email),
-      mode: LaunchMode.externalApplication,
+    return openCheckoutUrl(
+      legacyPaymentLinkUri(userId: userId, email: email).toString(),
     );
   }
 
   static String checkoutOpenedMessage() {
     if (kIsWeb) {
-      return 'Finish checkout in the new tab. Premium unlocks after Stripe confirms payment.';
+      return 'Redirecting to secure Stripe checkout…';
     }
-    return 'Finish checkout in your browser. Premium unlocks after Stripe confirms payment.';
-  }
-
-  static bool isEduEmail(String? email) {
-    if (email == null) return false;
-    final String e = email.trim().toLowerCase();
-    return e.endsWith('.edu') || e.contains('.edu.');
+    return 'Finish checkout in your browser. Premium unlocks when payment confirms.';
   }
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../config/billing_config.dart';
 import '../../config/legal_urls.dart';
+import '../../screens/membership_screen.dart';
 import '../../services/appearance_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/subscription_service.dart';
@@ -215,30 +216,15 @@ class _VuV2AccountScreenState extends State<VuV2AccountScreen> {
             ],
             cta: premiumTools
                 ? 'Premium tools are active'
-                : BillingConfig.checkoutCta,
+                : 'View plans & checkout',
             onTap: premiumTools
                 ? null
-                : () async {
-                    try {
-                      final SubscriptionService subs =
-                          context.read<SubscriptionService>();
-                      final bool ok = await subs.startPremiumCheckout();
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            ok
-                                ? BillingConfig.checkoutOpenedMessage()
-                                : 'Could not open checkout.',
-                          ),
-                        ),
-                      );
-                    } catch (_) {
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Checkout is unavailable.')),
-                      );
-                    }
+                : () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const MembershipScreen(),
+                      ),
+                    );
                   },
           ),
           const SizedBox(height: 10),

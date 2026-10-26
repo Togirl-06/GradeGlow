@@ -64,9 +64,11 @@ class _VuV2DegreeRoadmapScreenState extends State<VuV2DegreeRoadmapScreen> {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: <Color>[
-                      Color(0xFFE85D04),
+                      VuV2Colors.orange,
+                      VuV2Colors.orangeDeep,
                       VuV2Colors.navy,
                     ],
+                    stops: const <double>[0, 0.45, 1],
                   ),
                 ),
                 child: SafeArea(

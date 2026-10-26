@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../services/subscription_service.dart';
 import '../widgets/gradeglow_logo.dart';
 import '../widgets/study_bottom_nav.dart';
 import '../widgets/web_site_header.dart';
@@ -26,6 +28,36 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _tab = 0;
+  bool _billingReturnHandled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleBillingReturn();
+      });
+    }
+  }
+
+  Future<void> _handleBillingReturn() async {
+    if (_billingReturnHandled || !mounted) return;
+    final Uri uri = Uri.base;
+    if (uri.queryParameters['billing'] != 'success') return;
+    _billingReturnHandled = true;
+    final SubscriptionService subs = context.read<SubscriptionService>();
+    final bool unlocked = await subs.confirmCheckoutFromReturnUrl(uri);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          unlocked
+              ? 'Premium is active. Welcome aboard.'
+              : 'Payment received — Premium will unlock shortly.',
+        ),
+      ),
+    );
+  }
 
   void _goToTab(int index) => setState(() => _tab = index);
 

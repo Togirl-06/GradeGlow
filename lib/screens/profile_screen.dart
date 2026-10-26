@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../config/billing_config.dart';
 import '../models/course.dart';
 import '../models/flashcard.dart';
 import '../models/study_material.dart';
 import '../models/study_summary.dart';
+import '../models/subscription_plan.dart';
 import '../models/user_profile.dart';
+import '../services/appearance_service.dart';
 import '../services/auth_service.dart';
 import '../services/course_service.dart';
 import '../services/flashcard_service.dart';
 import '../services/material_service.dart';
 import '../services/notes_summarizer_service.dart';
+import '../services/subscription_service.dart';
 import '../services/user_service.dart';
 import '../theme/study_theme.dart';
 import '../utils/gamification.dart';
+import '../utils/study_limits.dart';
+import '../vu_v2/vu_v2_app.dart';
 import 'flashcards_screen.dart';
 import 'membership_screen.dart';
-import 'settings_screen.dart';
-import '../models/subscription_plan.dart';
 import 'my_courses_screen.dart';
 import 'notes_summarizer_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -27,15 +32,27 @@ class ProfileScreen extends StatelessWidget {
   String _handleFromEmail(String email) {
     final int at = email.indexOf('@');
     if (at <= 0) return '@student';
-    return '@${email.substring(0, at)}';
+    return '@${email.substring(0, at).toLowerCase()}';
   }
 
   void _openSettings(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute<void>(
-        builder: (_) => const SettingsScreen(),
-      ),
+      MaterialPageRoute<void>(builder: (_) => const SettingsScreen()),
+    );
+  }
+
+  void _openPlans(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (_) => const MembershipScreen()),
+    );
+  }
+
+  void _openCampus(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (_) => const VuV2App()),
     );
   }
 
@@ -45,7 +62,9 @@ class ProfileScreen extends StatelessWidget {
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Achievements'),
         content: profile.badges.isEmpty
-            ? const Text('Study daily to earn streak badges at 7, 30, and 100 days.')
+            ? const Text(
+                'Finish a lecture or pass a quiz to earn your first badge.',
+              )
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +74,10 @@ class ProfileScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: Row(
                           children: <Widget>[
-                            const Icon(Icons.military_tech_rounded, color: StudyColors.accent),
+                            Icon(
+                              Icons.military_tech_rounded,
+                              color: StudyColors.accent,
+                            ),
                             const SizedBox(width: 10),
                             Text(Gamification.badgeLabel(id)),
                           ],
@@ -65,7 +87,10 @@ class ProfileScreen extends StatelessWidget {
                     .toList(),
               ),
         actions: <Widget>[
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
         ],
       ),
     );
@@ -78,110 +103,203 @@ class ProfileScreen extends StatelessWidget {
     final CourseService courseService = context.watch<CourseService>();
     final MaterialService materials = context.watch<MaterialService>();
     final FlashcardService flashcards = context.watch<FlashcardService>();
-    final NotesSummarizerService summarizer = context.watch<NotesSummarizerService>();
+    final NotesSummarizerService summarizer =
+        context.watch<NotesSummarizerService>();
+    final SubscriptionService subs = context.watch<SubscriptionService>();
+    final AppearanceService appearance = context.watch<AppearanceService>();
     final Brightness brightness = Theme.of(context).brightness;
-    final Color textSecondary = StudyColors.textSecondary(brightness);
-    final String initial = auth.displayName.isNotEmpty ? auth.displayName[0].toUpperCase() : 'S';
+    final Color accent = appearance.primaryColor;
+    final String initial =
+        auth.displayName.isNotEmpty ? auth.displayName[0].toUpperCase() : 'S';
 
     return StreamBuilder<UserProfile>(
       stream: userService.watchProfile(),
       builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Could not load profile: ${snapshot.error}'));
+          return Center(
+            child: Text('Could not load profile: ${snapshot.error}'),
+          );
         }
 
         final UserProfile profile = snapshot.data ??
-            UserProfile.empty(email: auth.email, displayName: auth.displayName);
+            UserProfile.empty(
+              email: auth.email,
+              displayName: auth.displayName,
+            );
         final int level = Gamification.levelFromXp(profile.xp);
         final int xpFloor = Gamification.xpFloorForLevel(level);
         final int xpCeil = Gamification.xpCeilForLevel(level);
+        final int xpIntoLevel = profile.xp - xpFloor;
+        final int xpSpan = xpCeil - xpFloor;
+        final int xpToNext = (xpCeil - profile.xp).clamp(0, xpSpan);
+        final bool isPremium = subs.plan.isPaid ||
+            SubscriptionPlan.fromString(profile.plan).isPaid;
+        final double width = MediaQuery.sizeOf(context).width;
+        final bool wide = width >= 900;
 
         return Scaffold(
           backgroundColor: StudyColors.background(brightness),
           body: ListView(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.fromLTRB(16, 12, 16, wide ? 32 : 100),
             children: <Widget>[
-              _ProfileHeader(
+              _ProfileHero(
                 initial: initial,
-                name: profile.displayName.isNotEmpty ? profile.displayName : 'Student',
+                name: profile.displayName.isNotEmpty
+                    ? profile.displayName
+                    : 'Student',
                 handle: _handleFromEmail(auth.email),
-                showVerified: profile.isEduVerified,
-                showPremium: profile.verifiedSolver,
+                level: level,
+                levelTitle: Gamification.levelTitle(level),
+                xpIntoLevel: xpIntoLevel,
+                xpSpan: xpSpan,
+                xpToNext: xpToNext,
+                progress: Gamification.levelProgress(profile.xp),
+                accent: accent,
                 onSettings: () => _openSettings(context),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                child: Column(
-                  children: <Widget>[
-                    Transform.translate(
-                      offset: const Offset(0, -24),
-                      child: StreamBuilder<List<StudyMaterial>>(
-                        stream: materials.watchMyUploads(limit: 200),
-                        builder: (BuildContext context, AsyncSnapshot<List<StudyMaterial>> uploadSnap) {
-                          final int uploads = uploadSnap.data?.length ?? 0;
-                          return _StatsRow(
-                            streakDays: profile.streakDays,
-                            points: profile.xp,
-                            badges: profile.badges.length,
-                            uploads: uploads,
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _LevelCard(
-                      level: level,
-                      title: Gamification.levelTitle(level),
-                      xp: profile.xp,
-                      xpFloor: xpFloor,
-                      xpCeil: xpCeil,
-                      progress: Gamification.levelProgress(profile.xp),
-                    ),
-                    const SizedBox(height: 12),
-                    MembershipTeaserCard(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(builder: (_) => const MembershipScreen()),
-                      ),
-                      plan: SubscriptionPlan.fromString(profile.plan),
-                    ),
-                    const SizedBox(height: 12),
-                    StreamBuilder<List<Course>>(
-                      stream: courseService.watchMyCourses(profile.courseIds),
-                      builder: (BuildContext context, AsyncSnapshot<List<Course>> courseSnap) {
-                        final List<Course> myCourses = courseSnap.data ?? <Course>[];
-                        return _ProfileCounts(
-                          summarizer: summarizer,
-                          flashcards: flashcards,
-                          builder: (int notes, int cards) {
-                            return _ToolsCard(
-                              courseCount: myCourses.length,
-                              notesCount: notes,
-                              cardsCount: cards,
-                              badgesCount: profile.badges.length,
-                              textSecondary: textSecondary,
-                              onMyCourses: () => Navigator.push(
-                                context,
-                                MaterialPageRoute<void>(builder: (_) => const MyCoursesScreen()),
-                              ),
-                              onNotes: () => Navigator.push(
-                                context,
-                                MaterialPageRoute<void>(builder: (_) => const NotesSummarizerScreen()),
-                              ),
-                              onSaved: () => Navigator.push(
-                                context,
-                                MaterialPageRoute<void>(builder: (_) => const FlashcardsScreen()),
-                              ),
-                              onAchievements: () => _showAchievements(context, profile),
-                              onSettings: () => _openSettings(context),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
+              const SizedBox(height: 18),
+              Text(
+                'Your progress',
+                style: TextStyle(
+                  color: StudyColors.textPrimary(brightness),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
+              const SizedBox(height: 10),
+              StreamBuilder<List<StudyMaterial>>(
+                stream: materials.watchMyUploads(limit: 200),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<StudyMaterial>> uploadSnap,
+                ) {
+                  final int uploads = uploadSnap.data?.length ?? 0;
+                  return _ProgressGrid(
+                    streakDays: profile.streakDays,
+                    points: profile.xp,
+                    badges: profile.badges.length,
+                    uploads: uploads,
+                    accent: accent,
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              if (wide)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 11,
+                      child: _StudySpaceCard(
+                        courseService: courseService,
+                        summarizer: summarizer,
+                        flashcards: flashcards,
+                        courseIds: profile.courseIds,
+                        badgesCount: profile.badges.length,
+                        accent: accent,
+                        onCourses: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => const MyCoursesScreen(),
+                          ),
+                        ),
+                        onNotes: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => const NotesSummarizerScreen(),
+                          ),
+                        ),
+                        onFlashcards: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) => const FlashcardsScreen(),
+                          ),
+                        ),
+                        onAchievements: () =>
+                            _showAchievements(context, profile),
+                        onSettings: () => _openSettings(context),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      flex: 9,
+                      child: Column(
+                        children: <Widget>[
+                          _WeekStreakCard(
+                            streakDays: profile.streakDays,
+                            lastStudyDate: profile.lastStudyDate,
+                            accent: accent,
+                          ),
+                          const SizedBox(height: 12),
+                          if (!isPremium)
+                            _PremiumPromoCard(
+                              accent: accent,
+                              onSeePlans: () => _openPlans(context),
+                            ),
+                          if (!isPremium) const SizedBox(height: 12),
+                          if (isPremium)
+                            _PremiumActiveCard(accent: accent),
+                          if (isPremium) const SizedBox(height: 12),
+                          _FirstBadgeCard(
+                            hasBadge: profile.badges.isNotEmpty,
+                            accent: accent,
+                            onBrowse: () => _openCampus(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              else ...<Widget>[
+                _WeekStreakCard(
+                  streakDays: profile.streakDays,
+                  lastStudyDate: profile.lastStudyDate,
+                  accent: accent,
+                ),
+                const SizedBox(height: 12),
+                _StudySpaceCard(
+                  courseService: courseService,
+                  summarizer: summarizer,
+                  flashcards: flashcards,
+                  courseIds: profile.courseIds,
+                  badgesCount: profile.badges.length,
+                  accent: accent,
+                  onCourses: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => const MyCoursesScreen(),
+                    ),
+                  ),
+                  onNotes: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => const NotesSummarizerScreen(),
+                    ),
+                  ),
+                  onFlashcards: () => Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (_) => const FlashcardsScreen(),
+                    ),
+                  ),
+                  onAchievements: () => _showAchievements(context, profile),
+                  onSettings: () => _openSettings(context),
+                ),
+                const SizedBox(height: 12),
+                if (!isPremium)
+                  _PremiumPromoCard(
+                    accent: accent,
+                    onSeePlans: () => _openPlans(context),
+                  )
+                else
+                  _PremiumActiveCard(accent: accent),
+                const SizedBox(height: 12),
+                _FirstBadgeCard(
+                  hasBadge: profile.badges.isNotEmpty,
+                  accent: accent,
+                  onBrowse: () => _openCampus(context),
+                ),
+              ],
             ],
           ),
         );
@@ -190,118 +308,121 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-/// Loads summary/flashcard counts for the menu card.
-class _ProfileCounts extends StatelessWidget {
-  const _ProfileCounts({
-    required this.summarizer,
-    required this.flashcards,
-    required this.builder,
-  });
-
-  final NotesSummarizerService summarizer;
-  final FlashcardService flashcards;
-  final Widget Function(int notes, int cards) builder;
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<StudySummary>>(
-      stream: summarizer.watchSummaries(),
-      builder: (BuildContext context, AsyncSnapshot<List<StudySummary>> notesSnap) {
-        final int notes = notesSnap.data?.length ?? 0;
-        return StreamBuilder<List<Flashcard>>(
-          stream: flashcards.watchFlashcards(),
-          builder: (BuildContext context, AsyncSnapshot<List<Flashcard>> fcSnap) {
-            final int cards = fcSnap.data?.length ?? 0;
-            return builder(notes, cards);
-          },
-        );
-      },
-    );
-  }
-}
-
-class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({
+class _ProfileHero extends StatelessWidget {
+  const _ProfileHero({
     required this.initial,
     required this.name,
     required this.handle,
-    required this.showVerified,
-    required this.showPremium,
+    required this.level,
+    required this.levelTitle,
+    required this.xpIntoLevel,
+    required this.xpSpan,
+    required this.xpToNext,
+    required this.progress,
+    required this.accent,
     required this.onSettings,
   });
 
   final String initial;
   final String name;
   final String handle;
-  final bool showVerified;
-  final bool showPremium;
+  final int level;
+  final String levelTitle;
+  final int xpIntoLevel;
+  final int xpSpan;
+  final int xpToNext;
+  final double progress;
+  final Color accent;
   final VoidCallback onSettings;
 
   @override
   Widget build(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    final bool dark = brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
+      padding: const EdgeInsets.fromLTRB(18, 14, 12, 18),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: <Color>[
-            StudyColors.primaryDark,
-            StudyColors.primary,
-            Color(0xFF0EA5E9),
-          ],
+          colors: dark
+              ? <Color>[
+                  const Color(0xFF1A1535),
+                  const Color(0xFF121A2E),
+                  accent.withValues(alpha: 0.35),
+                ]
+              : <Color>[
+                  accent.withValues(alpha: 0.18),
+                  StudyColors.surface(brightness),
+                  accent.withValues(alpha: 0.08),
+                ],
         ),
+        border: Border.all(color: StudyColors.border(brightness)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.topRight,
             child: IconButton(
               onPressed: onSettings,
-              icon: const Icon(Icons.settings_outlined, color: Colors.white),
+              icon: Icon(
+                Icons.settings_outlined,
+                color: StudyColors.textPrimary(brightness),
+              ),
             ),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Stack(
-                clipBehavior: Clip.none,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
+              SizedBox(
+                width: 84,
+                height: 84,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 84,
+                      height: 84,
+                      child: CircularProgressIndicator(
+                        value: progress.clamp(0.05, 1.0),
+                        strokeWidth: 4,
+                        backgroundColor: accent.withValues(alpha: 0.15),
+                        valueColor: AlwaysStoppedAnimation<Color>(accent),
+                      ),
                     ),
-                    child: CircleAvatar(
-                      radius: 38,
+                    CircleAvatar(
+                      radius: 34,
                       backgroundColor: Colors.white,
                       child: Text(
                         initial,
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 30,
                           fontWeight: FontWeight.w900,
-                          color: StudyColors.primary,
+                          color: accent,
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    right: 2,
-                    bottom: 2,
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: StudyColors.success,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
+                    Positioned(
+                      right: 8,
+                      bottom: 8,
+                      child: Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          color: StudyColors.success,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: StudyColors.surface(brightness),
+                            width: 2,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -310,46 +431,68 @@ class _ProfileHeader extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
+                      style: TextStyle(
+                        color: StudyColors.textPrimary(brightness),
+                        fontSize: 24,
                         fontWeight: FontWeight.w800,
+                        letterSpacing: -0.3,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       handle,
-                      style: TextStyle(color: Colors.white.withValues(alpha: 0.88), fontSize: 14),
-                    ),
-                    if (showVerified || showPremium) ...<Widget>[
-                      const SizedBox(height: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.25),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              showPremium ? Icons.workspace_premium_rounded : Icons.verified_rounded,
-                              color: StudyColors.accent,
-                              size: 16,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              showPremium ? 'Top contributor' : '.edu verified',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                      style: TextStyle(
+                        color: StudyColors.textSecondary(brightness),
+                        fontSize: 14,
                       ),
-                    ],
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 8,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: dark
+                                ? Colors.black.withValues(alpha: 0.35)
+                                : accent.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(
+                                Icons.shield_rounded,
+                                size: 14,
+                                color: accent,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                'Level $level • $levelTitle',
+                                style: TextStyle(
+                                  color: StudyColors.textPrimary(brightness),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '$xpIntoLevel / $xpSpan XP • $xpToNext XP to Level ${level + 1}',
+                          style: TextStyle(
+                            color: StudyColors.textSecondary(brightness),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -361,182 +504,150 @@ class _ProfileHeader extends StatelessWidget {
   }
 }
 
-class _StatsRow extends StatelessWidget {
-  const _StatsRow({
+class _ProgressGrid extends StatelessWidget {
+  const _ProgressGrid({
     required this.streakDays,
     required this.points,
     required this.badges,
     required this.uploads,
+    required this.accent,
   });
 
   final int streakDays;
   final int points;
   final int badges;
   final int uploads;
+  final Color accent;
 
   @override
   Widget build(BuildContext context) {
-    final Brightness brightness = Theme.of(context).brightness;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-      decoration: BoxDecoration(
-        color: StudyColors.surface(brightness),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: StudyColors.border(brightness)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withValues(alpha: brightness == Brightness.dark ? 0.25 : 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        children: <Widget>[
-          _StatCell(
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final bool compact = constraints.maxWidth < 640;
+        final List<_MetricData> metrics = <_MetricData>[
+          _MetricData(
             icon: Icons.local_fire_department_rounded,
-            iconColor: StudyColors.accent,
+            color: StudyColors.accent,
             value: '$streakDays',
             label: 'Day streak',
+            hint: streakDays > 0
+                ? 'Study today to keep it'
+                : 'Study today to start',
           ),
-          _StatCell(
+          _MetricData(
             icon: Icons.bolt_rounded,
-            iconColor: StudyColors.primary,
+            color: accent,
             value: Gamification.formatCompactCount(points),
             label: 'Points',
+            hint: 'Earned from studying',
           ),
-          _StatCell(
-            icon: Icons.military_tech_outlined,
-            iconColor: const Color(0xFFEC4899),
+          _MetricData(
+            icon: Icons.military_tech_rounded,
+            color: const Color(0xFFA855F7),
             value: '$badges',
             label: 'Badges',
+            hint: badges == 0
+                ? 'Finish a lecture to earn one'
+                : 'Keep collecting',
           ),
-          _StatCell(
-            icon: Icons.cloud_upload_outlined,
-            iconColor: StudyColors.success,
+          _MetricData(
+            icon: Icons.cloud_upload_rounded,
+            color: StudyColors.success,
             value: '$uploads',
             label: 'Uploads',
+            hint: '${StudyLimits.freeDailySummarizeActions} free per day',
           ),
-        ],
-      ),
+        ];
+
+        if (compact) {
+          return Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: metrics
+                .map(
+                  (_MetricData m) => SizedBox(
+                    width: (constraints.maxWidth - 10) / 2,
+                    child: _MetricCard(data: m),
+                  ),
+                )
+                .toList(),
+          );
+        }
+
+        return Row(
+          children: <Widget>[
+            for (int i = 0; i < metrics.length; i++) ...<Widget>[
+              if (i > 0) const SizedBox(width: 10),
+              Expanded(child: _MetricCard(data: metrics[i])),
+            ],
+          ],
+        );
+      },
     );
   }
 }
 
-class _StatCell extends StatelessWidget {
-  const _StatCell({
+class _MetricData {
+  const _MetricData({
     required this.icon,
-    required this.iconColor,
+    required this.color,
     required this.value,
     required this.label,
+    required this.hint,
   });
 
   final IconData icon;
-  final Color iconColor;
+  final Color color;
   final String value;
   final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final Color textSecondary = StudyColors.textSecondary(Theme.of(context).brightness);
-
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(icon, color: iconColor, size: 22),
-          const SizedBox(height: 8),
-          Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(color: textSecondary, fontSize: 11),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
+  final String hint;
 }
 
-class _LevelCard extends StatelessWidget {
-  const _LevelCard({
-    required this.level,
-    required this.title,
-    required this.xp,
-    required this.xpFloor,
-    required this.xpCeil,
-    required this.progress,
-  });
+class _MetricCard extends StatelessWidget {
+  const _MetricCard({required this.data});
 
-  final int level;
-  final String title;
-  final int xp;
-  final int xpFloor;
-  final int xpCeil;
-  final double progress;
+  final _MetricData data;
 
   @override
   Widget build(BuildContext context) {
     final Brightness brightness = Theme.of(context).brightness;
-    final Color textSecondary = StudyColors.textSecondary(brightness);
-
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
         color: StudyColors.surface(brightness),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: StudyColors.border(brightness)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: StudyColors.primaryTint(brightness),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(Icons.shield_rounded, color: StudyColors.primary, size: 28),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Level $level', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
-                    Text(title, style: TextStyle(color: textSecondary, fontSize: 13)),
-                  ],
-                ),
-              ),
-              ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 150),
-                child: Text(
-                  '${xp - xpFloor} / ${xpCeil - xpFloor} XP',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(color: textSecondary, fontSize: 12, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
+          Icon(data.icon, color: data.color, size: 22),
+          const SizedBox(height: 12),
+          Text(
+            data.value,
+            style: TextStyle(
+              color: StudyColors.textPrimary(brightness),
+              fontSize: 28,
+              fontWeight: FontWeight.w800,
+              height: 1,
+            ),
           ),
-          const SizedBox(height: 14),
-          SizedBox(
-            width: double.infinity,
-            height: 12,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 12,
-                backgroundColor: StudyColors.primary.withValues(alpha: 0.12),
-                color: StudyColors.primary,
-              ),
+          const SizedBox(height: 6),
+          Text(
+            data.label,
+            style: TextStyle(
+              color: StudyColors.textPrimary(brightness),
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            data.hint,
+            style: TextStyle(
+              color: StudyColors.textSecondary(brightness),
+              fontSize: 11,
+              height: 1.3,
             ),
           ),
         ],
@@ -545,28 +656,164 @@ class _LevelCard extends StatelessWidget {
   }
 }
 
-class _ToolsCard extends StatelessWidget {
-  const _ToolsCard({
-    required this.courseCount,
-    required this.notesCount,
-    required this.cardsCount,
+class _WeekStreakCard extends StatelessWidget {
+  const _WeekStreakCard({
+    required this.streakDays,
+    required this.lastStudyDate,
+    required this.accent,
+  });
+
+  final int streakDays;
+  final DateTime? lastStudyDate;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    final DateTime now = DateTime.now();
+    final DateTime today = DateTime(now.year, now.month, now.day);
+    final int weekdayIndex = today.weekday % 7; // Sun=0
+    final DateTime sunday = today.subtract(Duration(days: weekdayIndex));
+    final Set<int> activeDays = <int>{};
+    if (streakDays > 0 && lastStudyDate != null) {
+      DateTime cursor = DateTime(
+        lastStudyDate!.year,
+        lastStudyDate!.month,
+        lastStudyDate!.day,
+      );
+      for (int i = 0; i < streakDays; i++) {
+        final int idx = cursor.difference(sunday).inDays;
+        if (idx >= 0 && idx < 7) activeDays.add(idx);
+        cursor = cursor.subtract(const Duration(days: 1));
+      }
+    } else if (streakDays > 0) {
+      activeDays.add(weekdayIndex);
+    }
+
+    const List<String> labels = <String>[
+      'Sun',
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+    ];
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      decoration: BoxDecoration(
+        color: StudyColors.surface(brightness),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: StudyColors.border(brightness)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Text(
+                'This week',
+                style: TextStyle(
+                  color: StudyColors.textPrimary(brightness),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 15,
+                ),
+              ),
+              const Spacer(),
+              Text(
+                '$streakDays day streak',
+                style: TextStyle(
+                  color: StudyColors.textSecondary(brightness),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              for (int i = 0; i < 7; i++)
+                Column(
+                  children: <Widget>[
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: activeDays.contains(i)
+                            ? StudyColors.accent
+                            : StudyColors.surfaceElevated(brightness),
+                        border: Border.all(
+                          color: activeDays.contains(i)
+                              ? StudyColors.accent
+                              : StudyColors.border(brightness),
+                        ),
+                      ),
+                      child: activeDays.contains(i)
+                          ? const Icon(
+                              Icons.local_fire_department_rounded,
+                              color: Colors.white,
+                              size: 18,
+                            )
+                          : null,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      labels[i],
+                      style: TextStyle(
+                        color: StudyColors.textSecondary(brightness),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            streakDays <= 0
+                ? 'Study today to start your streak.'
+                : 'Come back tomorrow to make it ${streakDays + 1}.',
+            style: TextStyle(
+              color: StudyColors.textSecondary(brightness),
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StudySpaceCard extends StatelessWidget {
+  const _StudySpaceCard({
+    required this.courseService,
+    required this.summarizer,
+    required this.flashcards,
+    required this.courseIds,
     required this.badgesCount,
-    required this.textSecondary,
-    required this.onMyCourses,
+    required this.accent,
+    required this.onCourses,
     required this.onNotes,
-    required this.onSaved,
+    required this.onFlashcards,
     required this.onAchievements,
     required this.onSettings,
   });
 
-  final int courseCount;
-  final int notesCount;
-  final int cardsCount;
+  final CourseService courseService;
+  final NotesSummarizerService summarizer;
+  final FlashcardService flashcards;
+  final List<String> courseIds;
   final int badgesCount;
-  final Color textSecondary;
-  final VoidCallback onMyCourses;
+  final Color accent;
+  final VoidCallback onCourses;
   final VoidCallback onNotes;
-  final VoidCallback onSaved;
+  final VoidCallback onFlashcards;
   final VoidCallback onAchievements;
   final VoidCallback onSettings;
 
@@ -576,117 +823,392 @@ class _ToolsCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
       decoration: BoxDecoration(
         color: StudyColors.surface(brightness),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: StudyColors.border(brightness)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.fromLTRB(18, 16, 18, 8),
-            child: Text('My tools & data', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+          Text(
+            'My study space',
+            style: TextStyle(
+              color: StudyColors.textPrimary(brightness),
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+            ),
           ),
-          _MenuRow(
-            icon: Icons.school_outlined,
-            iconColor: const Color(0xFF6366F1),
-            title: 'My courses',
-            trailing: '$courseCount classes',
-            onTap: onMyCourses,
-          ),
-          _MenuRow(
-            icon: Icons.note_alt_outlined,
-            iconColor: const Color(0xFF0891B2),
-            title: 'My notes',
-            trailing: '$notesCount summaries',
-            onTap: onNotes,
-          ),
-          _MenuRow(
-            icon: Icons.bookmark_outline_rounded,
-            iconColor: StudyColors.accentDark,
-            title: 'Flashcards',
-            trailing: '$cardsCount cards',
-            onTap: onSaved,
-          ),
-          _MenuRow(
-            icon: Icons.emoji_events_outlined,
-            iconColor: StudyColors.accent,
-            title: 'Achievements',
-            trailing: '$badgesCount earned',
-            onTap: onAchievements,
-          ),
-          _MenuRow(
-            icon: Icons.settings_outlined,
-            iconColor: textSecondary,
-            title: 'Settings',
-            trailing: 'Account',
-            onTap: onSettings,
-            showDivider: false,
+          const SizedBox(height: 12),
+          StreamBuilder<List<Course>>(
+            stream: courseService.watchMyCourses(courseIds),
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<Course>> courseSnap,
+            ) {
+              final int courses = courseSnap.data?.length ?? 0;
+              return StreamBuilder<List<StudySummary>>(
+                stream: summarizer.watchSummaries(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<StudySummary>> notesSnap,
+                ) {
+                  final int notes = notesSnap.data?.length ?? 0;
+                  return StreamBuilder<List<Flashcard>>(
+                    stream: flashcards.watchFlashcards(),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<List<Flashcard>> fcSnap,
+                    ) {
+                      final int cards = fcSnap.data?.length ?? 0;
+                      return GridView.count(
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 1.55,
+                        children: <Widget>[
+                          _SpaceTile(
+                            icon: Icons.menu_book_rounded,
+                            color: accent,
+                            title: 'Courses',
+                            subtitle: '$courses classes',
+                            onTap: onCourses,
+                          ),
+                          _SpaceTile(
+                            icon: Icons.description_outlined,
+                            color: accent,
+                            title: 'Notes',
+                            subtitle: '$notes summaries',
+                            onTap: onNotes,
+                          ),
+                          _SpaceTile(
+                            icon: Icons.style_rounded,
+                            color: accent,
+                            title: 'Flashcards',
+                            subtitle: '$cards cards',
+                            onTap: onFlashcards,
+                          ),
+                          _SpaceTile(
+                            icon: Icons.emoji_events_rounded,
+                            color: accent,
+                            title: 'Achievements',
+                            subtitle: '$badgesCount earned',
+                            onTap: onAchievements,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              );
+            },
           ),
           const SizedBox(height: 8),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onSettings,
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.person_outline_rounded,
+                      color: StudyColors.textSecondary(brightness),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Account settings',
+                        style: TextStyle(
+                          color: StudyColors.textPrimary(brightness),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: StudyColors.textSecondary(brightness),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class _MenuRow extends StatelessWidget {
-  const _MenuRow({
+class _SpaceTile extends StatelessWidget {
+  const _SpaceTile({
     required this.icon,
-    required this.iconColor,
+    required this.color,
     required this.title,
-    required this.trailing,
+    required this.subtitle,
     required this.onTap,
-    this.showDivider = true,
   });
 
   final IconData icon;
-  final Color iconColor;
+  final Color color;
   final String title;
-  final String trailing;
+  final String subtitle;
   final VoidCallback onTap;
-  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
-    final Color textSecondary = StudyColors.textSecondary(Theme.of(context).brightness);
-
-    return Column(
-      children: <Widget>[
-        InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: iconColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(icon, color: iconColor, size: 20),
+    final Brightness brightness = Theme.of(context).brightness;
+    return Material(
+      color: StudyColors.surfaceElevated(brightness),
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Icon(icon, color: color, size: 22),
+              const Spacer(),
+              Text(
+                title,
+                style: TextStyle(
+                  color: StudyColors.textPrimary(brightness),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14,
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+              ),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: StudyColors.textSecondary(brightness),
+                  fontSize: 12,
                 ),
-                Text(trailing, style: TextStyle(color: textSecondary, fontSize: 12)),
-                const SizedBox(width: 6),
-                Icon(Icons.chevron_right_rounded, color: textSecondary, size: 20),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        if (showDivider)
-          Divider(
-            height: 1,
-            indent: 58,
-            endIndent: 16,
-            color: StudyColors.border(Theme.of(context).brightness),
+      ),
+    );
+  }
+}
+
+class _PremiumPromoCard extends StatelessWidget {
+  const _PremiumPromoCard({
+    required this.accent,
+    required this.onSeePlans,
+  });
+
+  final Color accent;
+  final VoidCallback onSeePlans;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[
+            accent,
+            Color.lerp(accent, Colors.black, 0.18)!,
+            Color.lerp(accent, const Color(0xFF0F172A), 0.35)!,
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text(
+            'Try Premium free for 30 days',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+              height: 1.2,
+            ),
           ),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            'Unlimited AI Tutor, study sets and uploads, plus exam prep tools.',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.9),
+              fontSize: 13,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 14),
+          SizedBox(
+            height: 44,
+            child: FilledButton(
+              onPressed: onSeePlans,
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF0F172A),
+                shape: const StadiumBorder(),
+              ),
+              child: const Text(
+                'See plans  >',
+                style: TextStyle(fontWeight: FontWeight.w800),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'From ${BillingConfig.premiumMonthlyPrice} a month after the trial. Cancel any time.',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.82),
+              fontSize: 11,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PremiumActiveCard extends StatelessWidget {
+  const _PremiumActiveCard({required this.accent});
+
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: accent.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.workspace_premium_rounded, color: accent),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'Premium is active on this account',
+              style: TextStyle(
+                color: StudyColors.textPrimary(brightness),
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FirstBadgeCard extends StatelessWidget {
+  const _FirstBadgeCard({
+    required this.hasBadge,
+    required this.accent,
+    required this.onBrowse,
+  });
+
+  final bool hasBadge;
+  final Color accent;
+  final VoidCallback onBrowse;
+
+  @override
+  Widget build(BuildContext context) {
+    final Brightness brightness = Theme.of(context).brightness;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+      decoration: BoxDecoration(
+        color: StudyColors.surface(brightness),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: StudyColors.border(brightness)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            hasBadge ? 'Your badges' : 'Your first badge',
+            style: TextStyle(
+              color: StudyColors.textPrimary(brightness),
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Center(
+            child: Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: StudyColors.border(brightness),
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
+              ),
+              child: Icon(
+                Icons.military_tech_outlined,
+                size: 32,
+                color: hasBadge ? accent : StudyColors.textSecondary(brightness),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Center(
+            child: Text(
+              hasBadge ? 'Nice work — keep collecting.' : 'Not earned yet',
+              style: TextStyle(
+                color: StudyColors.textPrimary(brightness),
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Center(
+            child: Text(
+              hasBadge
+                  ? 'Open Achievements in Study space to review them.'
+                  : 'Finish a lecture or pass a quiz and it lands here.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: StudyColors.textSecondary(brightness),
+                fontSize: 12,
+                height: 1.35,
+              ),
+            ),
+          ),
+          if (!hasBadge) ...<Widget>[
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              height: 42,
+              child: OutlinedButton(
+                onPressed: onBrowse,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: StudyColors.textPrimary(brightness),
+                  side: BorderSide(color: StudyColors.border(brightness)),
+                  shape: const StadiumBorder(),
+                ),
+                child: const Text(
+                  'Browse lectures',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

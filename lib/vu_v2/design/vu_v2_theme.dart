@@ -29,12 +29,27 @@ abstract final class VuV2Colors {
   static Color get gold => StudyColors.accent;
   static Color get yellow => StudyColors.accent;
 
-  // Game / progress secondary accents (work on light and dark).
-  static Color get dashCyan =>
-      isLight ? const Color(0xFF0891B2) : const Color(0xFF22D3EE);
+  /// Soft variants of the user's color (same family, slight hue shift).
+  static Color _fromPrimary({
+    double hueShift = 0,
+    double lightnessDelta = 0,
+    double saturationFactor = 1,
+  }) {
+    final HSLColor hsl = HSLColor.fromColor(StudyColors.primary);
+    return hsl
+        .withHue((hsl.hue + hueShift) % 360.0)
+        .withSaturation(
+          (hsl.saturation * saturationFactor).clamp(0.25, 1.0),
+        )
+        .withLightness(
+          (hsl.lightness + lightnessDelta).clamp(0.28, 0.72),
+        )
+        .toColor();
+  }
+
+  static Color get dashCyan => _fromPrimary(hueShift: 28, lightnessDelta: 0.05);
   static Color get dashGreen => StudyColors.success;
-  static Color get dashPink =>
-      isLight ? const Color(0xFFDB2777) : const Color(0xFFEC4899);
+  static Color get dashPink => _fromPrimary(hueShift: -32, lightnessDelta: 0.04);
   static Color get dashGold => StudyColors.accent;
   static Color get dashPurple => StudyColors.primary;
   static Color get dashPurpleDeep => StudyColors.primaryDark;

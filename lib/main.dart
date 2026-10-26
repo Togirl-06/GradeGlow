@@ -157,6 +157,7 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
       business: _businessSchoolProgressService,
     );
     _appearanceService = widget.appearanceService;
+    _appearanceService.bindAuth(_authService);
     _bootstrap();
   }
 
@@ -189,9 +190,10 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
             .finalizeDeletionIfDue()
             .timeout(const Duration(seconds: 8));
         if (_authService.isAuthenticated) {
-          await _subscriptionService
-              .loadPlan()
-              .timeout(const Duration(seconds: 8));
+          await Future.wait(<Future<void>>[
+            _subscriptionService.loadPlan(),
+            _appearanceService.syncFromCloud(),
+          ]).timeout(const Duration(seconds: 8));
         }
       }
 
@@ -227,7 +229,10 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
     await _userService.ensureUserDocument();
     await _userService.finalizeDeletionIfDue();
     if (!_authService.isAuthenticated) return;
-    await _subscriptionService.loadPlan();
+    await Future.wait(<Future<void>>[
+      _subscriptionService.loadPlan(),
+      _appearanceService.syncFromCloud(),
+    ]);
   }
 
   @override

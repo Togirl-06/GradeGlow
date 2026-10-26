@@ -265,13 +265,13 @@ class _Cover extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 22, 20, 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(VuV2Radii.xl),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[
-            Color(0xFF122033),
-            Color(0xFF0E3A32),
-            Color(0xFF1A2744),
+            VuV2Colors.navy,
+            VuV2Colors.orange.withValues(alpha: 0.55),
+            VuV2Colors.navyElevated,
           ],
         ),
         border: Border.all(color: VuV2Colors.mint.withValues(alpha: 0.35)),

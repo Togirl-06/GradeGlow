@@ -165,19 +165,19 @@ class _HeroCard extends StatelessWidget {
       height: 210,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[
-            Color(0xFF1A1040),
-            Color(0xFF0E1424),
-            Color(0xFF12253A),
+            VuV2Colors.orange.withValues(alpha: 0.55),
+            VuV2Colors.navy,
+            VuV2Colors.navyElevated,
           ],
         ),
-        border: Border.all(color: VuV2Colors.dashPurple.withValues(alpha: 0.35)),
+        border: Border.all(color: VuV2Colors.orange.withValues(alpha: 0.35)),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: VuV2Colors.dashPurple.withValues(alpha: 0.18),
+            color: VuV2Colors.orange.withValues(alpha: 0.18),
             blurRadius: 28,
             offset: const Offset(0, 12),
           ),
@@ -696,7 +696,7 @@ class _ContinueStrip extends StatelessWidget {
                 );
               },
               style: FilledButton.styleFrom(
-                backgroundColor: VuV2Colors.dashPink,
+                backgroundColor: VuV2Colors.orange,
                 foregroundColor: Colors.white,
               ),
               child: const Text(
