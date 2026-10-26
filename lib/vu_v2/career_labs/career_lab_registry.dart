@@ -174,6 +174,14 @@ abstract final class CareerLabRegistry {
       available: true,
     ),
     CareerLabDef(
+      id: 'personal_finance',
+      title: 'Personal Finance — Budget Boss',
+      subtitle: 'Sort needs · spot fees · survive paychecks, cards & a crisis',
+      emoji: '💸',
+      role: 'Money Rookie',
+      available: true,
+    ),
+    CareerLabDef(
       id: 'cybersecurity',
       title: 'Cybersecurity — SOC',
       subtitle: 'Investigate the alert · classify · contain',

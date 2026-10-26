@@ -91,7 +91,7 @@ abstract final class CareerPracticeLabs {
   static String workplaceWorldId(String subjectId) {
     switch (subjectId.toLowerCase()) {
       case 'personal_finance':
-        return 'finance';
+        return 'personal_finance'; // Budget Boss (was the markets desk)
       case 'public_speaking':
       case 'communication_skills':
         return 'marketing';

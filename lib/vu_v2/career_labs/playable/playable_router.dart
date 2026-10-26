@@ -11,6 +11,7 @@ import 'economics/economics_playable.dart';
 import 'electrical_engineering/electrical_engineering_playable.dart';
 import 'engineering/engineering_playable.dart';
 import 'finance/finance_playable.dart';
+import 'glow/life_skills/budget_boss_lab.dart';
 import 'law/law_playable.dart';
 import 'marketing/marketing_playable.dart';
 import 'mathematics/mathematics_playable.dart';
@@ -61,4 +62,6 @@ final Map<String, Widget Function()> playableScreens =
   'electrical_engineering': electricalEngineeringPlayableScreen,
   'psychology': psychologyPlayableScreen,
   'cybersecurity': cybersecurityPlayableScreen,
+  // Glow game labs (shared engine: playable/glow/).
+  'personal_finance': budgetBossScreen,
 };
