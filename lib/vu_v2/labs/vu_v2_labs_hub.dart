@@ -6,6 +6,7 @@ import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import '../design/vu_v2_theme.dart';
 import '../business_career/business_career_hub_screen.dart';
+import '../career_labs/playable/glow/life_skills/budget_boss_lab.dart';
 import '../engineering_career/engineering_career_hub_screen.dart';
 import '../health_career/health_simulation_hub_screen.dart';
 import '../science_career/science_career_hub_screen.dart';
@@ -67,6 +68,12 @@ class VuV2LabsHub extends StatelessWidget {
             playerName: session.displayName,
           ),
         ),
+      );
+    }
+
+    void openBudgetBoss() {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(builder: (_) => budgetBossScreen()),
       );
     }
 
@@ -214,6 +221,39 @@ class VuV2LabsHub extends StatelessWidget {
             icon: const Icon(Icons.medical_services_rounded),
             label: const Text(
               'Enter Medical Simulation Hub',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
+          ),
+        ),
+        const SizedBox(height: 22),
+        _LabBanner(
+          title: 'Career & Life Skills — Budget Boss',
+          subtitle:
+              'Personal finance game lab — needs vs wants, fees, paychecks, credit, crisis.',
+          colors: <Color>[
+            const Color(0xFFA855F7),
+            const Color(0xFF7C3AED),
+            VuV2Colors.navy,
+          ],
+          icon: Icons.savings_rounded,
+          onEnter: openBudgetBoss,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: FilledButton.icon(
+            onPressed: openBudgetBoss,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFA855F7),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.savings_rounded),
+            label: const Text(
+              'Enter Budget Boss',
               style: TextStyle(fontWeight: FontWeight.w900),
             ),
           ),

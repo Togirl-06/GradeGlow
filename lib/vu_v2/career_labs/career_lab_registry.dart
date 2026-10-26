@@ -1,4 +1,5 @@
 /// Retired old Labs registry. Career Games live in [VuCareerWorlds].
+/// Glow labs (e.g. Budget Boss) are opened via [playableScreens].
 library;
 
 class CareerLabDef {
@@ -20,13 +21,28 @@ class CareerLabDef {
 }
 
 abstract final class CareerLabRegistry {
-  static const List<CareerLabDef> all = <CareerLabDef>[];
+  static const List<CareerLabDef> all = <CareerLabDef>[
+    CareerLabDef(
+      id: 'personal_finance',
+      title: 'Personal Finance — Budget Boss',
+      subtitle: 'Sort needs · spot fees · survive paychecks, cards & a crisis',
+      emoji: '💸',
+      role: 'Money Rookie',
+      available: true,
+    ),
+  ];
 
-  static CareerLabDef? byId(String id) => null;
+  static CareerLabDef? byId(String id) {
+    for (final CareerLabDef d in all) {
+      if (d.id == id) return d;
+    }
+    return null;
+  }
 
   static const Set<String> scienceLabIds = <String>{};
 
   static List<CareerLabDef> get scienceLabs => const <CareerLabDef>[];
 
-  static List<CareerLabDef> get simulations => const <CareerLabDef>[];
+  static List<CareerLabDef> get simulations =>
+      all.where((CareerLabDef d) => d.available).toList(growable: false);
 }

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
-/// Old Labs playables are retired. Use [VuCareerWorldRouter] / game engine.
-Widget? playableScreenFor(String labId) => null;
+import 'glow/life_skills/budget_boss_lab.dart';
 
-/// Intentionally empty — do not wire old workplaces back in.
+/// Old Labs playables are retired except Glow game labs.
+/// Career worlds use [VuCareerWorldRouter] / game engine.
+Widget? playableScreenFor(String labId) {
+  return playableScreens[labId]?.call();
+}
+
+/// Lab id → playable builder. Only Glow labs are wired here.
 final Map<String, Widget Function()> playableScreens =
-    <String, Widget Function()>{};
+    <String, Widget Function()>{
+  'personal_finance': budgetBossScreen,
+};
