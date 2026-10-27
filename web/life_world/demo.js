@@ -339,6 +339,11 @@ export function runDemo(world, params) {
     }
   }
 
+  if (!params.get('scene') && params.get('at')) {
+    const [x, y] = params.get('at').split(',').map(Number);
+    s.bx = s.fx = x;
+    s.by = s.fy = y;
+  }
   world.setScene(cityMsg());
   const startIn = params.get('scene');
   if (startIn) {

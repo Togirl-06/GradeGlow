@@ -169,7 +169,10 @@ function block(w, floors, d, style, wall, glass, seed, { ground = 'plain', roof 
   const m = new THREE.Mesh(new THREE.BoxGeometry(w, H, d), [fd, fd, roofM, roofM, fw, fw]);
   m.position.y = H / 2;
   m.castShadow = m.receiveShadow = true;
-  return m;
+  // Wrapped so callers can position the block by its base (y = ground level).
+  const g = new THREE.Group();
+  g.add(m);
+  return g;
 }
 
 function parapet(g, w, d, y, color, t = 0.12, hgt = 0.22, z = 0) {

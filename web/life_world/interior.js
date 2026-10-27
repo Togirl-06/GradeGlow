@@ -1078,7 +1078,7 @@ export function buildRoom(data) {
       n.ch.update(dt, {
         walking: speed > 0.2,
         speed,
-        action: talking ? 'talk' : 'idle',
+        action: talking ? 'talk' : working ? 'work' : 'idle',
         emotion: 'happy',
         showName: id === hover || talking,
         talking,
@@ -1150,6 +1150,8 @@ function decorate(group, data, accent, w, h, items) {
       group.add(c);
     }
   }
+  themedDressing(group, data.buildingId, accent, w, h, r);
+
   // water cooler on the right wall
   if (theme !== 'home') {
     const wc = at(new THREE.Group(), w - 0.75, 0, h * 0.42 + 1.4);
@@ -1157,6 +1159,121 @@ function decorate(group, data, accent, w, h, items) {
     wc.add(at(cyl(0.12, 0.12, 0.35, mat(0x7dd3fc, { t: 0.7, r: 0.1 }), 14), 0, 0.98, 0));
     if (!taken(w - 1, Math.round(h * 0.42 + 1.4))) group.add(wc);
   }
+}
+
+function runner(group, x, z0, z1, width, color) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(width, z1 - z0), mat(color, { r: 1 }));
+  m.rotation.x = -Math.PI / 2;
+  m.position.set(x, 0.009, (z0 + z1) / 2);
+  m.receiveShadow = true;
+  group.add(m);
+}
+
+/** Per-building wall dressing so sparse rooms still read as the real place. */
+function themedDressing(group, id, accent, w, h, r) {
+  const add = (o, x, z, ry = 0) => {
+    o.position.set(x, 0, z);
+    o.rotation.y = ry;
+    group.add(o);
+  };
+  switch (id) {
+    case 'bank': {
+      const vault = at(new THREE.Group(), w - 0.47, 1.0, 2.6);
+      vault.rotation.y = -Math.PI / 2;
+      vault.add(at(cyl(0.62, 0.62, 0.12, mat(0x9ca3af, { m: 0.8, r: 0.3 }), 28), 0, 0, 0).rotateX(Math.PI / 2));
+      vault.add(at(cyl(0.18, 0.18, 0.08, mat(0x6b7280, { m: 0.9, r: 0.3 }), 16), 0, 0, 0.1).rotateX(Math.PI / 2));
+      for (let i = 0; i < 4; i++) vault.add(at(box(0.5, 0.04, 0.04, mat(0x4b5563, { m: 0.8 })), 0, 0, 0.14).rotateZ((i * Math.PI) / 4));
+      group.add(vault);
+      for (let i = 0; i < 4; i++) {
+        const post = at(new THREE.Group(), 1.6 + i * 0.7, 0, 3.2);
+        post.add(at(cyl(0.03, 0.03, 0.7, mat(0xd4a017, { m: 0.8, r: 0.3 }), 8), 0, 0.35, 0));
+        post.add(at(cyl(0.12, 0.12, 0.03, mat(0xd4a017, { m: 0.8, r: 0.3 }), 12), 0, 0.015, 0));
+        group.add(post);
+        if (i < 3) group.add(at(box(0.66, 0.04, 0.04, mat(0x991b1b)), 1.95 + i * 0.7, 0.6, 3.2));
+      }
+      runner(group, 3.0, 2.0, h - 1.0, 1.2, 0x7f1d1d);
+      break;
+    }
+    case 'courthouse': {
+      const bench = new THREE.Group();
+      bench.add(at(rbox(2.4, 0.9, 0.55, 0.03, mat(DARKWOOD, { r: 0.5 })), 0, 0.45, 0));
+      bench.add(at(rbox(1.4, 0.3, 0.55, 0.03, mat(DARKWOOD, { r: 0.5 })), 0, 1.05, -0.05));
+      bench.add(at(plane(0.45, 0.45, signMaterial('⚖️', { bg: '#78350f', fg: '#fde68a', w: 256, h: 256 })), 0, 1.55, -0.2));
+      add(bench, 6.2, -0.15);
+      for (const x of [4.6, 7.8]) {
+        const f = at(new THREE.Group(), x, 0, -0.25);
+        f.add(at(cyl(0.02, 0.02, 1.9, mat(0x9ca3af, { m: 0.6 }), 6), 0, 0.95, 0));
+        f.add(at(box(0.5, 0.32, 0.01, mat(x < 6 ? 0x2563eb : 0x16a34a)), 0.26, 1.7, 0));
+        group.add(f);
+      }
+      for (let i = 0; i < 3; i++) {
+        add(bench3(), -0.1, 3.6 + i * 0.9, Math.PI / 2);
+        add(bench3(), w - 0.9, 3.6 + i * 0.9, -Math.PI / 2);
+      }
+      runner(group, 5, 1.0, h - 0.6, 1.1, 0x7f1d1d);
+      break;
+    }
+    case 'grocery': {
+      for (const x of [0.6, 1.8, 9.2, 10.4]) {
+        const fz = new THREE.Group();
+        fz.add(at(rbox(1.1, 0.8, 0.6, 0.03, mat(WHITE, { r: 0.3 })), 0, 0.4, 0));
+        fz.add(at(box(1.0, 0.03, 0.5, mat(0xbae6fd, { r: 0.05, t: 0.6 })), 0, 0.81, 0));
+        for (let i = 0; i < 6; i++) fz.add(at(box(0.14, 0.12, 0.2, mat([0x3b82f6, 0xf97316, 0x22c55e][i % 3])), -0.38 + i * 0.15, 0.7, 0));
+        add(fz, x, -0.1);
+      }
+      const co = counter(1.3, 0x15803d, 0xf0fdf4);
+      co.add(at(monitor('doc', 0.26), -0.35, 0.66, -0.05));
+      co.add(at(box(0.6, 0.02, 0.4, mat(0x111827)), 0.3, 0.67, 0));
+      add(co, w - 1.1, h - 2.4, -Math.PI / 2);
+      for (let i = 0; i < 2; i++) {
+        const cart = new THREE.Group();
+        cart.add(at(box(0.4, 0.3, 0.55, mat(0x9ca3af, { m: 0.7, t: 0.8 })), 0, 0.45, 0));
+        for (const sx of [-0.15, 0.15]) for (const sz of [-0.2, 0.2]) cart.add(at(sphere(0.04, mat(0x111827), 8), sx, 0.04, sz));
+        add(cart, 0.4 + i * 0.55, h - 2.0, 0.3);
+      }
+      break;
+    }
+    case 'gym': {
+      const mm = new THREE.MeshStandardMaterial({ color: 0xdbeafe, roughness: 0.05, metalness: 0.6 });
+      group.add(at(plane(w - 3, 1.5, mm), (w - 1) / 2, 1.2, -0.48));
+      const cols = [0x0d9488, 0x8b5cf6, 0xf97316];
+      for (let i = 0; i < 3; i++) {
+        const mat2 = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 1.5), mat(cols[i], { r: 1 }));
+        mat2.rotation.x = -Math.PI / 2;
+        mat2.position.set(2 + i * 0.9, 0.012, h - 3.0);
+        group.add(mat2);
+      }
+      for (const [x, z, c] of [[w - 1.0, h - 2.2, 0xf472b6], [w - 1.5, h - 2.0, 0x60a5fa]]) group.add(at(sphere(0.3, mat(c, { r: 0.4 }), 18), x, 0.3, z));
+      break;
+    }
+    case 'company_registry':
+      add(cabinet(2), 0.6, -0.15);
+      add(cabinet(2), 9.8, -0.15);
+      break;
+    case 'cinema': {
+      runner(group, 5, 0.5, h - 0.6, 1.4, 0xb91c1c);
+      const pm = new THREE.Group();
+      pm.add(at(rbox(0.5, 0.6, 0.45, 0.03, mat(0xdc2626)), 0, 0.3, 0));
+      pm.add(at(box(0.48, 0.5, 0.43, mat(0xfef9c3, { r: 0.05, t: 0.5 })), 0, 0.85, 0));
+      for (let i = 0; i < 10; i++) pm.add(at(sphere(0.035, mat(0xfef3c7), 6), (r() - 0.5) * 0.35, 0.65 + r() * 0.15, (r() - 0.5) * 0.3));
+      add(pm, w - 1.0, 4.4);
+      break;
+    }
+    case 'corner_cafe':
+      for (let i = 0; i < 3; i++) {
+        const st = new THREE.Group();
+        st.add(at(cyl(0.16, 0.16, 0.05, mat(0x92400e), 12), 0, 0.55, 0));
+        st.add(at(cyl(0.025, 0.025, 0.55, mat(0x111827), 6), 0, 0.27, 0));
+        add(st, 3.2 + i * 0.65, 1.75);
+      }
+      break;
+  }
+}
+
+function bench3() {
+  const g = bench(DARKWOOD);
+  g.scale.set(1.3, 1, 1);
+  return g;
 }
 
 export function shortAngle(a, b) {
