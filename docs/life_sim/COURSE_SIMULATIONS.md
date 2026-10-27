@@ -18,3 +18,9 @@ Skills gained per task feed promotion requirements. Medical/legal scenarios are 
 The remaining ~50 courses (biology/chemistry labs, pharmacy, anatomy explorer with synchronised
 highlighting, engineering, arts, etc.) and AI-professor lectures with live highlighting. The scenario
 framework is data-driven, so new careers/courses are added as content files plus catalog entries.
+
+## Pharmacy (PHA101–PHA203)
+Pharmaceutical chemistry, pharmacology, dispensing calculations, clinical pharmacy, law & ethics (4 exam questions each).
+Workplace scenarios: interaction screening, counselling, dispensing order, controlled-medicines register,
+adverse reaction, stewardship, formulary budget, plus generated weight-based dose and reorder-point tasks.
+Educational simulation only (fictional Glowland, fictional drugs).

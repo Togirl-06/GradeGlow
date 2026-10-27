@@ -134,6 +134,30 @@ class InterviewQuestionBank {
         tips: <String>['Mention tests, clear names, small changes and code review.'],
       ),
     ],
+    'pharmacist': <InterviewQuestion>[
+      InterviewQuestion(
+        id: 'ph_error',
+        kind: QuestionKind.technical,
+        text: 'You notice a prescription dose looks ten times too high. What do you do?',
+        keywords: <String>['stop', 'check', 'calculate', 'prescriber', 'contact', 'not dispense', 'safety', 'patient', 'document', 'verify'],
+        tips: <String>['Do not dispense; verify the calculation and contact the prescriber.'],
+        followUp: 'And how do you record what happened?',
+      ),
+      InterviewQuestion(
+        id: 'ph_counsel',
+        kind: QuestionKind.technical,
+        text: 'How would you explain a new medicine to an anxious older patient?',
+        keywords: <String>['plain', 'listen', 'explain', 'side effect', 'question', 'understand', 'repeat', 'written', 'calm', 'check'],
+        tips: <String>['Plain language, small chunks, and check understanding (teach-back).'],
+      ),
+      InterviewQuestion(
+        id: 'ph_stock',
+        kind: QuestionKind.technical,
+        text: 'How do you keep important medicines in stock without waste?',
+        keywords: <String>['stock', 'reorder', 'usage', 'lead time', 'expiry', 'rotate', 'safety stock', 'supplier', 'count', 'review'],
+        tips: <String>['Mention usage, lead time, safety stock and expiry rotation.'],
+      ),
+    ],
     'nurse': <InterviewQuestion>[
       InterviewQuestion(
         id: 'nu_dizzy',

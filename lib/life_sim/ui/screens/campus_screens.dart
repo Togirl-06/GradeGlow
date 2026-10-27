@@ -4,6 +4,7 @@ import '../../education/skills.dart';
 import '../../education/university.dart';
 import '../../game/life_game.dart';
 import '../life_session.dart';
+import 'lecture_screen.dart';
 import '../life_widgets.dart';
 
 enum CampusTab { degrees, lectures, study, exams }
@@ -114,7 +115,14 @@ class CampusScreen extends StatelessWidget {
               LinearProgressIndicator(value: g.university.progress(c.id).lectures / CourseRequirements.lecturesRequired, minHeight: 8, backgroundColor: Colors.white12),
               Text('Lectures ${g.university.progress(c.id).lectures}/${CourseRequirements.lecturesRequired}', style: const TextStyle(fontSize: 12)),
               const SizedBox(height: 8),
-              BigButton(label: 'Attend lecture', icon: Icons.record_voice_over_rounded, onPressed: () => life.report(g.attendLecture(c.id))),
+              BigButton(label: 'Attend lecture', icon: Icons.record_voice_over_rounded, onPressed: () {
+                final String? block = g.lectureBlock(c.id);
+                if (block != null) {
+                  life.say(block);
+                  return;
+                }
+                Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => Theme(data: lifeTheme(), child: LectureScreen(life: life, course: c))));
+              }),
             ]),
           ),
         ),

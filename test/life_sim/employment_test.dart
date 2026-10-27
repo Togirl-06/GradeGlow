@@ -68,8 +68,8 @@ Resume goodResume() {
 
 void main() {
   group('Careers & job board', () {
-    test('six careers with seven-rung ladders', () {
-      expect(CareerCatalog.all.length, equals(6));
+    test('seven careers with seven-rung ladders', () {
+      expect(CareerCatalog.all.length, equals(7));
       for (final CareerDef c in CareerCatalog.all) {
         expect(c.rankTitles.length, equals(kTopRank + 1));
         expect(c.titleForRank(0).isNotEmpty, isTrue);

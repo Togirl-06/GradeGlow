@@ -593,17 +593,30 @@ class LifeGame {
     return ActionResult.ok('Enrolled in ${c.name}.');
   }
 
-  ActionResult attendLecture(String courseId) {
+  /// Why the player cannot start a lecture for [courseId] right now.
+  String? lectureBlock(String courseId) {
+    final Course? c = UniversityCatalog.courseById(courseId);
+    if (c == null) return 'Unknown course.';
+    if (needs.energy < 15) return 'You are too tired to concentrate.';
+    return UniversityEngine.lectureBlock(university, c, clock.day, clock.minuteOfDay);
+  }
+
+  /// [checkScore] (0..1) is the result of the lecture's knowledge check; good
+  /// answers turn into extra study time for the course.
+  ActionResult attendLecture(String courseId, {double checkScore = 0.5}) {
     final Course? c = UniversityCatalog.courseById(courseId);
     if (c == null) return const ActionResult.fail('Unknown course.');
     if (needs.energy < 15) return const ActionResult.fail('You are too tired to concentrate.');
     final String? err = UniversityEngine.attendLecture(university, c, clock.day, clock.minuteOfDay);
     if (err != null) return ActionResult.fail(err);
-    skills.gain(c.skill, 1.2);
+    skills.gain(c.skill, 1.2 + checkScore * 0.6);
     skills.gain('communication', 0.2);
-    needs.apply(<String, double>{'energy': -6, 'hunger': -3});
+    needs.apply(<String, double>{'energy': -6, 'hunger': -3, 'stress': 2});
+    final int bonusMinutes = (checkScore.clamp(0, 1) * 30).round();
+    university.progress(courseId).studyMinutes += bonusMinutes;
     advance(UniversityEngine.lectureMinutes);
-    return ActionResult.ok('Lecture attended (${university.progress(courseId).lectures}/${CourseRequirements.lecturesRequired}).');
+    return ActionResult.ok('Lecture attended (${university.progress(courseId).lectures}/${CourseRequirements.lecturesRequired})'
+        '${bonusMinutes > 0 ? ' · knowledge check +$bonusMinutes study min' : ''}.');
   }
 
   ActionResult studyCourse(String courseId) {
@@ -804,7 +817,8 @@ class LifeGame {
       qualifications: qualifications(),
       judge: judge,
       matchScore: a.matchScore,
-      seed: '${a.id}|${a.listingId}',
+      seed: '${a.id}|${a.listingId}|r${a.round}',
+      round: a.round,
     );
   }
 
@@ -824,6 +838,35 @@ class LifeGame {
     skills.gain('communication', 0.8 + r.interviewScore / 100);
     needs.apply(<String, double>{'energy': -6});
     advance(30);
+  }
+
+  /// Answers a recruiter's request for more information with the player's
+  /// current profile: the application is re-screened deterministically.
+  ActionResult sendApplicationUpdate(ApplicationRecord a) {
+    if (a.status != ApplicationStatus.infoRequested) {
+      return const ActionResult.fail('This application is not waiting for more information.');
+    }
+    final JobListing? l = a.listing;
+    if (l == null) return const ActionResult.fail('That position no longer exists.');
+    if (a.infoDeadlineDay != null && clock.day > a.infoDeadlineDay!) {
+      return const ActionResult.fail('The deadline has passed.');
+    }
+    final ResumeReview rv = reviewResume(target: l);
+    final ApplicationAssessment as = ApplicationEngine.assess(
+      q: qualifications(),
+      listing: l,
+      resumeScore: rv.score,
+      seedKey: '${a.id}|${a.listingId}|update|${clock.day}',
+    );
+    final bool strong = as.passes || as.score >= a.matchScore + 6;
+    a.status = ApplicationStatus.pending;
+    a.willAskInfo = false;
+    a.willInvite = strong;
+    a.respondDay = clock.day + 1;
+    advance(20);
+    return ActionResult.ok(strong
+        ? 'You sent an updated profile. ${l.employer.name} will reply tomorrow.'
+        : 'You sent your update, but gaps remain. ${l.employer.name} will reply tomorrow.');
   }
 
   /// Records the decision from a real interview and notifies the player.
@@ -847,6 +890,26 @@ class LifeGame {
           day: clock.day,
           minuteOfDay: clock.minuteOfDay,
           action: <String, String>{'type': 'offer', 'applicationId': a.id},
+        );
+      case HireDecision.secondInterview:
+        a.round = 2;
+        a.status = ApplicationStatus.invited;
+        int d2 = clock.day + 1;
+        while (((d2 - 1) % 7) >= 5) {
+          d2++;
+        }
+        a.interviewDay = d2;
+        a.interviewHour = (a.interviewHour ?? e.startHour + 2).clamp(e.startHour + 1, e.endHour - 2);
+        inbox.add(
+          kind: MessageKind.email,
+          from: '${e.interviewer.name} · ${e.name}',
+          subject: 'Final interview invitation: ${l.title}',
+          body: 'Thank you for meeting us. We would like to invite you to a final interview.\n\n'
+              'When: Day $d2, ${a.interviewHour}:00\nWhere: ${e.name} (reception)\n\n'
+              'Expect tougher, more senior questions this time.',
+          day: clock.day,
+          minuteOfDay: clock.minuteOfDay,
+          action: <String, String>{'type': 'interview', 'applicationId': a.id},
         );
       case HireDecision.waitlist:
         a.status = ApplicationStatus.waitlisted;

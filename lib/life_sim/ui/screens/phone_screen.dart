@@ -185,8 +185,9 @@ class CalendarScreen extends StatelessWidget {
           final List<(int, String)> ev = <(int, String)>[];
           for (final ApplicationRecord a in g.applications) {
             if (a.status == ApplicationStatus.invited && a.interviewDay != null) {
-              ev.add((a.interviewDay!, '🎤 Interview — ${a.listing?.title} at ${a.listing?.employer.name}, ${a.interviewHour}:00'));
+              ev.add((a.interviewDay!, '🎤 ${a.round >= 2 ? 'FINAL interview' : 'Interview'} — ${a.listing?.title} at ${a.listing?.employer.name}, ${a.interviewHour}:00'));
             }
+            if (a.status == ApplicationStatus.infoRequested && a.infoDeadlineDay != null) ev.add((a.infoDeadlineDay!, '📎 Send update to ${a.listing?.employer.name} (deadline)'));
             if (a.status == ApplicationStatus.pending) ev.add((a.respondDay, '📬 Reply expected from ${a.listing?.employer.name}'));
             if (a.status == ApplicationStatus.waitlisted && a.waitlistResolveDay != null) ev.add((a.waitlistResolveDay!, '⏳ Waiting-list decision — ${a.listing?.employer.name}'));
           }

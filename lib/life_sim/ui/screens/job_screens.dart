@@ -237,6 +237,7 @@ Color statusColor(ApplicationStatus s) {
     case ApplicationStatus.hired:
       return LifeColors.green;
     case ApplicationStatus.waitlisted:
+    case ApplicationStatus.infoRequested:
       return LifeColors.amber;
     case ApplicationStatus.rejected:
     case ApplicationStatus.declined:
@@ -251,6 +252,8 @@ String statusLabel(ApplicationStatus s) {
       return 'Under review';
     case ApplicationStatus.invited:
       return 'Interview invited';
+    case ApplicationStatus.infoRequested:
+      return 'More info needed';
     case ApplicationStatus.interviewed:
       return 'Interviewed';
     case ApplicationStatus.offer:
@@ -317,7 +320,20 @@ class _AppCard extends StatelessWidget {
         Text(l.employer.name, style: const TextStyle(color: LifeColors.muted)),
         const SizedBox(height: 8),
         if (app.status == ApplicationStatus.pending) Text('Applied on Day ${app.submittedDay}. A reply is expected by Day ${app.respondDay}.'),
+        if (app.status == ApplicationStatus.infoRequested) ...<Widget>[
+          Text('The recruiter needs more information by Day ${app.infoDeadlineDay}:', style: const TextStyle(fontWeight: FontWeight.w700)),
+          for (final String f in app.feedback.take(2)) Text('• $f', style: const TextStyle(fontSize: 13)),
+          const SizedBox(height: 6),
+          const Text('Improve your resume, skills or certifications first, then send your update.', style: TextStyle(color: LifeColors.muted, fontSize: 12.5)),
+          const SizedBox(height: 8),
+          BigButton(
+            label: 'Send update',
+            icon: Icons.send_rounded,
+            onPressed: () => life.report(life.game.sendApplicationUpdate(app)),
+          ),
+        ],
         if (app.status == ApplicationStatus.invited) ...<Widget>[
+          if (app.round >= 2) const Padding(padding: EdgeInsets.only(bottom: 4), child: Text('FINAL INTERVIEW', style: TextStyle(color: LifeColors.purple, fontWeight: FontWeight.w900, letterSpacing: 1))),
           Text('Interview: ${_dayHour(app.interviewDay ?? 0, app.interviewHour ?? 9)} at ${l.employer.name}.', style: const TextStyle(fontWeight: FontWeight.w700)),
           const SizedBox(height: 4),
           Text(ib ?? 'You are in the right place at the right time — you can start now.', style: TextStyle(color: ib == null ? LifeColors.green : LifeColors.amber)),

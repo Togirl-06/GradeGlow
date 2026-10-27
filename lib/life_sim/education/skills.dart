@@ -18,6 +18,7 @@ class Skills {
     SkillDef('programming', 'Programming', '💻'),
     SkillDef('clinical', 'Clinical care', '🩺'),
     SkillDef('medicine', 'Medicine', '⚕️'),
+    SkillDef('pharmacy', 'Pharmacy', '💊'),
     SkillDef('legal', 'Legal reasoning', '⚖️'),
     SkillDef('accounting', 'Accounting', '🧮'),
     SkillDef('management', 'Management', '📊'),
@@ -121,6 +122,14 @@ class CertificationCatalog {
       cost: 80,
       studyHours: 8,
       skill: 'clinical',
+      skillGain: 12,
+    ),
+    Certification(
+      id: 'cert_dispensing',
+      name: 'Dispensing Assistant Certificate',
+      cost: 110,
+      studyHours: 10,
+      skill: 'pharmacy',
       skillGain: 12,
     ),
     Certification(

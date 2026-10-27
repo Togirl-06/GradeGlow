@@ -7,6 +7,7 @@ import 'content/business_tasks.dart';
 import 'content/doctor_tasks.dart';
 import 'content/law_tasks.dart';
 import 'content/nursing_tasks.dart';
+import 'content/pharmacy_tasks.dart';
 import 'content/software_tasks.dart';
 import 'work_task.dart';
 
@@ -23,11 +24,13 @@ class WorkTaskBank {
     'lawyer': lawScenarios,
     'accountant': accountingScenarios,
     'business_manager': businessScenarios,
+    'pharmacist': pharmacyScenarios,
   };
 
   static final Map<String, List<ScenarioGenerator>> _generators = <String, List<ScenarioGenerator>>{
     'accountant': accountingGenerators,
     'business_manager': businessGenerators,
+    'pharmacist': pharmacyGenerators,
   };
 
   static List<WorkScenario> staticFor(String careerId) =>

@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../avatar/avatar_profile.dart';
+import '../../world/npc_motion.dart';
 import '../../world/world_model.dart';
 import 'avatar_painter.dart';
 import 'scene_common.dart';
@@ -31,6 +32,7 @@ class InteriorPainter extends CustomPainter {
     this.path = const <(int, int)>[],
     this.nearItemId,
     this.talkingNpcId,
+    this.npcStates = const <String, NpcState>{},
     this.accent,
     this.roomName = '',
   });
@@ -47,6 +49,9 @@ class InteriorPainter extends CustomPainter {
   final List<(int, int)> path;
   final String? nearItemId;
   final String? talkingNpcId;
+
+  /// Live NPC positions/animation (home tile if an id is missing).
+  final Map<String, NpcState> npcStates;
   final Color? accent;
   final String roomName;
 
@@ -67,14 +72,17 @@ class InteriorPainter extends CustomPainter {
 
   static double _boxH(Interactable i) => 16 + (i.id.hashCode.abs() % 4) * 5.0;
 
-  static InteriorHit pick(Offset p, Size size, Interior it) {
+  static InteriorHit pick(Offset p, Size size, Interior it, {Map<String, NpcState> npcStates = const <String, NpcState>{}}) {
     final double z = zoomFor(size, it);
     final Offset o = origin(size, it);
     final Offset w = Offset((p.dx - o.dx) / z, (p.dy - o.dy) / z);
     for (final NpcDef n in it.npcs) {
-      final (double, double) s = kIso.project(n.x + 0.5, n.y + 0.5);
+      final NpcState? st = npcStates[n.id];
+      final double nx = st?.x ?? n.x.toDouble();
+      final double ny = st?.y ?? n.y.toDouble();
+      final (double, double) s = kIso.project(nx + 0.5, ny + 0.5);
       if (Rect.fromLTRB(s.$1 - 20, s.$2 - 78, s.$1 + 20, s.$2 + 6).contains(w)) {
-        return InteriorHit(npc: n, tileX: n.x, tileY: n.y);
+        return InteriorHit(npc: n, tileX: nx.round(), tileY: ny.round());
       }
     }
     for (final Interactable i in it.interactables) {
@@ -139,7 +147,8 @@ class InteriorPainter extends CustomPainter {
       items.add(DepthItem(i.x + i.y + 0.5, (Canvas c) => _item(c, i)));
     }
     for (final NpcDef n in interior.npcs) {
-      items.add(DepthItem(n.x + n.y + 0.55, (Canvas c) => _npc(c, n)));
+      final NpcState? st = npcStates[n.id];
+      items.add(DepthItem((st?.x ?? n.x) + (st?.y ?? n.y) + 0.55, (Canvas c) => _npc(c, n, st)));
     }
     items.add(DepthItem(playerX + playerY + 0.6, (Canvas c) => _player(c)));
     items.sort((DepthItem a, DepthItem b) => a.depth.compareTo(b.depth));
@@ -286,8 +295,10 @@ class InteriorPainter extends CustomPainter {
     }
   }
 
-  void _npc(Canvas canvas, NpcDef n) {
-    final (double, double) s = kIso.project(n.x + 0.5, n.y + 0.5);
+  void _npc(Canvas canvas, NpcDef n, NpcState? st) {
+    final double nx = st?.x ?? n.x.toDouble();
+    final double ny = st?.y ?? n.y.toDouble();
+    final (double, double) s = kIso.project(nx + 0.5, ny + 0.5);
     canvas.save();
     canvas.translate(s.$1, s.$2 + 5);
     const double h = 66;
@@ -295,14 +306,18 @@ class InteriorPainter extends CustomPainter {
     final bool talking = n.id == talkingNpcId;
     AvatarPainter(
       look: AvatarLook.fromNpc(n),
-      action: talking ? AvatarAction.talk : AvatarAction.idle,
+      action: talking
+          ? AvatarAction.talk
+          : (st == null
+              ? AvatarAction.idle
+              : (st.walking ? AvatarAction.walk : (st.activity == NpcActivity.working ? AvatarAction.work : AvatarAction.idle))),
       emotion: AvatarEmotion.happy,
       t: t + n.id.hashCode % 7,
-      facingRight: playerX >= n.x,
+      facingRight: st != null && st.walking ? st.facingRight : playerX >= nx,
     ).paint(canvas, const Size(h * 0.6, h));
     canvas.restore();
     canvas.save();
-    canvas.translate(s.$1, s.$2 - h - 12 - math.sin(t * 3 + n.x) * 2);
+    canvas.translate(s.$1, s.$2 - h - 12 - math.sin(t * 3 + nx) * 2);
     TextCache.pill(canvas, Offset.zero, '💬 ${n.name}', size: 10.5, bg: const Color(0xB30B1220));
     canvas.restore();
   }

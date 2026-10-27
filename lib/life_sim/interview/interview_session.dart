@@ -10,7 +10,7 @@ import '../employment/qualifications.dart';
 import 'interview_judge.dart';
 import 'interview_questions.dart';
 
-enum HireDecision { offer, waitlist, reject }
+enum HireDecision { offer, waitlist, secondInterview, reject }
 
 class InterviewTurn {
   const InterviewTurn({
@@ -77,6 +77,7 @@ class InterviewSession {
     required this.judge,
     required this.practice,
     required this.seed,
+    required this.round,
     required List<InterviewQuestion> questions,
   }) : _questions = questions;
 
@@ -87,6 +88,7 @@ class InterviewSession {
     double matchScore = 60,
     bool practice = false,
     String seed = 'interview',
+    int round = 1,
   }) {
     return InterviewSession._(
       listing: listing,
@@ -95,7 +97,8 @@ class InterviewSession {
       judge: judge,
       practice: practice,
       seed: seed,
-      questions: InterviewQuestionBank.forRole(listing.careerId, listing.rank),
+      round: round,
+      questions: InterviewQuestionBank.forRole(listing.careerId, round >= 2 ? (listing.rank + 1).clamp(0, 6) : listing.rank),
     );
   }
 
@@ -107,6 +110,9 @@ class InterviewSession {
   final InterviewJudge judge;
   final bool practice;
   final String seed;
+
+  /// 1 = first interview, 2 = final interview (harder, no further rounds).
+  final int round;
   final List<InterviewQuestion> _questions;
 
   final List<InterviewTurn> turns = <InterviewTurn>[];
@@ -209,6 +215,8 @@ class InterviewSession {
     switch (d) {
       case HireDecision.offer:
         return "Thank you — I really enjoyed this. I'd like to make you an offer.";
+      case HireDecision.secondInterview:
+        return "Thank you — that was a good conversation. I'd like you to meet the wider team for a final interview.";
       case HireDecision.waitlist:
         return "Thank you. You interviewed well but we have other strong candidates. "
             "We'll put you on our waiting list and be in touch.";
@@ -262,6 +270,8 @@ class InterviewSession {
       decision = HireDecision.offer;
       final double bump = hiring >= threshold + 15 ? 1.05 : 1.0;
       salary = ((listing.monthlySalary * bump) / 10).round() * 10.0;
+    } else if (round < 2 && !practice && hiring >= threshold - 3.5) {
+      decision = HireDecision.secondInterview;
     } else if (hiring >= threshold - 7) {
       decision = HireDecision.waitlist;
       final StableRandom rng = StableRandom.fromString('wl|$applicationId|$seed');

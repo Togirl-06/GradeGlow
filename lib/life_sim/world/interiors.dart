@@ -26,6 +26,11 @@ const Map<String, List<StationDef>> kStations = <String, List<StationDef>>{
     StationDef('med_cart', 'Medication Cart', '💊'),
     StationDef('emergency_bay', 'Emergency Bay', '🚨'),
   ],
+  'pharmacist': <StationDef>[
+    StationDef('dispensing_bench', 'Dispensing Bench', '💊'),
+    StationDef('counselling_desk', 'Counselling Desk', '🗣️'),
+    StationDef('stock_room', 'Stock Room', '📦'),
+  ],
   'doctor': <StationDef>[
     StationDef('consult_room', 'Consultation Room', '🩺'),
     StationDef('lab_terminal', 'Lab Terminal', '🧪'),
@@ -222,7 +227,7 @@ class Interiors {
       _i('hr', 'HR Office', '📇', 10, 6, ActionType.hrDesk, arg: e.id, hint: 'Interviews, contracts, raises, resignation.'),
       _i('break', 'Break Room', '☕', 10, 1, ActionType.breakRoom, hint: 'Coffee and a chat.'),
     ];
-    if (e.hires.contains('nurse') || e.hires.contains('doctor')) {
+    if (e.hires.contains('nurse') || e.hires.contains('doctor') || e.hires.contains('pharmacist')) {
       items.add(_i('clinic', 'Walk-in Clinic', '🩹', 7, 6, ActionType.healthCheck, hint: 'Paid health check-up that restores health.'));
     }
     final List<(String, StationDef)> st = stationsOf(e);

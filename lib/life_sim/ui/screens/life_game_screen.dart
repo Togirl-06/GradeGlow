@@ -9,6 +9,7 @@ import '../../game/life_game.dart';
 import '../../services/life_save_service.dart';
 import '../../world/city_map.dart';
 import '../../world/interiors.dart';
+import '../../world/npc_motion.dart';
 import '../../world/world_model.dart';
 import '../life_session.dart';
 import '../life_widgets.dart';
@@ -110,6 +111,16 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
   static const double stepSeconds = 0.17;
   double _stepT = 0;
 
+  Map<String, NpcState> npcStates = const <String, NpcState>{};
+
+  void _updateNpcs() {
+    if (g.isIndoors) {
+      npcStates = NpcMotion.statesFor(Interiors.of(g.buildingId!), t, g.day, g.minute);
+    } else if (npcStates.isNotEmpty) {
+      npcStates = const <String, NpcState>{};
+    }
+  }
+
   LifeGame get g => widget.life.game;
   LifeSession get life => widget.life;
 
@@ -142,6 +153,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
     final double dt = _last == Duration.zero ? 0 : (d - _last).inMicroseconds / 1e6;
     _last = d;
     t += dt;
+    _updateNpcs();
     if (queue.isNotEmpty && !busy) {
       walking = true;
       _stepT += dt;
@@ -241,7 +253,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
     _stop();
     if (g.isIndoors) {
       final Interior it = Interiors.of(g.buildingId!);
-      final InteriorHit h = InteriorPainter.pick(d.localPosition, size, it);
+      final InteriorHit h = InteriorPainter.pick(d.localPosition, size, it, npcStates: npcStates);
       if (h.exit) {
         goalExit = true;
         _goTo(it.exitX, it.exitY);
@@ -254,7 +266,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
         }
       } else if (h.npc != null) {
         goalNpc = h.npc;
-        if (!_goNextTo(h.npc!.x, h.npc!.y)) {
+        if (!_goNextTo(h.tileX, h.tileY)) {
           goalNpc = null;
         }
       } else if (!it.blocked(h.tileX, h.tileY)) {
@@ -367,7 +379,8 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
   NpcDef? _nearNpc() {
     if (!g.isIndoors) return null;
     for (final NpcDef n in Interiors.of(g.buildingId!).npcs) {
-      if ((n.x - vx).abs() + (n.y - vy).abs() <= 1.6) return n;
+      final NpcState? st = npcStates[n.id];
+      if (((st?.x ?? n.x) - vx).abs() + ((st?.y ?? n.y) - vy).abs() <= 1.6) return n;
     }
     return null;
   }
@@ -485,6 +498,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
                               path: queue,
                               nearItemId: near?.id,
                               talkingNpcId: nearNpc?.id,
+                              npcStates: npcStates,
                               accent: g.currentBuilding == null ? null : Color(g.currentBuilding!.color),
                               roomName: g.currentBuilding?.name ?? '',
                             )

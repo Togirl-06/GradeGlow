@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 import '../../config/app_config.dart';
 import '../../config/openai_endpoints.dart';
+import '../education/lectures.dart';
+import '../education/university.dart';
 import '../interview/interview_judge.dart';
 import '../workplace/work_task.dart';
 import '../world/world_model.dart';
@@ -142,4 +144,29 @@ class NpcChatService {
   }
 
   String greeting(NpcDef npc) => 'Hi, I\'m ${npc.name}, the ${npc.role.toLowerCase()}.';
+}
+
+
+/// The AI professor answers students' questions during and after lectures.
+/// Offline (or on any error) it answers from the course's own material.
+class ProfessorService {
+  const ProfessorService();
+
+  Future<String> answer(Course course, String lectureTitle, String question, {String level = 'a first-year student'}) async {
+    if (AppConfig.hasOpenAi && question.trim().length > 3) {
+      try {
+        final String out = await _chat(<Map<String, String>>[
+          <String, String>{
+            'role': 'system',
+            'content': 'You are a university professor teaching "${course.name}" in the GradeGlow life simulation. '
+                'Today\'s lecture: $lectureTitle. Explain clearly for $level in at most 4 short sentences, with one example. '
+                'Course summary: ${course.summary}. This is an educational simulation; do not give real medical or legal advice.',
+          },
+          <String, String>{'role': 'user', 'content': question},
+        ], temperature: 0.4, maxTokens: 260);
+        if (out.trim().isNotEmpty) return out.trim();
+      } catch (_) {}
+    }
+    return LectureLibrary.offlineAnswer(course, question);
+  }
 }

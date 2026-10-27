@@ -28,3 +28,10 @@ workplace tasks (six stage kinds) → payday, performance, promotion, layoffs, r
 ## Safety framing
 Medical and legal content is an educational simulation in the fictional jurisdiction "Glowland". It
 is not advice and completing it grants no real licence.
+
+## Later additions
+- **Needs:** hygiene (shower at home) and stress (reduced by sleep, raised by overwork); stress >70 lowers work readiness.
+- **NPC schedules:** weekdays 09–12 and 13–17 NPCs work within 2 tiles of their post, 12–13 break (radius 4), otherwise rest; chat shows their current activity.
+- **Lectures:** attend a lecture to see the professor's board with highlighted organs/terms, ask questions, take a check quiz for up to +30 study minutes.
+- **Hiring outcomes:** offer, reject, waitlist, second (harder) interview, or request for more information with a deadline.
+- **Pharmacist career:** Bachelor of Pharmacy (5 courses), Dispensing Assistant certificate, hospital/clinic pharmacy stations, dose and reorder-point calculations.

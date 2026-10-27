@@ -4,6 +4,7 @@ import '../../employment/job_listing.dart';
 import '../../game/life_game.dart';
 import '../../interview/interview_session.dart';
 import '../../services/life_ai_service.dart';
+import '../../world/npc_motion.dart';
 import '../../world/world_model.dart';
 import '../../workplace/work_task.dart';
 import '../life_session.dart';
@@ -211,7 +212,7 @@ class _NpcChatSheetState extends State<NpcChatSheet> {
         ListTile(
           leading: AvatarView(look: AvatarLook.fromNpc(n), size: 52),
           title: Text(n.name, style: const TextStyle(fontWeight: FontWeight.w900)),
-          subtitle: Text(n.role),
+          subtitle: Text('${n.role} · ${NpcMotion.activityLabel(NpcMotion.activityAt(n, widget.life.game.day, widget.life.game.minute))}'),
         ),
         const Divider(height: 1),
         Expanded(

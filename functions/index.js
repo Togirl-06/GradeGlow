@@ -482,3 +482,6 @@ exports.stripeWebhook = onRequest(
     }
   }
 );
+
+// GradeGlow Life: server-side save validation (rollback of impossible state).
+exports.lifeSimGuard = require("./life_sim").lifeSimGuard;

@@ -209,10 +209,10 @@ class _ResultView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HireDecision d = result.decision;
-    final Color c = practice ? LifeColors.blue : (d == HireDecision.offer ? LifeColors.green : (d == HireDecision.waitlist ? LifeColors.amber : LifeColors.red));
+    final Color c = practice ? LifeColors.blue : (d == HireDecision.offer ? LifeColors.green : (d == HireDecision.waitlist || d == HireDecision.secondInterview ? LifeColors.amber : LifeColors.red));
     final String headline = practice
         ? 'Practice complete'
-        : (d == HireDecision.offer ? 'You received an offer!' : (d == HireDecision.waitlist ? 'You are on the waiting list' : 'Not selected this time'));
+        : (d == HireDecision.offer ? 'You received an offer!' : (d == HireDecision.secondInterview ? 'Invited to a final interview' : (d == HireDecision.waitlist ? 'You are on the waiting list' : 'Not selected this time')));
     return ListView(padding: const EdgeInsets.all(16), children: <Widget>[
       Panel(
         border: c,
@@ -227,6 +227,8 @@ class _ResultView extends StatelessWidget {
             Text(
               d == HireDecision.offer
                   ? 'Check your email for the offer from $employer, then review and sign your contract from your phone.'
+                  : d == HireDecision.secondInterview
+                      ? 'Check your email and calendar for the final interview time at $employer.'
                   : d == HireDecision.waitlist
                       ? 'Keep an eye on your email — $employer will decide in the next few days.'
                       : 'You can apply again after a short cooldown. Use the advice below to prepare.',

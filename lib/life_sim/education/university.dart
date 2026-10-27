@@ -246,6 +246,16 @@ class UniversityEngine {
   }
 
   /// Attend a lecture. Returns an error or null.
+  /// Why a lecture cannot be attended now (no state change), or null.
+  static String? lectureBlock(UniversityRecord r, Course c, int day, int minuteOfDay) {
+    final CourseProgress p = r.progress(c.id);
+    if (!p.enrolled || p.passed) return 'You are not enrolled in this course.';
+    if (!lectureOpen(day, minuteOfDay)) return 'Lectures run on weekdays between 9am and 5pm.';
+    if (p.lectures >= CourseRequirements.lecturesRequired) return 'You have attended every lecture for this course.';
+    if (p.lastLectureDay == day) return 'You already attended this course\'s lecture today.';
+    return null;
+  }
+
   static String? attendLecture(UniversityRecord r, Course c, int day, int minuteOfDay) {
     final CourseProgress p = r.progress(c.id);
     if (!p.enrolled || p.passed) return 'You are not enrolled in this course.';
@@ -514,6 +524,77 @@ class UniversityCatalog {
             ExamQuestion('SBAR stands for…', <String>['Situation, Background, Assessment, Recommendation', 'Safe, Better, Accurate, Rapid', 'Sleep, Breathe, Act, React', 'Scan, Bill, Admit, Release'], 0, 'SBAR structures clinical handover.'),
             ExamQuestion('A competent patient refuses a treatment. You should…', <String>['Respect the decision and ensure they are informed', 'Force the treatment', 'Ignore them', 'Ask their neighbour'], 0, 'Competent adults can refuse care.'),
             ExamQuestion('Best response to an anxious patient is…', <String>['Listen, acknowledge feelings and explain clearly', 'Say "calm down"', 'Avoid them', 'Change the subject'], 0, 'Empathic listening reduces anxiety.'),
+          ],
+        ),
+      ],
+    ),
+    Degree(
+      id: 'deg_pharmacy',
+      name: 'Bachelor of Pharmacy',
+      shortName: 'Pharmacy',
+      emoji: '💊',
+      awardRank: 2,
+      prereqRank: 0,
+      careerId: 'pharmacist',
+      courses: <Course>[
+        Course(
+          id: 'ph101',
+          name: 'PHA101 Pharmaceutical Chemistry',
+          skill: 'pharmacy',
+          summary: 'Drug structure, solubility and stability.',
+          questions: <ExamQuestion>[
+            ExamQuestion('Most medicines are absorbed into the body mainly through the…', <String>['Gut wall or other membranes', 'Hair', 'Nails', 'Teeth'], 0, 'Absorption crosses biological membranes.'),
+            ExamQuestion('Storing a medicine too warm can…', <String>['Break it down and reduce its effect', 'Make it stronger', 'Change nothing ever', 'Make it sterile'], 0, 'Heat can degrade active ingredients.'),
+            ExamQuestion('An "excipient" is…', <String>['An inactive ingredient that helps form the product', 'The active drug', 'A type of bacteria', 'A patient record'], 0, 'Excipients bind, fill, flavour or preserve.'),
+            ExamQuestion('The expiry date on a pack tells you…', <String>['Until when the manufacturer guarantees quality', 'When to buy more', 'The price', 'The dose'], 0, 'Do not use medicines past expiry.'),
+          ],
+        ),
+        Course(
+          id: 'ph102',
+          name: 'PHA102 Pharmacology & Therapeutics',
+          skill: 'pharmacy',
+          summary: 'How drugs act and how to choose them.',
+          questions: <ExamQuestion>[
+            ExamQuestion('Pharmacokinetics describes…', <String>['What the body does to the drug', 'What the drug does to the body only', 'The price of a drug', 'Drug advertising'], 0, 'Absorption, distribution, metabolism, excretion.'),
+            ExamQuestion('A drug with a narrow therapeutic index…', <String>['Has a small gap between helpful and harmful doses', 'Is always safe', 'Needs no monitoring', 'Is only a vitamin'], 0, 'Examples need careful monitoring.'),
+            ExamQuestion('A side effect is…', <String>['An unwanted effect of a medicine', 'The intended effect', 'A prescription', 'A brand name'], 0, 'Side effects may be common or rare.'),
+            ExamQuestion('Before starting a new medicine you should check the patient\'s…', <String>['Allergies and current medicines', 'Shoe size', 'Favourite music', 'Bus route'], 0, 'Allergy and interaction checks prevent harm.'),
+          ],
+        ),
+        Course(
+          id: 'ph103',
+          name: 'PHA201 Dispensing & Pharmaceutical Calculations',
+          skill: 'pharmacy',
+          summary: 'Accuracy in preparing and checking medicines.',
+          questions: <ExamQuestion>[
+            ExamQuestion('A child needs 15 mg/kg/day. Weight 10 kg. Total daily dose is…', <String>['150 mg', '15 mg', '1,500 mg', '25 mg'], 0, '15 × 10 = 150 mg.'),
+            ExamQuestion('If a calculation result looks ten times too large you should…', <String>['Stop and re-check, then ask a colleague', 'Dispense it', 'Round down', 'Ignore it'], 0, 'Plausibility checks catch tenfold errors.'),
+            ExamQuestion('Labels on dispensed medicines must show…', <String>['Patient name, drug, strength and directions', 'Only the shop logo', 'Only the price', 'Nothing'], 0, 'Clear labelling prevents mistakes.'),
+            ExamQuestion('Look-alike, sound-alike drug names are dangerous because…', <String>['They are easy to mix up', 'They cost more', 'They are always banned', 'They expire early'], 0, 'Separate storage and checks reduce risk.'),
+          ],
+        ),
+        Course(
+          id: 'ph104',
+          name: 'PHA202 Clinical Pharmacy & Patient Care',
+          skill: 'pharmacy',
+          summary: 'Medication review and counselling.',
+          questions: <ExamQuestion>[
+            ExamQuestion('Good counselling should…', <String>['Use plain language and check understanding', 'Use as much jargon as possible', 'Be skipped for busy patients', 'Only be written'], 0, 'Teach-back confirms understanding.'),
+            ExamQuestion('A patient on warfarin is prescribed a new antibiotic. You should…', <String>['Check for an interaction and contact the prescriber if needed', 'Dispense without checking', 'Tell them to stop warfarin', 'Ignore it'], 0, 'Interactions can cause bleeding.'),
+            ExamQuestion('Adherence means…', <String>['Taking medicines as prescribed', 'Buying more medicines', 'Storing medicines in the sun', 'Sharing tablets'], 0, 'Poor adherence is a common cause of treatment failure.'),
+            ExamQuestion('An adverse reaction you suspect should be…', <String>['Reported and recorded', 'Hidden', 'Treated with random tablets', 'Posted online'], 0, 'Reporting protects other patients.'),
+          ],
+        ),
+        Course(
+          id: 'ph105',
+          name: 'PHA203 Pharmacy Law, Ethics & Practice',
+          skill: 'pharmacy',
+          summary: 'Controlled medicines, consent and professional duty.',
+          questions: <ExamQuestion>[
+            ExamQuestion('Controlled medicines must be…', <String>['Stored securely and recorded in a register', 'Left on the counter', 'Given to anyone', 'Traded between staff'], 0, 'Strict records prevent misuse.'),
+            ExamQuestion('If you make a dispensing error you should…', <String>['Tell the patient and your manager and report it', 'Hide it', 'Blame a colleague', 'Delete the record'], 0, 'Honesty and reporting prevent repeat errors.'),
+            ExamQuestion('Patient information may be shared…', <String>['Only with those involved in their care', 'With any visitor', 'On social media', 'With neighbours'], 0, 'Confidentiality is a core duty.'),
+            ExamQuestion('A register that does not match the stock count should be…', <String>['Investigated and reported, never altered to match', 'Adjusted quietly', 'Ignored', 'Burned'], 0, 'Never falsify records.'),
           ],
         ),
       ],

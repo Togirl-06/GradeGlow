@@ -14,6 +14,7 @@ enum ApplicationStatus {
   invited,
   rejected,
   interviewed,
+  infoRequested,
   offer,
   waitlisted,
   hired,
@@ -37,16 +38,20 @@ class ApplicationRecord {
     this.offerSalary,
     this.waitlistResolveDay,
     this.waitlistWillOffer = false,
+    this.willAskInfo = false,
+    this.round = 1,
+    this.infoDeadlineDay,
+    this.infoRequest,
     List<String>? feedback,
   }) : feedback = feedback ?? <String>[];
 
   final String id;
   final String listingId;
   final int submittedDay;
-  final int respondDay;
+  int respondDay;
   final double matchScore;
   final double resumeScore;
-  final bool willInvite;
+  bool willInvite;
   ApplicationStatus status;
   int? interviewDay;
   int? interviewHour;
@@ -54,6 +59,12 @@ class ApplicationRecord {
   double? offerSalary;
   int? waitlistResolveDay;
   bool waitlistWillOffer;
+  bool willAskInfo;
+
+  /// 1 = first interview, 2 = final interview.
+  int round;
+  int? infoDeadlineDay;
+  String? infoRequest;
   final List<String> feedback;
 
   JobListing? get listing => JobBoard.byId(listingId);
@@ -61,6 +72,7 @@ class ApplicationRecord {
   bool get isActive =>
       status == ApplicationStatus.pending ||
       status == ApplicationStatus.invited ||
+      status == ApplicationStatus.infoRequested ||
       status == ApplicationStatus.offer ||
       status == ApplicationStatus.waitlisted;
 
@@ -79,6 +91,10 @@ class ApplicationRecord {
         'offerSalary': offerSalary,
         'waitlistResolveDay': waitlistResolveDay,
         'waitlistWillOffer': waitlistWillOffer,
+        'willAskInfo': willAskInfo,
+        'round': round,
+        'infoDeadlineDay': infoDeadlineDay,
+        'infoRequest': infoRequest,
         'feedback': feedback,
       };
 
@@ -100,6 +116,10 @@ class ApplicationRecord {
         offerSalary: (j['offerSalary'] as num?)?.toDouble(),
         waitlistResolveDay: (j['waitlistResolveDay'] as num?)?.toInt(),
         waitlistWillOffer: j['waitlistWillOffer'] as bool? ?? false,
+        willAskInfo: j['willAskInfo'] as bool? ?? false,
+        round: (j['round'] as num?)?.toInt() ?? 1,
+        infoDeadlineDay: (j['infoDeadlineDay'] as num?)?.toInt(),
+        infoRequest: j['infoRequest'] as String?,
         feedback: (j['feedback'] is List)
             ? (j['feedback'] as List).map((Object? e) => e.toString()).toList()
             : <String>[],
@@ -277,6 +297,7 @@ class ApplicationEngine {
       matchScore: a.score,
       resumeScore: resumeScore,
       willInvite: a.passes,
+      willAskInfo: !a.passes && !a.hardFail && a.score >= a.threshold - 9 && a.gaps.isNotEmpty,
       feedback: <String>[
         ...a.gaps,
         if (!a.passes && a.gaps.isEmpty) 'Other candidates were a closer fit this round.',
@@ -331,6 +352,21 @@ class ApplicationEngine {
             minuteOfDay: minuteOfDay,
             action: <String, String>{'type': 'interview', 'applicationId': a.id},
           ));
+        } else if (a.willAskInfo) {
+          a.status = ApplicationStatus.infoRequested;
+          a.infoDeadlineDay = today + 4;
+          a.infoRequest = a.feedback.take(2).join(' ');
+          out.add(inbox.add(
+            kind: MessageKind.email,
+            from: 'Recruitment · ${e.name}',
+            subject: 'More information needed: ${l.title}',
+            body: 'Hello,\n\nThank you for applying for ${l.title} at ${e.name}. You are close to what we are looking for, '
+                'but before we decide we need a little more from you:\n\n- ${a.feedback.take(2).join('\n- ')}\n\n'
+                'Improve your profile (resume, skills, certifications) and use "Send update" on your application by Day ${a.infoDeadlineDay}.',
+            day: today,
+            minuteOfDay: minuteOfDay,
+            action: <String, String>{'type': 'applications'},
+          ));
         } else {
           a.status = ApplicationStatus.rejected;
           out.add(inbox.add(
@@ -346,6 +382,19 @@ class ApplicationEngine {
             action: <String, String>{'type': 'applications'},
           ));
         }
+      }
+
+      // Info request not answered in time.
+      if (a.status == ApplicationStatus.infoRequested && a.infoDeadlineDay != null && today > a.infoDeadlineDay!) {
+        a.status = ApplicationStatus.expired;
+        out.add(inbox.add(
+          kind: MessageKind.email,
+          from: 'Recruitment · ${e.name}',
+          subject: 'Application closed: ${l.title}',
+          body: 'We did not receive the additional information we asked for, so we have closed your application. You are welcome to apply again.',
+          day: today,
+          minuteOfDay: minuteOfDay,
+        ));
       }
 
       // Missed interview window.
