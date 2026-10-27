@@ -501,7 +501,7 @@ export function createWorld(canvas, { send }) {
         b.label.userData.k = lerp(b.label.userData.k ?? 1, k, Math.min(1, dt * 8));
         b.label.scale.copy(b.label.userData.base).multiplyScalar(b.label.userData.k);
         const dd = camera.position.distanceTo(b.label.position);
-        const near = clamp((dd - 5) / 5, 0, 1);
+        const near = clamp((dd - 9) / 6, 0, 1);
         b.label.material.opacity = b.group.userData.fade < 0.6 ? 0 : near * clamp(1.4 - dd / 38, 0.25, 1);
         b.label.visible = b.label.material.opacity > 0.02;
       }
