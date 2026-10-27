@@ -643,6 +643,22 @@ class LifeGame {
     return const ActionResult.ok('You read for an hour.');
   }
 
+  /// Practising in a school lab (Algorithm Arena, 3D anatomy, moot court ...).
+  /// [seconds] is real time spent inside the activity: quick peeks earn nothing,
+  /// so skill comes from actually doing the work.
+  ActionResult practiceLab({required String title, required String skill, required int seconds}) {
+    if (seconds < 45) {
+      return ActionResult.fail('Spend a little longer in $title to earn skill.');
+    }
+    if (needs.energy < 10) return const ActionResult.fail('You are too tired to practise. Rest first.');
+    final double minutes = (seconds / 60).clamp(1, 20).toDouble();
+    skills.gain(skill, 0.8 + minutes * 0.25);
+    skills.gain('problem_solving', 0.3);
+    needs.apply(<String, double>{'energy': -8, 'stress': 2, 'happiness': 1});
+    advance(60);
+    return ActionResult.ok('You practised in $title. ${Skills.nameOf(skill)} is now ${skills.level(skill).round()}.');
+  }
+
   /// Returns the exam to sit, charging the fee, or an error.
   ({List<ExamQuestion>? questions, String? error}) beginExam(String courseId) {
     final Course? c = UniversityCatalog.courseById(courseId);
@@ -1265,6 +1281,16 @@ class LifeGame {
     g.inX = (j['inX'] as num?)?.toInt() ?? g.inX;
     g.inY = (j['inY'] as num?)?.toInt() ?? g.inY;
     if (g.buildingId != null && CityMap.instance.buildingById(g.buildingId!) == null) g.buildingId = null;
+    // Saves from an older map layout: never leave the avatar inside a wall or building.
+    if (g.buildingId == null && !CityMap.instance.walkable(g.cityX, g.cityY)) {
+      final Building home = CityMap.instance.buildingById('apartment_block')!;
+      g.cityX = home.doorX;
+      g.cityY = home.doorY;
+    }
+    if (g.buildingId != null && Interiors.of(g.buildingId!).blocked(g.inX, g.inY)) {
+      g.inX = Interiors.exitX;
+      g.inY = Interiors.exitY;
+    }
     return g;
   }
 }

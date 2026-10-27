@@ -434,7 +434,7 @@ const ARCH = {
     g.add(at(cone(0.38, 0.25, mat(0x57534e), 12), W / 2 - 0.8, 6 * FLOOR_H + 0.72, -0.8));
     rooftopClutter(g, W, bd, 6 * FLOOR_H, r);
     door(g, k.doorX, fz, { canopy: k.color, canopyDepth: 0.9 });
-    sign(g, 'Greenview Apartments', k.doorX, 1.62, fz, 2.4, 0.32, { bg: '#14532d', fg: '#ecfccb', emoji: '🏠' });
+    sign(g, k.name, k.doorX, 1.62, fz, 2.4, 0.32, { bg: '#14532d', fg: '#ecfccb', emoji: '🏠' });
     g.add(at(planter(r), k.doorX - 1.1, 0, fz + 0.4));
     g.add(at(planter(r), k.doorX + 1.1, 0, fz + 0.4));
   },
@@ -484,7 +484,7 @@ const ARCH = {
       g.add(at(box(0.04, 1.6, 0.04, mat(0x6b7280)), x, 0.8 + 1.4, fz + 0.06));
       g.add(at(box(0.4, 1.0, 0.02, mat(0x1d4ed8, { r: 0.7 })), x + 0.22, 2.0, fz + 0.06));
     }
-    sign(g, 'Glowland University', 0, 2.78 + 0.45, fz + 1.06, 2.8, 0.32, { bg: '#f5f5f4', fg: '#78350f', font: 'serif', backing: false });
+    sign(g, k.name, 0, 2.78 + 0.45, fz + 1.06, 2.8, 0.32, { bg: '#f5f5f4', fg: '#78350f', font: 'serif', backing: false });
   },
 
   library(g, k) {
@@ -498,7 +498,7 @@ const ARCH = {
     pediment(g, 3.0, 0, 2.42, fz + 0.32, 0.8, 0xf5f5f4);
     steps(g, 3.0, fz + 0.62, 2);
     door(g, k.doorX, fz, { w: 0.9, h: 1.4, frame: 0x451a03, glass: 0x92400e });
-    sign(g, 'City Library', 0, 2.95, fz + 0.73, 1.9, 0.28, { bg: '#f5f5f4', fg: '#451a03', emoji: '📚', font: 'serif', backing: false });
+    sign(g, k.name, 0, 2.95, fz + 0.73, 1.9, 0.28, { bg: '#f5f5f4', fg: '#451a03', emoji: '📚', font: 'serif', backing: false });
   },
 
   st_gabriel(g, k) {
@@ -770,7 +770,7 @@ const ARCH = {
     for (let i = 0; i < 7; i++) g.add(at(box(0.1, 3 * FLOOR_H, 0.3, om), -W / 2 + 0.15 + i * ((W - 0.3) / 6), 1.5 * FLOOR_H, fz + 0.14));
     g.add(at(box(W + 0.2, 0.18, D - 0.6, mat(0xffffff)), 0, 3 * FLOOR_H + 0.09, -0.4));
     // big rooftop sign
-    const s = sign(g, 'EMPLOYMENT CENTRE', 0, 3 * FLOOR_H + 0.75, fz - 0.4, W - 0.2, 0.7, { bg: '#ea580c', fg: '#ffffff', emoji: '💼', glow: true });
+    const s = sign(g, k.name.toUpperCase(), 0, 3 * FLOOR_H + 0.75, fz - 0.4, W - 0.2, 0.7, { bg: '#ea580c', fg: '#ffffff', emoji: '💼', glow: true });
     g.add(at(box(0.08, 0.7, 0.08, mat(0x374151)), -1.5, 3 * FLOOR_H + 0.35, fz - 0.45));
     g.add(at(box(0.08, 0.7, 0.08, mat(0x374151)), 1.5, 3 * FLOOR_H + 0.35, fz - 0.45));
     // hiring banner
@@ -789,7 +789,7 @@ const ARCH = {
     const fz = -0.45 + (D - 0.9) / 2;
     g.add(at(box(W + 0.05, 0.3, 0.1, mat(k.color)), 0, 2 * FLOOR_H, fz + 0.05));
     door(g, k.doorX, fz, { canopy: k.color });
-    sign(g, 'Company Registry', 0, 3 * FLOOR_H - 0.4, fz, 2.8, 0.34, { bg: '#0c4a6e', fg: '#e0f2fe', emoji: '📋' });
+    sign(g, k.name, 0, 3 * FLOOR_H - 0.4, fz, 2.8, 0.34, { bg: '#0c4a6e', fg: '#e0f2fe', emoji: '📋' });
   },
 
   cinema(g, k) {
@@ -865,6 +865,262 @@ const ARCH = {
     sign(g, 'Skyline Park', k.doorX, 1.9, D / 2 + 0.05, 1.8, 0.3, { bg: '#365314', fg: '#ecfccb', emoji: '🌳', backing: false });
   },
 };
+
+// ------------------------------------------------------------ campus schools
+
+function emblemMat(color, glow = 0.5) {
+  const m = new THREE.MeshStandardMaterial({ color: col(color), emissive: col(color), emissiveIntensity: glow, roughness: 0.35 });
+  m.userData.nightGlow = true;
+  nightMats.add(m);
+  return m;
+}
+
+/** Common school body: facade block + entrance + name sign. Returns the facade z. */
+function schoolBody(g, k, { floors = 3, style = 'grid', wall = 0xf8fafc, glass = 0xbfdbfe, depthCut = 0.8, ground = 'shop', roof = null, signY = null, signBg = '#0f172a', signFg = '#ffffff' } = {}) {
+  const { W, D } = k;
+  const m = block(W, floors, D - depthCut, style, wall, glass, k.seed, { ground, roof });
+  m.position.z = -depthCut / 2;
+  g.add(m);
+  const fz = -depthCut / 2 + (D - depthCut) / 2;
+  door(g, k.doorX, fz, { w: Math.min(1.3, W - 0.6), canopy: k.color });
+  sign(g, k.name, 0, signY ?? floors * FLOOR_H - 0.4, fz, Math.min(W - 0.2, 3.9), W < 3 ? 0.3 : 0.38, { bg: signBg, fg: signFg, emoji: k.emoji, glow: true });
+  return fz;
+}
+
+Object.assign(ARCH, {
+  school_cs(g, k) {
+    const { W, D } = k;
+    const fz = schoolBody(g, k, { floors: 4, style: 'glass', wall: 0x1e1b4b, glass: 0x818cf8 });
+    // glowing "code" panel
+    const cv = document.createElement('canvas');
+    cv.width = 256;
+    cv.height = 128;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#020617';
+    ctx.fillRect(0, 0, 256, 128);
+    ctx.font = 'bold 15px monospace';
+    const lines = ['def two_sum(nums, t):', '  seen = {}', '  for i, n in enumerate(nums):', '    if t - n in seen:', '      return [seen[t-n], i]', '    seen[n] = i'];
+    lines.forEach((l, i) => {
+      ctx.fillStyle = ['#a5b4fc', '#86efac', '#fde68a', '#f9a8d4', '#67e8f9', '#e2e8f0'][i];
+      ctx.fillText(l, 10, 22 + i * 18);
+    });
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace;
+    const pm = new THREE.MeshStandardMaterial({ map: t, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.55 });
+    g.add(at(plane(Math.min(3.2, W - 0.6), 1.6, pm), 0, 2.6, fz + 0.02));
+    const dish = at(new THREE.Group(), W / 2 - 0.9, 4 * FLOOR_H, -0.8);
+    const bowl = sphere(0.45, mat(0xe5e7eb, { r: 0.4, m: 0.4 }), 16);
+    bowl.scale.set(1, 0.35, 1);
+    bowl.rotation.x = -0.6;
+    dish.add(at(cyl(0.05, 0.08, 0.5, mat(0x6b7280), 8), 0, 0.25, 0));
+    dish.add(at(bowl, 0, 0.6, 0));
+    g.add(dish);
+  },
+  school_medicine(g, k) {
+    const { W, D } = k;
+    const fz = schoolBody(g, k, { floors: 4, wall: 0xf8fafc, glass: 0xbae6fd, signBg: '#7f1d1d' });
+    const red = mat(k.color, { r: 0.5 });
+    for (const x of [-W / 2 + 0.3, W / 2 - 0.3]) g.add(at(box(0.18, 4 * FLOOR_H, 0.08, red), x, 2 * FLOOR_H, fz + 0.04));
+    // heart emblem on the roof
+    const heart = at(new THREE.Group(), 0, 4 * FLOOR_H + 0.75, fz - 0.4);
+    const hm = emblemMat(0xef4444, 0.6);
+    heart.add(at(sphere(0.32, hm, 16), -0.24, 0.12, 0), at(sphere(0.32, hm, 16), 0.24, 0.12, 0));
+    const tip = at(cone(0.5, 0.75, hm, 16), 0, -0.3, 0);
+    tip.rotation.z = Math.PI;
+    heart.add(tip);
+    heart.add(at(box(0.08, 0.5, 0.08, mat(0x64748b)), 0, -0.8, 0));
+    g.add(heart);
+  },
+  school_nursing(g, k) {
+    const { W, D, r } = k;
+    const fz = schoolBody(g, k, { floors: 3, wall: 0xf0fdfa, glass: 0x99f6e4, signBg: '#115e59' });
+    g.add(at(box(W + 0.05, 0.25, D - 0.75, mat(k.color)), 0, 3 * FLOOR_H + 0.12, -0.4));
+    const cs = crossSign(0x14b8a6, 0.9);
+    cs.position.set(W / 2 - 0.55, 3 * FLOOR_H + 0.8, fz - 0.3);
+    g.add(cs);
+    g.add(at(bench(0x0f766e), -1.4, 0, fz + 0.75));
+    g.add(at(flowerBed(1.0, 0.45, r), 1.5, 0, fz + 0.55));
+  },
+  school_law(g, k) {
+    const { W, D } = k;
+    const m = block(W, 3, D - 1.3, 'classic', 0xf5f0e6, 0xcbd5e1, k.seed, { roof: 0x7f1d1d });
+    m.position.z = -0.65;
+    g.add(m);
+    const fz = -0.65 + (D - 1.3) / 2;
+    columns(g, 6, W - 0.6, 0, fz + 0.8, 2.6, 0.1);
+    g.add(at(box(W + 0.1, 0.22, 1.2, mat(0xfaf7f0)), 0, 2.88, fz + 0.5));
+    pediment(g, W + 0.1, 0, 2.99, fz + 0.5, 1.2, 0xfaf7f0);
+    steps(g, W, fz + 1.0, 3);
+    door(g, k.doorX, fz, { w: 0.95, h: 1.6, frame: 0x450a0a, glass: 0x7f1d1d });
+    sign(g, k.name, 0, 3.24, fz + 1.11, 2.6, 0.26, { bg: '#faf7f0', fg: '#7f1d1d', emoji: '⚖️', font: 'serif', backing: false });
+    // scales of justice on the pediment
+    const sc = at(new THREE.Group(), 0, 3.75, fz + 1.12);
+    const gm = emblemMat(0xd4a017, 0.25);
+    sc.add(at(box(0.04, 0.5, 0.04, gm), 0, 0, 0), at(box(0.6, 0.03, 0.03, gm), 0, 0.22, 0));
+    for (const x of [-0.28, 0.28]) {
+      const pan = at(cyl(0.11, 0.06, 0.04, gm, 12), x, 0.02, 0);
+      sc.add(pan);
+    }
+    g.add(sc);
+  },
+  school_engineering(g, k) {
+    const { W, D, r } = k;
+    const fz = schoolBody(g, k, { floors: 3, style: 'brick', wall: 0x9a6b4f, glass: 0xfde68a, signBg: '#78350f' });
+    // steel truss canopy
+    const sm = mat(0x475569, { r: 0.4, m: 0.6 });
+    g.add(at(box(W + 0.4, 0.08, 1.4, sm), 0, 1.5, fz + 0.65));
+    for (let i = 0; i < 6; i++) {
+      const d = at(box(0.05, 0.05, 1.5, sm), -W / 2 + i * (W / 5), 1.62, fz + 0.65);
+      d.rotation.x = 0.2;
+      g.add(d);
+    }
+    // gear emblem
+    const gear = at(new THREE.Group(), -W / 2 + 0.75, 2.7, fz + 0.06);
+    const ym = emblemMat(0xf59e0b, 0.35);
+    gear.add(torus(0.32, 0.09, ym));
+    for (let i = 0; i < 10; i++) {
+      const t = box(0.12, 0.14, 0.12, ym);
+      t.position.set(Math.cos((i / 10) * Math.PI * 2) * 0.43, Math.sin((i / 10) * Math.PI * 2) * 0.43, 0);
+      t.rotation.z = (i / 10) * Math.PI * 2;
+      gear.add(t);
+    }
+    g.add(gear);
+    // tower crane on the roof
+    const crane = at(new THREE.Group(), W / 2 - 0.8, 3 * FLOOR_H, -1.0);
+    const cy = mat(0xfacc15, { r: 0.5 });
+    crane.add(at(box(0.18, 3.2, 0.18, cy), 0, 1.6, 0));
+    crane.add(at(box(3.0, 0.14, 0.14, cy), -0.9, 3.2, 0));
+    crane.add(at(box(0.5, 0.35, 0.4, mat(0x1f2937)), 0.45, 3.0, 0));
+    crane.add(at(box(0.02, 1.1, 0.02, mat(0x111827)), -2.2, 2.6, 0));
+    crane.add(at(box(0.3, 0.2, 0.3, mat(0xef4444)), -2.2, 2.0, 0));
+    g.add(crane);
+  },
+  school_business(g, k) {
+    ARCH.tower(g, k, 9, 'glass', 0x93c5fd, 0x1e3a8a, k.name);
+    const { W, D } = k;
+    // stock ticker band
+    const cv = document.createElement('canvas');
+    cv.width = 512;
+    cv.height = 48;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#020617';
+    ctx.fillRect(0, 0, 512, 48);
+    ctx.font = 'bold 26px monospace';
+    const tick = [['GLW', '+2.4%', '#4ade80'], ['NMB', '-0.8%', '#f87171'], ['PXF', '+5.1%', '#4ade80'], ['LDG', '+0.3%', '#4ade80']];
+    tick.forEach(([a, b, c2], i) => {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillText(a, 8 + i * 128, 34);
+      ctx.fillStyle = c2;
+      ctx.fillText(b, 62 + i * 128, 34);
+    });
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace;
+    const tm = new THREE.MeshStandardMaterial({ map: t, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.6 });
+    g.add(at(plane(W - 0.3, 0.26, tm), 0, 2 * FLOOR_H + 0.15, -0.3 + (D - 0.6) / 2 + 0.02));
+  },
+  school_math(g, k) {
+    const { W, D } = k;
+    const fz = schoolBody(g, k, { floors: 3, wall: 0xecfeff, glass: 0x67e8f9, signBg: '#164e63' });
+    // pi sculpture + platonic solids
+    const pm = emblemMat(0x0891b2, 0.3);
+    const pi = at(new THREE.Group(), -W / 2 + 0.6, 0, fz + 0.75);
+    pi.add(at(box(0.9, 0.14, 0.14, pm), 0, 1.1, 0));
+    pi.add(at(box(0.14, 1.0, 0.14, pm), -0.22, 0.55, 0));
+    const leg = at(box(0.14, 1.0, 0.14, pm), 0.22, 0.55, 0);
+    leg.rotation.z = -0.12;
+    pi.add(leg);
+    g.add(pi);
+    const solids = at(new THREE.Group(), W / 2 - 0.6, 0, fz + 0.7);
+    solids.add(at(box(0.5, 0.5, 0.5, mat(0xf472b6, { flat: true })), 0, 0.25, 0));
+    solids.add(at(new THREE.Mesh(new THREE.OctahedronGeometry(0.3), mat(0xfacc15, { flat: true })), 0, 0.8, 0));
+    solids.add(at(new THREE.Mesh(new THREE.IcosahedronGeometry(0.22), mat(0x34d399, { flat: true })), 0, 1.25, 0));
+    g.add(solids);
+  },
+  school_arts(g, k) {
+    const { W, D, r } = k;
+    const fz = schoolBody(g, k, { floors: 3, style: 'brick', wall: 0xc2410c, glass: 0xfbcfe8, signBg: '#831843' });
+    const cols = [0xec4899, 0xf59e0b, 0x8b5cf6, 0x10b981];
+    for (let i = 0; i < 4; i++) g.add(at(box(0.32, 1.3, 0.03, mat(cols[i], { r: 0.8 })), -W / 2 + 0.45 + i * ((W - 0.9) / 3), 2.3, fz + 0.05));
+    // theatre masks
+    for (const [x, c2, smile] of [[-0.35, 0xfacc15, true], [0.35, 0x60a5fa, false]]) {
+      const mk = at(new THREE.Group(), x, 3 * FLOOR_H + 0.55, fz - 0.4);
+      const face = sphere(0.3, emblemMat(c2, 0.3), 16);
+      face.scale.set(1, 1.15, 0.4);
+      mk.add(face);
+      const mouth = torus(0.12, 0.03, mat(0x111827), Math.PI);
+      mouth.position.set(0, -0.12, 0.12);
+      if (smile) mouth.rotation.z = Math.PI;
+      mk.add(mouth);
+      g.add(mk);
+    }
+  },
+  school_biology(g, k) {
+    const { W, D, r } = k;
+    const fz = schoolBody(g, k, { floors: 2, wall: 0xf0fdf4, glass: 0xbbf7d0, signBg: '#14532d' });
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(Math.min(W, D) * 0.42, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2), mat(0xbbf7d0, { r: 0.05, m: 0.2, t: 0.55 }));
+    dome.position.set(0, 2 * FLOOR_H, -0.4);
+    g.add(dome);
+    for (let i = 0; i < 3; i++) g.add(at(tree(r, 0.55), (r() - 0.5) * 0.8, 2 * FLOOR_H, -0.4 + (r() - 0.5) * 0.8));
+    // DNA helix
+    const helix = at(new THREE.Group(), W / 2 - 0.2, 0, fz + 0.75);
+    for (let i = 0; i < 14; i++) {
+      const a = i * 0.55;
+      const y = 0.2 + i * 0.11;
+      helix.add(at(sphere(0.05, emblemMat(0x22c55e, 0.3), 8), Math.cos(a) * 0.18, y, Math.sin(a) * 0.18));
+      helix.add(at(sphere(0.05, emblemMat(0x3b82f6, 0.3), 8), -Math.cos(a) * 0.18, y, -Math.sin(a) * 0.18));
+    }
+    g.add(helix);
+  },
+  school_chemistry(g, k) {
+    const { W, D } = k;
+    const fz = schoolBody(g, k, { floors: 3, wall: 0xfaf5ff, glass: 0xe9d5ff, signBg: '#581c87' });
+    for (const x of [-0.6, 0.1, 0.7]) g.add(at(cyl(0.12, 0.14, 1.1, mat(0x9ca3af, { m: 0.5 }), 10), x, 3 * FLOOR_H + 0.55, -1.0));
+    const flask = at(new THREE.Group(), 0, 3 * FLOOR_H + 0.55, fz - 0.3);
+    flask.add(at(sphere(0.38, emblemMat(0xa855f7, 0.55), 18), 0, 0, 0));
+    flask.add(at(cyl(0.11, 0.11, 0.45, mat(0xe9d5ff, { t: 0.7 }), 10), 0, 0.5, 0));
+    g.add(flask);
+  },
+  school_physics(g, k) {
+    const { W, D } = k;
+    const fz = schoolBody(g, k, { floors: 3, wall: 0xf0f9ff, glass: 0xbae6fd, signBg: '#0c4a6e' });
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(Math.min(W, D) * 0.38, 20, 12, 0, Math.PI * 2, 0, Math.PI / 2), mat(0xe2e8f0, { r: 0.3, m: 0.5 }));
+    dome.position.set(0, 3 * FLOOR_H, -0.6);
+    g.add(dome);
+    g.add(at(box(0.18, 0.9, 1.1, mat(0x1e293b)), 0, 3 * FLOOR_H + 0.55, -0.6));
+    const scope = at(cyl(0.08, 0.1, 1.2, mat(0x334155, { m: 0.6 }), 10), 0, 3 * FLOOR_H + 1.1, -0.3);
+    scope.rotation.x = 0.8;
+    g.add(scope);
+    const atom = at(new THREE.Group(), -W / 2 + 0.45, 2.4, fz + 0.1);
+    const am = emblemMat(0x38bdf8, 0.5);
+    atom.add(sphere(0.09, emblemMat(0xf97316, 0.6), 10));
+    for (let i = 0; i < 3; i++) {
+      const o = torus(0.3, 0.02, am);
+      o.rotation.set(Math.PI / 2, (i * Math.PI) / 3, 0);
+      atom.add(o);
+    }
+    g.add(atom);
+  },
+  student_union(g, k) {
+    const { W, D, r } = k;
+    const bd = D - 1.6;
+    const m = block(W, 2, bd, 'brick', 0xb45309, 0xfde68a, 201, { ground: 'shop', roof: 0x7c2d12 });
+    m.position.z = -0.8;
+    g.add(m);
+    const fz = -0.8 + bd / 2;
+    awning(g, W - 0.3, 0, 1.15, fz, 0xf43f5e, 0xfff1f2, 0.8);
+    door(g, k.doorX, fz, { glass: 0xfde68a });
+    sign(g, k.name, 0, 2 * FLOOR_H - 0.3, fz, 2.6, 0.4, { bg: '#881337', fg: '#ffe4e6', emoji: '🤝', glow: true });
+    g.add(at(box(W - 0.4, 0.04, 1.5, mat(0xd6b48a, { r: 0.9 })), 0, 0.02, fz + 0.78));
+    for (const x of [-1.5, 1.5]) g.add(at(umbrellaTable(x < 0 ? 0xf43f5e : 0x22c55e), x, 0.04, fz + 0.85));
+    // string lights
+    const bulb = emblemMat(0xfff7c2, 0.25);
+    for (let i = 0; i < 12; i++) {
+      const x = -W / 2 + 0.2 + i * ((W - 0.4) / 11);
+      g.add(at(sphere(0.035, bulb, 6), x, 1.75 - Math.sin((i / 11) * Math.PI) * 0.15, fz + 1.45));
+    }
+    for (const x of [-W / 2 + 0.2, W / 2 - 0.2]) g.add(at(cyl(0.025, 0.025, 1.8, mat(0x334155), 6), x, 0.9, fz + 1.45));
+  },
+});
 
 function generic(g, k) {
   const { W, D } = k;

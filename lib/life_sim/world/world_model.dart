@@ -39,6 +39,27 @@ enum ActionType {
   companyRegistry,
   talkNpc, // arg = npc id
   graduation, // graduation stage: attend the ceremony
+  openLab, // arg = campus lab id (see lib/life_sim/campus/campus_labs.dart)
+}
+
+/// A named area inside an interior (a room of the apartment, a lab of a school).
+/// Visual and descriptive only; walls are what block movement.
+class InteriorZone {
+  const InteriorZone(this.name, this.emoji, this.x0, this.y0, this.x1, this.y1, {this.floor = 'tile'});
+
+  final String name;
+  final String emoji;
+
+  /// Inclusive tile bounds.
+  final int x0;
+  final int y0;
+  final int x1;
+  final int y1;
+
+  /// Floor finish for the 3D view: wood | tile | carpet | marble | grass.
+  final String floor;
+
+  bool contains(int x, int y) => x >= x0 && x <= x1 && y >= y0 && y <= y1;
 }
 
 class Interactable {
@@ -106,6 +127,8 @@ class Interior {
     required this.npcs,
     this.floorColor = 0xFFE5E7EB,
     this.wallColor = 0xFF94A3B8,
+    this.walls = const <(int, int)>[],
+    this.zones = const <InteriorZone>[],
   });
 
   final String buildingId;
@@ -120,8 +143,24 @@ class Interior {
   final int floorColor;
   final int wallColor;
 
+  /// Interior wall tiles (blocked), e.g. between apartment rooms.
+  final List<(int, int)> walls;
+
+  /// Named rooms / labs for the 3D view and the HUD.
+  final List<InteriorZone> zones;
+
+  InteriorZone? zoneAt(int x, int y) {
+    for (final InteriorZone z in zones) {
+      if (z.contains(x, y)) return z;
+    }
+    return null;
+  }
+
   bool blocked(int x, int y) {
     if (x < 0 || y < 0 || x >= width || y >= height) return true;
+    for (final (int, int) w in walls) {
+      if (w.$1 == x && w.$2 == y) return true;
+    }
     for (final Interactable i in interactables) {
       if (i.x == x && i.y == y) return true;
     }

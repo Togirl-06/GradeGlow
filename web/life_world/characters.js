@@ -51,7 +51,9 @@ export const DEFAULT_LOOK = {
 /** Infers a work uniform from an NPC role string. */
 export function uniformForRole(role = '') {
   const r = role.toLowerCase();
-  if (r.includes('nurse') || r.includes('matron')) return 'scrubs';
+  if (r.includes('nurs') || r.includes('matron')) return 'scrubs';
+  if (r.includes('of medicine') || r.includes('medical student')) return 'labcoat';
+  if (r.includes('of law')) return 'suit';
   if (r.includes('doctor') || r.startsWith('dr') || r.includes('physician') || r.includes('pharmac')) return 'labcoat';
   if (r.includes('lawyer') || r.includes('partner') || r.includes('judge') || r.includes('clerk') || r.includes('bank') || r.includes('director')) return 'suit';
   if (r.includes('patient')) return 'gown';

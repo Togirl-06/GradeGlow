@@ -56,7 +56,7 @@ def named(args):
     return pos, kw
 
 rooms = {}
-body = inter[inter.index('switch (id) {'):inter.index('static Employer? _employerFor')]
+body = inter[inter.index('switch (id) {'):inter.index('  static final List<(int, int)> _apartmentWalls')]
 for case in re.split(r"\n\s*case '", body)[1:]:
     rid = case[:case.index("'")]
     items = []
@@ -88,11 +88,86 @@ for a in calls(emp, 'Employer'):
         interviewer=dict(name=dstr(ikw['name']), title=dstr(ikw['title']), skin=int(ikw['skinTone'], 16),
                          hair=int(ikw['hairColor'], 16), outfit=int(ikw['outfitColor'], 16), hairStyle=dstr(ikw.get('hairStyle', "'short'")))))
 
+# ---- campus: labs, schools, city layout (mirrors lib/life_sim/campus + world/city_map.dart)
+labsrc = open(root + '/lib/life_sim/campus/lab_info.dart').read()
+labs = [dict(id=a[0], school=a[1], name=a[2], emoji=a[3], hint=a[4], skill=a[5]) for a in
+        [[dstr(x) for x in args] for args in calls(labsrc[labsrc.index('kCampusLabs = '):], 'LabInfo')]]
+schsrc = open(root + '/lib/life_sim/campus/campus_schools.dart').read()
+schools = []
+for a in calls(schsrc[schsrc.index('kSchools = '):], 'SchoolDef'):
+    pos, kw = named(a)
+    def person(txt):
+        pp, pk = named(calls(txt, 'SchoolPerson')[0])
+        return dict(id=dstr(pp[0]), name=dstr(pp[1]), role=dstr(pp[2]), skin=int(pk.get('skin', '2')), hair=int(pk.get('hair', '1')), outfit=int(pk.get('outfit', '0xFF6366F1'), 16))
+    schools.append(dict(id=dstr(kw['id']), floor=dstr(kw.get('floor', "'tile'")), majors=re.findall(r"'([^']+)'", kw['majors']), professor=person(kw['professor']), student=person(kw['student'])))
+slots = [(1, 1), (4, 1), (7, 1), (10, 1), (1, 4), (10, 4), (1, 7), (10, 7), (3, 6), (8, 6)]
+for sc in schools:
+    items, zones = [], []
+    mine = [l for l in labs if l['school'] == sc['id']][:8]
+    for k, l in enumerate(mine):
+        x, y = slots[k]
+        items.append(dict(id='lab_' + l['id'], name=l['name'], emoji=l['emoji'], x=x, y=y, type='openLab', arg=l['id'], hint=l['hint']))
+        zones.append(dict(name=l['name'], emoji=l['emoji'], x0=max(0, x - 1), y0=max(0, y - 1), x1=min(11, x + 1), y1=min(8, y + 1), floor=sc['floor']))
+    x, y = slots[8]
+    items.append(dict(id='lecture', name='Lecture Room', emoji='🧑‍🏫', x=x, y=y, type='lectureHall', arg=None, hint='Lectures for ' + ', '.join(sc['majors']) + '.'))
+    p, st = sc['professor'], sc['student']
+    rooms[sc['id']] = dict(items=items, zones=zones, walls=[], floor=0xFFF1F5F9, wall=p['outfit'],
+        npcs=[dict(p, x=6, y=4), dict(st, x=8, y=4)])
+# apartment walls/zones are built in code; mirror them here
+rooms['apartment_block']['walls'] = [[x, 4] for x in range(12) if x not in (2, 6, 10)] + [[4, y] for y in range(4)] + [[8, y] for y in range(4)]
+for rid in ('apartment_block', 'student_union'):
+    case = inter[inter.index("case '%s':" % rid):]
+    case = case[:case.index('case \'', 10)]
+    rooms[rid]['zones'] = [dict(name=dstr(a[0]), emoji=dstr(a[1]), x0=int(a[2]), y0=int(a[3]), x1=int(a[4]), y1=int(a[5]), floor=dstr(named(a)[1].get('floor', "'tile'"))) for a in calls(case, 'InteriorZone')]
+
+city = open(root + '/lib/life_sim/world/city_map.dart').read()
+districts = []
+for a in calls(city, 'District'):
+    pos, kw = named(a)
+    if 'id' not in kw: continue
+    districts.append(dict(id=dstr(kw['id']), name=dstr(kw['name']), emoji=dstr(kw['emoji']), col=int(kw['col']), row=int(kw['row']), color=int(kw['color'], 16)))
+cols_ = int(re.search(r'static const int cols = (\d+)', city).group(1)); rows_ = int(re.search(r'static const int rows = (\d+)', city).group(1))
+build = city[city.index('    // ---- Row 0'):city.index('buildings = List<Building>.unmodifiable')]
+blds = []
+dmap = {d['id']: d for d in districts}
+def place(kind, a):
+    pos, kw = named(a)
+    if kind == 'mk':
+        bid, name, dist, emoji, slot, total = dstr(pos[0]), dstr(pos[1]), dstr(pos[2]), dstr(pos[3]), int(pos[4]), int(pos[5])
+        color = int(kw.get('color', '0xFF94A3B8'), 16); emp_id = None
+        op, cl = int(kw.get('open', '8')), int(kw.get('close', '20'))
+    else:
+        e = next(e for e in employers if e['id'] == dstr(pos[0]))
+        bid, name, dist, emoji, slot, total = e['buildingId'], e['name'], dstr(pos[1]), dstr(pos[4]), int(pos[2]), int(pos[3])
+        color = e['accent']; emp_id = e['id']
+        hosp = 'hospital: true' in ','.join(a)
+        op, cl = (0, 24) if hosp else (max(0, e['startHour'] - 1), e['endHour'] + 1)
+    d = dmap[dist]; cx, cy = d['col'] * 12, d['row'] * 10
+    w = 3 if total == 3 else 5
+    x = cx + 1 + slot * 4 if total == 3 else cx + (1 if slot == 0 else 7)
+    blds.append(dict(id=bid, name=name, district=dist, emoji=emoji, x=x, y=cy + 2, w=w, h=5, color=color, employer=emp_id, open=op, close=cl))
+for m in re.finditer(r'\b(mk|emp)\(', build):
+    i = m.end(); depth = 1; q = None
+    while depth:
+        c = build[i]
+        if q:
+            if c == '\\': i += 1
+            elif c == q: q = None
+        elif c in '\'"': q = c
+        elif c == '(': depth += 1
+        elif c == ')': depth -= 1
+        i += 1
+    place(m.group(1), split_args(build[m.end():i - 1]))
+
 out = '// GENERATED by tool/gen_life_world_demo.py from lib/life_sim (world/interiors.dart, employment/employers.dart).\n'
 out += '// Used only by the standalone preview (?demo=1); the game sends live data from Dart.\n'
 out += 'export const ROOMS = ' + json.dumps(rooms, ensure_ascii=False) + ';\n'
 out += 'export const STATIONS = ' + json.dumps(stations, ensure_ascii=False) + ';\n'
 out += 'export const EMPLOYERS = ' + json.dumps(employers, ensure_ascii=False) + ';\n'
+out += 'export const DISTRICTS = ' + json.dumps(districts, ensure_ascii=False) + ';\n'
+out += 'export const BUILDINGS = ' + json.dumps(blds, ensure_ascii=False) + ';\n'
+out += 'export const GRID = ' + json.dumps(dict(cols=cols_, rows=rows_, cellW=12, cellH=10)) + ';\n'
 open(root + '/web/life_world/demo_data.js', 'w').write(out)
+print(len(blds), 'buildings', len(districts), 'districts', len(labs), 'labs')
 print(len(rooms), 'rooms', len(employers), 'employers', sum(len(v) for v in stations.values()), 'stations')
 print(list(rooms))
