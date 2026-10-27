@@ -177,6 +177,43 @@ class UniversityRecord {
 class UniversityEngine {
   const UniversityEngine._();
 
+  /// Grade points (4.0 scale) for a 0..1 exam score.
+  static double gradePoints(double score) {
+    if (score >= 0.90) return 4.0;
+    if (score >= 0.80) return 3.0;
+    if (score >= 0.70) return 2.0;
+    if (score >= 0.60) return 1.0;
+    return 0.0;
+  }
+
+  static String letter(double score) {
+    if (score >= 0.90) return 'A';
+    if (score >= 0.80) return 'B';
+    if (score >= 0.70) return 'C';
+    if (score >= 0.60) return 'D';
+    return 'F';
+  }
+
+  /// Cumulative GPA across passed courses (null until one is passed).
+  static double? gpa(UniversityRecord r) {
+    double sum = 0;
+    int n = 0;
+    r.courses.forEach((String _, CourseProgress p) {
+      if (p.passed) {
+        sum += gradePoints(p.bestScore);
+        n++;
+      }
+    });
+    return n == 0 ? null : sum / n;
+  }
+
+  static String honors(double? gpa) {
+    if (gpa == null) return '';
+    if (gpa >= 3.8) return 'with High Distinction';
+    if (gpa >= 3.4) return 'with Distinction';
+    return '';
+  }
+
   /// Lectures run on weekdays between 9:00 and 17:00.
   static bool lectureOpen(int day, int minuteOfDay) =>
       ((day - 1) % 7) < 5 && minuteOfDay >= 9 * 60 && minuteOfDay < 17 * 60;

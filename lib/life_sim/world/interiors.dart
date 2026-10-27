@@ -114,6 +114,7 @@ class Interiors {
           _i('exam', 'Exam Hall', '📝', 8, 1, ActionType.examHall, hint: 'Sit course exams.'),
           _i('lounge', 'Student Lounge', '🛋️', 2, 5, ActionType.socialize, hint: 'Meet other students.'),
           _i('study', 'Quiet Study Room', '📖', 9, 5, ActionType.studyDesk, hint: 'Study for your exams.'),
+          _i('stage', 'Graduation Stage', '🎓', 5, 5, ActionType.graduation, hint: 'Attend your graduation ceremony and collect your certificate.'),
         ], <NpcDef>[
           _n('professor', 'Prof. Okonkwo', 'Professor', 7, 3, 'A passionate professor who explains how classes link to real jobs.', <String>['Attend lectures, then study, then take the exam — that is the path.', 'Every degree here unlocks real careers in the city.'], outfit: 0xFF7C3AED),
           _n('advisor', 'Ms. Delacroix', 'Academic advisor', 3, 3, 'A supportive advisor who recommends degrees based on interests.', <String>['Law and Medicine need a bachelor\'s degree first.', 'Not sure what to study? Visit the Employment Centre to explore careers.'], outfit: 0xFF0EA5E9),

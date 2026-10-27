@@ -10,6 +10,7 @@ import '../business/company.dart';
 import '../careers/career_catalog.dart';
 import '../core/life_clock.dart';
 import '../core/needs.dart';
+import '../social/relationships.dart';
 import '../economy/life_economy.dart';
 import '../economy/shop_catalog.dart';
 import '../education/skills.dart';
@@ -28,6 +29,43 @@ import '../workplace/work_task.dart';
 import '../world/city_map.dart';
 import '../world/interiors.dart';
 import '../world/world_model.dart';
+
+/// A certificate collected at a graduation ceremony.
+class GraduationCertificate {
+  const GraduationCertificate({
+    required this.degreeId,
+    required this.title,
+    required this.holder,
+    required this.day,
+    required this.gpa,
+    this.honors = '',
+  });
+
+  final String degreeId;
+  final String title;
+  final String holder;
+  final int day;
+  final double gpa;
+  final String honors;
+
+  Map<String, Object?> toJson() => <String, Object?>{
+        'degreeId': degreeId,
+        'title': title,
+        'holder': holder,
+        'day': day,
+        'gpa': gpa,
+        'honors': honors,
+      };
+
+  factory GraduationCertificate.fromJson(Map<String, Object?> j) => GraduationCertificate(
+        degreeId: j['degreeId'] as String? ?? '',
+        title: j['title'] as String? ?? '',
+        holder: j['holder'] as String? ?? '',
+        day: (j['day'] as num?)?.toInt() ?? 0,
+        gpa: (j['gpa'] as num?)?.toDouble() ?? 0,
+        honors: j['honors'] as String? ?? '',
+      );
+}
 
 class ActionResult {
   const ActionResult(this.ok, this.message);
@@ -74,7 +112,16 @@ class LifeGame {
     return g;
   }
 
-  static const int saveVersion = 1;
+  static const int saveVersion = 2;
+
+  /// Relationship levels with NPCs.
+  Relationships relationships = Relationships();
+
+  /// Degrees completed but whose ceremony has not been attended yet.
+  final List<String> pendingCeremonies = <String>[];
+
+  /// Certificates collected at ceremonies (simulation only — not accredited).
+  final List<GraduationCertificate> certificates = <GraduationCertificate>[];
 
   // ---- State -----------------------------------------------------------
   final AvatarProfile avatar;
@@ -385,11 +432,11 @@ class LifeGame {
 
   ActionResult relaxHome({bool shower = false}) {
     if (shower) {
-      needs.apply(<String, double>{'energy': 3, 'happiness': 4});
+      needs.apply(<String, double>{'energy': 3, 'happiness': 4, 'hygiene': 75, 'stress': -6});
       advance(20);
       return const ActionResult.ok('You feel fresh.');
     }
-    needs.apply(<String, double>{'happiness': 8, 'energy': 3});
+    needs.apply(<String, double>{'happiness': 8, 'energy': 3, 'stress': -12});
     advance(45);
     return const ActionResult.ok('You relaxed for a while.');
   }
@@ -412,22 +459,55 @@ class LifeGame {
 
   ActionResult socialize() {
     final double boost = avatar.hasTrait('social') ? 26 : 18;
-    needs.apply(<String, double>{'social': boost, 'happiness': 6, 'energy': -3});
+    needs.apply(<String, double>{'social': boost, 'happiness': 6, 'energy': -3, 'stress': -5});
     advance(45);
     return const ActionResult.ok('You had a good time with people.');
   }
 
   ActionResult talkToNpc(NpcDef npc) {
-    needs.apply(<String, double>{'social': 3, 'happiness': 1});
+    needs.apply(<String, double>{'social': 3, 'happiness': 1, 'stress': -1});
+    final String before = Relationships.title(relationships.of(npc.id).level);
+    final double gain = relationships.talk(npc.id, clock.day, friendly: avatar.hasTrait('social'));
     advance(3);
-    return ActionResult.ok('You chatted with ${npc.name}.');
+    final String after = Relationships.title(relationships.of(npc.id).level);
+    if (after != before) return ActionResult.ok('You chatted with ${npc.name}. You are now: $after.');
+    return ActionResult.ok(gain > 0 ? 'You chatted with ${npc.name} (+${gain.toStringAsFixed(1)} friendship).' : 'You chatted with ${npc.name}.');
+  }
+
+  /// Attends the graduation ceremony for the oldest pending degree.
+  ActionResult attendCeremony() {
+    if (pendingCeremonies.isEmpty) {
+      return const ActionResult.fail('There is no graduation ceremony for you right now.');
+    }
+    final String degreeId = pendingCeremonies.first;
+    final Degree? d = UniversityCatalog.degreeById(degreeId);
+    if (d == null) {
+      pendingCeremonies.removeAt(0);
+      return const ActionResult.fail('That ceremony was cancelled.');
+    }
+    pendingCeremonies.removeAt(0);
+    final double? gpa = UniversityEngine.gpa(university);
+    final GraduationCertificate cert = GraduationCertificate(
+      degreeId: d.id,
+      title: d.name,
+      holder: avatar.name,
+      day: clock.day,
+      gpa: gpa ?? 0,
+      honors: UniversityEngine.honors(gpa),
+    );
+    certificates.add(cert);
+    needs.apply(<String, double>{'happiness': 25, 'social': 12, 'stress': -20});
+    advance(90);
+    _alert('Certificate awarded', 'You received your ${d.name} certificate${cert.honors.isEmpty ? '' : ' ${cert.honors}'}. '
+        'This is a GradeGlow game certificate, not an accredited qualification.');
+    return ActionResult.ok('Congratulations, ${avatar.name}! You graduated${cert.honors.isEmpty ? '' : ' ${cert.honors}'}. 🎓');
   }
 
   ActionResult watchMovie() => buyItem('cinema_ticket');
 
   ActionResult workout({String kind = 'gym'}) {
     if (kind == 'jog') {
-      needs.apply(<String, double>{'health': 4, 'happiness': 6, 'energy': -8, 'hunger': -6});
+      needs.apply(<String, double>{'health': 4, 'happiness': 6, 'energy': -8, 'hunger': -6, 'stress': -10, 'hygiene': -8});
       advance(45);
       return const ActionResult.ok('A refreshing jog.');
     }
@@ -436,7 +516,7 @@ class LifeGame {
   }
 
   ActionResult relaxPark() {
-    needs.apply(<String, double>{'happiness': 10, 'energy': 4, 'social': 2});
+    needs.apply(<String, double>{'happiness': 10, 'energy': 4, 'social': 2, 'stress': -14});
     advance(45);
     return const ActionResult.ok('The fresh air does you good.');
   }
@@ -576,7 +656,7 @@ class LifeGame {
     final Degree d = UniversityCatalog.degreeOfCourse(courseId)!;
     final ExamResult res = UniversityEngine.grade(c, asked, answers);
     final ({Degree? completed, bool associate}) out = UniversityEngine.recordExam(university, d, c, res);
-    needs.apply(<String, double>{'energy': -5});
+    needs.apply(<String, double>{'energy': -5, 'stress': 8});
     advance(60);
     if (res.passed) {
       UniversityEngine.courseSkillGain(c, res.score).forEach(skills.gain);
@@ -593,7 +673,8 @@ class LifeGame {
       final CareerDef? career = CareerCatalog.byId(g.careerId);
       UniversityEngine.graduationGain(g, career?.coreSkill ?? 'communication').forEach(skills.gain);
       _bumpEducation(AvatarProfile.educationLevels[g.awardRank.clamp(0, 4)]);
-      _alert('Graduation', 'Congratulations! You graduated with ${g.name}.');
+      _alert('Graduation', 'Congratulations! You graduated with ${g.name}. You are invited to the graduation ceremony at the University stage.');
+      pendingCeremonies.add(g.id);
     }
     return (result: res, graduated: g);
   }
@@ -947,6 +1028,7 @@ class LifeGame {
       'energy': avatar.hasTrait('disciplined') ? -7 : -8,
       'hunger': -4,
       'happiness': score >= 0.75 ? 3 : (score < 0.4 ? -4 : 0),
+      'stress': score < 0.4 ? 6 : 3,
     });
     advance(s.minutes);
     return o;
@@ -1036,6 +1118,9 @@ class LifeGame {
         'nextApplicationNumber': nextApplicationNumber,
         'lastBreakAbs': lastBreakAbs,
         'companyWorkedDay': companyWorkedDay,
+        'relationships': relationships.toJson(),
+        'pendingCeremonies': pendingCeremonies,
+        'certificates': certificates.map((GraduationCertificate c) => c.toJson()).toList(),
         'buildingId': buildingId,
         'cityX': cityX,
         'cityY': cityY,
@@ -1102,6 +1187,15 @@ class LifeGame {
     g.nextApplicationNumber = (j['nextApplicationNumber'] as num?)?.toInt() ?? 1;
     g.lastBreakAbs = (j['lastBreakAbs'] as num?)?.toInt() ?? -9999;
     g.companyWorkedDay = (j['companyWorkedDay'] as num?)?.toInt() ?? -1;
+    g.relationships = Relationships.fromJson(j['relationships']);
+    final Object? pc = j['pendingCeremonies'];
+    if (pc is List) g.pendingCeremonies.addAll(pc.map((Object? e) => e.toString()));
+    final Object? cs = j['certificates'];
+    if (cs is List) {
+      for (final Object? c in cs) {
+        if (c is Map) g.certificates.add(GraduationCertificate.fromJson(Map<String, Object?>.from(c)));
+      }
+    }
     g.buildingId = j['buildingId'] as String?;
     g.cityX = (j['cityX'] as num?)?.toInt() ?? g.cityX;
     g.cityY = (j['cityY'] as num?)?.toInt() ?? g.cityY;

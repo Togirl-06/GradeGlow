@@ -96,6 +96,8 @@ class Interactions {
         act(g.observeCourt(records: item.arg == 'records'), AvatarAction.sit);
       case ActionType.companyRegistry:
         _push(context, CompanyScreen(life: life));
+      case ActionType.graduation:
+        act(g.attendCeremony(), AvatarAction.celebrate);
       case ActionType.talkNpc:
         break;
     }

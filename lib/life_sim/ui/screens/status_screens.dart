@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../../careers/career_catalog.dart';
 import '../../education/skills.dart';
 import '../../game/life_game.dart';
+import '../../education/university.dart';
+import '../../social/relationships.dart';
 import '../../world/city_map.dart';
+import '../../world/interiors.dart';
 import '../../world/world_model.dart';
 import '../life_session.dart';
 import '../life_widgets.dart';
@@ -50,6 +53,8 @@ class StatusScreen extends StatelessWidget {
                   NeedBar(label: 'Happiness', value: g.needs.happiness, emoji: '😊'),
                   NeedBar(label: 'Health', value: g.needs.health, emoji: '❤️'),
                   NeedBar(label: 'Social', value: g.needs.social, emoji: '👥'),
+                  NeedBar(label: 'Hygiene', value: g.needs.hygiene, emoji: '🚿', color: LifeColors.teal),
+                  NeedBar(label: 'Calm', value: 100 - g.needs.stress, emoji: '🧘', color: LifeColors.purple),
                   NeedBar(label: 'Knowledge', value: _knowledge(g), emoji: '📚', color: LifeColors.blue),
                   NeedBar(label: 'Finance', value: _financeScore(g), emoji: '💹', color: LifeColors.teal),
                   for (final String w in g.needs.warnings()) Padding(padding: const EdgeInsets.only(top: 4), child: Text('⚠️ $w', style: const TextStyle(color: LifeColors.amber, fontSize: 12.5))),
@@ -79,6 +84,28 @@ class StatusScreen extends StatelessWidget {
                   if (g.skills.certifications.isNotEmpty) Align(alignment: Alignment.centerLeft, child: Wrap(spacing: 6, runSpacing: 6, children: <Widget>[for (final String c in g.skills.certifications) Tag('🏅 ${CertificationCatalog.byId(c)?.name ?? c}', color: LifeColors.amber)])),
                 ]),
               ),
+              const SectionTitle('Education record'),
+              Panel(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Text(UniversityEngine.gpa(g.university) == null ? 'GPA: — (pass a course to get one)' : 'GPA: ${UniversityEngine.gpa(g.university)!.toStringAsFixed(2)} / 4.00', style: const TextStyle(fontWeight: FontWeight.w900)),
+                  if (g.pendingCeremonies.isNotEmpty) const Text('🎓 You are invited to a graduation ceremony — visit the University stage.', style: TextStyle(color: LifeColors.amber)),
+                  for (final GraduationCertificate c in g.certificates)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text('📜 ${c.title} ${c.honors} — GPA ${c.gpa.toStringAsFixed(2)}, Day ${c.day}', style: const TextStyle(fontSize: 13)),
+                    ),
+                  if (g.certificates.isNotEmpty) const Text('Game certificates only — not accredited qualifications or professional licences.', style: TextStyle(color: LifeColors.muted, fontSize: 11.5)),
+                ]),
+              ),
+              const SectionTitle('Relationships'),
+              Panel(
+                child: g.relationships.entries.isEmpty
+                    ? const Text('Talk to people around the city to build friendships.', style: TextStyle(color: LifeColors.muted))
+                    : Column(children: <Widget>[
+                        for (final MapEntry<String, RelationshipEntry> e in g.relationships.entries.entries)
+                          NeedBar(label: '${_npcName(e.key)} · ${Relationships.title(e.value.level)}', value: e.value.level, emoji: '🤝', color: LifeColors.pink),
+                      ]),
+              ),
               const SectionTitle('Experience'),
               Panel(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -92,6 +119,15 @@ class StatusScreen extends StatelessWidget {
           );
         },
       );
+
+  static String _npcName(String id) {
+    for (final Building b in CityMap.instance.buildings) {
+      for (final NpcDef n in Interiors.of(b.id).npcs) {
+        if (n.id == id) return n.name;
+      }
+    }
+    return id;
+  }
 
   double _knowledge(LifeGame g) {
     double sum = 0;

@@ -38,6 +38,7 @@ enum ActionType {
   observeCourt,
   companyRegistry,
   talkNpc, // arg = npc id
+  graduation, // graduation stage: attend the ceremony
 }
 
 class Interactable {

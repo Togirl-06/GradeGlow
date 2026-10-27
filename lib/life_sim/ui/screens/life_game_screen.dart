@@ -551,6 +551,8 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
                     _mini('😊', g.needs.happiness),
                     _mini('❤️', g.needs.health),
                     _mini('👥', g.needs.social),
+                    _mini('🚿', g.needs.hygiene),
+                    _mini('🧘', 100 - g.needs.stress),
                   ]),
                   Text(g.statusLine, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: LifeColors.muted, fontSize: 11)),
                 ]),
