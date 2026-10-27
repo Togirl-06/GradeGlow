@@ -143,6 +143,9 @@ class InteriorPainter extends CustomPainter {
     }
 
     final List<DepthItem> items = <DepthItem>[];
+    for (final (int, int) w in interior.walls) {
+      items.add(DepthItem(w.$1 + w.$2 + 0.5, (Canvas c) => _wallBlock(c, w.$1, w.$2)));
+    }
     for (final Interactable i in interior.interactables) {
       items.add(DepthItem(i.x + i.y + 0.5, (Canvas c) => _item(c, i)));
     }
@@ -170,6 +173,17 @@ class InteriorPainter extends CustomPainter {
     if (roomName.isNotEmpty) {
       TextCache.pill(canvas, Offset(size.width / 2, 26), roomName, size: 15, bg: (accent ?? const Color(0xFF2563EB)).withValues(alpha: 0.92));
     }
+  }
+
+  /// An interior wall tile (e.g. between apartment rooms), drawn as a raised block.
+  void _wallBlock(Canvas c, int x, int y) {
+    final Path base = tileDiamond(x.toDouble(), y.toDouble());
+    final Color wc = Color(interior.wallColor);
+    final Paint side = Paint()..color = shade(wc, -0.18);
+    for (int k = 0; k < 8; k++) {
+      c.drawPath(base.shift(Offset(0, -3.0 * k)), side);
+    }
+    c.drawPath(base.shift(const Offset(0, -24)), Paint()..color = shade(wc, 0.12));
   }
 
   void _wall(Canvas canvas, double x0, double y0, double x1, double y1, Color c, Color top, {required bool isY}) {

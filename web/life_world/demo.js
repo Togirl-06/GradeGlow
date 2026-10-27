@@ -1,56 +1,16 @@
 // Standalone preview (open life_world/index.html?demo=1). Mirrors the Dart
 // world data and runs a tiny movement sim so the 3D view can be tried and
 // tested without Flutter. The real game is driven by lib/life_sim.
-import { ROOMS, STATIONS, EMPLOYERS } from './demo_data.js';
+import { ROOMS, STATIONS, EMPLOYERS, DISTRICTS, BUILDINGS, GRID } from './demo_data.js';
 import { hashStr } from './util.js';
 
-const cellW = 12;
-const cellH = 10;
-const cols = 5;
-const rows = 2;
-const W = cols * cellW + 1;
-const H = rows * cellH + 1;
-
-const DISTRICTS = [
-  { id: 'residential', name: 'Greenview Residential', col: 0, row: 0, color: 0xff86efac },
-  { id: 'university', name: 'University Quarter', col: 1, row: 0, color: 0xfffde68a },
-  { id: 'hospital', name: 'Hospital District', col: 2, row: 0, color: 0xfffca5a5 },
-  { id: 'corporate', name: 'Corporate Plaza', col: 3, row: 0, color: 0xffbfdbfe },
-  { id: 'tech', name: 'Tech Park', col: 4, row: 0, color: 0xffc4b5fd },
-  { id: 'courthouse', name: 'Courthouse Square', col: 0, row: 1, color: 0xffd6d3d1 },
-  { id: 'shopping', name: 'Shopping Centre', col: 1, row: 1, color: 0xfffbcfe8 },
-  { id: 'financial', name: 'Financial Quarter', col: 2, row: 1, color: 0xffa7f3d0 },
-  { id: 'employment', name: 'Employment Centre', col: 3, row: 1, color: 0xfffed7aa },
-  { id: 'entertainment', name: 'Entertainment Row', col: 4, row: 1, color: 0xff99f6e4 },
-];
-
-const EMOJI = { st_gabriel: '🏥', riverside: '🩺', meridian: '🏢', harbor_retail: '🏬', pixelforge: '🎮', nimbus: '☁️', whitmore: '⚖️', civic_legal: '📜', ledger_co: '🧾', ironclad: '🔍' };
+const cellW = GRID.cellW;
+const cellH = GRID.cellH;
+const W = GRID.cols * cellW + 1;
+const H = GRID.rows * cellH + 1;
 
 function buildings() {
-  const out = [];
-  const mk = (id, name, district, emoji, slot, total, open = 8, close = 20, color = 0xff94a3b8, employer = null) => {
-    const d = DISTRICTS.find((x) => x.id === district);
-    const cx = d.col * cellW;
-    const cy = d.row * cellH;
-    const w = total === 3 ? 3 : 5;
-    const x = total === 3 ? cx + 1 + slot * 4 : cx + (slot === 0 ? 1 : 7);
-    return { id, name, district, emoji, x, y: cy + 2, w, h: 5, open, close, color, employer };
-  };
-  const emp = (eid, district, slot, total) => {
-    const e = EMPLOYERS.find((x) => x.id === eid);
-    return mk(e.buildingId, e.name, district, EMOJI[eid] || '🏢', slot, total, 8, 20, e.accent, e.id);
-  };
-  out.push(mk('apartment_block', 'Greenview Apartments', 'residential', '🏠', 0, 2, 0, 24, 0xff22c55e), mk('corner_cafe', 'Corner Café', 'residential', '☕', 1, 2, 7, 22, 0xffb45309));
-  out.push(mk('university', 'Glowland University', 'university', '🎓', 0, 2, 8, 18, 0xffeab308), mk('library', 'City Library', 'university', '📚', 1, 2, 8, 21, 0xff92400e));
-  out.push(emp('st_gabriel', 'hospital', 0, 2), emp('riverside', 'hospital', 1, 2));
-  out.push(emp('meridian', 'corporate', 0, 2), emp('harbor_retail', 'corporate', 1, 2));
-  out.push(emp('pixelforge', 'tech', 0, 2), emp('nimbus', 'tech', 1, 2));
-  out.push(emp('whitmore', 'courthouse', 0, 3), emp('civic_legal', 'courthouse', 1, 3), mk('courthouse', 'Glowland Courthouse', 'courthouse', '🏛️', 2, 3, 9, 17, 0xff78716c));
-  out.push(mk('mall', 'GradeGlow Mall', 'shopping', '🛍️', 0, 2, 9, 21, 0xffec4899), mk('grocery', 'Fresh Mart', 'shopping', '🛒', 1, 2, 7, 22, 0xff16a34a));
-  out.push(mk('bank', 'Glow Bank', 'financial', '🏦', 0, 3, 9, 17, 0xff059669), emp('ledger_co', 'financial', 1, 3), emp('ironclad', 'financial', 2, 3));
-  out.push(mk('employment_center', 'Employment Centre', 'employment', '💼', 0, 2, 8, 19, 0xfff97316), mk('company_registry', 'Company Registry', 'employment', '📋', 1, 2, 9, 17, 0xff0ea5e9));
-  out.push(mk('cinema', 'Starlight Cinema', 'entertainment', '🎬', 0, 3, 10, 24, 0xffdc2626), mk('gym', 'PulseFit Gym', 'entertainment', '🏋️', 1, 3, 6, 22, 0xff0d9488), mk('park', 'Skyline Park', 'entertainment', '🌳', 2, 3, 0, 24, 0xff65a30d));
-  return out;
+  return BUILDINGS.map((b) => ({ ...b }));
 }
 
 const SKIN = [0xffffdfc4, 0xfff1c27d, 0xffe0ac69, 0xffc68642, 0xff8d5524, 0xff5a3825];
@@ -111,6 +71,8 @@ function roomFor(b) {
     floor: r.floor,
     wall: r.wall,
     accent: b.color,
+    walls: r.walls || [],
+    zones: r.zones || [],
     items: r.items,
     npcs: r.npcs.map((n) => ({ ...n, look: npcLook(n) })),
   };
@@ -158,7 +120,9 @@ export function roomScene(id) {
   return { type: 'gg-scene', mode: 'interior', ...roomFor(b), player: { x: 5, y: 7 } };
 }
 
-const ACTION_FOR = { sleep: 'sleep', eatHome: 'eat', laptop: 'useComputer', studyHome: 'study', studyDesk: 'study', relaxHome: 'sit', relaxPark: 'sit', socialize: 'talk', workStation: 'work', graduation: 'celebrate', watchMovie: 'sit', breakRoom: 'sit', workout: 'work', resumeDesk: 'useComputer', certDesk: 'study' };
+const ACTION_FOR = {
+  openLab: 'study',
+  lectureHall: 'study', sleep: 'sleep', eatHome: 'eat', laptop: 'useComputer', studyHome: 'study', studyDesk: 'study', relaxHome: 'sit', relaxPark: 'sit', socialize: 'talk', workStation: 'work', graduation: 'celebrate', watchMovie: 'sit', breakRoom: 'sit', workout: 'work', resumeDesk: 'useComputer', certDesk: 'study' };
 
 export function runDemo(world, params) {
   const B = buildings();
@@ -235,7 +199,7 @@ export function runDemo(world, params) {
   const roomBlocked = (x, y) => {
     const r = s.room;
     if (x < 0 || y < 0 || x >= r.w || y >= r.h) return true;
-    return r.items.some((i) => i.x === x && i.y === y) || r.npcs.some((n) => n.x === x && n.y === y);
+    return r.items.some((i) => i.x === x && i.y === y) || r.npcs.some((n) => n.x === x && n.y === y) || (r.walls || []).some((w) => w[0] === x && w[1] === y);
   };
 
   function goNextTo(x, y) {
@@ -263,7 +227,7 @@ export function runDemo(world, params) {
       s.goalItem = null;
       s.action = ACTION_FOR[it.type] || 'idle';
       s.actionT = 2.6;
-      say(`${it.emoji} ${it.name} — ${it.hint || 'opens in the game'}`);
+      say(it.type === 'openLab' ? `${it.emoji} ${it.name} — opens the ${it.name} activity in the app. ${it.hint}` : `${it.emoji} ${it.name} — ${it.hint || 'opens in the game'}`);
     } else if (s.goalNpc) {
       const n = s.goalNpc;
       s.goalNpc = null;

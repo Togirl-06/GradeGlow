@@ -1,6 +1,8 @@
 /// Building interiors: every interactable is bound to a real [ActionType].
 library;
 
+import '../campus/campus_schools.dart';
+import '../campus/lab_info.dart';
 import '../core/stable_random.dart';
 import '../employment/employers.dart';
 import 'world_model.dart';
@@ -75,8 +77,9 @@ class Interiors {
 
   static Interior of(String buildingId) => _cache.putIfAbsent(buildingId, () => _make(buildingId));
 
-  static Interior _room(String id, List<Interactable> items, List<NpcDef> npcs, {int floor = 0xFFE5E7EB, int wall = 0xFF94A3B8}) =>
-      Interior(buildingId: id, width: w, height: h, exitX: exitX, exitY: exitY, interactables: items, npcs: npcs, floorColor: floor, wallColor: wall);
+  static Interior _room(String id, List<Interactable> items, List<NpcDef> npcs,
+          {int floor = 0xFFE5E7EB, int wall = 0xFF94A3B8, List<(int, int)> walls = const <(int, int)>[], List<InteriorZone> zones = const <InteriorZone>[]}) =>
+      Interior(buildingId: id, width: w, height: h, exitX: exitX, exitY: exitY, interactables: items, npcs: npcs, floorColor: floor, wallColor: wall, walls: walls, zones: zones);
 
   static Interactable _i(String id, String name, String emoji, int x, int y, ActionType t, {String? arg, String hint = ''}) =>
       Interactable(id: id, name: name, emoji: emoji, x: x, y: y, type: t, arg: arg, hint: hint);
@@ -88,21 +91,58 @@ class Interiors {
   static Interior _make(String id) {
     final Employer? emp = _employerFor(id);
     if (emp != null) return _workplace(id, emp);
+    final SchoolDef? school = schoolById(id);
+    if (school != null) return _school(school);
     switch (id) {
       case 'apartment_block':
+        // A real apartment: bedroom, bathroom and study along the back, open
+        // living room + kitchen at the front. Doorways at x = 2, 6 and 10.
         return _room(id, <Interactable>[
           _i('bed', 'Bed', '🛏️', 1, 1, ActionType.sleep, hint: 'Sleep to restore energy.'),
-          _i('fridge', 'Fridge', '🧊', 3, 1, ActionType.eatHome, hint: 'Cook with groceries you bought.'),
-          _i('laptop', 'Laptop', '💻', 5, 1, ActionType.laptop, hint: 'Job board, resume and email.'),
-          _i('wardrobe', 'Wardrobe', '🚪', 7, 1, ActionType.wardrobe, hint: 'Change your look and outfit.'),
-          _i('desk', 'Study Desk', '📖', 9, 1, ActionType.studyHome, hint: 'Study at home.'),
-          _i('sofa', 'Sofa', '🛋️', 1, 4, ActionType.relaxHome, hint: 'Relax and unwind.'),
-          _i('decor', 'Decorate', '🪴', 4, 4, ActionType.decorate, hint: 'Customise your apartment.'),
-          _i('mailbox', 'Bills & Rent', '📬', 9, 4, ActionType.payBills, hint: 'Pay rent and bills.'),
+          _i('wardrobe', 'Closet', '👔', 3, 1, ActionType.wardrobe, hint: 'Change clothes, outfits and your look.'),
+          _i('shower', 'Shower', '🚿', 6, 1, ActionType.relaxHome, arg: 'shower', hint: 'Daily hygiene routine.'),
+          _i('desk', 'Study Desk', '📖', 9, 1, ActionType.studyHome, hint: 'Study and do assignments.'),
+          _i('laptop', 'Laptop', '💻', 11, 2, ActionType.laptop, hint: 'Schedule, email, job applications, finances.'),
+          _i('sofa', 'Sofa', '🛋️', 1, 6, ActionType.relaxHome, hint: 'Relax and unwind.'),
+          _i('tv', 'Educational TV', '📺', 0, 8, ActionType.studyHome, arg: 'self', hint: 'Watch documentaries to build knowledge.'),
+          _i('decor', 'Decorate', '🪴', 4, 6, ActionType.decorate, hint: 'Furniture, wallpaper and floors.'),
+          _i('mailbox', 'Bills & Rent', '📬', 7, 7, ActionType.payBills, hint: 'Pay rent and bills, view your budget.'),
+          _i('fridge', 'Kitchen', '🍳', 11, 5, ActionType.eatHome, hint: 'Cook with groceries you bought.'),
+          _i('dining', 'Dining Table', '🍽️', 9, 7, ActionType.socialize, hint: 'Invite classmates and friends over.'),
         ], <NpcDef>[
-          _n('neighbor', 'Mrs. Adeyemi', 'Neighbour', 7, 6, 'A kind, chatty neighbour who gives practical life tips about budgeting and cooking.',
+          _n('neighbor', 'Mrs. Adeyemi', 'Neighbour', 3, 7, 'A kind, chatty neighbour who gives practical life tips about budgeting and cooking.',
               <String>['Welcome to the building! Budget your rent first — everything else follows.', 'I cook in bulk on Sundays. Saves money and energy.', 'Interviews go better when you sleep well the night before.'], outfit: 0xFFF59E0B),
-        ], floor: 0xFFFDE8D0, wall: 0xFFB08968);
+        ],
+            floor: 0xFFFDE8D0,
+            wall: 0xFFB08968,
+            walls: _apartmentWalls,
+            zones: const <InteriorZone>[
+              InteriorZone('Bedroom', '🛏️', 0, 0, 3, 3, floor: 'wood'),
+              InteriorZone('Bathroom', '🚿', 5, 0, 7, 3, floor: 'tile'),
+              InteriorZone('Study', '📖', 9, 0, 11, 3, floor: 'carpet'),
+              InteriorZone('Living room', '🛋️', 0, 5, 7, 8, floor: 'wood'),
+              InteriorZone('Kitchen', '🍳', 9, 5, 11, 8, floor: 'tile'),
+            ]);
+      case 'student_union':
+        return _room(id, <Interactable>[
+          _i('union_cafe', 'Union Café', '☕', 2, 1, ActionType.shop, arg: 'cafe', hint: 'Coffee and lunch with classmates.'),
+          _i('union_lounge', 'Lounge', '🛋️', 6, 1, ActionType.socialize, hint: 'Hang out and make friends.'),
+          _i('union_games', 'Game Tables', '🎲', 9, 1, ActionType.socialize, hint: 'Play a round with other students.'),
+          _i('union_clubs', 'Clubs & Societies', '📌', 10, 4, ActionType.socialize, hint: 'Join a club and meet people in your major.'),
+          _i('union_stage', 'Events Stage', '🎤', 1, 5, ActionType.socialize, hint: 'Open mic, debates and campus events.'),
+          _i('union_study', 'Group Study Booth', '📚', 10, 7, ActionType.studyHome, arg: 'self', hint: 'Study together.'),
+        ], <NpcDef>[
+          _n('union_amara', 'Amara Okafor', 'Student', 4, 4, 'A sociable student-union volunteer who knows every club on campus.',
+              <String>['The coding club meets on Thursdays!', 'Come to the open mic — it helps with public speaking.'], skin: 4, hair: 0, outfit: 0xFFF43F5E),
+          _n('union_leo', 'Leo Park', 'Student', 7, 5, 'A relaxed student who balances study and fun.', <String>['Do not skip lunch, you study better.', 'Group study is how I passed statistics.'], skin: 1, hair: 1, outfit: 0xFF10B981),
+        ],
+            floor: 0xFFFFE4E6,
+            wall: 0xFFF43F5E,
+            zones: const <InteriorZone>[
+              InteriorZone('Café', '☕', 0, 0, 3, 2, floor: 'wood'),
+              InteriorZone('Lounge', '🛋️', 4, 0, 11, 2, floor: 'carpet'),
+              InteriorZone('Events', '🎤', 0, 4, 2, 6, floor: 'wood'),
+            ]);
       case 'corner_cafe':
         return _room(id, <Interactable>[
           _i('counter', 'Café Counter', '☕', 4, 1, ActionType.shop, arg: 'cafe', hint: 'Coffee and snacks.'),
@@ -168,7 +208,9 @@ class Interiors {
         ], floor: 0xFFFFEDD5, wall: 0xFFC2410C);
       case 'company_registry':
         return _room(id, <Interactable>[
+          _i('lab_biz_startup', 'Startup Incubator', '🚀', 1, 1, ActionType.openLab, arg: 'biz_startup', hint: 'Idea, customers, prototype, pitch.'),
           _i('register', 'Register a Company', '🏭', 4, 1, ActionType.companyRegistry, hint: 'Start your own business.'),
+          _i('lab_cs_ai', 'AI Research Lab', '🤖', 10, 4, ActionType.openLab, arg: 'cs_ai', hint: 'Train and evaluate machine-learning models.'),
           _i('plan', 'Business Plan Desk', '🗒️', 8, 1, ActionType.companyRegistry, arg: 'plan', hint: 'Review your company.'),
         ], <NpcDef>[
           _n('registrar_npc', 'Mr. Vance', 'Registrar', 6, 4, 'A precise registrar who explains how to start a company.', <String>['You need capital and a business plan before you register.', 'Most small businesses fail on cash flow, not ideas.'], outfit: 0xFF0EA5E9),
@@ -206,6 +248,44 @@ class Interiors {
         ], floor: 0xFFE7E5E4, wall: 0xFF57534E);
     }
     return _room(id, <Interactable>[], <NpcDef>[]);
+  }
+
+  static final List<(int, int)> _apartmentWalls = <(int, int)>[
+    for (int x = 0; x < w; x++)
+      if (x != 2 && x != 6 && x != 10) (x, 4),
+    for (int y = 0; y < 4; y++) (4, y),
+    for (int y = 0; y < 4; y++) (8, y),
+  ];
+
+  static int _inX(int x) => x < 0 ? 0 : (x > w - 1 ? w - 1 : x);
+  static int _inY(int y) => y < 0 ? 0 : (y > h - 1 ? h - 1 : y);
+
+  /// Where a school's stations go: back wall, side walls, front corners, then centre.
+  static const List<(int, int)> _schoolSlots = <(int, int)>[
+    (1, 1), (4, 1), (7, 1), (10, 1), (1, 4), (10, 4), (1, 7), (10, 7), (3, 6), (8, 6),
+  ];
+
+  /// A school building: one station per lab of that school (each in its own
+  /// named area), a lecture room, the professor and a student.
+  static Interior _school(SchoolDef s) {
+    final List<Interactable> items = <Interactable>[];
+    final List<InteriorZone> zones = <InteriorZone>[];
+    final List<LabInfo> labs = labsOfSchool(s.id);
+    int k = 0;
+    for (final LabInfo l in labs) {
+      if (k >= 8) break; // the 8 wall slots; centre slots are for the lecture room
+      final (int, int) p = _schoolSlots[k++];
+      items.add(_i('lab_${l.id}', l.name, l.emoji, p.$1, p.$2, ActionType.openLab, arg: l.id, hint: l.hint));
+      zones.add(InteriorZone(l.name, l.emoji, _inX(p.$1 - 1), _inY(p.$2 - 1), _inX(p.$1 + 1), _inY(p.$2 + 1), floor: s.floor));
+    }
+    final (int, int) lp = _schoolSlots[8];
+    items.add(_i('lecture', 'Lecture Room', '🧑‍🏫', lp.$1, lp.$2, ActionType.lectureHall, hint: 'Lectures for ${s.majors.join(', ')}.'));
+    final SchoolPerson p = s.professor;
+    final SchoolPerson st = s.student;
+    return _room(s.id, items, <NpcDef>[
+      _n(p.id, p.name, p.role, 6, 4, p.persona, p.lines, skin: p.skin, hair: p.hair, outfit: p.outfit),
+      _n(st.id, st.name, st.role, 8, 4, st.persona, st.lines, skin: st.skin, hair: st.hair, outfit: st.outfit),
+    ], floor: 0xFFF1F5F9, wall: p.outfit, zones: zones);
   }
 
   static Employer? _employerFor(String buildingId) {

@@ -9,8 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   final CityMap city = CityMap.instance;
 
-  test('10 districts, each with at least one building', () {
-    expect(CityMap.districts.length, 10);
+  test('15 districts (campus + city), each with at least one building', () {
+    expect(CityMap.districts.length, 15);
     for (final District d in CityMap.districts) {
       expect(city.buildings.where((Building b) => b.districtId == d.id).isNotEmpty, true, reason: d.id);
     }

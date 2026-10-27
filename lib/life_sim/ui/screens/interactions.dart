@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../campus/campus_labs.dart';
 import '../../employment/job_listing.dart';
 import '../../game/life_game.dart';
 import '../../interview/interview_session.dart';
@@ -99,9 +100,24 @@ class Interactions {
         _push(context, CompanyScreen(life: life));
       case ActionType.graduation:
         act(g.attendCeremony(), AvatarAction.celebrate);
+      case ActionType.openLab:
+        await _openLab(context, life, item.arg ?? '');
       case ActionType.talkNpc:
         break;
     }
+  }
+
+  /// Opens a school's learning station; time actually spent there builds skill.
+  static Future<void> _openLab(BuildContext context, LifeSession life, String labId) async {
+    final CampusLab? lab = CampusLabs.byId(labId);
+    if (lab == null) {
+      life.say('This station is not open yet.');
+      return;
+    }
+    final DateTime started = DateTime.now();
+    await lab.open(context);
+    final int seconds = DateTime.now().difference(started).inSeconds;
+    life.report(life.game.practiceLab(title: lab.name, skill: lab.skill, seconds: seconds), animate: AvatarAction.study);
   }
 
   static Future<void> _clockIn(BuildContext context, LifeSession life) async {

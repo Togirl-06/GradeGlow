@@ -24,8 +24,8 @@ function groundTexture(data) {
   g.translate(PX * (M + 0.5), PX * (M + 0.5));
   const r = rng('ground');
   const dcol = (x, y) => {
-    const cx = Math.min(Math.floor(x / cellW), 4);
-    const cy = Math.min(Math.floor(y / cellH), 1);
+    const cx = Math.min(Math.floor(x / cellW), Math.floor((w - 1) / cellW) - 1);
+    const cy = Math.min(Math.floor(y / cellH), Math.floor((h - 1) / cellH) - 1);
     const d = districts.find((d) => d.col === cx && d.row === cy);
     return d ? col(d.color) : new THREE.Color(0xcccccc);
   };

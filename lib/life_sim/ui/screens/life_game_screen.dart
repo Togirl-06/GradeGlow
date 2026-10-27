@@ -522,6 +522,13 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
       'floor': it.floorColor,
       'wall': it.wallColor,
       'accent': b?.color ?? it.wallColor,
+      'walls': <Object?>[
+        for (final (int, int) w in it.walls) <int>[w.$1, w.$2],
+      ],
+      'zones': <Object?>[
+        for (final InteriorZone z in it.zones)
+          <String, Object?>{'name': z.name, 'emoji': z.emoji, 'x0': z.x0, 'y0': z.y0, 'x1': z.x1, 'y1': z.y1, 'floor': z.floor},
+      ],
       'items': <Object?>[
         for (final Interactable i in it.interactables)
           <String, Object?>{
