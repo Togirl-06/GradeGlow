@@ -9,6 +9,7 @@ import '../business_career/business_career_hub_screen.dart';
 import '../career_labs/playable/glow/life_skills/budget_boss_lab.dart';
 import '../engineering_career/engineering_career_hub_screen.dart';
 import '../health_career/health_simulation_hub_screen.dart';
+import '../../life_sim/ui/screens/life_game_screen.dart';
 import '../science_career/science_career_hub_screen.dart';
 
 /// Labs tab = career simulation labs (Technology, Engineering, Business, Health).
@@ -74,6 +75,12 @@ class VuV2LabsHub extends StatelessWidget {
     void openBudgetBoss() {
       Navigator.of(context).push<void>(
         MaterialPageRoute<void>(builder: (_) => budgetBossScreen()),
+      );
+    }
+
+    void openLifeSim() {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(builder: (_) => const LifeGameLauncher()),
       );
     }
 
@@ -254,6 +261,39 @@ class VuV2LabsHub extends StatelessWidget {
             icon: const Icon(Icons.savings_rounded),
             label: const Text(
               'Enter Budget Boss',
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
+          ),
+        ),
+        const SizedBox(height: 22),
+        _LabBanner(
+          title: 'GradeGlow Life — Virtual Life Simulation',
+          subtitle:
+              'Explore the city, get a degree, interview, work as a nurse, doctor, lawyer, engineer, accountant or manager.',
+          colors: <Color>[
+            const Color(0xFF14B8A6),
+            const Color(0xFF3B82F6),
+            VuV2Colors.navy,
+          ],
+          icon: Icons.location_city_rounded,
+          onEnter: openLifeSim,
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: FilledButton.icon(
+            onPressed: openLifeSim,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF14B8A6),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            icon: const Icon(Icons.location_city_rounded),
+            label: const Text(
+              'Enter GradeGlow Life',
               style: TextStyle(fontWeight: FontWeight.w900),
             ),
           ),
