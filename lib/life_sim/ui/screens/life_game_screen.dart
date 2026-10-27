@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -16,6 +17,7 @@ import '../life_widgets.dart';
 import '../painters/avatar_painter.dart';
 import '../painters/city_painter.dart';
 import '../painters/interior_painter.dart';
+import '../world3d/world3d_stub.dart' if (dart.library.html) '../world3d/world3d_web.dart' as world3d;
 import 'avatar_editor.dart';
 import 'interactions.dart';
 import 'phone_screen.dart';
@@ -111,6 +113,17 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
   static const double stepSeconds = 0.17;
   double _stepT = 0;
 
+  // ---- 3D world (web) -------------------------------------------------
+  // On web the city and rooms are rendered by web/life_world (three.js) in an
+  // iframe; this state keeps all rules and streams positions to it.
+  bool _force2d = false;
+  bool get _use3d => world3d.world3dSupported && !_force2d;
+  String? _sceneSent;
+  String _lookSent = '';
+
+  /// Slightly slower steps in 3D so walking reads as walking, not sprinting.
+  double get _stepSeconds => _use3d ? 0.26 : stepSeconds;
+
   Map<String, NpcState> npcStates = const <String, NpcState>{};
 
   void _updateNpcs() {
@@ -143,6 +156,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
 
   @override
   void dispose() {
+    world3d.world3dDetach(_on3d);
     life.removeListener(_onLife);
     _ticker.dispose();
     _focus.dispose();
@@ -160,11 +174,11 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
       final (int, int) next = queue.first;
       final double fx = (g.isIndoors ? g.inX : g.cityX).toDouble();
       final double fy = (g.isIndoors ? g.inY : g.cityY).toDouble();
-      final double k = (_stepT / stepSeconds).clamp(0, 1).toDouble();
+      final double k = (_stepT / _stepSeconds).clamp(0, 1).toDouble();
       vx = fx + (next.$1 - fx) * k;
       vy = fy + (next.$2 - fy) * k;
       if (next.$1 != fx) facingRight = next.$1 > fx;
-      if (_stepT >= stepSeconds) {
+      if (_stepT >= _stepSeconds) {
         _stepT = 0;
         final bool ok = g.isIndoors ? g.stepIndoors(next.$1, next.$2) : g.stepOutdoors(next.$1, next.$2);
         queue.removeAt(0);
@@ -175,6 +189,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
     } else if (walking && queue.isEmpty) {
       walking = false;
     }
+    if (_use3d) _push3d();
     if (mounted) setState(() {});
   }
 
@@ -319,7 +334,13 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
     } else {
       return KeyEventResult.ignored;
     }
-    if (queue.isNotEmpty) return KeyEventResult.handled;
+    _stepDir(dx, dy);
+    return KeyEventResult.handled;
+  }
+
+  /// One tile step in a direction (keyboard / 3D view), or enter the building ahead.
+  void _stepDir(int dx, int dy) {
+    if (busy || queue.isNotEmpty) return;
     final int nx = (g.isIndoors ? g.inX : g.cityX) + dx;
     final int ny = (g.isIndoors ? g.inY : g.cityY) + dy;
     if (g.isIndoors) {
@@ -336,7 +357,232 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
       final Building? b = _buildingNear();
       if (b != null) _enterBuilding(b);
     }
-    return KeyEventResult.handled;
+  }
+
+  // ---- 3D world bridge --------------------------------------------------
+
+  void _on3d(Map<String, dynamic> m) {
+    if (!mounted) return;
+    switch ('${m['type']}') {
+      case 'gg-ready':
+        // (Re)loaded page: resend the scene and look on the next frame.
+        _sceneSent = null;
+        _lookSent = '';
+      case 'gg-error':
+        setState(() => _force2d = true);
+        life.say('3D view is not available on this device, so the classic map is shown.');
+      case 'gg-tap':
+        _onTap3d(m);
+      case 'gg-move':
+        _stepDir((m['dx'] as num?)?.toInt() ?? 0, (m['dy'] as num?)?.toInt() ?? 0);
+      case 'gg-key':
+        if (busy) return;
+        switch ('${m['key']}') {
+          case 'e':
+            _interactNearest();
+          case 'p':
+            _openPhone();
+          case 'm':
+            _openMap();
+        }
+    }
+  }
+
+  /// Same behaviour as [_onTap], but with the hit already resolved by the 3D view.
+  void _onTap3d(Map<String, dynamic> m) {
+    if (busy) return;
+    _stop();
+    final String kind = '${m['kind']}';
+    final String id = '${m['id'] ?? ''}';
+    final int x = (m['x'] as num?)?.toInt() ?? -1;
+    final int y = (m['y'] as num?)?.toInt() ?? -1;
+    if (g.isIndoors) {
+      final Interior it = Interiors.of(g.buildingId!);
+      if (kind == 'exit') {
+        goalExit = true;
+        _goTo(it.exitX, it.exitY);
+        if (queue.isEmpty) _arrive();
+      } else if (kind == 'item') {
+        final Interactable? item = it.interactableById(id);
+        if (item == null) return;
+        goalItem = item;
+        if (!_goNextTo(item.x, item.y)) {
+          goalItem = null;
+          life.say("You can't reach that.");
+        }
+      } else if (kind == 'npc') {
+        final NpcDef? npc = it.npcById(id);
+        if (npc == null) return;
+        goalNpc = npc;
+        if (!_goNextTo(x, y)) goalNpc = null;
+      } else if (kind == 'tile' && !it.blocked(x, y)) {
+        _goTo(x, y);
+      }
+    } else {
+      if (kind == 'building') {
+        final Building? b = CityMap.instance.buildingById(id);
+        if (b == null) return;
+        final String? err = g.canEnter(b);
+        if (err != null) {
+          life.say(err);
+          return;
+        }
+        goalBuilding = b;
+        _goTo(b.doorX, b.doorY);
+        if (queue.isEmpty) _arrive();
+      } else if (kind == 'tile') {
+        _goTo(x, y);
+      }
+    }
+  }
+
+  /// Streams the current scene (when it changes) and this frame's state.
+  void _push3d() {
+    final String key = g.isIndoors ? 'room:${g.buildingId}' : 'city';
+    if (_sceneSent != key) {
+      _sceneSent = key;
+      _lookSent = '';
+      world3d.world3dSend(g.isIndoors ? _interiorScene() : _cityScene());
+    }
+    final Map<String, Object?> look = _look3d();
+    final String lookKey = jsonEncode(look);
+    final Interactable? near = _nearItem();
+    final NpcDef? nearNpc = _nearNpc();
+    final AvatarAction action = life.activity ?? (walking ? AvatarAction.walk : AvatarAction.idle);
+    world3d.world3dSend(<String, Object?>{
+      'type': 'gg-frame',
+      'x': vx,
+      'y': vy,
+      'walking': walking,
+      'action': action.name,
+      'emotion': life.emotion.name,
+      'minute': g.minute,
+      'daylight': g.clock.daylight,
+      'nearItem': near?.id,
+      'nearNpc': nearNpc?.id,
+      'goal': goalBuilding?.id,
+      if (!g.isIndoors)
+        'closed': <String>[
+          for (final Building b in CityMap.instance.buildings)
+            if (!b.isOpen(g.day, g.minute)) b.id,
+        ],
+      if (g.isIndoors)
+        'npcs': <String, Object?>{
+          for (final MapEntry<String, NpcState> e in npcStates.entries)
+            e.key: <Object?>[e.value.x, e.value.y, e.value.walking ? 1 : 0, e.value.activity.name],
+        },
+      if (lookKey != _lookSent) 'look': look,
+    });
+    _lookSent = lookKey;
+  }
+
+  Map<String, Object?> _cityScene() => <String, Object?>{
+        'type': 'gg-scene',
+        'mode': 'city',
+        'w': CityMap.width,
+        'h': CityMap.height,
+        'cellW': CityMap.cellW,
+        'cellH': CityMap.cellH,
+        'districts': <Object?>[
+          for (final District d in CityMap.districts)
+            <String, Object?>{'id': d.id, 'name': d.name, 'col': d.col, 'row': d.row, 'color': d.color},
+        ],
+        'buildings': <Object?>[
+          for (final Building b in CityMap.instance.buildings)
+            <String, Object?>{
+              'id': b.id,
+              'name': b.name,
+              'district': b.districtId,
+              'emoji': b.emoji,
+              'x': b.x,
+              'y': b.y,
+              'w': b.w,
+              'h': b.h,
+              'color': b.color,
+              'employer': b.employerId,
+            },
+        ],
+        'look': _look3d(),
+        'player': <String, Object?>{'x': vx, 'y': vy},
+      };
+
+  Map<String, Object?> _interiorScene() {
+    final Interior it = Interiors.of(g.buildingId!);
+    final Building? b = g.currentBuilding;
+    return <String, Object?>{
+      'type': 'gg-scene',
+      'mode': 'interior',
+      'buildingId': it.buildingId,
+      'name': b?.name ?? '',
+      'emoji': b?.emoji ?? '',
+      'w': it.width,
+      'h': it.height,
+      'exitX': it.exitX,
+      'exitY': it.exitY,
+      'floor': it.floorColor,
+      'wall': it.wallColor,
+      'accent': b?.color ?? it.wallColor,
+      'items': <Object?>[
+        for (final Interactable i in it.interactables)
+          <String, Object?>{
+            'id': i.id,
+            'name': i.name,
+            'emoji': i.emoji,
+            'x': i.x,
+            'y': i.y,
+            'type': i.type.name,
+            'arg': i.arg,
+            'hint': i.hint,
+          },
+      ],
+      'npcs': <Object?>[
+        for (final NpcDef n in it.npcs)
+          <String, Object?>{
+            'id': n.id,
+            'name': n.name,
+            'role': n.role,
+            'x': n.x,
+            'y': n.y,
+            'look': _lookMap(AvatarLook.fromNpc(n)),
+          },
+      ],
+      'look': _look3d(),
+      'player': <String, Object?>{'x': vx, 'y': vy},
+    };
+  }
+
+  Map<String, Object?> _lookMap(AvatarLook l) => <String, Object?>{
+        'skin': l.skin.toARGB32(),
+        'hair': l.hair.toARGB32(),
+        'outfit': l.outfit.toARGB32(),
+        'shoes': l.shoes.toARGB32(),
+        'hairStyle': l.hairStyle,
+        'faceShape': l.faceShape,
+        'eyeStyle': l.eyeStyle,
+        'accessory': l.accessory,
+        'feminine': l.feminine,
+      };
+
+  /// The player's look, plus a work uniform while inside their own workplace.
+  Map<String, Object?> _look3d() {
+    final Map<String, Object?> m = _lookMap(AvatarLook.fromProfile(g.avatar));
+    String uniform = 'casual';
+    final String? employerHere = g.currentBuilding?.employerId;
+    if (g.isIndoors && employerHere != null && g.job != null && g.job!.contract.employerId == employerHere) {
+      switch (g.job!.contract.careerId) {
+        case 'nurse':
+          uniform = 'scrubs';
+        case 'doctor':
+        case 'pharmacist':
+          uniform = 'labcoat';
+        case 'lawyer':
+        case 'accountant':
+        case 'business_manager':
+          uniform = 'suit';
+      }
+    }
+    m['uniform'] = uniform;
+    return m;
   }
 
   Building? _buildingNear() {
@@ -474,6 +720,9 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
       onKeyEvent: _onKey,
       child: Scaffold(
         body: Stack(children: <Widget>[
+          if (_use3d)
+            Positioned.fill(child: world3d.buildWorld3dView(onEvent: _on3d))
+          else
           Positioned.fill(
             child: LayoutBuilder(
               builder: (BuildContext c, BoxConstraints box) {
@@ -657,6 +906,12 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
       builder: (BuildContext c) => Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         ListTile(leading: const Icon(Icons.save_rounded), title: const Text('Save now'), onTap: () => Navigator.pop(c, 'save')),
         ListTile(leading: const Icon(Icons.person_rounded), title: const Text('My status'), onTap: () => Navigator.pop(c, 'status')),
+        if (world3d.world3dSupported)
+          ListTile(
+            leading: Icon(_use3d ? Icons.map_outlined : Icons.view_in_ar_rounded),
+            title: Text(_use3d ? 'Switch to classic 2D map' : 'Switch to 3D world'),
+            onTap: () => Navigator.pop(c, 'view'),
+          ),
         ListTile(leading: const Icon(Icons.help_outline_rounded), title: const Text('Controls & about'), onTap: () => Navigator.pop(c, 'help')),
         ListTile(leading: const Icon(Icons.restart_alt_rounded, color: LifeColors.red), title: const Text('Start a new life (erases save)'), onTap: () => Navigator.pop(c, 'reset')),
       ]),
@@ -668,14 +923,22 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
         life.say('Game saved.');
       case 'status':
         _openStatus();
+      case 'view':
+        _stop();
+        setState(() {
+          _force2d = !_force2d;
+          _sceneSent = null;
+          _lookSent = '';
+        });
       case 'help':
         await showDialog<void>(
           context: context,
           builder: (BuildContext c) => AlertDialog(
             title: const Text('Controls'),
-            content: const Text(
+            content: Text(
               'Tap the ground to walk, tap a building to enter, tap objects and people to use them. '
               'Keyboard: arrows/WASD move, E interact, P phone, M map.\n\n'
+              '${_use3d ? '3D world: drag to turn the camera, scroll or pinch to zoom, Q/R to rotate. Buildings turn see-through when they hide you.\n\n' : ''}'
               'Medical and legal scenarios are an educational simulation set in the fictional country of Glowland — not real medical or legal advice. '
               'Money, time and progress are rule-based; AI only writes dialogue and feedback.',
             ),

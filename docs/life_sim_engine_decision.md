@@ -23,3 +23,10 @@ and feedback, bounded to ±2 points / ±0.15 around deterministic scores, with o
 
 **Disclaimers:** medical/legal content is an educational simulation in the fictional jurisdiction
 "Glowland"; it is not medical or legal advice.
+
+## Update (Oct 2026): 3D on web
+Students found the isometric painter did not feel like a real game. The web build now renders the same
+world in real-time 3D with three.js (`web/life_world/`, vendored three r170, ~0.7 MB, no CDN), inside an
+iframe, following the existing anatomy-viewer pattern. Because painters were already isolated from
+`LifeGame`, no rules moved: the 3D page is a renderer plus input. Native apps keep the painter until a
+WebView or native 3D path is chosen (adding `webview_flutter` would let them reuse the same page).

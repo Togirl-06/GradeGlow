@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>GradeGlow City</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0b1220; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    #c { width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+    #loading { position: fixed; inset: 0; display: grid; place-items: center; background: linear-gradient(160deg, #0b1220, #1e293b); color: #e2e8f0; transition: opacity .5s; z-index: 5; }
+    #loading b { font-size: 20px; letter-spacing: .3px; }
+    #loading .bar { width: 180px; height: 6px; border-radius: 3px; background: #334155; overflow: hidden; margin-top: 14px; }
+    #loading .bar i { display: block; width: 40%; height: 100%; background: linear-gradient(90deg, #f97316, #facc15); animation: slide 1.1s infinite ease-in-out; }
+    @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+    #toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); max-width: min(560px, calc(100% - 32px)); padding: 10px 16px; border-radius: 14px; background: rgba(15,23,42,.92); color: #fff; font-size: 14px; opacity: 0; transition: opacity .3s; pointer-events: none; text-align: center; }
+    #help { position: fixed; left: 12px; top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(15,23,42,.8); color: #e2e8f0; font-size: 12px; line-height: 1.5; display: none; max-width: 280px; }
+    #help b { color: #facc15; }
+  </style>
+</head>
+<body>
+  <canvas id="c" tabindex="0"></canvas>
+  <div id="loading"><div style="text-align:center"><b>🌆 Entering GradeGlow City…</b><div class="bar"><i></i></div></div></div>
+  <div id="toast"></div>
+  <div id="help"><b>Preview mode</b><br>Tap or click to walk · tap a building to go in<br>Drag to turn the camera · scroll or pinch to zoom<br>WASD / arrows to walk · E to enter or use · Q/R to rotate</div>
+  <script type="importmap">
+  { "imports": { "three": "./vendor/three.module.min.js" } }
+  </script>
+  <script type="module">
+    import { createWorld } from './world.js';
+
+    const params = new URLSearchParams(location.search);
+    const embedded = window.parent !== window && !params.has('demo');
+    const canvas = document.getElementById('c');
+    const loading = document.getElementById('loading');
+    let demoHandler = null;
+    const send = (m) => {
+      if (embedded) window.parent.postMessage(JSON.stringify(m), '*');
+      else if (demoHandler) demoHandler(m);
+    };
+
+    let world;
+    try {
+      world = createWorld(canvas, { send });
+    } catch (e) {
+      send({ type: 'gg-error', message: String(e && e.message || e) });
+      loading.innerHTML = '<div style="padding:24px;text-align:center">3D view is not supported on this device.</div>';
+      throw e;
+    }
+    const origSetScene = world.setScene;
+    world.setScene = (m) => {
+      origSetScene(m);
+      loading.style.opacity = 0;
+      setTimeout(() => (loading.style.display = 'none'), 500);
+    };
+
+    if (embedded) {
+      window.addEventListener('message', (e) => {
+        if (e.source !== window.parent) return;
+        let m = e.data;
+        if (typeof m === 'string') {
+          try { m = JSON.parse(m); } catch (_) { return; }
+        }
+        if (!m || typeof m.type !== 'string') return;
+        if (m.type === 'gg-scene') world.setScene(m);
+        else if (m.type === 'gg-frame') world.setFrame(m);
+      });
+      canvas.addEventListener('pointerdown', () => canvas.focus());
+      send({ type: 'gg-ready' });
+    } else {
+      document.getElementById('help').style.display = params.has('nohelp') ? 'none' : 'block';
+      const { runDemo } = await import('./demo.js');
+      demoHandler = runDemo(world, params);
+    }
+    canvas.focus();
+    window.__gg = world;
+  </script>
+</body>
+</html>

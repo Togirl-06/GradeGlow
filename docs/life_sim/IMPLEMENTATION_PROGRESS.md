@@ -14,9 +14,18 @@ Server-side plausibility guard (`functions/life_sim.js`, `functions/life_sim/val
 that checkpoints each save, rolls back implausible jumps (cash/wealth, skills, degrees) and writes audit
 events. Node tests: 15 passing.
 
+**3D world on web (`web/life_world/`)**: open 3D city (24 distinct buildings, streets, traffic,
+pedestrians, day/night, see-through occluders), Sims-style procedural characters with animations and
+work uniforms, cut-away 3D rooms with furniture for every interactable, third-person camera (drag/pinch/
+scroll, WASD relative to camera), Dart ↔ page bridge in `ui/world3d/`. Verified in headless Chromium
+(all 23 interiors render, no console errors; protocol checked with a mock parent page).
+
 ## Done but not device-verified
 All Flutter UI/painters, Firebase and OpenAI adapters (analyzed against stubs; the app was never run).
 The Cloud Function and the new Firestore rules are **not deployed and not emulator-tested**.
+
+The Dart side of the 3D bridge (`ui/world3d/*`, `LifeGameScreen` changes) was written without a Flutter
+SDK available and has not been compiled or run yet: run `flutter analyze` and `flutter run -d chrome`.
 
 ## Not done
 - Unity/3D, WebGL, asset pipeline (decision: Flutter CustomPainter).
