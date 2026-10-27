@@ -39,6 +39,7 @@
     };
 
     let world;
+    let gotScene = false;
     try {
       world = createWorld(canvas, { send });
     } catch (e) {
@@ -46,11 +47,23 @@
       loading.innerHTML = '<div style="padding:24px;text-align:center">3D view is not supported on this device.</div>';
       throw e;
     }
+    const hideLoading = () => {
+      loading.style.opacity = 0;
+      setTimeout(() => (loading.style.display = 'none'), 400);
+    };
     const origSetScene = world.setScene;
     world.setScene = (m) => {
-      origSetScene(m);
-      loading.style.opacity = 0;
-      setTimeout(() => (loading.style.display = 'none'), 500);
+      gotScene = true;
+      loading.querySelector('b').textContent = '🌆 Building the city…';
+      // Build can take a beat on slower devices — keep the overlay until done.
+      requestAnimationFrame(() => {
+        try {
+          origSetScene(m);
+        } finally {
+          hideLoading();
+          send({ type: 'gg-scene-ack' });
+        }
+      });
     };
 
     if (embedded) {
@@ -65,7 +78,22 @@
         else if (m.type === 'gg-frame') world.setFrame(m);
       });
       canvas.addEventListener('pointerdown', () => canvas.focus());
-      send({ type: 'gg-ready' });
+      // Keep pinging ready until Flutter delivers the first scene (avoids a
+      // race where gg-ready fires before the Dart listener is attached).
+      let pings = 0;
+      const ping = () => {
+        if (gotScene || pings > 40) return;
+        pings += 1;
+        send({ type: 'gg-ready' });
+        setTimeout(ping, 250);
+      };
+      ping();
+      // Safety net: never leave the spinner up forever.
+      setTimeout(() => {
+        if (!gotScene) {
+          loading.querySelector('b').textContent = '🌆 Still connecting… try classic 2D from the menu if this hangs.';
+        }
+      }, 8000);
     } else {
       document.getElementById('help').style.display = params.has('nohelp') ? 'none' : 'block';
       const { runDemo } = await import('./demo.js');

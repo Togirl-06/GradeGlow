@@ -17,6 +17,7 @@ import '../life_widgets.dart';
 import '../painters/avatar_painter.dart';
 import '../painters/city_painter.dart';
 import '../painters/interior_painter.dart';
+import '../widgets/minimap.dart';
 import '../world3d/world3d_stub.dart' if (dart.library.html) '../world3d/world3d_web.dart' as world3d;
 import 'avatar_editor.dart';
 import 'interactions.dart';
@@ -120,6 +121,8 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
   bool get _use3d => world3d.world3dSupported && !_force2d;
   String? _sceneSent;
   String _lookSent = '';
+  bool _worldReady = false;
+  double _waitedFor3d = 0;
 
   /// Slightly slower steps in 3D so walking reads as walking, not sprinting.
   double get _stepSeconds => _use3d ? 0.26 : stepSeconds;
@@ -189,7 +192,18 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
     } else if (walking && queue.isEmpty) {
       walking = false;
     }
-    if (_use3d) _push3d();
+    if (_use3d) {
+      _push3d();
+      // If the iframe never becomes ready (or never gets a scene), fall back
+      // so players are not stuck on "Entering GradeGlow City…".
+      if (!_worldReady) {
+        _waitedFor3d += dt;
+        if (_waitedFor3d > 10) {
+          setState(() => _force2d = true);
+          life.say('3D city is slow to load here — switched to the classic map.');
+        }
+      }
+    }
     if (mounted) setState(() {});
   }
 
@@ -363,28 +377,38 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
 
   void _on3d(Map<String, dynamic> m) {
     if (!mounted) return;
-    switch ('${m['type']}') {
-      case 'gg-ready':
-        // (Re)loaded page: resend the scene and look on the next frame.
-        _sceneSent = null;
-        _lookSent = '';
-      case 'gg-error':
-        setState(() => _force2d = true);
-        life.say('3D view is not available on this device, so the classic map is shown.');
-      case 'gg-tap':
-        _onTap3d(m);
-      case 'gg-move':
-        _stepDir((m['dx'] as num?)?.toInt() ?? 0, (m['dy'] as num?)?.toInt() ?? 0);
-      case 'gg-key':
-        if (busy) return;
-        switch ('${m['key']}') {
-          case 'e':
-            _interactNearest();
-          case 'p':
-            _openPhone();
-          case 'm':
-            _openMap();
-        }
+    final String type = '${m['type']}';
+    if (type == 'gg-ready' || type == 'gg-scene-ack') {
+      // Page (re)loaded or confirmed: force a fresh scene on the next tick.
+      _worldReady = true;
+      _waitedFor3d = 0;
+      _sceneSent = null;
+      _lookSent = '';
+      return;
+    }
+    if (type == 'gg-error') {
+      setState(() => _force2d = true);
+      life.say('3D view is not available on this device, so the classic map is shown.');
+      return;
+    }
+    if (type == 'gg-tap') {
+      _onTap3d(m);
+      return;
+    }
+    if (type == 'gg-move') {
+      _stepDir((m['dx'] as num?)?.toInt() ?? 0, (m['dy'] as num?)?.toInt() ?? 0);
+      return;
+    }
+    if (type == 'gg-key') {
+      if (busy) return;
+      switch ('${m['key']}') {
+        case 'e':
+          _interactNearest();
+        case 'p':
+          _openPhone();
+        case 'm':
+          _openMap();
+      }
     }
   }
 
@@ -440,9 +464,14 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
   void _push3d() {
     final String key = g.isIndoors ? 'room:${g.buildingId}' : 'city';
     if (_sceneSent != key) {
-      _sceneSent = key;
-      _lookSent = '';
-      world3d.world3dSend(g.isIndoors ? _interiorScene() : _cityScene());
+      final bool sent = world3d.world3dSend(
+        g.isIndoors ? _interiorScene() : _cityScene(),
+      );
+      if (sent) {
+        _sceneSent = key;
+        _lookSent = '';
+      }
+      // If not sent yet, keep _sceneSent null so we retry next tick.
     }
     final Map<String, Object?> look = _look3d();
     final String lookKey = jsonEncode(look);
@@ -833,6 +862,24 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
         ]),
       ),
       const Spacer(),
+      if (_use3d && !_worldReady)
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: LifeColors.panel2.withValues(alpha: 0.95),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: LifeColors.line),
+          ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
+              SizedBox(width: 10),
+              Flexible(child: Text('Entering GradeGlow City…', textAlign: TextAlign.center)),
+            ],
+          ),
+        ),
       if (life.toast != null)
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -842,20 +889,31 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
         ),
       Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-        child: Row(children: <Widget>[
-          if (g.isIndoors)
-            _action('🚪 Exit', () {
-              _stop();
-              goalExit = true;
-              _goTo(Interiors.exitX, Interiors.exitY);
-              if (queue.isEmpty) _arrive();
-            }),
-          const SizedBox(width: 8),
-          if (near != null) Expanded(child: _action('${near.emoji} ${near.name}', _interactNearest, strong: true, sub: near.hint))
-          else if (nearNpc != null) Expanded(child: _action('💬 Talk to ${nearNpc.name}', _interactNearest, strong: true, sub: nearNpc.role))
-          else if (!g.isIndoors && _buildingNear() != null) Expanded(child: _action('${_buildingNear()!.emoji} Enter ${_buildingNear()!.name}', _interactNearest, strong: true))
-          else const Spacer(),
-        ]),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            if (!g.isIndoors) ...<Widget>[
+              LifeMinimap(playerX: vx, playerY: vy, onTap: _openMap),
+              const SizedBox(width: 10),
+            ],
+            if (g.isIndoors)
+              _action('🚪 Exit', () {
+                _stop();
+                goalExit = true;
+                _goTo(Interiors.exitX, Interiors.exitY);
+                if (queue.isEmpty) _arrive();
+              }),
+            if (g.isIndoors) const SizedBox(width: 8),
+            if (near != null)
+              Expanded(child: _action('${near.emoji} ${near.name}', _interactNearest, strong: true, sub: near.hint))
+            else if (nearNpc != null)
+              Expanded(child: _action('💬 Talk to ${nearNpc.name}', _interactNearest, strong: true, sub: nearNpc.role))
+            else if (!g.isIndoors && _buildingNear() != null)
+              Expanded(child: _action('${_buildingNear()!.emoji} Enter ${_buildingNear()!.name}', _interactNearest, strong: true))
+            else
+              const Spacer(),
+          ],
+        ),
       ),
     ]);
   }

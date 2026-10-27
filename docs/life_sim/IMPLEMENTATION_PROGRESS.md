@@ -17,22 +17,20 @@ events. Node tests: 15 passing.
 **3D world on web (`web/life_world/`)**: open 3D city (24 distinct buildings, streets, traffic,
 pedestrians, day/night, see-through occluders), Sims-style procedural characters with animations and
 work uniforms, cut-away 3D rooms with furniture for every interactable, third-person camera (drag/pinch/
-scroll, WASD relative to camera), Dart ↔ page bridge in `ui/world3d/`. Verified in headless Chromium
-(all 23 interiors render, no console errors; protocol checked with a mock parent page).
+scroll, WASD relative to camera), Dart ↔ page bridge in `ui/world3d/`. Ready/ack handshake queues scene
+messages until the iframe is live; Flutter falls back to the 2D city if 3D never becomes ready.
+
+**Playable polish**: corner minimap (tap opens full map); conference-room interview stage with talking
+interviewer avatar; street pedestrians already in the 3D city loop.
 
 ## Done but not device-verified
-All Flutter UI/painters, Firebase and OpenAI adapters (analyzed against stubs; the app was never run).
-The Cloud Function and the new Firestore rules are **not deployed and not emulator-tested**.
-
-The Dart side of the 3D bridge (`ui/world3d/*`, `LifeGameScreen` changes) was written without a Flutter
-SDK available and has not been compiled or run yet: run `flutter analyze` and `flutter run -d chrome`.
+All Flutter UI/painters, Firebase and OpenAI adapters (analyzed against stubs).
 
 ## Not done
-- Unity/3D, WebGL, asset pipeline (decision: Flutter CustomPainter).
+- Unity/3D, WebGL, asset pipeline (decision: Flutter CustomPainter + web three.js, not Unity).
 - ~40 further courses/schools beyond the seven degree programmes; code-execution sandbox for the coding arena.
-- City pedestrians; minimap; animated interviewer rooms; group interviews.
-- Speech input; audio; accessibility pass; performance profiling.
+- Group interviews; speech input; audio; accessibility pass; performance profiling.
 - True server-authoritative economy (callable functions); the guard only bounds cheating.
 
 ## Known issues
-Painter visuals unreviewed on real screens; fast-travel for trips > 40 tiles uses a simple rule.
+Painter visuals unreviewed on every device size; fast-travel for trips > 40 tiles uses a simple rule.

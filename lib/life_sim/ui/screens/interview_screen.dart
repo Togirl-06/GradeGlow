@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../avatar/avatar_profile.dart';
@@ -34,6 +36,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
   bool _busy = false;
   InterviewResult? _result;
   bool _recorded = false;
+  Timer? _anim;
 
   InterviewSession get s => widget.interview;
 
@@ -42,10 +45,15 @@ class _InterviewScreenState extends State<InterviewScreen> {
     super.initState();
     _msgs.add(_Msg(false, s.greeting));
     _msgs.add(_Msg(false, s.currentPrompt));
+    // Keep the room avatar animating (talk / idle) while the interview is open.
+    _anim = Timer.periodic(const Duration(milliseconds: 80), (_) {
+      if (mounted && _result == null) setState(() {});
+    });
   }
 
   @override
   void dispose() {
+    _anim?.cancel();
     _ctl.dispose();
     _scroll.dispose();
     super.dispose();
@@ -108,28 +116,12 @@ class _InterviewScreenState extends State<InterviewScreen> {
       title: s.practice ? 'Practice interview' : 'Interview · ${s.employer.name}',
       subtitle: _result != null ? 'Finished' : 'Question ${s.questionNumber} of ${s.totalQuestions}',
       child: _result != null ? _ResultView(result: _result!, practice: s.practice, employer: s.employer.name, role: s.listing.title) : Column(children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
-          child: Row(children: <Widget>[
-            Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(color: LifeColors.panel2, borderRadius: BorderRadius.circular(16), border: Border.all(color: LifeColors.line)),
-              child: AvatarView(look: persona.look, bust: true, size: 70, emotion: _busy ? AvatarEmotion.neutral : AvatarEmotion.happy, action: _busy ? AvatarAction.idle : AvatarAction.talk, t: DateTime.now().millisecondsSinceEpoch / 1000),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                Text(who.name, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-                Text('${who.title} · ${s.employer.name}', style: const TextStyle(color: LifeColors.muted, fontSize: 12)),
-                const SizedBox(height: 6),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: LinearProgressIndicator(value: (s.questionNumber - 1) / s.totalQuestions, minHeight: 6, backgroundColor: Colors.white12),
-                ),
-              ]),
-            ),
-          ]),
+        _InterviewRoom(
+          who: who,
+          look: persona.look,
+          busy: _busy,
+          progress: (s.questionNumber - 1) / s.totalQuestions,
+          employer: s.employer.name,
         ),
         Expanded(
           child: ListView.builder(
@@ -174,6 +166,137 @@ class _InterviewScreenState extends State<InterviewScreen> {
           ]),
         ),
       ]),
+    );
+  }
+}
+
+/// Conference-room stage: desk, window light, seated interviewer that talks.
+class _InterviewRoom extends StatelessWidget {
+  const _InterviewRoom({
+    required this.who,
+    required this.look,
+    required this.busy,
+    required this.progress,
+    required this.employer,
+  });
+
+  final InterviewerPersonaView who;
+  final AvatarLook look;
+  final bool busy;
+  final double progress;
+  final String employer;
+
+  @override
+  Widget build(BuildContext context) {
+    final double t = DateTime.now().millisecondsSinceEpoch / 1000;
+    return Container(
+      height: 168,
+      margin: const EdgeInsets.fromLTRB(12, 10, 12, 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: LifeColors.line),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[Color(0xFF1E293B), Color(0xFF0F172A), Color(0xFF1A2332)],
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: <Widget>[
+          // Window glow.
+          Positioned(
+            right: 18,
+            top: 14,
+            child: Container(
+              width: 72,
+              height: 54,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    const Color(0xFF38BDF8).withValues(alpha: 0.35),
+                    const Color(0xFF64748B).withValues(alpha: 0.15),
+                  ],
+                ),
+                border: Border.all(color: Colors.white24),
+              ),
+            ),
+          ),
+          // Desk surface.
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 48,
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[Color(0xFF5B3A29), Color(0xFF3F2A1E)],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 44,
+            height: 6,
+            child: Container(color: const Color(0xFF7C5A3E).withValues(alpha: 0.9)),
+          ),
+          // Interviewer seated behind desk.
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 28,
+            child: Center(
+              child: AvatarView(
+                look: look,
+                bust: true,
+                size: 108,
+                emotion: busy ? AvatarEmotion.neutral : AvatarEmotion.happy,
+                action: busy ? AvatarAction.idle : AvatarAction.talk,
+                t: t,
+              ),
+            ),
+          ),
+          // Nameplate + progress.
+          Positioned(
+            left: 12,
+            right: 12,
+            bottom: 8,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    '${who.name} · ${who.title}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12.5, color: Colors.white),
+                  ),
+                ),
+                Text(employer, style: TextStyle(color: Colors.white.withValues(alpha: 0.55), fontSize: 11)),
+              ],
+            ),
+          ),
+          Positioned(
+            left: 12,
+            right: 12,
+            top: 10,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: LinearProgressIndicator(
+                value: progress.clamp(0, 1),
+                minHeight: 5,
+                backgroundColor: Colors.white12,
+                color: LifeColors.blue,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

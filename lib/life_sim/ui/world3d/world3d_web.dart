@@ -14,7 +14,11 @@ const String _viewType = 'gradeglow-life-world-3d';
 bool _factoryReady = false;
 bool _messageHooked = false;
 html.IFrameElement? _frame;
+bool _iframeLoaded = false;
 void Function(Map<String, dynamic> event)? _handler;
+final List<String> _outbox = <String>[];
+
+bool get world3dReady => _frame != null && _iframeLoaded;
 
 Widget buildWorld3dView({required void Function(Map<String, dynamic> event) onEvent}) {
   _handler = onEvent;
@@ -28,6 +32,10 @@ Widget buildWorld3dView({required void Function(Map<String, dynamic> event) onEv
         ..style.width = '100%'
         ..style.height = '100%'
         ..allow = 'fullscreen';
+      _iframeLoaded = false;
+      // onLoad only means the document arrived — wait for gg-ready (scripts up)
+      // before flushing the outbox, otherwise the first scene is dropped.
+      iframe.onLoad.listen((_) {});
       _frame = iframe;
       return iframe;
     });
@@ -36,16 +44,14 @@ Widget buildWorld3dView({required void Function(Map<String, dynamic> event) onEv
 
   if (!_messageHooked) {
     html.window.onMessage.listen((html.MessageEvent event) {
-      final Object? data = event.data;
-      if (data is! String || !data.contains('"gg-')) return;
-      Object? decoded;
-      try {
-        decoded = jsonDecode(data);
-      } catch (_) {
-        return;
+      final Map<String, dynamic>? decoded = _decodeMessage(event.data);
+      if (decoded == null) return;
+      final String type = '${decoded['type'] ?? ''}';
+      if (!type.startsWith('gg-')) return;
+      if (type == 'gg-ready' || type == 'gg-scene-ack') {
+        _iframeLoaded = true;
+        _flushOutbox();
       }
-      if (decoded is! Map<String, dynamic>) return;
-      if (!'${decoded['type'] ?? ''}'.startsWith('gg-')) return;
       _handler?.call(decoded);
     });
     _messageHooked = true;
@@ -54,9 +60,50 @@ Widget buildWorld3dView({required void Function(Map<String, dynamic> event) onEv
   return HtmlElementView(viewType: _viewType);
 }
 
-/// Sends a scene/frame message to the 3D page (no-op until the iframe exists).
-void world3dSend(Map<String, Object?> message) {
-  _frame?.contentWindow?.postMessage(jsonEncode(message), '*');
+Map<String, dynamic>? _decodeMessage(Object? data) {
+  String? text;
+  if (data is String) {
+    text = data;
+  } else if (data != null) {
+    // dart2js sometimes surfaces JS strings as opaque objects.
+    text = data.toString();
+    if (!text.contains('gg-')) return null;
+  }
+  if (text == null || !text.contains('"gg-')) return null;
+  try {
+    final Object? decoded = jsonDecode(text);
+    if (decoded is Map) {
+      return decoded.map((Object? k, Object? v) => MapEntry('$k', v));
+    }
+  } catch (_) {}
+  return null;
+}
+
+void _flushOutbox() {
+  final html.WindowBase? win = _frame?.contentWindow;
+  if (win == null || !_iframeLoaded) return;
+  while (_outbox.isNotEmpty) {
+    win.postMessage(_outbox.removeAt(0), '*');
+  }
+}
+
+/// Sends a scene/frame message to the 3D page.
+/// Returns false if the iframe is not ready yet (message is queued).
+bool world3dSend(Map<String, Object?> message) {
+  final String payload = jsonEncode(message);
+  final html.WindowBase? win = _frame?.contentWindow;
+  if (win == null || !_iframeLoaded) {
+    // Keep only the latest scene; queue frames only after load.
+    if (message['type'] == 'gg-scene') {
+      _outbox.removeWhere((String s) => s.contains('"gg-scene"'));
+      _outbox.add(payload);
+    } else if (_iframeLoaded) {
+      _outbox.add(payload);
+    }
+    return false;
+  }
+  win.postMessage(payload, '*');
+  return true;
 }
 
 /// Stops delivering events to [onEvent] (call from dispose).
