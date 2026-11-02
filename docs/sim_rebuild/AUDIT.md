@@ -5,7 +5,7 @@ Work happens on branch `sim-rebuild`; nothing is merged to `main` (which auto-de
 
 ## Method
 
-* Built an import graph of `lib/` starting at `lib/main.dart` (relative, `package:`, `part` and
+* Built an import graph of `lib/` starting at `lib/main.dart` (relative imports resolved the way Dart does, never above `lib/`; `package:`, `part` and
   conditional imports). Files not reachable from `main.dart` cannot run in the app.
 * Scanned all reachable simulator code for empty callbacks, `TODO`, "coming soon",
   placeholder/fake/stub markers, snackbar-only buttons, and grading based on text length.
@@ -25,7 +25,7 @@ Work happens on branch `sim-rebuild`; nothing is merged to `main` (which auto-de
 | `vu_v2/labs` | | 46 files | 21 live, 25 orphaned | Remove orphans. |
 | Older per-subject screens (`lib/screens/biology`, `computer_science`, `chemistry`, …) | | | partly | Remove orphans. |
 
-Orphaned code in total: **325 files, ~103,000 lines** (full list: `docs/sim_rebuild/orphans.txt`).
+Orphaned code in total: **292 files, ~95,000 lines** (full list: `docs/sim_rebuild/orphans.txt`).
 Ten tests only exercise orphaned files; they are removed with them.
 
 ## Fake or weak functionality found in live code
