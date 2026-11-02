@@ -1,0 +1,799 @@
+Resolving dependencies...
+Downloading packages...
+  _flutterfire_internals 1.3.59 (1.3.79 available)
+  archive 4.5.2 (4.6.0 available)
+  audioplayers 6.7.0 (6.8.1 available)
+  audioplayers_android 5.2.1 (5.3.0 available)
+  audioplayers_darwin 6.4.0 (6.5.0 available)
+  audioplayers_linux 4.2.1 (4.3.0 available)
+  audioplayers_platform_interface 7.1.1 (7.2.0 available)
+  audioplayers_web 5.2.1 (5.3.0 available)
+  audioplayers_windows 4.3.1 (4.4.1 available)
+  cli_util 0.4.2 (0.6.0 available)
+  clock 1.1.2 (1.1.3 available)
+  cloud_firestore 5.6.12 (7.1.0 available)
+  cloud_firestore_platform_interface 6.6.12 (8.1.0 available)
+  cloud_firestore_web 4.4.12 (5.8.0 available)
+  code_assets 1.1.0 (2.1.0 available)
+  cross_file 0.3.5+2 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  dbus 0.7.15 (0.8.0 available)
+  file_picker 9.2.3 (13.3.2 available)
+  file_selector_linux 0.9.4 (0.9.4+1 available)
+  file_selector_macos 0.9.5 (0.9.5+2 available)
+  file_selector_windows 0.9.3+5 (0.9.3+6 available)
+  firebase_auth 5.7.0 (7.0.1 available)
+  firebase_auth_platform_interface 7.7.3 (9.1.2 available)
+  firebase_auth_web 5.15.3 (6.3.2 available)
+  firebase_core 3.15.2 (5.1.0 available)
+  firebase_core_platform_interface 6.0.3 (8.1.1 available)
+  firebase_core_web 2.24.1 (4.1.0 available)
+  firebase_crashlytics 4.3.10 (6.0.1 available)
+  firebase_crashlytics_platform_interface 3.8.10 (3.9.2 available)
+  firebase_storage 12.4.10 (14.0.1 available)
+  firebase_storage_platform_interface 5.2.10 (6.0.9 available)
+  firebase_storage_web 3.10.17 (3.11.15 available)
+  flutter_dotenv 5.2.1 (6.0.1 available)
+  flutter_local_notifications 18.0.1 (22.3.3 available)
+  flutter_local_notifications_linux 5.0.0 (8.0.2 available)
+  flutter_local_notifications_platform_interface 8.0.0 (12.2.0 available)
+  flutter_plugin_android_lifecycle 2.0.34 (2.0.35 available)
+  flutter_svg 2.3.0 (2.3.2 available)
+  flutter_timezone 4.1.1 (5.1.1 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.18 available)
+  google_sign_in_ios 5.9.0 (6.3.8 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.3 available)
+  hooks 2.0.0 (2.2.0 available)
+  html 0.15.6 (0.15.7 available)
+  image 4.11.0 (4.12.0 available)
+  image_picker 1.2.2 (1.2.4 available)
+  image_picker_android 0.8.13+17 (0.8.13+25 available)
+  image_picker_ios 0.8.13+6 (0.8.13+14 available)
+  image_picker_platform_interface 2.11.1 (2.11.2 available)
+  intl 0.20.2 (0.20.3 available)
+  jni 1.0.0 (1.1.1 available)
+  jni_flutter 1.0.1 (1.0.4+1 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  mime 2.0.0 (2.1.0 available)
+  objective_c 9.4.1 (9.6.2 available)
+  package_config 2.2.0 (3.0.0 available)
+  path_provider 2.1.5 (2.1.6 available)
+  path_provider_linux 2.2.1 (2.2.2 available)
+  path_provider_platform_interface 2.1.2 (2.1.3 available)
+  permission_handler 12.0.3 (13.0.2 available)
+  permission_handler_android 13.0.1 (14.1.1 available)
+  permission_handler_apple 9.4.9 (9.6.5 available)
+  permission_handler_html 0.1.3+5 (0.1.4+1 available)
+  permission_handler_platform_interface 4.3.0 (4.4.1 available)
+  permission_handler_windows 0.2.1 (0.2.2 available)
+  petitparser 7.0.2 (7.1.0 available)
+  platform 3.1.6 (3.2.0 available)
+  posix 6.5.0 (6.5.4 available)
+  pub_semver 2.2.0 (2.2.1 available)
+  record 6.2.1 (7.1.2 available)
+  record_android 1.5.2 (2.2.0 available)
+  record_ios 1.2.1 (2.1.1 available)
+  record_linux 1.3.1 (2.1.3 available)
+  record_macos 1.2.2 (2.1.1 available)
+  record_platform_interface 1.6.0 (2.1.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  record_web 1.3.0 (2.1.3 available)
+  record_windows 1.0.7 (2.3.0 available)
+  shared_preferences 2.5.5 (2.5.6 available)
+  shared_preferences_android 2.4.26 (2.5.4 available)
+  shared_preferences_foundation 2.5.6 (2.6.1 available)
+  sign_in_with_apple 6.1.4 (8.2.0 available)
+  sign_in_with_apple_platform_interface 1.1.0 (2.0.0 available)
+  sign_in_with_apple_web 2.1.1 (3.0.0 available)
+  speech_to_text 7.4.0 (7.5.0 available)
+  speech_to_text_platform_interface 2.4.0 (2.5.0 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  synchronized 3.4.1 (3.5.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  timezone 0.9.4 (0.11.2 available)
+  url_launcher 6.3.2 (6.3.3 available)
+  url_launcher_android 6.3.32 (6.3.33 available)
+  url_launcher_ios 6.4.1 (6.4.2 available)
+  url_launcher_linux 3.2.2 (3.2.3 available)
+  url_launcher_macos 3.2.5 (3.2.6 available)
+  url_launcher_windows 3.1.5 (3.1.6 available)
+  uuid 4.5.3 (4.6.0 available)
+  vector_graphics 1.2.2 (1.2.6 available)
+  vector_graphics_compiler 1.2.5 (1.3.4 available)
+  vm_service 15.1.0 (15.4.0 available)
+  web 1.1.1 (1.1.2 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 7.0.1 (7.1.0 available)
+  yaml 3.1.3 (3.1.4 available)
+Got dependencies!
+108 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart
+00:00 +0: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
+00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
+00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: mixer keeps intro first, core steps in order, and every activity
+00:00 +4: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: micro prompts resolve as easy; explicit difficulty is respected
+00:00 +5: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: rapid review resolves as hard
+00:06 +6: /home/runner/work/GradeGlow/GradeGlow/test/chemistry_navigation_test.dart: Chemistry lesson hub opens without crash
+00:11 +7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: (setUpAll)
+00:11 +7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +8: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +9: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +10: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +11: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +12: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +13: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +14: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +15: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +16: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +17: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +18: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +19: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +20: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/student_journey_test.dart: TESTS 8–14 end to end: business_manager
+00:12 +21: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_software (school_cs) opens Software Company Floor
+00:12 +22: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_software (school_cs) opens Software Company Floor
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 152 pixels on the right.>
+cs_software threw: A RenderFlex overflowed by 152 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 152 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButton<String>
+  DropdownButton:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/science_career/science_career_hub_screen.dart:796:24
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#74f7e relayoutBoundary=up20 OVERFLOWING:
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=180.0, 0.0<=h<=Infinity)
+  size: Size(180.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station cs_software (school_cs) opens Software Company Floor
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:13 +22 -1: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_software (school_cs) opens Software Company Floor [E]
+  Test failed. See exception logs above.
+  The test description was: station cs_software (school_cs) opens Software Company Floor
+  
+00:13 +22 -1: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
+00:13 +23 -1: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 152 pixels on the right.>
+cs_ai threw: A RenderFlex overflowed by 152 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 152 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButton<String>
+  DropdownButton:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/science_career/science_career_hub_screen.dart:796:24
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#a7e3f relayoutBoundary=up20 OVERFLOWING:
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=180.0, 0.0<=h<=Infinity)
+  size: Size(180.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station cs_ai (school_cs) opens AI Research Lab
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:14 +23 -2: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab [E]
+  Test failed. See exception logs above.
+  The test description was: station cs_ai (school_cs) opens AI Research Lab
+  
+00:14 +23 -2: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_data (school_cs) opens Data Analytics Center
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 152 pixels on the right.>
+cs_data threw: A RenderFlex overflowed by 152 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 152 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButton<String>
+  DropdownButton:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/science_career/science_career_hub_screen.dart:796:24
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#654ba relayoutBoundary=up20 OVERFLOWING:
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=180.0, 0.0<=h<=Infinity)
+  size: Size(180.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station cs_data (school_cs) opens Data Analytics Center
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:14 +23 -3: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_data (school_cs) opens Data Analytics Center [E]
+  Test failed. See exception logs above.
+  The test description was: station cs_data (school_cs) opens Data Analytics Center
+  
+00:14 +23 -3: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_cyber (school_cs) opens Cyber Defense Center
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 152 pixels on the right.>
+cs_cyber threw: A RenderFlex overflowed by 152 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 152 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButton<String>
+  DropdownButton:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/science_career/science_career_hub_screen.dart:796:24
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#1c195 relayoutBoundary=up20 OVERFLOWING:
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=180.0, 0.0<=h<=Infinity)
+  size: Size(180.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station cs_cyber (school_cs) opens Cyber Defense Center
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:15 +23 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:15 +23 -4: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_cyber (school_cs) opens Cyber Defense Center [E]
+  Test failed. See exception logs above.
+  The test description was: station cs_cyber (school_cs) opens Cyber Defense Center
+  
+00:15 +23 -4: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_it (school_cs) opens IT Support Desk
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 152 pixels on the right.>
+cs_it threw: A RenderFlex overflowed by 152 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 152 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButton<String>
+  DropdownButton:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/science_career/science_career_hub_screen.dart:796:24
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#37903 relayoutBoundary=up20 OVERFLOWING:
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=180.0, 0.0<=h<=Infinity)
+  size: Size(180.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station cs_it (school_cs) opens IT Support Desk
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:15 +23 -5: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:15 +23 -5: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_it (school_cs) opens IT Support Desk [E]
+  Test failed. See exception logs above.
+  The test description was: station cs_it (school_cs) opens IT Support Desk
+  
+00:16 +24 -5: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_web (school_cs) opens Web & Mobile Studio
+00:16 +25 -5: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_web (school_cs) opens Web & Mobile Studio
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 152 pixels on the right.>
+cs_web threw: A RenderFlex overflowed by 152 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 152 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButton<String>
+  DropdownButton:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/science_career/science_career_hub_screen.dart:796:24
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#42c21 relayoutBoundary=up20 OVERFLOWING:
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=180.0, 0.0<=h<=Infinity)
+  size: Size(180.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station cs_web (school_cs) opens Web & Mobile Studio
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:16 +25 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_web (school_cs) opens Web & Mobile Studio [E]
+  Test failed. See exception logs above.
+  The test description was: station cs_web (school_cs) opens Web & Mobile Studio
+  
+00:16 +25 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_career (school_cs) opens Tech Career Simulation
+00:16 +26 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_anatomy (school_medicine) opens 3D Anatomy Table
+00:17 +27 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_history (school_medicine) opens Patient History Room
+00:17 +28 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_diagnosis (school_medicine) opens Diagnosis Board
+00:17 +29 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_clinic (school_medicine) opens Virtual Patient Clinic
+00:17 +30 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_clinic (school_medicine) opens Virtual Patient Clinic
+00:17 +31 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_labsci (school_medicine) opens Diagnostic Laboratory
+00:17 +32 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_pharmacy (school_medicine) opens Pharmacy & Counselling
+00:18 +33 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_career (school_medicine) opens Hospital Rotation
+00:18 +34 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_ward (school_nursing) opens Patient Care Ward
+00:18 +35 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_assess (school_nursing) opens Patient Assessment Lab
+00:18 +36 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_case (school_nursing) opens Clinical Case Simulator
+00:18 +37 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_case (school_nursing) opens Clinical Case Simulator
+00:18 +38 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_case (school_nursing) opens Clinical Case Simulator
+00:18 +39 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_case (school_nursing) opens Clinical Case Simulator
+00:18 +40 -6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +41 -6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +42 -6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +43 -6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +44 -6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +45 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_real_cases (school_law) opens Real Case Study Center
+00:19 +46 -6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:20 +47 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_school (school_law) opens Law Library & Lessons
+00:20 +48 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_client (school_law) opens Client Interview Room
+00:20 +49 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_firm (school_law) opens Law Firm Desk
+00:20 +50 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_court (school_law) opens Moot Courtroom
+00:21 +51 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_mech (school_engineering) opens Mechanical Workshop
+00:21 +52 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_civil (school_engineering) opens Civil Construction Site
+00:21 +53 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +54 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +55 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +56 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +57 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +58 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +59 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +60 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +61 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +62 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +63 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +64 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +65 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +66 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +67 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +68 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +69 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +70 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +71 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +72 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +73 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:21 +74 -6: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/job_test.dart: Salary negotiation modest asks are accepted, middling asks get a counter, extreme asks fail
+00:21 +75 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_chem (school_engineering) opens Chemical Process Plant
+00:21 +76 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_chem (school_engineering) opens Chemical Process Plant
+00:21 +77 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_chem (school_engineering) opens Chemical Process Plant
+00:21 +78 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_aero (school_engineering) opens Aerospace Hangar
+00:21 +79 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_industrial (school_engineering) opens Industrial Factory Floor
+00:21 +80 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_career (school_engineering) opens Engineering Firm
+00:22 +81 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:22 +82 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_accounting (school_business) opens Accounting Firm
+00:22 +83 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_finance (school_business) opens Markets Desk
+00:22 +84 -6: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Software Engineer
+00:22 +85 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +86 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +87 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +88 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +89 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +90 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +91 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +92 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hr (school_business) opens HR Department
+00:23 +93 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_startup (school_business) opens Startup Incubator
+00:23 +94 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_school (school_business) opens Business Lecture Rooms
+00:23 +95 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_policy (school_economics) opens Economic Policy Center
+00:23 +96 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:23 +97 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_trade (school_economics) opens Global Trade Floor
+00:23 +98 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_whiteboard (school_math) opens Interactive Whiteboard
+00:23 +99 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_applied (school_math) opens Applied Math Lab
+00:23 +100 -6: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: 15 districts (campus + city), each with at least one building
+00:24 +101 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:24 +102 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:24 +103 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:24 +104 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:24 +105 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:24 +106 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:24 +107 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
+00:24 +108 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:24 +109 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_newsroom (school_arts) opens Newsroom
+00:24 +110 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_lab (school_biology) opens Biology Lab
+00:25 +111 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_anatomy (school_biology) opens Anatomy Models
+00:25 +111 -6: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/spec_gap_test.dart
+ALL PASSED: 19 passed, 0 failed
+00:25 +112 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_career (school_biology) opens Research Career
+00:25 +113 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +114 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +115 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +116 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +117 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +118 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +119 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +120 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +121 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +122 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +123 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +124 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +125 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +126 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +127 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +128 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +129 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +130 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +131 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +132 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +133 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:26 +134 -6: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 143 pixels on the right.>
+chem_bench threw: A RenderFlex overflowed by 143 pixels on the right.
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 143 pixels on the right.
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///home/runner/work/GradeGlow/GradeGlow/lib/vu_v2/career_labs/playable/science/chemistry/chemistry_titration_lab.dart:317:26
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#79382 relayoutBoundary=up3 OVERFLOWING:
+  parentData: offset=Offset(10.0, 8.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=622.0, 0.0<=h<=Infinity)
+  size: Size(622.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart:63:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart line 63
+The test description was:
+  station chem_bench (school_chemistry) opens Chemistry Bench
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:26 +134 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench [E]
+  Test failed. See exception logs above.
+  The test description was: station chem_bench (school_chemistry) opens Chemistry Bench
+  
+00:26 +134 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_lessons (school_chemistry) opens Chemistry Lessons
+00:26 +135 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_career (school_chemistry) opens Chemist Career
+00:26 +136 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_lab (school_physics) opens Physics Lab
+00:27 +137 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_practical (school_physics) opens Practical Experiments
+00:27 +138 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:27 +139 -7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: (tearDownAll)
+00:27 +139 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge empty answer scores zero everywhere
+00:27 +140 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge strong answers score well, weak ones poorly
+00:27 +141 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge technical answer with the right concepts beats a vague one
+00:27 +142 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge slang, hedging and profanity hurt professionalism and confidence
+00:27 +143 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge examples dimension rewards concrete evidence
+00:27 +144 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge short vague answers trigger a follow-up; polished ones do not
+00:27 +145 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge all scores stay within 0..10
+00:27 +146 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank every career has role-specific questions and the six classics exist
+00:27 +147 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank interviews get longer with seniority
+00:27 +148 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession asks one question at a time and reaches a decision
+00:27 +149 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession poor interview is rejected with actionable feedback
+00:27 +150 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession follow-ups are capped and do not stall the interview
+00:27 +151 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession selective employers need a higher hiring score
+00:27 +152 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession results require at least one answer
+00:28 +153 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/iso_test.dart: project/unproject round-trips and depth increases toward the viewer
+00:29 +154 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: every career has a degree; degree ids match the career catalog
+00:29 +155 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: exam questions are well-formed
+00:29 +156 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: full degree flow: enrol, lectures, study, exam, graduate
+00:29 +157 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: failing an exam costs study time; weekend lectures rejected; json round trip
+00:29 +158 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: law needs a bachelor first
+00:29 +159 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure every career has a healthy library at every rank
+00:29 +160 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure all scenarios are well-formed
+00:29 +161 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure generated scenarios are reproducible from their id
+00:29 +162 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure daily assignments are deterministic, vary by day and avoid recent tasks
+00:29 +163 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure tasks fit the rank they are assigned to
+00:29 +164 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ideal answers earn (near) full marks on EVERY scenario, including rubric-graded text
+00:29 +165 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading terrible answers never score well
+00:29 +166 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading multi-select penalises over-selection
+00:29 +167 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ordering gives partial credit by correct pairs
+00:29 +168 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading numeric grading: exact, close and wrong
+00:29 +169 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading text grading: keyword rubric, minimum length and profanity
+00:29 +170 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading inspection rewards essentials and punishes wasteful actions
+00:29 +171 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading generated numeric answers are consistent (reconciliation really reconciles)
+00:29 +172 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading a pluggable AI judge is used for text, and falls back when it throws
+00:30 +173 -7: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/npc_motion_test.dart
+NPCs: 65, walking: 65
+ALL PASSED: 265 passed, 0 failed
+00:30 +173 -7: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/lecture_test.dart
+ALL PASSED: 698 passed, 0 failed
+00:31 +173 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school has its own building on the map
+00:31 +174 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school building has a station for each of its labs, a lecture room and a professor
+00:31 +175 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every lab station opens a real screen
+00:31 +176 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: the apartment has separate rooms joined by doorways
+00:31 +177 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: real cases are well formed
+00:32 +178 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: walking the BFS path to every building costs time and arrives
+00:32 +179 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: cannot walk into walls, diagonals, or buildings closed at night
+00:32 +180 -7: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: home is always enterable
+00:33 +181 -7: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/hiring_outcomes_test.dart
+ALL PASSED: 16 passed, 0 failed
+00:33 +181 -7: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile unit circle routes to trigonometry
+00:33 +182 -7: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile trigonometric equations do not route to algebra
+00:33 +183 -7: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureFallback unit circle lecture teaches unit circle not linear functions
+00:34 +184 -7: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: layout exposes nursing NPCs and interactables
+00:34 +185 -7: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: tick moves player toward target
+00:34 +186 -7: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: textbook chapter includes reading path and diagrams
+00:34 +187 -7: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: velocity chapter is wrapped with navigation
+00:34 +188 -7: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: acceleration chapter includes deep dive and full examples
+00:35 +189 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: formal greeting explains Dear
+00:35 +190 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Luke formally
+00:35 +191 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Rob informally
+00:35 +192 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: rejects Hi Luke for formal Luke greeting
+00:35 +193 -7: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes fixes under-reported data size
+00:35 +194 -7: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: rebuildWavBytes fixes wrong header size and sample rate
+00:35 +195 -7: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes is a no-op when sizes are correct
+00:35 +196 -7: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech raises quiet recordings
+00:35 +197 -7: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech rejects silent recordings
+00:36 +198 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_speech_hygiene_test.dart: drops open-your-notes framing and keeps the teaching
+00:36 +199 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: budget allocations that sum to 80k produce finite KPIs
+00:36 +200 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: cost cutting lowers customers vs retention strategy
+00:36 +201 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: all eight majors have case challenges and jobs
+00:36 +202 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: flagship Apex Commerce job exists
+00:37 +203 -7: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: each engineering major has at least two missions and three jobs
+00:37 +204 -7: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: flagship Apex mech job exists
+00:37 +205 -7: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: mastery requires professor, lab, and knowledge check
+00:37 +206 -7: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: lab report grades reasoning from the simulation result
+00:38 +207 -7: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:39 +208 -7: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:39 +209 -7: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:39 +210 -7: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:40 +211 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +212 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +213 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +214 -7: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: specific, reasoned answers pass
+00:40 +215 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:40 +216 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:40 +217 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Business curriculum matches the supplied topic outline
+00:40 +218 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: every Business topic has a full textbook chapter
+00:40 +219 -7: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: lecture notes do not change mastery or XP
+00:41 +220 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: Duolingo loop: micro prompt → question → grade → feedback
+00:41 +221 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: mistake injects retry and awards partial XP
+00:41 +222 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: lesson completes with summary
+00:42 +223 -7: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: max recording duration is 4 hours
+00:42 +224 -7: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: formatRecordingDuration shows hours for long recordings
+00:42 +225 -7: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: WavAudioChunker splits oversized wav files
+00:42 +226 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: skull lights at the spoken word and holds until the next structure
+00:42 +227 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: axial skeleton lights the axis as a group
+00:42 +228 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: mitochondria illuminate in the animal cell
+00:42 +229 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: gravity lights the weight arrow on a force diagram
+00:42 +230 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: identify tap does not leak the answer from speech
+00:42 +231 -7: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: right ventricle then pulmonary artery for heart flow
+00:43 +232 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: question bank adds topic-only extras to a session
+00:43 +233 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras never come from a different lesson topic
+00:43 +234 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: present perfect extras stay on present perfect topic
+00:43 +235 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: engine session uses topic bank only
+00:43 +236 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: each lesson has topic supplements in the bank
+00:43 +237 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras prefer challenge-level questions
+00:43 +238 -7: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: all eight programs have distinct hub focus tags
+00:43 +239 -7: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: dyspnea critical penicillin fails
+00:44 +240 -7: /home/runner/work/GradeGlow/GradeGlow/test/api_error_messages_test.dart: hides Dart null-check crashes from the tutor banner
+00:44 +241 -7: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: maps percent bands onto a 4.0 letter scale
+00:44 +242 -7: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: predicts term GPA from quiz average
+00:44 +243 -7: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: flags weak courses and a rising trend
+00:44 +244 -7: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: builds a forecast from a user profile
+00:45 +245 -7: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: textbookSpeechSentences strips bold markdown for read-aloud
+00:45 +246 -7: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: speechTextFromMarkdown strips bold markdown for TTS
+00:45 +247 -7: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: practical lab catalog has 11 experiments
+00:45 +248 -7: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: each practical resolves to a topic
+00:46 +249 -7: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
+00:46 +250 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishActivityPanel sentence builder shows word bank
+00:47 +251 -7: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishLessonScreen shows sentence builder at pp_build
+00:47 +252 -7: Some tests failed.
+
+Failing tests:
+  /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+  /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
+  /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_cyber (school_cs) opens Cyber Defense Center
+  /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_data (school_cs) opens Data Analytics Center
+  ... and 3 more
