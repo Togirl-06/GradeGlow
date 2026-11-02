@@ -101,6 +101,7 @@ jobs:
             echo "3D world tests: ${{ steps.wtest.outcome }}"
           } >> ci_report.txt
           cat ci_report.txt >> "$GITHUB_STEP_SUMMARY"
+          echo "::notice::analyzer errors: $(grep -cE '^\s*error' analyze.txt || true); failing tests: $(grep -cE '\[E\]$' ftest.txt || true)"
           echo "::notice::analyze=${{ steps.analyze.outcome }} flutter=${{ steps.ftest.outcome }} functions=${{ steps.ntest.outcome }} world=${{ steps.wtest.outcome }}"
 
       - name: Publish report to ci-reports branch
@@ -112,14 +113,15 @@ jobs:
           cp build/coding_problems.json /tmp/r/ 2>/dev/null || true
           git config user.name "gradeglow-ci"
           git config user.email "ci@users.noreply.github.com"
-          git fetch origin ci-reports --depth=1 2>/dev/null && git checkout -q -B ci-reports FETCH_HEAD || git checkout -q --orphan ci-reports
-          git rm -rq --cached . 2>/dev/null || true
-          find . -mindepth 1 -maxdepth 1 ! -name .git ! -name reports -exec rm -rf {} +
-          mkdir -p "reports/${GITHUB_SHA}"
-          cp /tmp/r/* "reports/${GITHUB_SHA}/"
-          git add reports
-          git commit -qm "CI report ${GITHUB_SHA} (${GITHUB_REF_NAME})"
-          git push -q origin ci-reports
+          for attempt in 1 2 3 4 5; do
+            rm -rf /tmp/pub && mkdir /tmp/pub && cd /tmp/pub
+            git init -q && git remote add origin "$(git -C "$GITHUB_WORKSPACE" remote get-url origin)"
+            git -c http.extraheader="$(git -C "$GITHUB_WORKSPACE" config --get http.https://github.com/.extraheader)" fetch -q --depth=1 origin ci-reports && git checkout -q -B ci-reports FETCH_HEAD || git checkout -q --orphan ci-reports
+            mkdir -p "reports/${GITHUB_SHA}" && cp /tmp/r/* "reports/${GITHUB_SHA}/"
+            git add reports && git -c user.name=gradeglow-ci -c user.email=ci@users.noreply.github.com commit -qm "CI report ${GITHUB_SHA} (${GITHUB_REF_NAME})"
+            if git -c http.extraheader="$(git -C "$GITHUB_WORKSPACE" config --get http.https://github.com/.extraheader)" push -q origin ci-reports; then echo "published"; break; fi
+            sleep $((attempt * 3))
+          done
 
       - name: Fail if anything failed
         if: steps.analyze.outcome == 'failure' || steps.ftest.outcome == 'failure' || steps.ntest.outcome == 'failure' || steps.wtest.outcome == 'failure'
