@@ -68,16 +68,23 @@ class LeetcodeProblemBank {
           p.title.toLowerCase().replaceAll(_titleNoise, ' ').trim();
       final String? existingTitleId = titleOwner[normTitle];
       if (existingTitleId != null && existingTitleId != p.id) {
-        // Keep the richer / curated copy if already present.
-        return;
+        // Same problem under another id: keep the copy with real tests.
+        final LeetcodeProblem? other = byId[existingTitleId];
+        if (other == null || other.hasRealTests || !p.hasRealTests) return;
+        byId.remove(existingTitleId);
       }
 
       final LeetcodeProblem? prev = byId[p.id];
       if (prev != null) {
-        // Prefer longer descriptions / more examples (curated over thin catalog).
-        final int prevScore = prev.description.length + prev.examples.length * 40;
-        final int nextScore = p.description.length + p.examples.length * 40;
-        if (nextScore <= prevScore) return;
+        // A copy with real test data always beats a generated placeholder,
+        // however long the placeholder's description is.
+        if (prev.hasRealTests != p.hasRealTests) {
+          if (prev.hasRealTests) return;
+        } else {
+          final int prevScore = prev.description.length + prev.examples.length * 40 + prev.hiddenTests.length * 40;
+          final int nextScore = p.description.length + p.examples.length * 40 + p.hiddenTests.length * 40;
+          if (nextScore <= prevScore) return;
+        }
       }
 
       byId[p.id] = p;
@@ -99,7 +106,8 @@ class LeetcodeProblemBank {
       consider(p);
     }
 
-    final List<LeetcodeProblem> out = byId.values.toList();
+    // Only list problems a student can actually solve and be graded on.
+    final List<LeetcodeProblem> out = byId.values.where((LeetcodeProblem p) => p.hasRealTests).toList();
     out.sort((LeetcodeProblem a, LeetcodeProblem b) {
       final int? ai = int.tryParse(a.id);
       final int? bi = int.tryParse(b.id);
@@ -129,7 +137,7 @@ class LeetcodeProblemBank {
     for (final LeetcodeProblem p in LeetcodeDebugBank.all) {
       seen[p.id] = p;
     }
-    final List<LeetcodeProblem> raw = seen.values.toList()
+    final List<LeetcodeProblem> raw = seen.values.where((LeetcodeProblem p) => p.hasRealTests).toList()
       ..sort((LeetcodeProblem a, LeetcodeProblem b) => a.title.compareTo(b.title));
     final List<LeetcodeProblem> out = <LeetcodeProblem>[];
     for (int i = 0; i < raw.length; i++) {

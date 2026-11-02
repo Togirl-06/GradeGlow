@@ -43,7 +43,9 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
-    expect(find.text('Demo Student'), findsOneWidget);
+    // The dashboard greets by first name ("Good morning, Demo").
+    expect(find.textContaining(', Demo'), findsOneWidget);
     expect(find.text('Home'), findsOneWidget);
+    expect(find.text('Campus'), findsOneWidget);
   });
 }

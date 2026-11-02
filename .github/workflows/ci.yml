@@ -55,7 +55,7 @@ jobs:
           grep -cE "^\s*error" analyze.txt | sed 's/^/analyzer errors: /' >> ci_report.txt || true
           grep -cE "^\s*warning" analyze.txt | sed 's/^/analyzer warnings: /' >> ci_report.txt || true
           tail -3 analyze.txt >> ci_report.txt
-          grep -E "^\s*error" analyze.txt | head -10 | while read -r l; do echo "::error::$l"; done
+          grep -E "^\s*error" analyze.txt | head -10 | while read -r l; do echo "::error::$l"; done || true
           exit $status
 
       - name: Flutter tests
@@ -68,7 +68,7 @@ jobs:
           status=${PIPESTATUS[0]}
           grep -E "\[E\]|Some tests failed|All tests passed|Error:|Expected:|Actual:|Failed to load" ftest.txt | head -300 >> ci_report.txt || true
           tail -5 ftest.txt >> ci_report.txt
-          grep -E "\[E\]" ftest.txt | head -10 | while read -r l; do echo "::error::$l"; done
+          grep -E "\[E\]" ftest.txt | head -10 | while read -r l; do echo "::error::$l"; done || true
           exit $status
 
       - name: Functions tests

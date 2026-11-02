@@ -98,6 +98,26 @@ class LeetcodeProblem {
 
   bool get isDebug => kind == LeetcodeProblemKind.debug;
 
+  static final RegExp _placeholderIo = RegExp(
+    r'^(sample input|edge-case input|expected( edge-case)? output|sample = \[\.\.\.\]|result)\b',
+    caseSensitive: false,
+  );
+
+  /// True when every example has concrete input/output values (not generated
+  /// placeholder text) and the problem has at least two cases in total, so the
+  /// judge can actually run and grade it.
+  bool get hasRealTests {
+    if (examples.isEmpty) return false;
+    bool real(String s) => s.trim().isNotEmpty && !_placeholderIo.hasMatch(s.trim());
+    for (final LeetcodeExample e in examples) {
+      if (!real(e.input) || !real(e.output)) return false;
+    }
+    for (final LeetcodeHiddenTest t in hiddenTests) {
+      if (!real(t.input) || !real(t.output)) return false;
+    }
+    return examples.length + hiddenTests.length >= 2;
+  }
+
   String get promptFallback {
     final String action = isDebug
         ? 'Fix the bug in the existing implementation of $title.'

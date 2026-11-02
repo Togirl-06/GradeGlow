@@ -152,3 +152,11 @@ test("records: points only on first Accepted, attempts always count", () => {
   s = mergeResult(s.next, { problem, language: "javascript", result: { verdict: "Wrong Answer" }, now: 4 });
   assert.equal(s.next.accepted, true, "a later failure does not erase a solve"); assert.equal(s.next.attempts, 4);
 });
+
+const problemsPath = require("node:path").join(__dirname, "../code_judge/problems.json");
+test("every problem the app lists can be graded by the server", { skip: !require("node:fs").existsSync(problemsPath) && "problems.json not generated yet" }, () => {
+  const P = require(problemsPath);
+  const bad = Object.entries(P).filter(([, p]) => !gradability(p).gradable).map(([k, p]) => `${k} ${p.title}: ${gradability(p).reason}`);
+  assert.deepEqual(bad, [], `${bad.length} ungradable problems are listed in the app`);
+  assert.ok(Object.keys(P).length >= 30, "too few problems");
+});
