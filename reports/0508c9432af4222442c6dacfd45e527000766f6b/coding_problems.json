@@ -1,0 +1,517 @@
+{
+ "debug:GG-0001": {
+  "id": "GG-0001",
+  "title": "Neon Binary Search Sprint · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "sortedProbe",
+  "tags": [
+   "Binary Search",
+   "Debugging"
+  ],
+  "description": "**Neon Binary Search Sprint** (GG-0001)\n\nThis binary search never terminates or returns the wrong index on some inputs. Correct the loop bounds.\n\nImplement `sortedProbe` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [-1,0,3,5,9,12], target = 9",
+    "output": "4"
+   },
+   {
+    "input": "nums = [-1,0,3,5,9,12], target = 2",
+    "output": "-1"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0002": {
+  "id": "GG-0002",
+  "title": "Prism Dynamic Programming Quest · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "countStairPaths",
+  "tags": [
+   "Dynamic Programming",
+   "Debugging"
+  ],
+  "description": "**Prism Dynamic Programming Quest** (GG-0002)\n\nCount ways to climb `n` stairs taking 1 or 2 steps. Base cases are incorrect.\n\nImplement `countStairPaths` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "n = 3",
+    "output": "3"
+   },
+   {
+    "input": "n = 2",
+    "output": "2"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0003": {
+  "id": "GG-0003",
+  "title": "Echo Array Sprint · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "hasEchoValue",
+  "tags": [
+   "Array",
+   "Debugging"
+  ],
+  "description": "**Echo Array Sprint** (GG-0003)\n\nThis duplicate check is wrong for some inputs. Fix the logic.\n\nImplement `hasEchoValue` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [1,2,3,1]",
+    "output": "true"
+   },
+   {
+    "input": "nums = [1,2,3,4]",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": [
+   {
+    "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
+    "output": "true"
+   }
+  ]
+ },
+ "debug:GG-0004": {
+  "id": "GG-0004",
+  "title": "Pulse Array Puzzle · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "hasEchoValue",
+  "tags": [
+   "Array",
+   "Debugging"
+  ],
+  "description": "**Pulse Array Puzzle** (GG-0004)\n\nReturn `true` if any value appears at least twice. The code below always returns false.\n\nImplement `hasEchoValue` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [1,2,3,1]",
+    "output": "true"
+   },
+   {
+    "input": "nums = [1,2,3,4]",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0005": {
+  "id": "GG-0005",
+  "title": "Echo Recursion Sprint · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "solve0005",
+  "tags": [
+   "Recursion",
+   "Debugging"
+  ],
+  "description": "**Echo Recursion Sprint** (GG-0005)\n\nThe recursive Fibonacci implementation below is wrong for base cases. Fix it without changing the function signature.\n\nImplement `solve0005` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "n = 0",
+    "output": "0"
+   },
+   {
+    "input": "n = 4",
+    "output": "3"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0006": {
+  "id": "GG-0006",
+  "title": "Vector Linked List Quest · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "chainLoops",
+  "tags": [
+   "Linked List",
+   "Debugging"
+  ],
+  "description": "**Vector Linked List Quest** (GG-0006)\n\nFloyd's cycle detection below is broken. Fix the slow/fast pointer logic.\n\nImplement `chainLoops` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "head = [3,2,0,-4], pos = 1",
+    "output": "true"
+   },
+   {
+    "input": "head = [1]",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0007": {
+  "id": "GG-0007",
+  "title": "Pulse Array Sprint · Debug Desk",
+  "difficulty": "Medium",
+  "kind": "debug",
+  "functionName": "hottestStretch",
+  "tags": [
+   "Array",
+   "Debugging"
+  ],
+  "description": "**Pulse Array Sprint** (GG-0007)\n\nKadane's algorithm below returns the wrong answer when all numbers are negative. Fix the accumulation logic.\n\nImplement `hottestStretch` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [-2,1,-3,4,-1,2,1,-5,4]",
+    "output": "6"
+   },
+   {
+    "input": "nums = [-5,-2,-8]",
+    "output": "-2"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0008": {
+  "id": "GG-0008",
+  "title": "Circuit Linked List Sprint · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "flipChain",
+  "tags": [
+   "Linked List",
+   "Debugging"
+  ],
+  "description": "**Circuit Linked List Sprint** (GG-0008)\n\nThe list reversal below drops nodes. Repair the pointer updates so the full list reverses in-place.\n\nImplement `flipChain` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "head = [1,2,3,4,5]",
+    "output": "[5,4,3,2,1]"
+   },
+   {
+    "input": "head = [1,2]",
+    "output": "[2,1]"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0009": {
+  "id": "GG-0009",
+  "title": "Orbit Array Drill · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "findTwinIndices",
+  "tags": [
+   "Array",
+   "Debugging"
+  ],
+  "description": "**Orbit Array Drill** (GG-0009)\n\nThis solution should return indices of two numbers that add up to `target`, but it fails on several inputs. Find and fix the bug.\n\nImplement `findTwinIndices` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [2,7,11,15], target = 9",
+    "output": "[0,1]"
+   },
+   {
+    "input": "nums = [3,2,4], target = 6",
+    "output": "[1,2]"
+   }
+  ],
+  "hiddenTests": [
+   {
+    "input": "nums = [3,3], target = 6",
+    "output": "[0,1]"
+   }
+  ]
+ },
+ "debug:GG-0010": {
+  "id": "GG-0010",
+  "title": "Orbit String Workshop · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "lettersMatch",
+  "tags": [
+   "String",
+   "Debugging"
+  ],
+  "description": "**Orbit String Workshop** (GG-0010)\n\nThe anagram check below fails when strings have different lengths or repeated chars. Fix it.\n\nImplement `lettersMatch` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "s = \"anagram\", t = \"nagaram\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"rat\", t = \"car\"",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0011": {
+  "id": "GG-0011",
+  "title": "Vector String Quest · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "lettersMatch",
+  "tags": [
+   "String",
+   "Debugging"
+  ],
+  "description": "**Vector String Quest** (GG-0011)\n\nReturn whether `t` is an anagram of `s`. The frequency check is wrong.\n\nImplement `lettersMatch` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "s = \"anagram\", t = \"nagaram\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"rat\", t = \"car\"",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "debug:GG-0012": {
+  "id": "GG-0012",
+  "title": "Neon String Workshop · Debug Desk",
+  "difficulty": "Easy",
+  "kind": "debug",
+  "functionName": "bracketsBalanced",
+  "tags": [
+   "String",
+   "Stack",
+   "Debugging"
+  ],
+  "description": "**Neon String Workshop** (GG-0012)\n\nThe bracket-matching logic below is incorrect. Fix it so nested and sequential pairs validate properly.\n\nImplement `bracketsBalanced` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "s = \"()\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"()[]{}\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"(]\"",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0001": {
+  "id": "GG-0001",
+  "title": "Twin Index Target",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "findTwinIndices",
+  "tags": [
+   "Array",
+   "Hash Table"
+  ],
+  "description": "**Twin Index Target** (GG-0001)\n\nGiven an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nImplement `findTwinIndices` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [2,7,11,15], target = 9",
+    "output": "[0,1]"
+   },
+   {
+    "input": "nums = [3,2,4], target = 6",
+    "output": "[1,2]"
+   }
+  ],
+  "hiddenTests": [
+   {
+    "input": "nums = [3,3], target = 6",
+    "output": "[0,1]"
+   }
+  ]
+ },
+ "impl:GG-0002": {
+  "id": "GG-0002",
+  "title": "Bracket Balance Check",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "bracketsBalanced",
+  "tags": [
+   "String",
+   "Stack"
+  ],
+  "description": "**Bracket Balance Check** (GG-0002)\n\nGiven a string `s` containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid.\n\nImplement `bracketsBalanced` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "s = \"()\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"()[]{}\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"(]\"",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0003": {
+  "id": "GG-0003",
+  "title": "Pulse Recursion Sprint",
+  "difficulty": "Medium",
+  "kind": "implement",
+  "functionName": "solve0003",
+  "tags": [
+   "Recursion",
+   "Math"
+  ],
+  "description": "**Pulse Recursion Sprint** (GG-0003)\n\nImplement `pow(x, n)` which calculates `x` raised to the power `n`.\n\nImplement `solve0003` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "x = 2.00000, n = 10",
+    "output": "1024.00000"
+   },
+   {
+    "input": "x = 2.00000, n = -2",
+    "output": "0.25000"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0004": {
+  "id": "GG-0004",
+  "title": "Market Swing Maximizer",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "maxSwingProfit",
+  "tags": [
+   "Array",
+   "Dynamic Programming"
+  ],
+  "description": "**Market Swing Maximizer** (GG-0004)\n\nYou are given an array `prices` where `prices[i]` is the price of a given stock on the `i`-th day.\n\nYou want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\nReturn the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return `0`.\n\nImplement `maxSwingProfit` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "prices = [7,1,5,3,6,4]",
+    "output": "5"
+   },
+   {
+    "input": "prices = [7,6,4,3,1]",
+    "output": "0"
+   }
+  ],
+  "hiddenTests": [
+   {
+    "input": "prices = [2,4,1]",
+    "output": "2"
+   },
+   {
+    "input": "prices = [3,2,6,5,0,3]",
+    "output": "4"
+   }
+  ]
+ },
+ "impl:GG-0005": {
+  "id": "GG-0005",
+  "title": "Skip-Adjacent Max",
+  "difficulty": "Medium",
+  "kind": "implement",
+  "functionName": "solve0005",
+  "tags": [
+   "Dynamic Programming"
+  ],
+  "description": "**Skip-Adjacent Max** (GG-0005)\n\nReturn the maximum amount you can rob tonight without alerting police (no two adjacent houses).\n\nImplement `solve0005` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [1,2,3,1]",
+    "output": "4"
+   },
+   {
+    "input": "nums = [2,7,9,3,1]",
+    "output": "12"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0006": {
+  "id": "GG-0006",
+  "title": "Echo Value Detector",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "hasEchoValue",
+  "tags": [
+   "Array",
+   "Hash Table"
+  ],
+  "description": "**Echo Value Detector** (GG-0006)\n\nReturn `true` if any value appears at least twice in `nums`.\n\nImplement `hasEchoValue` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [1,2,3,1]",
+    "output": "true"
+   },
+   {
+    "input": "nums = [1,2,3,4]",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0007": {
+  "id": "GG-0007",
+  "title": "Letter Bag Match",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "lettersMatch",
+  "tags": [
+   "String",
+   "Hash Table"
+  ],
+  "description": "**Letter Bag Match** (GG-0007)\n\nReturn `true` if `t` is an anagram of `s`.\n\nImplement `lettersMatch` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "s = \"anagram\", t = \"nagaram\"",
+    "output": "true"
+   },
+   {
+    "input": "s = \"rat\", t = \"car\"",
+    "output": "false"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0008": {
+  "id": "GG-0008",
+  "title": "Circuit String Drill",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "solve0008",
+  "tags": [
+   "String",
+   "Hash Table"
+  ],
+  "description": "**Circuit String Drill** (GG-0008)\n\nReturn the index of the first non-repeating character in `s`, or `-1` if none.\n\nImplement `solve0008` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "s = \"Algorithm Arena\"",
+    "output": "0"
+   },
+   {
+    "input": "s = \"aabb\"",
+    "output": "-1"
+   }
+  ],
+  "hiddenTests": []
+ },
+ "impl:GG-0009": {
+  "id": "GG-0009",
+  "title": "Sorted Probe",
+  "difficulty": "Easy",
+  "kind": "implement",
+  "functionName": "sortedProbe",
+  "tags": [
+   "Array",
+   "Binary Search"
+  ],
+  "description": "**Sorted Probe** (GG-0009)\n\nGiven a sorted array of distinct integers and a `target`, return the index of `target` or `-1` if not found. O(log n) time.\n\nImplement `sortedProbe` in Code Bench. Pass every sample, then Submit against hidden Arena cases.\n\nThis challenge is original to GradeGlow Algorithm Arena — write your own approach.",
+  "examples": [
+   {
+    "input": "nums = [-1,0,3,5,9,12], target = 9",
+    "output": "4"
+   },
+   {
+    "input": "nums = [-1,0,3,5,9,12], target = 2",
+    "output": "-1"
+   }
+  ],
+  "hiddenTests": []
+ }
+}
