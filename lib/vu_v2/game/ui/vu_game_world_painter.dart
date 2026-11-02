@@ -337,6 +337,7 @@ class VuGameWorldPainter extends CustomPainter {
           c - const Offset(0, 10),
           c + const Offset(0, 10),
           const <Color>[Color(0xFF6EE7B7), Color(0xFF10B981), Color(0xFF047857)],
+          const <double>[0, 0.5, 1],
         ),
     );
     canvas.drawPath(

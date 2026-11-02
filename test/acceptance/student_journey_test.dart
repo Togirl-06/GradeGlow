@@ -101,6 +101,7 @@ void main() {
 
   test('TEST 4 + 5: walk around campus and enter the Computer Science building', () {
     final LifeGame g = newStudent();
+    play.waitUntilHour(g, 9);
     final int minuteBefore = g.clock.minuteOfDay;
     walkInto(g, 'school_cs');
     expect(g.clock.minuteOfDay, greaterThanOrEqualTo(minuteBefore), reason: 'walking takes time');
@@ -144,6 +145,7 @@ void main() {
 
   test('TEST 7 + 8: visit the Career Center, build a resume', () {
     final LifeGame g = newStudent();
+    play.waitUntilHour(g, 9); // the Career Center opens at 8am
     walkInto(g, 'employment_center');
     final Interior cc = Interiors.of('employment_center');
     final Set<ActionType> kinds = cc.interactables.map((Interactable i) => i.type).toSet();

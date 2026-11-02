@@ -52,7 +52,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 150));
       }
       final Object? error = tester.takeException();
-      expect(error, isNull, reason: '${info.id} threw: $error');
+      expect(error, isNull, reason: '${info.id} threw: ${error is FlutterError ? error.toStringDeep() : error}');
       // A new screen is on top of the shell.
       expect(nav.canPop(), isTrue, reason: '${info.id} did not open a screen');
       if (info.id == 'math_whiteboard') {

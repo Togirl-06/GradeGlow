@@ -929,7 +929,12 @@ class _BottomHud extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(width: 180, child: majorDrop),
-              Expanded(child: path),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: path,
+                ),
+              ),
               const SizedBox(width: 12),
               SizedBox(width: 200, child: daily),
             ],
