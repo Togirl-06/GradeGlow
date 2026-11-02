@@ -47,12 +47,20 @@ void main() {
       final BuildContext ctx = await signedInContext(tester);
       final CampusLab lab = CampusLabs.byId(info.id)!;
       final NavigatorState nav = Navigator.of(ctx);
+      // Keep the full error report (it names the widget's file and line).
+      final List<String> reports = <String>[];
+      final FlutterExceptionHandler? previous = FlutterError.onError;
+      FlutterError.onError = (FlutterErrorDetails d) {
+        reports.add(d.toString());
+        previous?.call(d);
+      };
       unawaited(lab.open(ctx));
       for (int i = 0; i < 6; i++) {
         await tester.pump(const Duration(milliseconds: 150));
       }
+      FlutterError.onError = previous;
       final Object? error = tester.takeException();
-      expect(error, isNull, reason: '${info.id} threw: ${error is FlutterError ? error.toStringDeep() : error}');
+      expect(error, isNull, reason: '${info.id} threw: $error\n${reports.join('\n')}');
       // A new screen is on top of the shell.
       expect(nav.canPop(), isTrue, reason: '${info.id} did not open a screen');
       if (info.id == 'math_whiteboard') {
