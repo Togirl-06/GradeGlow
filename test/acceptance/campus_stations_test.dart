@@ -49,7 +49,7 @@ void main() {
       final NavigatorState nav = Navigator.of(ctx);
       // Keep the full error report (it names the widget's file and line).
       final List<String> reports = <String>[];
-      final FlutterExceptionHandler? previous = FlutterError.onError;
+      final void Function(FlutterErrorDetails)? previous = FlutterError.onError;
       FlutterError.onError = (FlutterErrorDetails d) {
         reports.add(d.toString());
         previous?.call(d);
