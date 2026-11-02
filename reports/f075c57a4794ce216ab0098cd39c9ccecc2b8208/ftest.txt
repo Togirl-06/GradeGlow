@@ -1,0 +1,257 @@
+00:00 +0: loading /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart
+00:00 +0: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
+00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
+00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: mixer keeps intro first, core steps in order, and every activity
+00:00 +4: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: micro prompts resolve as easy; explicit difficulty is respected
+00:00 +5: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: rapid review resolves as hard
+00:07 +6: /home/runner/work/GradeGlow/GradeGlow/test/chemistry_navigation_test.dart: Chemistry lesson hub opens without crash
+00:07 +7: /home/runner/work/GradeGlow/GradeGlow/test/chemistry_navigation_test.dart: Chemistry lesson hub opens without crash
+00:11 +8: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: (setUpAll)
+00:11 +8: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:12 +9: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:12 +10: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+00:13 +11: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+00:13 +12: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+00:13 +13: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Demo Student": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart:46:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart line 46
+The test description was:
+  demo sign in shows home
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:13 +13 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:13 +13 -1: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home [E]
+  Test failed. See exception logs above.
+  The test description was: demo sign in shows home
+  
+00:13 +13 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:14 +14 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +15 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +16 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +17 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +18 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +19 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +20 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +21 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +22 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +23 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +24 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +25 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +26 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +27 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +28 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +29 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +30 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +31 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +32 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +33 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +34 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:14 +35 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/job_test.dart: Salary negotiation modest asks are accepted, middling asks get a counter, extreme asks fail
+00:14 +36 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/job_test.dart: Salary negotiation absurd demands can cost you a new offer, but never a raise
+00:14 +37 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/job_test.dart: Salary negotiation a well-written pitch scores higher than a lazy one
+00:14 +38 -1: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart
+00:15 +38 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Software Engineer
+00:15 +39 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Nurse
+00:15 +40 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Pharmacist
+00:15 +41 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Doctor
+00:15 +42 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Lawyer
+00:15 +43 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: 15 districts (campus + city), each with at least one building
+00:15 +44 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Accountant
+00:15 +45 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: building ids unique, doors walkable and reachable from spawn
+00:15 +46 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Business Manager
+00:15 +47 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Business Manager
+00:15 +48 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: interiors: no overlaps, everything reachable, exit open
+00:15 +49 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: every career station id with tasks has a world station in some hiring employer
+00:15 +50 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: key services exist somewhere in the world
+00:16 +51 -1: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/spec_gap_test.dart
+ALL PASSED: 19 passed, 0 failed
+00:17 +51 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board seven careers with seven-rung ladders
+00:17 +52 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board salaries rise with rank and doctors earn more than nurses
+00:17 +53 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board every employer has an interviewer and a listing per rank
+00:17 +54 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board listings carry title, salary, requirements, hours and duties
+00:17 +55 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board entry roles are always open; senior postings rotate
+00:17 +56 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach an empty resume scores low and says what to add
+00:17 +57 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach a complete, tailored resume scores high
+00:17 +58 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach tailoring to the employer raises the score
+00:17 +59 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach shouting is flagged
+00:17 +60 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach syncFacts pulls education, jobs and certifications from the player record
+00:17 +61 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications a qualified graduate clears an entry role
+00:17 +62 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications lack of experience blocks mid-level roles with a clear reason
+00:17 +63 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications experience unlocks the same role
+00:17 +64 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications high school education is a hard fail for professional roles
+00:17 +65 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications selective employers are harder than friendly ones
+00:17 +66 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications responses arrive only after the delay, as phone messages
+00:17 +67 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications rejections explain what to improve; reapplying has a cooldown
+00:17 +68 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications duplicate and over-limit applications are blocked
+00:17 +69 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications missing the interview slot closes the application
+00:17 +70 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications waiting-list outcomes resolve into an offer or a rejection
+00:17 +71 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications records and inbox survive JSON round-trips
+00:17 +72 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge empty answer scores zero everywhere
+00:17 +73 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge strong answers score well, weak ones poorly
+00:17 +74 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge technical answer with the right concepts beats a vague one
+00:17 +75 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge slang, hedging and profanity hurt professionalism and confidence
+00:17 +76 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge examples dimension rewards concrete evidence
+00:17 +77 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge short vague answers trigger a follow-up; polished ones do not
+00:17 +78 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge all scores stay within 0..10
+00:17 +79 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank every career has role-specific questions and the six classics exist
+00:17 +80 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank interviews get longer with seniority
+00:17 +81 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession asks one question at a time and reaches a decision
+00:17 +82 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession poor interview is rejected with actionable feedback
+00:17 +83 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession follow-ups are capped and do not stall the interview
+00:17 +84 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession selective employers need a higher hiring score
+00:17 +85 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession results require at least one answer
+00:18 +86 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/iso_test.dart: project/unproject round-trips and depth increases toward the viewer
+00:18 +87 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: every career has a degree; degree ids match the career catalog
+00:18 +88 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: exam questions are well-formed
+00:18 +89 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: full degree flow: enrol, lectures, study, exam, graduate
+00:18 +90 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: failing an exam costs study time; weekend lectures rejected; json round trip
+00:18 +91 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: law needs a bachelor first
+00:18 +92 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure every career has a healthy library at every rank
+00:19 +93 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure all scenarios are well-formed
+00:19 +94 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure generated scenarios are reproducible from their id
+00:19 +95 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure daily assignments are deterministic, vary by day and avoid recent tasks
+00:19 +96 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure tasks fit the rank they are assigned to
+00:19 +97 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ideal answers earn (near) full marks on EVERY scenario, including rubric-graded text
+00:19 +98 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading terrible answers never score well
+00:19 +99 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading multi-select penalises over-selection
+00:19 +100 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ordering gives partial credit by correct pairs
+00:19 +101 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading numeric grading: exact, close and wrong
+00:19 +102 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading text grading: keyword rubric, minimum length and profanity
+00:19 +103 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading inspection rewards essentials and punishes wasteful actions
+00:19 +104 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading generated numeric answers are consistent (reconciliation really reconciles)
+00:19 +105 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading a pluggable AI judge is used for text, and falls back when it throws
+00:19 +106 -1: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/npc_motion_test.dart
+NPCs: 65, walking: 65
+ALL PASSED: 265 passed, 0 failed
+00:19 +106 -1: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/lecture_test.dart
+ALL PASSED: 698 passed, 0 failed
+00:20 +106 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school has its own building on the map
+00:20 +107 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school building has a station for each of its labs, a lecture room and a professor
+00:20 +108 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every lab station opens a real screen
+00:20 +109 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: the apartment has separate rooms joined by doorways
+00:20 +110 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: real cases are well formed
+00:20 +111 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: walking the BFS path to every building costs time and arrives
+00:21 +112 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: cannot walk into walls, diagonals, or buildings closed at night
+00:21 +113 -1: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: home is always enterable
+00:21 +114 -1: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/hiring_outcomes_test.dart
+ALL PASSED: 16 passed, 0 failed
+00:21 +114 -1: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile unit circle routes to trigonometry
+00:21 +115 -1: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile trigonometric equations do not route to algebra
+00:21 +116 -1: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureFallback unit circle lecture teaches unit circle not linear functions
+00:22 +117 -1: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: layout exposes nursing NPCs and interactables
+00:22 +118 -1: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: tick moves player toward target
+00:22 +119 -1: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: textbook chapter includes reading path and diagrams
+00:22 +120 -1: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: velocity chapter is wrapped with navigation
+00:22 +121 -1: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: acceleration chapter includes deep dive and full examples
+00:23 +122 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: formal greeting explains Dear
+00:23 +123 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Luke formally
+00:23 +124 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Rob informally
+00:23 +125 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: rejects Hi Luke for formal Luke greeting
+00:23 +126 -1: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes fixes under-reported data size
+00:23 +127 -1: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: rebuildWavBytes fixes wrong header size and sample rate
+00:23 +128 -1: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes is a no-op when sizes are correct
+00:23 +129 -1: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech raises quiet recordings
+00:23 +130 -1: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech rejects silent recordings
+00:23 +131 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_speech_hygiene_test.dart: drops open-your-notes framing and keeps the teaching
+00:24 +132 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: budget allocations that sum to 80k produce finite KPIs
+00:24 +133 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: cost cutting lowers customers vs retention strategy
+00:24 +134 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: all eight majors have case challenges and jobs
+00:24 +135 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: flagship Apex Commerce job exists
+00:24 +136 -1: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: each engineering major has at least two missions and three jobs
+00:24 +137 -1: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: flagship Apex mech job exists
+00:25 +138 -1: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: mastery requires professor, lab, and knowledge check
+00:25 +139 -1: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: lab report grades reasoning from the simulation result
+00:25 +140 -1: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:25 +141 -1: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:25 +142 -1: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:25 +143 -1: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:26 +144 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:27 +145 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:27 +146 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:27 +147 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:27 +148 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:27 +149 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:27 +150 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Business curriculum matches the supplied topic outline
+00:27 +151 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: every Business topic has a full textbook chapter
+00:27 +152 -1: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: lecture notes do not change mastery or XP
+00:28 +153 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: Duolingo loop: micro prompt → question → grade → feedback
+00:28 +154 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: mistake injects retry and awards partial XP
+00:28 +155 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: lesson completes with summary
+00:28 +156 -1: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: max recording duration is 4 hours
+00:28 +157 -1: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: formatRecordingDuration shows hours for long recordings
+00:28 +158 -1: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: WavAudioChunker splits oversized wav files
+00:29 +159 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: skull lights at the spoken word and holds until the next structure
+00:29 +160 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: axial skeleton lights the axis as a group
+00:29 +161 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: mitochondria illuminate in the animal cell
+00:29 +162 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: gravity lights the weight arrow on a force diagram
+00:29 +163 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: identify tap does not leak the answer from speech
+00:29 +164 -1: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: right ventricle then pulmonary artery for heart flow
+00:29 +165 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: question bank adds topic-only extras to a session
+00:29 +166 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras never come from a different lesson topic
+00:29 +167 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: present perfect extras stay on present perfect topic
+00:29 +168 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: engine session uses topic bank only
+00:29 +169 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: each lesson has topic supplements in the bank
+00:29 +170 -1: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras prefer challenge-level questions
+00:30 +171 -1: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: all eight programs have distinct hub focus tags
+00:30 +172 -1: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: dyspnea critical penicillin fails
+00:30 +173 -1: /home/runner/work/GradeGlow/GradeGlow/test/api_error_messages_test.dart: hides Dart null-check crashes from the tutor banner
+00:31 +174 -1: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: maps percent bands onto a 4.0 letter scale
+00:31 +175 -1: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: predicts term GPA from quiz average
+00:31 +176 -1: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: flags weak courses and a rising trend
+00:31 +177 -1: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: builds a forecast from a user profile
+00:31 +178 -1: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: textbookSpeechSentences strips bold markdown for read-aloud
+00:31 +179 -1: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: speechTextFromMarkdown strips bold markdown for TTS
+00:31 +180 -1: /home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart: (setUpAll)
+00:32 +180 -1: /home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart: Virtual University → Mathematics opens hub
+00:32 +181 -1: /home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart: Virtual University → Mathematics opens hub
+00:32 +182 -1: /home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart: Virtual University → Mathematics opens hub
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The finder "Found 0 widgets with text "Virtual University": []" (used in a call to "tap()") could
+not find any matching widgets.
+
+When the exception was thrown, this was the stack:
+#0      WidgetController._getElementPoint (package:flutter_test/src/controller.dart:2095:7)
+#1      WidgetController.getCenter (package:flutter_test/src/controller.dart:1947:12)
+#2      WidgetController.tap (package:flutter_test/src/controller.dart:1080:7)
+#3      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart:38:18)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  Virtual University → Mathematics opens hub
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:33 +182 -2: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
+00:33 +182 -2: /home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart: Virtual University → Mathematics opens hub [E]
+  Test failed. See exception logs above.
+  The test description was: Virtual University → Mathematics opens hub
+  
+00:33 +182 -2: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
+00:34 +183 -2: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishActivityPanel sentence builder shows word bank
+00:35 +184 -2: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishLessonScreen shows sentence builder at pp_build
+00:35 +185 -2: Some tests failed.
+
+Failing tests:
+  /home/runner/work/GradeGlow/GradeGlow/test/mathematics_navigation_test.dart: Virtual University → Mathematics opens hub
+  /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
