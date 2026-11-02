@@ -2321,54 +2321,6 @@ class OpenAiService {
     return raw.map((dynamic e) => LeetcodeProblem.fromJson(e as Map<String, dynamic>)).toList();
   }
 
-  /// Evaluates code against visible + hidden test cases (AI judge).
-  Future<LeetcodeRunResult> evaluateLeetcodeSubmission({
-    required LeetcodeProblem problem,
-    required String language,
-    required String code,
-    bool includeHidden = false,
-    bool premium = false,
-  }) async {
-    _requireKey();
-    final StringBuffer tests = StringBuffer('Visible examples:\n');
-    for (int i = 0; i < problem.examples.length; i++) {
-      final LeetcodeExample ex = problem.examples[i];
-      tests.writeln('Case ${i + 1}: input=${ex.input} expected=${ex.output}');
-    }
-    if (includeHidden) {
-      for (int i = 0; i < problem.hiddenTests.length; i++) {
-        final LeetcodeHiddenTest t = problem.hiddenTests[i];
-        tests.writeln('Hidden ${i + 1}: input=${t.input} expected=${t.output}');
-      }
-    }
-    final String content = await _chat(
-      <Map<String, String>>[
-        <String, String>{
-          'role': 'system',
-          'content':
-              'You are a coding judge. Trace the student solution logically. '
-              'Return ONLY JSON: {"accepted":true|false,"results":[{"index":1,"passed":true|false,'
-              '"input":"...","expected":"...","actual":"...","hidden":false}],"feedback":"short",'
-              '"runtimeNote":"e.g. O(n) time","timeComplexity":"Big O","spaceComplexity":"Big O",'
-              '"readabilityNotes":"naming/structure","optimizationTips":"how to improve",'
-              '"edgeCaseNotes":"edge cases handled or missed"}. '
-              'Be strict but fair. If syntax is invalid, all cases fail.',
-        },
-        <String, String>{
-          'role': 'user',
-          'content':
-              'Problem: ${problem.title}\n'
-              'Description:\n${problem.description}\n'
-              'Function: ${problem.functionName}\nLanguage: $language\n'
-              '${problem.isDebug ? "Mode: fix the bug in the provided code.\n" : ""}\n$tests\n\nCode:\n$code',
-        },
-      ],
-      temperature: 0.2,
-      maxTokens: 1800,
-      premium: premium,
-    );
-    return LeetcodeRunResult.fromJson(decodeAiJson(content));
-  }
 
   /// Conversational CS professor lecture for one topic.
   List<Map<String, String>> _csProfessorLectureMessages({

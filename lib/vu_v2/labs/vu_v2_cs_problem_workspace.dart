@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/coding_languages.dart';
 import '../../models/leetcode_problem.dart';
-import '../../services/leetcode_debug_judge.dart';
+import '../../services/code_judge_service.dart';
 import '../../theme/leetcode_theme.dart';
 import '../design/vu_v2_theme.dart';
 import 'vu_v2_problem_enrichment.dart';
@@ -16,12 +16,16 @@ class VuV2CsProblemWorkspace extends StatefulWidget {
     required this.problemIndex,
     required this.totalProblems,
     required this.playlist,
+    this.judge,
   });
 
   final LeetcodeProblem problem;
   final int problemIndex;
   final int totalProblems;
   final List<LeetcodeProblem> playlist;
+
+  /// Injected in tests; defaults to the server judge.
+  final CodeJudgeService? judge;
 
   @override
   State<VuV2CsProblemWorkspace> createState() => _VuV2CsProblemWorkspaceState();
@@ -34,9 +38,11 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
   final ScrollController _editorScroll = ScrollController();
 
   String _languageId = 'python3';
-  String _console = 'Run sample tests or Submit when ready.';
-  LeetcodeRunResult? _lastResult;
+  String _console = 'Run checks your code against the sample cases. Submit runs every hidden test on the server.';
+  JudgeResult? _lastResult;
   bool _accepted = false;
+  bool _busy = false;
+  late final CodeJudgeService _judge = widget.judge ?? CodeJudgeService();
   double _progress = 0.1;
 
   final List<CodingLanguage> _languages = <CodingLanguage>[];
@@ -49,6 +55,8 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
     }
     return CodingLanguage.python3;
   }
+
+  bool get _graded => CodeJudgeService.isGraded(_languageId);
 
   @override
   void initState() {
@@ -177,6 +185,17 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                           : FontWeight.w500,
                     ),
                   ),
+                  subtitle: Text(
+                    CodeJudgeService.isGraded(_languages[i].id)
+                        ? 'Runs and grades tests'
+                        : 'Editor only · not graded yet',
+                    style: TextStyle(
+                      color: CodeJudgeService.isGraded(_languages[i].id)
+                          ? const Color(0xFF89D185)
+                          : const Color(0xFF858585),
+                      fontSize: 11,
+                    ),
+                  ),
                   trailing: _languages[i].id == _languageId
                       ? const Icon(Icons.check, color: Color(0xFF3794FF), size: 18)
                       : null,
@@ -216,81 +235,68 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
     });
   }
 
-  LeetcodeRunResult _grade({required bool hidden}) {
-    if (_problem.isDebug) {
-      return LeetcodeDebugJudge.tryGrade(
-            problem: _problem,
-            language: _language.label,
-            code: _code.text,
-            includeHidden: hidden,
-          ) ??
-          LeetcodeDebugJudge.offlineFallback(
-            problem: _problem,
-            includeHidden: hidden,
-            accepted: false,
-            feedback: 'Could not grade.',
-          );
-    }
-    final String code = _code.text.trim();
-    final String starter = _safeStarter(_language).trim();
-    if (code.isEmpty || code == starter) {
-      return LeetcodeDebugJudge.offlineFallback(
-        problem: _problem,
-        includeHidden: hidden,
-        accepted: false,
-        feedback: 'Write a solution first (edit the starter).',
-      );
-    }
-    final bool ok = code.length > starter.length + 8;
-    return LeetcodeDebugJudge.offlineFallback(
-      problem: _problem,
-      includeHidden: hidden,
-      accepted: ok,
-      feedback: ok
-          ? (hidden ? 'Accepted' : 'Samples passed')
-          : 'Wrong Answer',
-    );
-  }
-
-  String _format(LeetcodeRunResult r) {
+  String _format(JudgeResult r) {
     final StringBuffer b = StringBuffer();
-    b.writeln(r.accepted ? 'OK  ${r.feedback}' : 'X   ${r.feedback}');
+    b.writeln(r.verdict);
+    if (r.message.isNotEmpty) b.writeln(r.message);
+    if (r.runtimeMs != null || r.memoryKb != null) {
+      b.writeln(<String>[
+        if (r.runtimeMs != null) 'Runtime ${r.runtimeMs!.toStringAsFixed(2)} ms',
+        if (r.memoryKb != null) 'Memory ${(r.memoryKb! / 1024).toStringAsFixed(1)} MB',
+      ].join(' · '));
+    }
     b.writeln();
-    for (int i = 0; i < r.results.length; i++) {
-      final LeetcodeTestCaseResult c = r.results[i];
-      b.writeln('Case ${c.index}: ${c.passed ? 'PASS' : 'FAIL'}');
-      b.writeln('  in:  ${c.input}');
-      b.writeln('  exp: ${c.expected}');
-      b.writeln('  got: ${c.actual}');
-      b.writeln();
+    for (final JudgeCase c in r.cases) {
+      final String tag = c.hidden ? ' (hidden)' : '';
+      b.writeln('Case ${c.index}$tag: ${c.passed ? 'PASS' : 'FAIL'}  ${c.ms.toStringAsFixed(2)} ms');
+      if (c.input != null) b.writeln('  in:  ${c.input}');
+      if (c.expected != null) b.writeln('  exp: ${c.expected}');
+      if (c.output != null) b.writeln('  got: ${c.output}');
+      if (c.error != null) b.writeln('  err: ${c.error}');
+    }
+    if (r.stderr.trim().isNotEmpty && r.cases.isEmpty) {
+      b.writeln(r.stderr.trim());
     }
     return b.toString();
   }
 
-  void _run() {
-    final LeetcodeRunResult r = _grade(hidden: false);
+  Future<void> _execute({required bool submit}) async {
+    if (_busy) return;
     setState(() {
+      _busy = true;
+      _console = submit ? 'Submitting… running all hidden tests on the server.' : 'Running sample tests on the server…';
+    });
+    final JudgeResult r = await _judge.judge(
+      problem: _problem,
+      languageId: _languageId,
+      code: _code.text,
+      submit: submit,
+    );
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
       _lastResult = r;
       _console = _format(r);
-      _progress = (_progress + (r.accepted ? 0.2 : 0.05)).clamp(0.0, 1.0);
+      if (submit && r.accepted) _accepted = true;
+      if (!r.notGraded) {
+        _progress = r.accepted
+            ? (submit ? 1.0 : (_progress + 0.2).clamp(0.0, 0.9))
+            : (_progress + 0.05).clamp(0.0, 0.95);
+      }
     });
+    if (submit) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(r.accepted ? 'Accepted · ${r.passed}/${r.total} tests passed' : r.verdict),
+          backgroundColor: r.accepted ? VuV2Colors.success : (r.notGraded ? VuV2Colors.navyElevated : VuV2Colors.danger),
+        ),
+      );
+    }
   }
 
-  void _submit() {
-    final LeetcodeRunResult r = _grade(hidden: true);
-    setState(() {
-      _lastResult = r;
-      _accepted = r.accepted;
-      _console = _format(r);
-      _progress = r.accepted ? 1.0 : (_progress + 0.08).clamp(0.0, 0.95);
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(r.accepted ? 'Accepted' : 'Not accepted yet'),
-        backgroundColor: r.accepted ? VuV2Colors.success : VuV2Colors.danger,
-      ),
-    );
-  }
+  void _run() => _execute(submit: false);
+
+  void _submit() => _execute(submit: true);
 
   @override
   Widget build(BuildContext context) {
@@ -601,11 +607,11 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
                   const Spacer(),
                   if (_lastResult != null)
                     Text(
-                      _lastResult!.accepted ? 'Accepted' : 'Failed',
+                      _lastResult!.verdict,
                       style: TextStyle(
                         color: _lastResult!.accepted
                             ? const Color(0xFF89D185)
-                            : const Color(0xFFF14C4C),
+                            : (_lastResult!.notGraded ? const Color(0xFFD7BA7D) : const Color(0xFFF14C4C)),
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
                       ),
@@ -636,13 +642,22 @@ class _VuV2CsProblemWorkspaceState extends State<VuV2CsProblemWorkspace> {
             top: false,
             child: Row(
               children: <Widget>[
-                _Btn(label: 'Run', filled: false, onTap: _run),
+                _Btn(label: _busy ? 'Running…' : 'Run', filled: false, onTap: _busy || !_graded ? null : _run),
                 const SizedBox(width: 10),
                 _Btn(
                   label: _accepted ? 'Accepted' : 'Submit',
                   filled: true,
-                  onTap: _submit,
+                  onTap: _busy || !_graded ? null : _submit,
                 ),
+                if (!_graded) ...<Widget>[
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      '${_language.label} is not graded yet. Use Python 3 or JavaScript to run tests.',
+                      style: TextStyle(color: VuV2Colors.mute, fontSize: 12),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -661,11 +676,14 @@ class _Btn extends StatelessWidget {
 
   final String label;
   final bool filled;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    final bool enabled = onTap != null;
+    return Opacity(
+      opacity: enabled ? 1 : 0.45,
+      child: Material(
       color: filled ? const Color(0xFF22C55E) : Colors.transparent,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
@@ -688,6 +706,7 @@ class _Btn extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

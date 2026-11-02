@@ -109,6 +109,7 @@ jobs:
         run: |
           mkdir -p /tmp/r && cp ci_report.txt /tmp/r/report.txt
           cp analyze.txt ftest.txt /tmp/r/ 2>/dev/null || true
+          cp build/coding_problems.json /tmp/r/ 2>/dev/null || true
           git config user.name "gradeglow-ci"
           git config user.email "ci@users.noreply.github.com"
           git fetch origin ci-reports --depth=1 2>/dev/null && git checkout -q -B ci-reports FETCH_HEAD || git checkout -q --orphan ci-reports

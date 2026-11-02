@@ -21,7 +21,6 @@ import '../utils/api_error_messages.dart';
 import 'auth_service.dart';
 import 'openai_service.dart';
 import 'subscription_service.dart';
-import 'leetcode_debug_judge.dart';
 
 class PracticeLabService extends ChangeNotifier {
   PracticeLabService(this._auth, this._openAi, this._subscription);
@@ -582,54 +581,6 @@ class PracticeLabService extends ChangeNotifier {
     }
   }
 
-  Future<LeetcodeRunResult> runLeetcodeTests({
-    required LeetcodeProblem problem,
-    required String language,
-    required String code,
-    bool submit = false,
-  }) async {
-    // Debug challenges always grade offline — never call OpenAI.
-    if (problem.isDebug) {
-      return LeetcodeDebugJudge.tryGrade(
-            problem: problem,
-            language: language,
-            code: code,
-            includeHidden: submit,
-          ) ??
-          LeetcodeDebugJudge.offlineFallback(
-            problem: problem,
-            includeHidden: submit,
-            accepted: false,
-            feedback: 'Could not grade locally. Edit the buggy starter and try again.',
-          );
-    }
-
-    const int maxAttempts = 3;
-    Object? lastError;
-    for (int attempt = 0; attempt < maxAttempts; attempt++) {
-      try {
-        return await _openAi
-            .evaluateLeetcodeSubmission(
-              problem: problem,
-              language: language,
-              code: code,
-              includeHidden: submit,
-              premium: _subscription.isPremium,
-            )
-            .timeout(const Duration(seconds: 90));
-      } catch (error) {
-        lastError = error;
-        final bool retryable = ApiErrorMessages.friendlyNetworkMessage(error.toString()) != null ||
-            error is TimeoutException;
-        if (attempt < maxAttempts - 1 && retryable) {
-          await Future<void>.delayed(Duration(milliseconds: 700 * (attempt + 1)));
-          continue;
-        }
-        rethrow;
-      }
-    }
-    throw lastError ?? Exception('Could not grade your submission. Try again.');
-  }
 
   Future<String> requestLeetcodeHint({
     required LeetcodeProblem problem,
