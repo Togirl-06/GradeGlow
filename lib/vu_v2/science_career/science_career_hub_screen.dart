@@ -795,6 +795,7 @@ class _BottomHud extends StatelessWidget {
               DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: progress.majorId,
+                  isExpanded: true,
                   dropdownColor: SciCosmic.panelAlt,
                   style: const TextStyle(
                     color: SciCosmic.ink,
@@ -804,7 +805,7 @@ class _BottomHud extends StatelessWidget {
                       .map(
                         (ScienceMajor m) => DropdownMenuItem<String>(
                           value: m.id,
-                          child: Text(m.title),
+                          child: Text(m.title, overflow: TextOverflow.ellipsis, maxLines: 1),
                         ),
                       )
                       .toList(),

@@ -314,13 +314,16 @@ class _ChemistryTitrationLabState extends State<ChemistryTitrationLab> {
       ],
     );
 
-    final Widget tools = Row(
+    // Wraps onto a second line instead of overflowing on narrow panels.
+    final Widget tools = Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: <Widget>[
         _tool('Pipette', Icons.water_drop_outlined, () => _advance()),
         _tool('Dropper', Icons.science_outlined, () => _drip(rush: false)),
         _tool('Rush', Icons.flash_on, () => _drip(rush: true)),
         _tool('Stop', Icons.pause_circle, _stop),
-        const Spacer(),
         if (_rushed || (_stopped && !_atEndpoint))
           TextButton(
             onPressed: _retry,
