@@ -18,7 +18,9 @@ import '../painters/avatar_painter.dart';
 import '../painters/city_painter.dart';
 import '../painters/interior_painter.dart';
 import '../widgets/minimap.dart';
-import '../world3d/world3d_stub.dart' if (dart.library.html) '../world3d/world3d_web.dart' as world3d;
+import '../world3d/world3d_stub.dart'
+    if (dart.library.io) '../world3d/world3d_native.dart'
+    if (dart.library.html) '../world3d/world3d_web.dart' as world3d;
 import 'avatar_editor.dart';
 import 'interactions.dart';
 import 'phone_screen.dart';

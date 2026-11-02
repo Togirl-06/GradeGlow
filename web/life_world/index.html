@@ -29,12 +29,16 @@
     import { createWorld } from './world.js';
 
     const params = new URLSearchParams(location.search);
-    const embedded = window.parent !== window && !params.has('demo');
+    // Embedded in the Flutter web app (iframe) or the phone app (WebView with
+    // the GGNative channel); otherwise it is the standalone preview.
+    const nativeBridge = window.GGNative;
+    const embedded = (window.parent !== window || !!nativeBridge) && !params.has('demo');
     const canvas = document.getElementById('c');
     const loading = document.getElementById('loading');
     let demoHandler = null;
     const send = (m) => {
-      if (embedded) window.parent.postMessage(JSON.stringify(m), '*');
+      if (embedded && nativeBridge) nativeBridge.postMessage(JSON.stringify(m));
+      else if (embedded) window.parent.postMessage(JSON.stringify(m), '*');
       else if (demoHandler) demoHandler(m);
     };
 
@@ -67,15 +71,19 @@
     };
 
     if (embedded) {
-      window.addEventListener('message', (e) => {
-        if (e.source !== window.parent) return;
-        let m = e.data;
+      const receive = (m) => {
         if (typeof m === 'string') {
           try { m = JSON.parse(m); } catch (_) { return; }
         }
         if (!m || typeof m.type !== 'string') return;
         if (m.type === 'gg-scene') world.setScene(m);
         else if (m.type === 'gg-frame') world.setFrame(m);
+      };
+      // Phone app: Dart calls window.__ggReceive(message) via runJavaScript.
+      window.__ggReceive = receive;
+      window.addEventListener('message', (e) => {
+        if (e.source !== window.parent) return;
+        receive(e.data);
       });
       canvas.addEventListener('pointerdown', () => canvas.focus());
       // Keep pinging ready until Flutter delivers the first scene (avoids a
