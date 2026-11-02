@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GradeGlow Anatomy 3D</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #070A14; overflow: hidden; font-family: system-ui, sans-serif; }
+    #c { width: 100%; height: 100%; display: block; }
+    #hud {
+      position: absolute; left: 12px; bottom: 12px; right: 12px;
+      color: #e2e8f0; font-size: 12px; pointer-events: none;
+      text-shadow: 0 1px 2px #000;
+    }
+    #sel { color: #38bdf8; font-weight: 800; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div id="hud">
+    <div id="sel">Tap an organ to select</div>
+    <div>Drag to orbit · scroll to zoom · educational model (not a diagnostic scan)</div>
+  </div>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const canvas = document.getElementById('c');
+    const selEl = document.getElementById('sel');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight, false);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x070a14);
+
+    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
+    camera.position.set(0, 1.2, 3.2);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.9, 0);
+    controls.minDistance = 1.6;
+    controls.maxDistance = 6;
+
+    scene.add(new THREE.AmbientLight(0x8899bb, 0.7));
+    const key = new THREE.DirectionalLight(0xffffff, 1.1);
+    key.position.set(2, 4, 3);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x88aaff, 0.35);
+    fill.position.set(-3, 1, -2);
+    scene.add(fill);
+
+    const organs = [];
+    const mat = (hex, opacity = 0.92) => new THREE.MeshStandardMaterial({
+      color: hex, roughness: 0.45, metalness: 0.08, transparent: opacity < 1, opacity
+    });
+
+    function addOrgan(id, name, mesh, info) {
+      mesh.userData = { id, name, info };
+      mesh.castShadow = false;
+      scene.add(mesh);
+      organs.push(mesh);
+    }
+
+    // Simplified anatomical layout (educational schematic 3D, not a scan).
+    const body = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.38, 1.15, 8, 16),
+      mat(0xc4a484, 0.35)
+    );
+    body.position.y = 0.95;
+    body.userData = { id: 'body', name: 'Body outline', info: 'Semi-transparent guide for organ positions.' };
+    scene.add(body);
+
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 24, 16), mat(0xd4a574));
+    head.position.y = 1.85;
+    addOrgan('brain', 'Brain', head, 'Central nervous system — cerebrum/cerebellum/brainstem regions (simplified).');
+
+    const heart = new THREE.Mesh(new THREE.SphereGeometry(0.12, 20, 16), mat(0xdc2626));
+    heart.scale.set(1, 1.15, 0.85);
+    heart.position.set(-0.08, 1.25, 0.12);
+    addOrgan('heart', 'Heart', heart, 'Four-chamber pump in the mediastinum. Coronary arteries supply myocardium.');
+
+    const lungL = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 14), mat(0xf472b6, 0.85));
+    lungL.scale.set(0.75, 1.25, 0.7);
+    lungL.position.set(-0.22, 1.28, 0.02);
+    addOrgan('lungs', 'Left lung', lungL, 'Left lung — typically two lobes. Gas exchange at alveoli.');
+
+    const lungR = new THREE.Mesh(new THREE.SphereGeometry(0.17, 18, 14), mat(0xf472b6, 0.85));
+    lungR.scale.set(0.8, 1.3, 0.75);
+    lungR.position.set(0.22, 1.28, 0.02);
+    addOrgan('lungs', 'Right lung', lungR, 'Right lung — typically three lobes.');
+
+    const liver = new THREE.Mesh(new THREE.SphereGeometry(0.18, 18, 14), mat(0x7c2d12));
+    liver.scale.set(1.4, 0.7, 0.9);
+    liver.position.set(0.14, 0.95, 0.08);
+    addOrgan('liver', 'Liver', liver, 'Largest internal organ — metabolism, detoxification, bile.');
+
+    const stomach = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 12), mat(0xea580c));
+    stomach.scale.set(1.2, 0.8, 0.9);
+    stomach.position.set(-0.14, 0.92, 0.1);
+    addOrgan('stomach', 'Stomach', stomach, 'Mechanical/chemical digestion; continuous with esophagus and duodenum.');
+
+    const kidneyL = new THREE.Mesh(new THREE.SphereGeometry(0.07, 14, 12), mat(0xb45309));
+    kidneyL.scale.set(0.7, 1.2, 0.6);
+    kidneyL.position.set(-0.2, 0.78, -0.05);
+    addOrgan('kidneys', 'Left kidney', kidneyL, 'Filters blood; regulates fluid and electrolytes.');
+
+    const kidneyR = kidneyL.clone();
+    kidneyR.position.x = 0.2;
+    kidneyR.userData = { id: 'kidneys', name: 'Right kidney', info: kidneyL.userData.info };
+    scene.add(kidneyR);
+    organs.push(kidneyR);
+
+    const intestines = new THREE.Mesh(new THREE.TorusKnotGeometry(0.12, 0.035, 80, 10), mat(0xfbbf24));
+    intestines.position.set(0, 0.62, 0.08);
+    intestines.scale.set(1.1, 0.8, 1);
+    addOrgan('intestines', 'Intestines', intestines, 'Small bowel absorbs nutrients; large bowel recovers water.');
+
+    // Skeleton hint (ribs)
+    for (let i = 0; i < 5; i++) {
+      const rib = new THREE.Mesh(
+        new THREE.TorusGeometry(0.28 + i * 0.01, 0.012, 8, 24, Math.PI),
+        mat(0xe2e8f0, 0.55)
+      );
+      rib.rotation.x = Math.PI / 2;
+      rib.position.set(0, 1.4 - i * 0.08, 0.02);
+      rib.userData = { id: 'skeleton', name: 'Rib cage', info: 'Axial skeleton protects thoracic organs.' };
+      scene.add(rib);
+      organs.push(rib);
+    }
+
+    let selected = null;
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+
+    function highlight(obj) {
+      for (const o of organs) {
+        if (o.material && o.material.emissive) {
+          o.material.emissive.setHex(0x000000);
+        }
+      }
+      if (obj && obj.material && obj.material.emissive) {
+        obj.material.emissive.setHex(0x2266aa);
+      }
+      selected = obj;
+      if (obj) {
+        selEl.textContent = obj.userData.name + ' — ' + (obj.userData.info || '');
+        try {
+          parent.postMessage({
+            type: 'anatomy-select',
+            id: obj.userData.id,
+            name: obj.userData.name,
+            info: obj.userData.info || ''
+          }, '*');
+        } catch (_) {}
+      }
+    }
+
+    function onPointer(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      pointer.set(x, y);
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(organs, false);
+      if (hits.length) highlight(hits[0].object);
+    }
+    canvas.addEventListener('pointerdown', onPointer);
+
+    function resize() {
+      const w = innerWidth, h = innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+    }
+    addEventListener('resize', resize);
+
+    // Gentle heartbeat scale on heart
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      heart.scale.set(1 + Math.sin(t * 6) * 0.04, 1.15 + Math.sin(t * 6) * 0.04, 0.85);
+      lungL.scale.y = 1.25 + Math.sin(t * 1.4) * 0.04;
+      lungR.scale.y = 1.3 + Math.sin(t * 1.4) * 0.04;
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // API for parent Flutter
+    window.anatomyApi = {
+      selectById(id) {
+        const o = organs.find(x => x.userData.id === id);
+        if (o) highlight(o);
+      },
+      resetCamera() {
+        camera.position.set(0, 1.2, 3.2);
+        controls.target.set(0, 0.9, 0);
+        controls.update();
+      }
+    };
+  </script>
+</body>
+</html>

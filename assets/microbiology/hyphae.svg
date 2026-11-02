@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#1B4332"/>
+  <circle cx="200" cy="125" r="118" fill="#0D2818" stroke="#2D6A4F" stroke-width="3"/>
+  <path d="M60 90 C120 70 180 110 240 85 C300 60 340 100 350 130" stroke="#81C784" stroke-width="4" fill="none"/>
+  <path d="M50 130 C110 150 170 110 230 140 C290 170 330 120 360 155" stroke="#66BB6A" stroke-width="4" fill="none"/>
+  <path d="M70 170 C140 190 200 150 270 175 C310 190 340 165 355 185" stroke="#A5D6A7" stroke-width="3" fill="none"/>
+  <text x="200" y="24" text-anchor="middle" fill="#D8F3DC" font-family="Arial,sans-serif" font-size="12">Fungal hyphae (400�)</text>
+</svg>

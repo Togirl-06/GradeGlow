@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" fill="none">
+  <title>Human Skeleton</title>
+  <g id="skeleton" stroke="#ECEFF1" stroke-width="2" fill="#F5F5F5">
+    <!-- Skull -->
+    <ellipse id="skull" cx="200" cy="58" rx="42" ry="48" fill="#FAFAFA" stroke="#B0BEC5"/>
+    <rect x="178" y="95" width="44" height="18" rx="6" fill="#FAFAFA" stroke="#B0BEC5"/>
+    <!-- Spine -->
+    <path id="spine" d="M200 115 L200 280" stroke="#CFD8DC" stroke-width="8" stroke-linecap="round"/>
+    <!-- Ribs -->
+    <g id="ribs" stroke="#B0BEC5" fill="none" stroke-width="2">
+      <path d="M168 140 Q200 150 232 140"/>
+      <path d="M162 158 Q200 170 238 158"/>
+      <path d="M158 176 Q200 190 242 176"/>
+      <path d="M156 194 Q200 210 244 194"/>
+      <path d="M158 212 Q200 228 242 212"/>
+    </g>
+    <!-- Sternum -->
+    <rect id="sternum" x="192" y="135" width="16" height="90" rx="4" fill="#ECEFF1" stroke="#90A4AE"/>
+    <!-- Scapula -->
+    <path id="scapula" d="M148 150 Q130 180 140 210 Q155 200 160 165 Z" fill="#E0E0E0" stroke="#90A4AE"/>
+    <path d="M252 150 Q270 180 260 210 Q245 200 240 165 Z" fill="#E0E0E0" stroke="#90A4AE"/>
+    <!-- Humerus -->
+    <path id="humerus" d="M132 210 L118 320" stroke="#CFD8DC" stroke-width="10" stroke-linecap="round"/>
+    <path d="M268 210 L282 320" stroke="#CFD8DC" stroke-width="10" stroke-linecap="round"/>
+    <!-- Pelvis -->
+    <path id="pelvis" d="M160 278 Q200 300 240 278 L235 320 Q200 335 165 320 Z" fill="#E0E0E0" stroke="#90A4AE"/>
+    <!-- Femur -->
+    <path id="femur" d="M178 325 L168 460" stroke="#CFD8DC" stroke-width="12" stroke-linecap="round"/>
+    <path d="M222 325 L232 460" stroke="#CFD8DC" stroke-width="12" stroke-linecap="round"/>
+    <!-- Tibia -->
+    <path id="tibia" d="M170 465 L165 560" stroke="#B0BEC5" stroke-width="8" stroke-linecap="round"/>
+    <path d="M230 465 L235 560" stroke="#B0BEC5" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#1B4332"/>
+  <circle cx="200" cy="125" r="118" fill="#0D2818" stroke="#2D6A4F" stroke-width="3"/>
+  <ellipse cx="200" cy="155" rx="55" ry="32" fill="#8D6E63" stroke="#6D4C41" stroke-width="2"/>
+  <ellipse cx="200" cy="95" rx="28" ry="22" fill="#A1887F" stroke="#795548" stroke-width="2"/>
+  <circle cx="188" cy="88" r="4" fill="#EFEBE9"/><circle cx="200" cy="84" r="4" fill="#EFEBE9"/><circle cx="212" cy="88" r="4" fill="#EFEBE9"/>
+  <circle cx="194" cy="96" r="3" fill="#D7CCC8"/><circle cx="206" cy="96" r="3" fill="#D7CCC8"/>
+  <text x="200" y="24" text-anchor="middle" fill="#D8F3DC" font-family="Arial,sans-serif" font-size="12">Spore-producing fungus (400�)</text>
+</svg>

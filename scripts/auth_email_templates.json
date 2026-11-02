@@ -1,0 +1,22 @@
+{
+  "senderDisplayName": "GradeGlow",
+  "senderLocalPart": "noreply",
+  "replyTo": "tomachiegere@gmail.com",
+  "callbackUri": "https://gradeglow-virtualuni.web.app/__/auth/action",
+  "verifyEmailTemplate": {
+    "subject": "Verify your GradeGlow email",
+    "body": "Hello %DISPLAY_NAME%,\n\nWelcome to GradeGlow - your virtual university for workplace labs, textbooks, and AI professors.\n\nVerify your email address:\n%LINK%\n\nIf you did not create a GradeGlow account, you can ignore this message.\n\n- GradeGlow Team"
+  },
+  "resetPasswordTemplate": {
+    "subject": "Reset your GradeGlow password",
+    "body": "Hello,\n\nWe received a request to reset the password for your GradeGlow account (%EMAIL%).\n\nChoose a new password here:\n%LINK%\n\nIf you did not request this, you can safely ignore this email.\n\n- GradeGlow Team"
+  },
+  "changeEmailTemplate": {
+    "subject": "Confirm your new GradeGlow email",
+    "body": "Hello,\n\nConfirm your new email address for GradeGlow (%NEW_EMAIL%):\n%LINK%\n\nIf you did not request this change, contact us immediately.\n\n- GradeGlow Team"
+  },
+  "revertSecondFactorAdditionTemplate": {
+    "subject": "GradeGlow security notice",
+    "body": "Hello,\n\nSomeone tried to add multi-factor authentication to your GradeGlow account.\n\nIf this was not you, use this link to remove the change:\n%LINK%\n\n- GradeGlow Team"
+  }
+}

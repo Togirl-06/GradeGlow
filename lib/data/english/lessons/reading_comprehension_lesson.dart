@@ -1,0 +1,100 @@
+import '../../../models/english_lesson.dart';
+
+const EnglishLessonScript readingComprehensionLesson = EnglishLessonScript(
+  id: 'reading_comp_1',
+  title: 'Reading Comprehension',
+  skillLabel: 'main idea · details · inference',
+  grammarFocus: 'Reading',
+  vocabularyWords: <String>['main idea', 'according to', 'suggests'],
+  activities: <EnglishActivity>[
+    EnglishActivity(
+      id: 'rc_l',
+      kind: EnglishActivityKind.microPrompt,
+      skill: EnglishSkill.reading,
+      prompt: 'Learn reading strategies',
+      microTip: 'Skim for main idea · scan for details · read aloud for fluency.',
+    ),
+    EnglishActivity(
+      id: 'rc_read1',
+      kind: EnglishActivityKind.readingAloud,
+      skill: EnglishSkill.reading,
+      prompt: 'Read this passage aloud — clear pace, full sentences.',
+      listeningScript:
+          'Many students use apps to review vocabulary for ten minutes daily. '
+          'Short sessions help memory more than one long cramming block.',
+      requiresVoice: true,
+      difficulty: EnglishActivityDifficulty.hard,
+      feedbackCorrect: 'Strong read — steady pace and clear words.',
+      feedbackWrong: 'Read every sentence — match the words on screen.',
+    ),
+    EnglishActivity(
+      id: 'rc_pass1',
+      kind: EnglishActivityKind.multipleChoice,
+      skill: EnglishSkill.reading,
+      prompt: 'What is the main idea of the passage you read?',
+      options: <String>[
+        'Apps replace teachers.',
+        'Short daily review helps vocabulary.',
+        'Students hate studying.',
+      ],
+      correctIndex: 1,
+      difficulty: EnglishActivityDifficulty.hard,
+      feedbackCorrect: 'Main idea = brief daily review helps.',
+      feedbackWrong: 'Focus on short sessions + vocabulary.',
+    ),
+    EnglishActivity(
+      id: 'rc_read2',
+      kind: EnglishActivityKind.readingAloud,
+      skill: EnglishSkill.reading,
+      prompt: 'Read aloud — pay attention to time details.',
+      listeningScript:
+          'The library opens at 8 a.m. on weekdays and 10 a.m. on Sundays. '
+          'During exam week, evening hours extend until midnight.',
+      requiresVoice: true,
+      difficulty: EnglishActivityDifficulty.hard,
+      feedbackCorrect: 'Excellent — you captured the schedule details.',
+      feedbackWrong: 'Include all time phrases: weekdays, Sunday, exam week.',
+    ),
+    EnglishActivity(
+      id: 'rc_pass2',
+      kind: EnglishActivityKind.multipleChoice,
+      skill: EnglishSkill.reading,
+      prompt: 'When does the library open on Sunday?',
+      options: <String>['8 a.m.', '10 a.m.', 'It is closed'],
+      correctIndex: 1,
+      difficulty: EnglishActivityDifficulty.hard,
+      feedbackCorrect: 'Detail: 10 a.m. Sundays.',
+      feedbackWrong: 'Scan for Sunday → 10 a.m.',
+    ),
+    EnglishActivity(
+      id: 'rc_inf',
+      kind: EnglishActivityKind.multipleChoice,
+      skill: EnglishSkill.reading,
+      prompt: 'According to the study-apps passage, why are short daily sessions better than one long block?',
+      options: <String>[
+        'Apps replace teachers.',
+        'They help memory more than cramming.',
+        'Students hate long sessions only on weekends.',
+      ],
+      correctIndex: 1,
+      difficulty: EnglishActivityDifficulty.hard,
+      feedbackCorrect: 'The passage links short sessions to better memory.',
+      feedbackWrong: 'Re-read: short sessions help memory.',
+    ),
+    EnglishActivity(
+      id: 'rc_r',
+      kind: EnglishActivityKind.rapidReview,
+      skill: EnglishSkill.reading,
+      prompt: '⚡ First step when reading?',
+      options: <String>[
+        'Read every word slowly',
+        'Skim for the main idea',
+        'Skip the title',
+      ],
+      correctIndex: 1,
+      difficulty: EnglishActivityDifficulty.hard,
+      feedbackCorrect: 'Skim first.',
+      feedbackWrong: 'Skim for gist first.',
+    ),
+  ],
+);

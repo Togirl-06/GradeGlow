@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" fill="none">
+  <title>Laboratory Equipment</title>
+  <rect width="480" height="360" fill="#1A237E"/>
+  <rect x="0" y="292" width="480" height="68" fill="#37474F"/>
+  <rect x="40" y="300" width="400" height="8" fill="#546E7A"/>
+  <path id="test_tube" d="M60 100 L60 250 Q60 270 75 270 Q90 270 90 250 L90 100 Z" fill="#A5D6A7" stroke="#66BB6A" stroke-width="2" opacity="0.85"/>
+  <path id="beaker" d="M120 80 L120 240 L180 280 L180 80 Z" fill="#4FC3F7" stroke="#29B6F6" stroke-width="2" opacity="0.8"/>
+  <rect x="120" y="200" width="60" height="40" fill="#0288D1" opacity="0.45"/>
+  <path id="flask" d="M230 60 L230 180 Q230 220 200 260 L260 260 Q230 220 230 180 Z" fill="#CE93D8" stroke="#AB47BC" stroke-width="2" opacity="0.8"/>
+  <rect id="pipette" x="300" y="70" width="10" height="190" rx="3" fill="#ECEFF1" stroke="#90A4AE" stroke-width="2"/>
+  <ellipse cx="305" cy="68" rx="14" ry="6" fill="#CFD8DC" stroke="#90A4AE" stroke-width="1.5"/>
+  <rect id="burette" x="360" y="55" width="22" height="210" rx="3" fill="#B3E5FC" stroke="#4FC3F7" stroke-width="2" opacity="0.85"/>
+  <line x1="362" y1="95" x2="380" y2="95" stroke="#29B6F6" stroke-width="1"/>
+  <line x1="362" y1="130" x2="380" y2="130" stroke="#29B6F6" stroke-width="1"/>
+  <line x1="362" y1="165" x2="380" y2="165" stroke="#29B6F6" stroke-width="1"/>
+  <line x1="362" y1="200" x2="380" y2="200" stroke="#29B6F6" stroke-width="1"/>
+  <rect x="352" y="255" width="38" height="12" rx="3" fill="#78909C"/>
+  <text x="240" y="28" text-anchor="middle" fill="#90CAF9" font-family="Arial,sans-serif" font-size="14" font-weight="bold">Laboratory Equipment</text>
+</svg>

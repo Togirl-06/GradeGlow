@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="none">
+  <rect width="400" height="250" fill="#1B4332"/>
+  <circle cx="200" cy="125" r="118" fill="#0D2818" stroke="#2D6A4F" stroke-width="3"/>
+  <path d="M90 140 C130 60 170 200 210 80 C250 40 290 120 310 140" stroke="#EF5350" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M90 140 C130 60 170 200 210 80 C250 40 290 120 310 140" stroke="#FFCDD2" stroke-width="3" fill="none" opacity="0.6"/>
+  <text x="200" y="24" text-anchor="middle" fill="#D8F3DC" font-family="Arial,sans-serif" font-size="12">Helical virus (400�)</text>
+</svg>

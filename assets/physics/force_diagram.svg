@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <title>Free-Body Diagram</title>
+  <rect width="400" height="400" fill="#0A1628"/>
+  <rect x="40" y="280" width="320" height="12" fill="#546E7A"/>
+  <rect id="object" x="160" y="200" width="80" height="60" rx="6" fill="#90A4AE" stroke="#B0BEC5" stroke-width="2"/>
+  <line x1="200" y1="152" x2="200" y2="200" stroke="#42A5F5" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="210" y="168" fill="#90CAF9" font-size="11">N</text>
+  <line id="normal" x1="200" y1="260" x2="200" y2="308" stroke="#EF5350" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <text x="210" y="295" fill="#FF8A80" font-size="11">Fg</text>
+  <line id="applied" x1="240" y1="230" x2="310" y2="230" stroke="#66BB6A" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="300" y="222" fill="#A5D6A7" font-size="11">F</text>
+  <line id="friction" x1="160" y1="230" x2="90" y2="230" stroke="#FFB74D" stroke-width="3" marker-end="url(#arrowOrange)"/>
+  <text x="95" y="222" fill="#FFE082" font-size="11">f</text>
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#42A5F5"/></marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#EF5350"/></marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#66BB6A"/></marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#FFB74D"/></marker>
+  </defs>
+  <text x="200" y="28" text-anchor="middle" fill="#90CAF9" font-family="Arial,sans-serif" font-size="14" font-weight="bold">Free-Body Diagram</text>
+</svg>

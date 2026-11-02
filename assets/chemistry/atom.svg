@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <title>Atomic Structure</title>
+  <rect width="400" height="400" fill="#0A1628"/>
+  <circle id="shell" cx="200" cy="200" r="140" stroke="#90CAF9" stroke-width="2" fill="none" stroke-dasharray="6 4" opacity="0.6"/>
+  <circle cx="200" cy="200" r="95" stroke="#64B5F6" stroke-width="1.5" fill="none" stroke-dasharray="4 4" opacity="0.4"/>
+  <circle id="nucleus" cx="200" cy="200" r="32" fill="#EF5350" stroke="#FF8A80" stroke-width="2"/>
+  <circle id="proton" cx="188" cy="192" r="10" fill="#E53935" stroke="#FFCDD2" stroke-width="1"/>
+  <circle id="neutron" cx="212" cy="208" r="10" fill="#8D6E63" stroke="#D7CCC8" stroke-width="1"/>
+  <circle id="electron" cx="312" cy="140" r="12" fill="#42A5F5" stroke="#90CAF9" stroke-width="2"/>
+  <text x="188" y="196" text-anchor="middle" fill="white" font-size="9" font-weight="bold">+</text>
+  <text x="212" y="212" text-anchor="middle" fill="white" font-size="9">n</text>
+  <text x="312" y="144" text-anchor="middle" fill="white" font-size="9" font-weight="bold">e⁻</text>
+  <text x="200" y="28" text-anchor="middle" fill="#90CAF9" font-family="Arial,sans-serif" font-size="14" font-weight="bold">Atomic Structure</text>
+</svg>
