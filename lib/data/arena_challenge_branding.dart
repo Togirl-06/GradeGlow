@@ -64,7 +64,13 @@ class ArenaChallengeBranding {
       tags: raw.tags,
       functionName: fn,
       kind: raw.kind,
-      starterCode: raw.starterCode,
+      // Starter code must define the renamed function the judge will call.
+      starterCode: <String, String>{
+        for (final MapEntry<String, String> e in raw.starterCode.entries)
+          e.key: raw.functionName.isEmpty
+              ? e.value
+              : e.value.replaceAll(RegExp('\\b${RegExp.escape(raw.functionName)}\\b'), fn),
+      },
       hiddenTests: raw.hiddenTests,
     );
   }

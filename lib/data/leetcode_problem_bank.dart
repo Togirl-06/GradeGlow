@@ -1,3 +1,4 @@
+import 'arena_original_problems.dart';
 import '../models/leetcode_problem.dart';
 import '../models/practice_lab_question.dart';
 import 'arena_challenge_branding.dart';
@@ -118,7 +119,8 @@ class LeetcodeProblemBank {
     });
 
     // Rebrand so titles/IDs/copy are GradeGlow originals — not third-party names.
-    final List<LeetcodeProblem> branded = <LeetcodeProblem>[];
+    // GradeGlow-original problems (verified reference solutions) come first.
+    final List<LeetcodeProblem> branded = <LeetcodeProblem>[...ArenaOriginalProblems.all];
     for (int i = 0; i < out.length; i++) {
       branded.add(ArenaChallengeBranding.rebrand(out[i], arenaIndex: i));
     }

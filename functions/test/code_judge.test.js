@@ -160,3 +160,16 @@ test("every problem the app lists can be graded by the server", { skip: !require
   assert.deepEqual(bad, [], `${bad.length} ungradable problems are listed in the app`);
   assert.ok(Object.keys(P).length >= 30, "too few problems");
 });
+
+test("GradeGlow-original problems: both references pass, starters fail", { timeout: 120000 }, async () => {
+  const originals = require("./fixtures/arena_originals.json");
+  assert.ok(originals.length >= 20);
+  for (const p of originals) {
+    for (const [language, code] of [["python3", p.py_src], ["javascript", p.js_src]]) {
+      const r = await judge({ problem: p, language, code, includeHidden: true }, run);
+      assert.equal(r.verdict, "Accepted", `${p.id} ${p.title} ${language}: ${JSON.stringify(r).slice(0, 600)}`);
+    }
+    const s = await judge({ problem: p, language: "python3", code: p.starterCode.python3, includeHidden: true }, run);
+    assert.notEqual(s.verdict, "Accepted", `${p.id} starter must not pass`);
+  }
+});
