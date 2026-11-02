@@ -329,19 +329,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                         if (!_isSignUp) ...<Widget>[
                           const SizedBox(height: 4),
-                          CheckboxListTile(
-                            value: _rememberMe,
-                            onChanged: _isLoading
-                                ? null
-                                : (bool? v) => setState(
-                                      () => _rememberMe = v ?? false,
-                                    ),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            title: const Text('Remember me'),
-                            subtitle: const Text(
-                              'Save email and password on this device',
+                          // Own Material so the tile's ink is not hidden by the card's DecoratedBox.
+                          Material(
+                            type: MaterialType.transparency,
+                            child: CheckboxListTile(
+                              value: _rememberMe,
+                              onChanged: _isLoading
+                                  ? null
+                                  : (bool? v) => setState(
+                                        () => _rememberMe = v ?? false,
+                                      ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: const Text('Remember me'),
+                              subtitle: const Text(
+                                'Save email and password on this device',
+                              ),
                             ),
                           ),
                         ],
