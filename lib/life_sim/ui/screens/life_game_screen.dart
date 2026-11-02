@@ -462,7 +462,10 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
 
   /// Streams the current scene (when it changes) and this frame's state.
   void _push3d() {
-    final String key = g.isIndoors ? 'room:${g.buildingId}' : 'city';
+    // The apartment's scene also carries placed furniture, so placing or
+    // removing a piece rebuilds the room.
+    final String decorKey = g.buildingId == 'apartment_block' ? g.economy.placedFurniture.join(',') : '';
+    final String key = g.isIndoors ? 'room:${g.buildingId}:$decorKey' : 'city';
     if (_sceneSent != key) {
       final bool sent = world3d.world3dSend(
         g.isIndoors ? _interiorScene() : _cityScene(),
@@ -582,6 +585,7 @@ class _LifeGameScreenState extends State<LifeGameScreen> with SingleTickerProvid
             'look': _lookMap(AvatarLook.fromNpc(n)),
           },
       ],
+      if (it.buildingId == 'apartment_block') 'decor': <String>[...g.economy.placedFurniture],
       'look': _look3d(),
       'player': <String, Object?>{'x': vx, 'y': vy},
     };

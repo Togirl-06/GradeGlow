@@ -75,6 +75,7 @@ function roomFor(b) {
     zones: r.zones || [],
     items: r.items,
     npcs: r.npcs.map((n) => ({ ...n, look: npcLook(n) })),
+    decor: b.id === 'apartment_block' ? (new URLSearchParams(location.search).get('decor') || '').split(',').filter(Boolean) : [],
   };
 }
 

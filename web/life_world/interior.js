@@ -1381,6 +1381,44 @@ function furniture(item, ctx) {
 
 // ------------------------------------------------------------ room
 
+// Furniture the student bought and placed (LifeEconomy.placedFurniture).
+// Fixed spots in the apartment that never block a station or doorway.
+const DECOR_SPOTS = {
+  plant: { x: -0.2, z: 4.75, ry: 0, make: () => plant(rng('decor-plant'), 1.5) },
+  bookshelf: { x: 10.3, z: -0.22, ry: 0, make: () => bookshelf(0.95, 1.6, rng('decor-books')) },
+  sofa: { x: 2.7, z: 8.15, ry: Math.PI, make: () => sofa(0xf97316, 0.95) },
+  desk_setup: { x: 7.6, z: 5.05, ry: -Math.PI / 2, make: () => computerDesk('code', true, 0x0ea5e9) },
+  tv: { x: 3.3, z: 4.62, ry: 0, make: () => {
+    const g = new THREE.Group();
+    g.add(at(rbox(1.1, 0.42, 0.34, 0.03, mat(DARKWOOD, { r: 0.7 })), 0, 0.21, 0));
+    g.add(at(rbox(1.25, 0.72, 0.05, 0.02, mat(0x0b1220)), 0, 0.85, -0.05));
+    g.add(at(plane(1.17, 0.64, screenMat('chart')), 0, 0.85, -0.02));
+    return g;
+  } },
+  bed_upgrade: { x: 1.0, z: 1.0, ry: 0, make: () => {
+    const g = new THREE.Group();
+    g.add(at(rbox(0.86, 0.12, 1.3, 0.05, mat(0xf8fafc, { r: 0.9 })), 0, 0.58, 0.12));
+    g.add(at(rbox(0.88, 0.06, 0.8, 0.03, mat(0x0d9488, { r: 0.95 })), 0, 0.66, 0.38));
+    return g;
+  } },
+};
+
+function addDecor(group, decor) {
+  for (const id of decor || []) {
+    const spot = DECOR_SPOTS[id];
+    if (!spot) continue;
+    const f = spot.make();
+    f.position.set(spot.x, 0, spot.z);
+    f.rotation.y = spot.ry;
+    f.traverse((o) => {
+      if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; }
+      o.userData.pick = { kind: 'ground' };
+    });
+    f.userData.decor = id;
+    group.add(f);
+  }
+}
+
 export function buildRoom(data) {
   const group = new THREE.Group();
   const { w, h, exitX, exitY, buildingId } = data;
@@ -1680,6 +1718,7 @@ export function buildRoom(data) {
     for (const L of lights) L.intensity = outdoor ? 0 : 2.4 + night * 1.5;
   }
 
+  if (buildingId === 'apartment_block') addDecor(group, data.decor);
   return { group, update, items: itemObjs, npcs, bounds: { w, h }, walls, outdoor };
 }
 
