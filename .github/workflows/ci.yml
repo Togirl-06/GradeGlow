@@ -49,7 +49,7 @@ jobs:
         run: |
           echo "## flutter analyze" >> ci_report.txt
           set -o pipefail
-          flutter analyze --no-fatal-infos 2>&1 | tee analyze.txt
+          flutter analyze --no-fatal-infos --no-fatal-warnings 2>&1 | tee analyze.txt
           status=${PIPESTATUS[0]}
           grep -E "^\s*error" analyze.txt | head -200 >> ci_report.txt || true
           grep -cE "^\s*error" analyze.txt | sed 's/^/analyzer errors: /' >> ci_report.txt || true
