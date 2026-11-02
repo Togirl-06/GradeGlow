@@ -48,6 +48,7 @@ class CityMap {
     'school_law',
     'school_engineering',
     'school_business',
+    'school_economics',
     'school_math',
     'school_arts',
     'school_biology',
@@ -141,8 +142,10 @@ class CityMap {
     // ---- Row 0: north campus
     two('residential', mk('apartment_block', 'Student Housing', 'residential', '🏠', 0, 2, open: 0, close: 24, color: 0xFF22C55E),
         mk('corner_cafe', 'Corner Café', 'residential', '☕', 1, 2, open: 7, close: 22, color: 0xFFB45309));
-    two('university', mk('university', 'University Hall', 'university', '🎓', 0, 2, open: 8, close: 18, weekends: false, color: 0xFFEAB308),
-        mk('library', 'University Library', 'university', '📚', 1, 2, open: 7, close: 23, color: 0xFF92400E));
+    out
+      ..add(mk('university', 'University Hall', 'university', '🎓', 0, 3, open: 8, close: 18, weekends: false, color: 0xFFEAB308))
+      ..add(mk('library', 'University Library', 'university', '📚', 1, 3, open: 7, close: 23, color: 0xFF92400E))
+      ..add(mk('school_economics', 'School of Economics', 'university', '💱', 2, 3, open: 7, close: 22, color: 0xFF0F766E));
     out
       ..add(mk('school_biology', 'Biological Sciences Center', 'science', '🧬', 0, 3, open: 7, close: 22, color: 0xFF16A34A))
       ..add(mk('school_chemistry', 'Chemical Sciences Lab', 'science', '⚗️', 1, 3, open: 7, close: 22, color: 0xFF9333EA))
@@ -161,7 +164,7 @@ class CityMap {
     two('law_arts', mk('school_law', 'College of Law & Justice', 'law_arts', '⚖️', 0, 2, open: 7, close: 22, color: 0xFF9F1239),
         mk('school_arts', 'Arts, Humanities & Communication', 'law_arts', '🎭', 1, 2, open: 7, close: 22, color: 0xFFDB2777));
     out
-      ..add(mk('school_business', 'Business & Economics Tower', 'business', '📈', 0, 3, open: 7, close: 22, color: 0xFF2563EB))
+      ..add(mk('school_business', 'School of Business', 'business', '📈', 0, 3, open: 7, close: 22, color: 0xFF2563EB))
       ..add(emp('meridian', 'business', 1, 3, '🏢'))
       ..add(emp('harbor_retail', 'business', 2, 3, '🏬'));
     // ---- Row 2: the city (workplaces, shops, fun)

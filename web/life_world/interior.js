@@ -1699,6 +1699,7 @@ function themeOf(id, items) {
   if (id === 'school_medicine' || id === 'school_nursing') return 'hospital';
   if (id === 'school_law') return 'law';
   if (id === 'school_business') return 'finance';
+  if (id === 'school_economics') return 'finance';
   if (id.startsWith('school_')) return 'university';
   if (id === 'student_union') return 'default';
   if (id === 'employment_center' || id === 'company_registry') return 'employment_center';

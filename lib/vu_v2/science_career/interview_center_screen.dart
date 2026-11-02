@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'interview_catalog.dart';
+import 'interview_scoring.dart';
 import 'science_career_content.dart';
 import 'science_career_progress.dart';
 import 'science_career_theme.dart';
@@ -226,11 +227,12 @@ class _InterviewRoomState extends State<_InterviewRoom> {
   int _step = 0;
   bool _finished = false;
   bool _sending = false;
+  final List<String> _answers = <String>[];
   final Map<String, int> _scores = <String, int>{
-    'Technical correctness': 3,
-    'Communication': 4,
-    'Reasoning': 3,
-    'Problem solving': 3,
+    'Technical correctness': 1,
+    'Communication': 1,
+    'Reasoning': 1,
+    'Problem solving': 1,
   };
 
   @override
@@ -257,23 +259,11 @@ class _InterviewRoomState extends State<_InterviewRoom> {
       _answer.clear();
     });
 
-    final String lower = text.toLowerCase();
-    int hits = 0;
-    for (final String k in widget.scenario.keywords) {
-      if (lower.contains(k.toLowerCase())) hits++;
-    }
-    if (text.length > 80) hits++;
-    if (hits >= 1) {
-      _scores['Technical correctness'] =
-          (_scores['Technical correctness']! + 1).clamp(1, 5);
-      _scores['Problem solving'] =
-          (_scores['Problem solving']! + 1).clamp(1, 5);
-    }
-    if (text.length > 60) {
-      _scores['Communication'] =
-          (_scores['Communication']! + 1).clamp(1, 5);
-      _scores['Reasoning'] = (_scores['Reasoning']! + 1).clamp(1, 5);
-    }
+    _answers.add(text);
+    final InterviewVerdict live = ScienceInterviewScoring.decide(_answers, widget.scenario.keywords);
+    _scores
+      ..clear()
+      ..addAll(live.scores);
 
     await Future<void>.delayed(const Duration(milliseconds: 450));
     if (!mounted) return;
@@ -292,15 +282,12 @@ class _InterviewRoomState extends State<_InterviewRoom> {
       return;
     }
 
-    final int avg = (_scores.values.reduce((int a, int b) => a + b) /
-            _scores.length)
-        .round();
-    final bool passed = avg >= 3 && text.length >= 30;
+    final InterviewVerdict verdict = ScienceInterviewScoring.decide(_answers, widget.scenario.keywords);
+    final bool passed = verdict.passed;
     await widget.progress.recordInterview(
       passed: passed,
-      scores: Map<String, int>.from(_scores),
-      feedback:
-          'Focus on why you chose an approach. Hint cue: ${widget.scenario.hint}',
+      scores: Map<String, int>.from(verdict.scores),
+      feedback: passed ? verdict.feedback : '${verdict.feedback} Hint cue: ${widget.scenario.hint}',
       scenarioId: widget.scenario.id,
       forJobId: widget.forJobId,
     );
@@ -315,7 +302,7 @@ class _InterviewRoomState extends State<_InterviewRoom> {
               ? (widget.forJobId != null
                   ? 'Interview passed. Check Career Center for your offer, then accept to unlock your workplace.'
                   : 'Strong practice round. Apply with your résumé in Career Center first, then interview for that role.')
-              : 'Good effort. Expand answers with concrete steps, then retake.',
+              : 'Not this time. ${verdict.feedback}',
         ),
       );
     });

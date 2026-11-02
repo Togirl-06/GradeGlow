@@ -107,6 +107,8 @@ abstract final class CampusLabs {
     'biz_hr': (BuildContext c) => _go(c, const BusinessCareerHubScreen(initialMajorId: 'human_resource_management')),
     'biz_startup': (BuildContext c) => _go(c, const BusinessCareerHubScreen(initialMajorId: 'entrepreneurship')),
     'econ_policy': (BuildContext c) => _go(c, const EconomicsPlayableScreen()),
+    'econ_research': (BuildContext c) => _go(c, const BusinessCareerHubScreen(initialMajorId: 'economics')),
+    'econ_trade': (BuildContext c) => _go(c, const BusinessCareerHubScreen(initialMajorId: 'international_business')),
     'biz_school': (BuildContext c) => _go(c, const BusinessSchoolScreen()),
     'math_whiteboard': (BuildContext c) => _go(c, const MathematicsDegreeHomeScreen()),
     'math_applied': (BuildContext c) => _go(c, const MathematicsPlayableScreen()),

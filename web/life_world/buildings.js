@@ -1018,6 +1018,24 @@ Object.assign(ARCH, {
     const tm = new THREE.MeshStandardMaterial({ map: t, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: 0.6 });
     g.add(at(plane(W - 0.3, 0.26, tm), 0, 2 * FLOOR_H + 0.15, -0.3 + (D - 0.6) / 2 + 0.02));
   },
+  school_economics(g, k) {
+    const { W, D } = k;
+    const fz = schoolBody(g, k, { floors: 3, wall: 0xf0fdfa, glass: 0x99f6e4, signBg: '#134e4a' });
+    // rooftop bar chart: rising GDP bars
+    const bars = [0.5, 0.8, 0.65, 1.1, 1.4];
+    const bw = Math.min(0.32, (W - 0.8) / bars.length - 0.06);
+    bars.forEach((h, i) => {
+      const x = -((bars.length - 1) * (bw + 0.06)) / 2 + i * (bw + 0.06);
+      g.add(at(box(bw, h, bw, emblemMat(i === bars.length - 1 ? 0x14b8a6 : 0x5eead4, 0.35)), x, 3 * FLOOR_H + h / 2, -0.4));
+    });
+    // globe emblem by the door (trade)
+    const globe = at(new THREE.Group(), W / 2 - 0.45, 2.3, fz + 0.12);
+    globe.add(sphere(0.26, emblemMat(0x0ea5e9, 0.35), 14));
+    const ring = torus(0.32, 0.02, emblemMat(0xfacc15, 0.5));
+    ring.rotation.x = Math.PI / 2.4;
+    globe.add(ring);
+    g.add(globe);
+  },
   school_math(g, k) {
     const { W, D } = k;
     const fz = schoolBody(g, k, { floors: 3, wall: 0xecfeff, glass: 0x67e8f9, signBg: '#164e63' });

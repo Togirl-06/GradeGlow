@@ -95,7 +95,7 @@ const List<SchoolDef> kSchools = <SchoolDef>[
   ),
   SchoolDef(
     id: 'school_business',
-    majors: <String>['Business Administration', 'Accounting', 'Finance', 'Economics', 'Entrepreneurship', 'Marketing', 'Human Resources', 'International Business'],
+    majors: <String>['Business Administration', 'Accounting', 'Finance', 'Entrepreneurship', 'Marketing', 'Human Resources'],
     floor: 'carpet',
     professor: SchoolPerson('prof_biz', 'Prof. Helen Achterberg', 'Professor of Business',
         'A practical business professor who uses real-world cases: falling sales, budgets, hiring and policy decisions.',
@@ -104,6 +104,18 @@ const List<SchoolDef> kSchools = <SchoolDef>[
     student: SchoolPerson('stu_biz', 'Diego Rao', 'Business student', 'An entrepreneurship student pitching a startup idea.',
         <String>['I am pitching my startup to investors at the incubator.', 'The economics policy sim showed me why rates go up with inflation.'],
         skin: 3, hair: 1, outfit: 0xFF1D4ED8),
+  ),
+  SchoolDef(
+    id: 'school_economics',
+    majors: <String>['Economics', 'International Business', 'Economic Policy'],
+    floor: 'wood',
+    professor: SchoolPerson('prof_econ', 'Prof. Amara Mensah', 'Professor of Economics',
+        'An economist who teaches with live data: inflation, jobs, trade and the trade-offs behind every policy.',
+        <String>['Every policy has a trade-off. Name both sides before you choose.', 'Real interest rate = policy rate minus inflation. That is what cools demand.', 'Check the data before the story: GDP, unemployment and prices together.'],
+        skin: 4, hair: 2, outfit: 0xFF0F766E),
+    student: SchoolPerson('stu_econ', 'Lucas Ferreira', 'Economics student', 'An economics student who follows central bank decisions.',
+        <String>['I raised rates too fast in the policy sim and unemployment jumped.', 'The trade floor showed me how a weaker currency helps exporters.'],
+        skin: 2, hair: 0, outfit: 0xFF14B8A6),
   ),
   SchoolDef(
     id: 'school_math',
