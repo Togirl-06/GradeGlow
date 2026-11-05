@@ -101,6 +101,8 @@ void main() {
       ),
     ));
     await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey<String>('code_editor')), 'class Solution:\n    def pairSum(self, nums, target):\n        return [0, 1]\n');
+    await tester.pumpAndSettle();
     return graded;
   }
 

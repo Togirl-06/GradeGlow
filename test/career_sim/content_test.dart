@@ -3,6 +3,7 @@ import 'package:ai_study_buddy/career_sim/model/career_models.dart';
 import 'package:ai_study_buddy/career_sim/model/content_models.dart';
 import 'package:ai_study_buddy/career_sim/model/tasks.dart';
 import 'package:ai_study_buddy/career_sim/ui/diagrams.dart';
+import 'package:ai_study_buddy/data/coding_languages.dart';
 import 'package:ai_study_buddy/models/leetcode_problem.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -95,7 +96,10 @@ void main() {
       final LeetcodeProblem? p = CareerCatalog.problem(t.problemKey);
       expect(p, isNotNull, reason: t.problemKey);
       expect(p!.hasRealTests, isTrue, reason: t.problemKey);
-      expect(p.starterCode['python3'], isNotNull, reason: t.problemKey);
+      for (final String lang in <String>['python3', 'javascript']) {
+        final String starter = CodingLanguage.starterForProblem(p, CodingLanguage.byId(lang)!);
+        expect(starter, contains(p.functionName), reason: '${t.problemKey} $lang starter');
+      }
     }
   });
 

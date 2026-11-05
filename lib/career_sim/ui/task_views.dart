@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/coding_languages.dart';
 import '../../models/leetcode_problem.dart';
 import '../../services/code_judge_service.dart';
 import '../../vu_v2/design/vu_v2_theme.dart';
@@ -266,7 +267,16 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
   @override
   void initState() {
     super.initState();
-    _code.text = _problem?.starterCode[_lang] ?? '';
+    _code.text = _starter(_lang);
+  }
+
+  /// The problem's own starter, or one generated with the judged function name
+  /// (buggy code for debug problems).
+  String _starter(String lang) {
+    final LeetcodeProblem? p = _problem;
+    final CodingLanguage? l = CodingLanguage.byId(lang);
+    if (p == null || l == null) return '';
+    return CodingLanguage.starterForProblem(p, l);
   }
 
   @override
@@ -278,6 +288,11 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
   Future<void> _judge(bool submit) async {
     final LeetcodeProblem? p = _problem;
     if (p == null) return;
+    final String starter = _starter(_lang).trim();
+    if (_code.text.trim().isEmpty || (submit && _code.text.trim() == starter && !p.isDebug)) {
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(const SnackBar(content: Text('Write your solution in the editor first.')));
+      return;
+    }
     final JudgeResult r = await careerStore(context).judge.judge(problem: p, languageId: _lang, code: _code.text, submit: submit);
     if (!mounted) return;
     setState(() {
@@ -323,7 +338,7 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
                 if (v == null || v == _lang) return;
                 setState(() {
                   _lang = v;
-                  _code.text = p.starterCode[v] ?? '';
+                  _code.text = _starter(v);
                 });
               },
             ),

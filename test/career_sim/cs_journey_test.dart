@@ -80,7 +80,15 @@ Future<void> back(WidgetTester t) async {
   await t.pumpAndSettle();
 }
 
+const String someCode = 'class Solution:\n    def solve(self, *args):\n        return my_answer(*args)\n';
+
+Future<void> writeCode(WidgetTester t) async {
+  await t.enterText(k('code_editor'), someCode);
+  await t.pumpAndSettle();
+}
+
 Future<void> submitCode(WidgetTester t) async {
+  await writeCode(t);
   await tapKey(t, 'code_run');
   await tapKey(t, 'code_submit');
   expect(find.textContaining('Accepted'), findsWidgets);
@@ -206,6 +214,7 @@ void main() {
         await t.enterText(k('iv_answer'), strongAnswer);
         await tapKey(t, 'iv_send');
       } else if (k('code_submit').evaluate().isNotEmpty) {
+        await writeCode(t);
         await tapKey(t, 'code_submit');
       } else if (find.widgetWithText(OutlinedButton, 'O(n²)').evaluate().isNotEmpty) {
         await t.tap(find.widgetWithText(OutlinedButton, 'O(n)'));
@@ -225,7 +234,7 @@ void main() {
     await tapKey(t, 'iv_suggest_2');
     await tapKey(t, 'iv_finish');
     final InterviewRecord rec = store.profile.application(app.id)!.interview!;
-    expect(rec.practicalPassed, isTrue);
+    expect(rec.practicalPassed, isTrue, reason: rec.turns.map((InterviewTurn x) => '${x.questionId}:${x.score}').join(' '));
     expect(rec.turns.any((InterviewTurn x) => x.isFollowUp), isTrue, reason: 'the interviewer should adapt');
     expect(rec.overall, greaterThanOrEqualTo(80));
     await tapKey(t, 'interview_done');
@@ -245,6 +254,7 @@ void main() {
     // 17–19. Assignment → submit → supervisor evaluation.
     await tapKey(t, 'request_assignment');
     await tapKey(t, 'open_assignment');
+    await writeCode(t);
     await tapKey(t, 'code_submit');
     await t.enterText(k('handoff_note'),
         'I implemented the duplicate check with a set and verified it with tests on large batches. Next, QA should monitor the settlement run and follow up on any remaining edge cases.');
