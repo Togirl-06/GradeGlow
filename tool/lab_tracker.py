@@ -171,8 +171,12 @@ SCHOOLS = [
     ]),
     ("School of Mathematics and Sciences", [
         ("mathematics", "Mathematics", [
-            ("Algebra", None), ("Calculus", None), ("Linear Algebra", None), ("Statistics", None),
-            ("Differential Equations", None), ("Applied Mathematics", None),
+            ("Algebra", built("ma_lab_algebra", "tested", "Line-by-line working checker; 15 scenarios")),
+            ("Calculus", built("ma_lab_calculus", "tested", "Graphs with sliders and tracing; derivatives and integrals checked; 15 scenarios")),
+            ("Linear Algebra", built("ma_lab_linalg", "tested", "Matrix grids; answers computed from each scenario's matrices; 15 scenarios")),
+            ("Statistics", built("ma_lab_stats", "tested", "Real datasets; answers recomputed from the data; 15 scenarios")),
+            ("Differential Equations", built("ma_lab_de", "tested", "Solutions checked by substitution; slope fields; 15 scenarios")),
+            ("Applied Mathematics", built("ma_lab_applied", "tested", "Business, finance, engineering, biology and computing briefs; 15 scenarios")),
         ]),
         ("biology", "Biology", [
             ("Cell Biology", None), ("Human Biology", None), ("Genetics", None), ("Microbiology", None),
@@ -202,6 +206,7 @@ SCENARIOS = {
     "md_lab_anatomy": 1, "md_lab_assessment": 1, "md_lab_emergency": 1,
     "nu_lab_admission": 1, "nu_lab_vitals": 1, "nu_lab_meds": 1, "nu_lab_procedures": 1, "nu_lab_emergency": 1, "nu_lab_shift": 1,
     "acc_lab_bookkeeping": 1, "acc_lab_reconciliation": 1, "acc_lab_statements": 1,
+    "ma_lab_algebra": 15, "ma_lab_calculus": 15, "ma_lab_linalg": 15, "ma_lab_stats": 15, "ma_lab_de": 15, "ma_lab_applied": 15,
 }
 
 

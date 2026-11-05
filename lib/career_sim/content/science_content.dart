@@ -489,6 +489,10 @@ const Department mathematics = Department(
     SkillDef('ma_stats', 'Statistics & probability'),
     SkillDef('ma_model', 'Mathematical modelling'),
     SkillDef('ma_proof', 'Proof & rigour'),
+    SkillDef('ma_algebra', 'Algebra & equation solving'),
+    SkillDef('ma_calc', 'Calculus'),
+    SkillDef('ma_linalg', 'Linear algebra'),
+    SkillDef('ma_de', 'Differential equations'),
   ],
   units: <DeptUnit>[
     DeptUnit(

@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 181, Interface completed: 0, Functionality in progress: 17, Functionality completed: 0, Tested: 0, Verified complete: 0.
+**198 labs.** Not started: 175, Interface completed: 0, Functionality in progress: 17, Functionality completed: 0, Tested: 6, Verified complete: 0.
 
 ## Majors
 
@@ -37,7 +37,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Business and Economics | Marketing | 7 | Not started |
 | School of Business and Economics | Human Resources Management | 7 | Not started |
 | School of Business and Economics | International Business | 7 | Not started |
-| School of Mathematics and Sciences | Mathematics | 6 | Not started |
+| School of Mathematics and Sciences | Mathematics | 6 | Tested |
 | School of Mathematics and Sciences | Biology | 7 | Not started |
 | School of Mathematics and Sciences | Chemistry | 8 | Not started |
 | School of Mathematics and Sciences | Physics | 7 | Not started |
@@ -337,12 +337,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Algebra | Not started | 0 / 15 |  |  |
-| B. Calculus | Not started | 0 / 15 |  |  |
-| C. Linear Algebra | Not started | 0 / 15 |  |  |
-| D. Statistics | Not started | 0 / 15 |  |  |
-| E. Differential Equations | Not started | 0 / 15 |  |  |
-| F. Applied Mathematics | Not started | 0 / 15 |  |  |
+| A. Algebra | Tested | 15 / 15 | `ma_lab_algebra` | Line-by-line working checker; 15 scenarios |
+| B. Calculus | Tested | 15 / 15 | `ma_lab_calculus` | Graphs with sliders and tracing; derivatives and integrals checked; 15 scenarios |
+| C. Linear Algebra | Tested | 15 / 15 | `ma_lab_linalg` | Matrix grids; answers computed from each scenario's matrices; 15 scenarios |
+| D. Statistics | Tested | 15 / 15 | `ma_lab_stats` | Real datasets; answers recomputed from the data; 15 scenarios |
+| E. Differential Equations | Tested | 15 / 15 | `ma_lab_de` | Solutions checked by substitution; slope fields; 15 scenarios |
+| F. Applied Mathematics | Tested | 15 / 15 | `ma_lab_applied` | Business, finance, engineering, biology and computing briefs; 15 scenarios |
 
 ### Biology
 

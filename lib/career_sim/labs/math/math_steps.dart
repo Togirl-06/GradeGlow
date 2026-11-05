@@ -111,8 +111,10 @@ class LineCheck {
 abstract final class WorkingChecker {
   static final RegExp _lead = RegExp(r'^(⇒|=>|->|→|∴|so\b|therefore\b|hence\b|then\b|=)\s*', caseSensitive: false);
 
+  static final RegExp _named = RegExp(r"^([A-Za-z]'+(\(\s*[a-z]\s*\))?|d[a-z]*/d[a-z]+|[A-Za-z]\(\s*[a-z]\s*\))\s*=\s*");
+
   static String clean(String line) {
-    String s = line.trim();
+    String s = line.trim().replaceFirst(_named, '');
     while (true) {
       final Match? m = _lead.firstMatch(s);
       if (m == null || m.end == 0) break;
@@ -226,6 +228,11 @@ abstract final class WorkingChecker {
 
   static Relation _original(WorkingStep s) => parseRelation(s.start);
 
+  static bool isNoSolution(String text) =>
+      RegExp(r'^(there\s+(is|are)\s+)?no\s+(real\s+)?solutions?\.?$|^∅$|^\{\s*\}$', caseSensitive: false).hasMatch(text.trim());
+
+  static double _tol(WorkingStep s) => math.max(1e-5, s.tolerance);
+
   /// Solution set of an equation statement (union over "or").
   static List<double>? solutionSet(Statement st, String v, (double, double) range) {
     final List<double> all = <double>[];
@@ -250,7 +257,14 @@ abstract final class WorkingChecker {
 
   static LineCheck _solveLine(WorkingStep s, String text) {
     final Relation o = _original(s);
+    if (isNoSolution(text)) {
+      final List<double> want = trueSolutions(s);
+      return want.isEmpty
+          ? LineCheck(text, true, 'Correct: no value satisfies the original.')
+          : LineCheck(text, false, 'There is a solution: ${showSet(want, s.variable)} satisfies the original.');
+    }
     final Statement st = parseStatement(text, defaultVariable: s.variable);
+    final double tol = _tol(s);
     final Set<String> extra = st.variables.difference(<String>{s.variable});
     if (extra.isNotEmpty) return LineCheck(text, false, 'Unknown symbol ${extra.first}.');
     if (o.isEquation) {
@@ -261,13 +275,13 @@ abstract final class WorkingChecker {
             ? 'This is an inequality, but the problem is an equation.'
             : 'This line is true for every ${s.variable}, so information was lost — check the step that produced it.');
       }
-      final List<double> lost = want.where((double x) => !got.any((double y) => (x - y).abs() < 1e-5 * (1 + x.abs()))).toList();
+      final List<double> lost = want.where((double x) => !got.any((double y) => (x - y).abs() < tol * (1 + x.abs()))).toList();
       if (lost.isNotEmpty) {
         return LineCheck(text, false, 'This line loses the solution ${s.variable} = ${fmtNum(lost.first)}${got.isEmpty ? '' : ' (its solutions are ${showSet(got, s.variable)})'}. '
             'Dividing by an expression that can be zero, or an arithmetic slip, causes this.');
       }
-      final List<double> gained = got.where((double x) => !want.any((double y) => (x - y).abs() < 1e-5 * (1 + y.abs()))).toList();
-      final List<double> wrongGain = gained.where((double x) => !s.extraneous.any((double e) => (x - e).abs() < 1e-5 * (1 + e.abs()))).toList();
+      final List<double> gained = got.where((double x) => !want.any((double y) => (x - y).abs() < tol * (1 + y.abs()))).toList();
+      final List<double> wrongGain = gained.where((double x) => !s.extraneous.any((double e) => (x - e).abs() < tol * (1 + e.abs()))).toList();
       if (wrongGain.isNotEmpty) {
         return LineCheck(text, false, 'This line has solutions ${showSet(got, s.variable)}, which the original does not — the working went wrong here.');
       }
@@ -317,6 +331,7 @@ abstract final class WorkingChecker {
               ? null
               : 'The final answer should be written as a product of factors, e.g. (x − 2)(x + 3).';
         case FinalForm.solved:
+          if (isNoSolution(text)) return null;
           final Statement st = parseStatement(text, defaultVariable: s.mode == WorkingMode.system ? null : s.variable);
           for (final Relation r in st.alternatives) {
             final int unknowns = r.parts.where((Expr e) => e.variables.isNotEmpty).length;
@@ -338,10 +353,11 @@ abstract final class WorkingChecker {
           final Relation o = _original(s);
           if (!o.isEquation) return null; // equivalence already checked line by line
           final List<double> want = trueSolutions(s);
-          final List<double>? got = solutionSet(parseStatement(text, defaultVariable: s.variable), s.variable, s.range);
-          if (got == null || !sameSet(got, want)) {
-            final List<double> extraneous = (got ?? <double>[]).where((double x) => !want.any((double y) => (x - y).abs() < 1e-5)).toList();
-            if (extraneous.isNotEmpty && sameSet(got!.where((double x) => !extraneous.contains(x)).toList(), want)) {
+          final List<double>? got = isNoSolution(text) ? <double>[] : solutionSet(parseStatement(text, defaultVariable: s.variable), s.variable, s.range);
+          final double tol = _tol(s);
+          if (got == null || !sameSet(got, want, tol: tol)) {
+            final List<double> extraneous = (got ?? <double>[]).where((double x) => !want.any((double y) => (x - y).abs() < tol * (1 + y.abs()))).toList();
+            if (extraneous.isNotEmpty && sameSet(got!.where((double x) => !extraneous.contains(x)).toList(), want, tol: tol)) {
               return '${showSet(extraneous, s.variable)} does not satisfy the original equation. Substitute it back in and reject it.';
             }
             return 'The final answer should be ${want.isEmpty ? 'that there is no solution' : showSet(want, s.variable)}.';
@@ -361,8 +377,9 @@ abstract final class WorkingChecker {
             if (!close(g, e.value, rel: 1e-6, abs: 1e-6)) return '${e.key} = ${fmtNum(g)} is not right.';
           }
           return null;
-        case WorkingMode.simplify:
         case WorkingMode.antiderivative:
+          return parseExpr(text).variables.contains('C') ? null : 'An indefinite integral needs an arbitrary constant: add + C.';
+        case WorkingMode.simplify:
         case WorkingMode.evaluate:
           return null;
       }
@@ -545,8 +562,12 @@ class GraphStep extends LabStep {
     this.fixedCurves = const <String>[],
     this.questions = const <MathQuestion>[],
     this.targetTolerance = 0.05,
+    this.modelParams = const <String, double>{},
     super.skills,
   }) : super(passMark: 80);
+
+  /// Parameter values of a model answer (used by tests and shown after submitting).
+  final Map<String, double> modelParams;
 
   /// Expression in x and the parameter names.
   final String curve;
@@ -663,7 +684,7 @@ class OdeStep extends LabStep {
   /// The equation as shown, e.g. "dy/dx = 0.3y".
   final String equation;
 
-  /// y' = rhs(x, y) for order 1; y'' = rhs(x, y, yp) for order 2 (yp is y').
+  /// y' = rhs(x, y) for order 1; y'' = rhs(x, y, p) for order 2 (p is y').
   final String rhs;
   final int order;
 
@@ -694,7 +715,7 @@ abstract final class OdeGrader {
       final double yv = at(y, 'x', x, consts);
       final double d1 = derivativeAt(y, 'x', x, consts);
       if (!yv.isFinite || !d1.isFinite) return double.infinity;
-      final Map<String, double> env = <String, double>{'x': x, 'y': yv, 'yp': d1};
+      final Map<String, double> env = <String, double>{'x': x, 'y': yv, 'p': d1};
       final double lhs = s.order == 1 ? d1 : secondDerivativeAt(y, 'x', x, consts);
       final double want = rhs.eval(env);
       final double r = (lhs - want).abs() / (1 + want.abs() + lhs.abs());

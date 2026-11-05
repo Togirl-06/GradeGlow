@@ -14,7 +14,7 @@ WorkingStep solveStep(String start, {List<double> extraneous = const <double>[],
 void main() {
   group('parser', () {
     test('precedence, implicit multiplication and functions', () {
-      expect(ev('2x^2 - 3(x+1)', <String, double>{'x': 2}), 2);
+      expect(ev('2x^2 - 3(x+1)', <String, double>{'x': 2}), -1);
       expect(ev('-3^2'), -9);
       expect(ev('2^-1'), 0.5);
       expect(ev('(x+1)(x-1)', <String, double>{'x': 3}), 8);
@@ -155,7 +155,7 @@ void main() {
       expect(OdeGrader.grade(ivp, 'y = 50e^(0.3x)').score, 100);
       expect(OdeGrader.grade(ivp, 'y = 50e^(3x)').passed, isFalse);
       expect(OdeGrader.grade(ivp, 'y = 20e^(0.3x)').score, 60);
-      const OdeStep gen2 = OdeStep(id: 'g', title: 'g', instructions: '', equation: "y'' - 3y' + 2y = 0", rhs: '3yp - 2y', order: 2, range: (-1, 1));
+      const OdeStep gen2 = OdeStep(id: 'g', title: 'g', instructions: '', equation: "y'' - 3y' + 2y = 0", rhs: '3p - 2y', order: 2, range: (-1, 1));
       expect(OdeGrader.grade(gen2, 'C1 e^x + C2 e^(2x)').score, 100);
       expect(OdeGrader.grade(gen2, 'C1 e^x').score, lessThan(100));
       const OdeStep shm = OdeStep(id: 'h', title: 'h', instructions: '', equation: "y'' + 9y = 0", rhs: '-9y', order: 2, initial: <double>[0, 2, 3], range: (0, 2));

@@ -648,8 +648,8 @@ List<double>? roots(Expr f, String v, double lo, double hi) {
   final double step = (hi - lo) / n;
   final List<double> xs = <double>[for (int k = 0; k <= n; k++) lo + k * step];
   final List<double> ys = <double>[for (final double x in xs) at(f, v, x)];
-  final double scale = ys.where((double y) => y.isFinite).fold<double>(0, (double m, double y) => math.max(m, y.abs()));
-  final int zeros = ys.where((double y) => y.isFinite && y.abs() <= 1e-10 * (1 + scale)).length;
+  // An identity (0 = 0 after rearranging) is zero, up to rounding, everywhere.
+  final int zeros = ys.where((double y) => y.isFinite && y.abs() <= 1e-9).length;
   final int finite = ys.where((double y) => y.isFinite).length;
   if (finite > 0 && zeros > finite * 0.9) return null;
   final List<double> found = <double>[];
@@ -709,7 +709,8 @@ List<double>? roots(Expr f, String v, double lo, double hi) {
       }
       final double m = (l + h) / 2;
       final double fm = at(f, v, m);
-      if (fm.isFinite && fm.abs() <= 1e-9 * (1 + scale)) add(m);
+      final double local = math.max(ys[k - 1].abs(), ys[k + 1].abs());
+      if (fm.isFinite && fm.abs() <= 1e-9 * (1 + local)) add(m);
     }
   }
   found.sort();
