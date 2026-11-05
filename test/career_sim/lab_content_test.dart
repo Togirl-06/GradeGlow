@@ -57,9 +57,12 @@ TaskResult gradeWrong(LabStep s) => switch (s) {
           <String>[for (final DialogueOption o in s.options) if (o.value == DialogueValue.poor || o.value == DialogueValue.unsafe || o.value == DialogueValue.neutral) o.id],
           wrongAnswers(s.conclusions),
         )),
-      SimulationStep() => gradeWorkStep(s, (<String, double>{for (final SimInput i in s.inputs) i.name: i.max}, wrongAnswers(s.questions))),
+      SimulationStep() => _worstSimulation(s),
       _ => throw StateError(s.id),
     };
+
+/// The starting settings must not already meet the specification.
+TaskResult _worstSimulation(SimulationStep s) => gradeWorkStep(s, (s.initialValues, wrongAnswers(s.questions)));
 
 void main() {
   test('every lab has a workplace and every scenario has steps', () {

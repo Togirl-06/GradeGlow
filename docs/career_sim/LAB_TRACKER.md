@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 168, Interface completed: 0, Functionality in progress: 17, Functionality completed: 0, Tested: 13, Verified complete: 0.
+**198 labs.** Not started: 162, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 18, Verified complete: 0.
 
 ## Majors
 
@@ -23,7 +23,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
 | School of Medicine and Health Sciences | Nursing | 12 | In progress |
 | School of Law | Law | 7 | Tested |
-| School of Engineering | Mechanical Engineering | 6 | Not started |
+| School of Engineering | Mechanical Engineering | 6 | In progress |
 | School of Engineering | Civil Engineering | 6 | Not started |
 | School of Engineering | Electrical Engineering | 6 | Not started |
 | School of Engineering | Chemical Engineering | 6 | Not started |
@@ -175,12 +175,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Engineering Mechanics | Not started | 0 / 15 |  |  |
-| B. Thermodynamics | Not started | 0 / 15 |  |  |
-| C. Fluid Mechanics | Not started | 0 / 15 |  |  |
-| D. Machine Design | Not started | 0 / 15 |  |  |
-| E. CAD and Technical Drawing | Not started | 0 / 15 |  |  |
-| F. Failure Analysis | Not started | 0 / 15 |  |  |
+| A. Engineering Mechanics | Tested | 15 / 15 | `me_lab_mechanics` | 5 design problems x 3 specifications; live models; hand calculations |
+| B. Thermodynamics | Tested | 15 / 15 | `me_lab_thermo` | Heating, Carnot, conduction, gas, refrigeration |
+| C. Fluid Mechanics | Tested | 15 / 15 | `me_lab_fluids` | Continuity, hydrostatics, pumps, Reynolds, draining |
+| D. Machine Design | Tested | 15 / 15 | `me_lab_machine` | Shafts, springs, bolts, gears, bearings |
+| E. CAD and Technical Drawing | Functionality in progress | 15 / 15 | `me_lab_cad` | Tolerances, scales, fits, mass and section properties; no drawing/3D modelling tool yet |
+| F. Failure Analysis | Tested | 15 / 15 | `me_lab_failure` | 5 failure investigations x 3 levels |
 
 ### Civil Engineering
 

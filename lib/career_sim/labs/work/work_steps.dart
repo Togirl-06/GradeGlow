@@ -424,8 +424,8 @@ class SimConstraint {
   final String label;
 
   bool met(double v) => switch (op) {
-        '<=' => v <= value + 1e-9,
-        '>=' => v >= value - 1e-9,
+        '<=' => v <= value + 1e-9 * math.max(1, value.abs()),
+        '>=' => v >= value - 1e-9 * math.max(1, value.abs()),
         '<' => v < value,
         '>' => v > value,
         _ => (v - value).abs() <= 0.01 * math.max(1, value.abs()),
@@ -461,12 +461,14 @@ class SimulationStep extends LabStep {
   String get kind => 'Simulation';
 
   /// Evaluates every output for [values]; NaN where undefined.
+  static final Map<String, Expr> _parsed = <String, Expr>{};
+
   Map<String, double> evaluate(Map<String, double> values) {
     final Map<String, double> env = Map<String, double>.of(values);
     for (final SimOutput o in outputs) {
       double v;
       try {
-        v = parseExpr(o.formula).eval(env);
+        v = (_parsed[o.formula] ??= parseExpr(o.formula)).eval(env);
       } on ExprParseException {
         v = double.nan;
       }
