@@ -3,6 +3,7 @@
 library;
 
 import '../lab_models.dart';
+import '../math/math_steps.dart';
 import '../work/work_steps.dart';
 import 'design_kit.dart';
 
