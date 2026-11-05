@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../career_sim/career_sim.dart';
+import '../../career_sim/model/content_models.dart';
+
 import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_roadmap_models.dart';
 import '../data/vu_v2_roadmap_sync.dart';
@@ -7,48 +10,7 @@ import '../data/vu_v2_session.dart';
 import '../design/vu_v2_theme.dart';
 import '../learn/vu_v2_degree_roadmap_screen.dart';
 import '../learn/vu_v2_lesson_learn_hub_screen.dart';
-import '../business_career/business_career_hub_screen.dart';
-import '../engineering_career/engineering_career_hub_screen.dart';
-import '../health_career/health_career_content.dart';
-import '../health_career/health_simulation_hub_screen.dart';
-import '../science_career/science_career_hub_screen.dart';
 import 'vu_v2_featured_majors.dart';
-
-bool _isEngineeringMajor(String id) {
-  final String s = id.toLowerCase();
-  return s.contains('engineering') ||
-      s.contains('mechanical') ||
-      s.contains('civil') ||
-      s.contains('electrical') ||
-      s.contains('chemical') ||
-      s.contains('aerospace') ||
-      s.contains('industrial');
-}
-
-bool _isBusinessMajor(String id) {
-  final String s = id.toLowerCase();
-  return s == 'business' ||
-      s.contains('business') ||
-      s.contains('account') ||
-      s.contains('financ') ||
-      s.contains('econom') ||
-      s.contains('market') ||
-      s.contains('entrepre') ||
-      s.contains('human_resource') ||
-      s.contains('international_business');
-}
-
-bool _isHealthMajor(String id) => HealthPrograms.isHealthId(id);
-
-String _engineeringMajorId(String id) {
-  final String s = id.toLowerCase();
-  if (s.contains('civil')) return 'civil_engineering';
-  if (s.contains('electrical')) return 'electrical_engineering';
-  if (s.contains('chemical')) return 'chemical_engineering';
-  if (s.contains('aero')) return 'aerospace_engineering';
-  if (s.contains('industrial')) return 'industrial_engineering';
-  return 'mechanical_engineering';
-}
 
 /// School overview matching the mockup (e.g. School of Nursing).
 class VuV2SchoolHubScreen extends StatefulWidget {
@@ -517,45 +479,8 @@ class _CareerGameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool eng = _isEngineeringMajor(major.id);
-    final bool biz = _isBusinessMajor(major.id);
-    final bool health = _isHealthMajor(major.id);
-    final Color accent = health
-        ? const Color(0xFF38BDF8)
-        : eng
-            ? const Color(0xFF3B82F6)
-            : biz
-                ? const Color(0xFF10B981)
-                : VuV2Colors.orange;
-    final String eyebrow = health
-        ? 'SCHOOL OF HEALTH & MEDICINE'
-        : eng
-            ? 'SCHOOL OF ENGINEERING LAB'
-            : biz
-                ? 'SCHOOL OF BUSINESS & ECONOMICS'
-                : 'SCHOOL OF TECH LAB';
-    final String title = health
-        ? 'Medical Simulation Hub · ${major.title}'
-        : eng
-            ? 'School of Engineering Lab · ${major.title}'
-            : biz
-                ? 'School of Business & Economics · Career Simulation'
-                : 'School of Technology and Computer Science Lab · ${major.title}';
-    final String blurb = health
-        ? 'Virtual hospital, anatomy lab, clinical cases, skills, and performance.'
-        : eng
-            ? 'Challenge Arena, Design Studio, interview, and MechWorks workplace.'
-            : biz
-                ? 'Character, eight majors, Corporate HQ, and The Declining Company mission.'
-                : 'Coding Arena, Northwind interview, job offer, and office tickets.';
-    final String cta = health
-        ? 'Enter Medical Simulation Hub'
-        : eng
-            ? 'Enter School of Engineering Lab'
-            : biz
-                ? 'Enter School of Business & Economics'
-                : 'Enter School of Technology and Computer Science Lab';
-
+    final Department? dept = CareerSim.departmentForSubject(major.id);
+    final Color accent = VuV2Colors.orange;
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -574,7 +499,7 @@ class _CareerGameCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            eyebrow,
+            'CAREER SIMULATOR',
             style: TextStyle(
               color: VuV2Colors.dashMute,
               fontWeight: FontWeight.w900,
@@ -584,7 +509,7 @@ class _CareerGameCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            title,
+            dept == null ? 'Professional training departments' : '${dept.emoji} ${dept.title} department',
             style: TextStyle(
               color: VuV2Colors.dashInk,
               fontWeight: FontWeight.w900,
@@ -593,58 +518,21 @@ class _CareerGameCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            blurb,
+            dept == null
+                ? 'Train on graded professional tasks, build a portfolio, apply for roles and work in a workplace.'
+                : dept.summary,
             style: TextStyle(color: VuV2Colors.dashMute, height: 1.4),
           ),
           const SizedBox(height: 14),
           FilledButton(
-            onPressed: () {
-              if (health) {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) => HealthSimulationHubScreen(
-                      initialCourseId: major.id,
-                    ),
-                  ),
-                );
-                return;
-              }
-              if (eng) {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) => EngineeringCareerHubScreen(
-                      initialMajorId: _engineeringMajorId(major.id),
-                    ),
-                  ),
-                );
-                return;
-              }
-              if (biz) {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (_) => BusinessCareerHubScreen(
-                      initialMajorId: major.id,
-                    ),
-                  ),
-                );
-                return;
-              }
-              Navigator.of(context).push<void>(
-                MaterialPageRoute<void>(
-                  builder: (_) => ScienceCareerHubScreen(
-                    initialMajorId: major.id == 'computer_science'
-                        ? 'computer_science'
-                        : 'software_engineering',
-                  ),
-                ),
-              );
-            },
+            key: const ValueKey<String>('school_open_department'),
+            onPressed: () => CareerSim.openForSubject(context, major.id),
             style: FilledButton.styleFrom(
               backgroundColor: accent,
               foregroundColor: Colors.white,
             ),
             child: Text(
-              cta,
+              dept == null ? 'Choose a department' : 'Enter the ${dept.title} department',
               style: const TextStyle(fontWeight: FontWeight.w900),
             ),
           ),

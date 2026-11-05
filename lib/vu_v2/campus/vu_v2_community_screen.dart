@@ -4,7 +4,7 @@ import '../data/vu_v2_progress_store.dart';
 import '../data/vu_v2_session.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
-import '../labs/winning_career_showcases.dart';
+import '../../career_sim/career_sim.dart';
 import 'vu_v2_adaptive_review_drill_screen.dart';
 
 /// Campus Pulse — live showcase shortcuts (never a Coming Soon stub).
@@ -44,7 +44,7 @@ class VuV2CommunityScreen extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'Jump into walkable Career Games — CS, Law, Engineering.',
+                'Train in a professional department — Computer Science, Law, Engineering.',
                 style: TextStyle(color: VuV2Colors.mute, height: 1.4),
               ),
               const SizedBox(height: 12),
@@ -53,16 +53,15 @@ class VuV2CommunityScreen extends StatelessWidget {
                 runSpacing: 8,
                 children: <Widget>[
                   OutlinedButton(
-                    onPressed: () => WinningCareerShowcases.openCs(context),
+                    onPressed: () => CareerSim.openDepartmentById(context, 'cs'),
                     child: const Text('CS'),
                   ),
                   OutlinedButton(
-                    onPressed: () => WinningCareerShowcases.openLaw(context),
+                    onPressed: () => CareerSim.openDepartmentById(context, 'law'),
                     child: const Text('Law'),
                   ),
                   OutlinedButton(
-                    onPressed: () =>
-                        WinningCareerShowcases.openEngineering(context),
+                    onPressed: () => CareerSim.openDepartmentById(context, 'engineering'),
                     child: const Text('Engineering'),
                   ),
                 ],

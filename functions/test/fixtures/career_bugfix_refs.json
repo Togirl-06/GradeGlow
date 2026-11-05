@@ -1,0 +1,5 @@
+{
+ "impl:GGO-002": "class Solution:\n    def bracketsOk(self, s: str) -> bool:\n        stack = []\n        pairs = {')': '(', ']': '[', '}': '{'}\n        for ch in s:\n            if ch in '([{':\n                stack.append(ch)\n            elif not stack or stack.pop() != pairs[ch]:\n                return False\n        return len(stack) == 0\n",
+ "impl:GGO-004": "class Solution:\n    def findIndex(self, nums: List[int], target: int) -> int:\n        lo, hi = 0, len(nums) - 1\n        while lo <= hi:\n            mid = (lo + hi) // 2\n            if nums[mid] == target:\n                return mid\n            if nums[mid] < target:\n                lo = mid + 1\n            else:\n                hi = mid - 1\n        return -1\n",
+ "impl:GGO-101": "class Solution:\n    def bestStreak(self, nums: List[int]) -> int:\n        best = nums[0]\n        cur = 0\n        for x in nums:\n            cur = max(x, cur + x)\n            best = max(best, cur)\n        return best\n"
+}

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../career_sim/store/career_sim_store.dart';
 import '../services/appearance_service.dart';
 import '../services/auth_service.dart';
 import 'campus/vu_v2_campus_shell.dart';
@@ -38,10 +39,16 @@ class _VuV2AppState extends State<VuV2App> {
     final AuthService auth = context.read<AuthService>();
     final String? uid = auth.uid;
     final String authName = auth.displayName.trim();
+    final CareerSimStore career = context.read<CareerSimStore>();
     await Future.wait(<Future<void>>[
       _session.ensureLoaded(userId: uid),
       _progress.ensureLoaded(userId: uid),
     ]);
+    await career.ensureLoaded(
+      userId: uid,
+      majorId: _session.onboardingComplete ? _session.majorId : null,
+      displayName: _session.displayName,
+    );
     // Prefer account name if onboarding draft is still the default.
     if (!_session.onboardingComplete) {
       if (authName.isNotEmpty &&
