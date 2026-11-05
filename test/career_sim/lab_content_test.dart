@@ -58,6 +58,7 @@ TaskResult gradeWrong(LabStep s) => switch (s) {
           wrongAnswers(s.conclusions),
         )),
       SimulationStep() => _worstSimulation(s),
+      NumericStep() => gradeMathStep(s, wrongAnswers(s.questions)),
       _ => throw StateError(s.id),
     };
 
@@ -76,7 +77,7 @@ void main() {
 
   group('model answers pass and wrong answers fail', () {
     for (final LabSpec lab in LabCatalog.all) {
-      final List<LabStep> steps = <LabStep>[for (final LabScenario sc in lab.scenarios) ...sc.steps.where(isWorkStep)];
+      final List<LabStep> steps = <LabStep>[for (final LabScenario sc in lab.scenarios) ...sc.steps.where((LabStep s) => isWorkStep(s) || s is NumericStep)];
       if (steps.isEmpty) continue;
       test(lab.id, () {
         for (final LabStep s in steps) {
