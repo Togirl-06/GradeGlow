@@ -77,7 +77,11 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
           embedded: true,
         );
       case VuV2Dest.labs:
-        return CareerSimDashboard(studentName: session.displayName, majorLabel: session.majorLabel);
+        return CareerSimDashboard(
+          studentName: session.displayName,
+          majorLabel: session.majorLabel,
+          onOpenCourses: () => setState(() => _dest = VuV2Dest.learn),
+        );
       case VuV2Dest.community:
         return VuV2CommunityScreen(session: session, progress: progress);
       case VuV2Dest.profile:

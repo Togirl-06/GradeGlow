@@ -7,7 +7,11 @@ import '../engine/career_rules.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../store/career_sim_store.dart';
+import '../labs/lab_catalog.dart';
+import '../labs/lab_models.dart';
+import '../labs/ui/lab_screens.dart';
 import 'career_centre.dart';
+import 'hub_screens.dart';
 import 'common.dart';
 import 'department_screens.dart';
 import 'job_screens.dart';
@@ -57,6 +61,17 @@ NextStep nextStep(CareerSimStore store) {
         break;
     }
   }
+  for (final LabSpec l in LabCatalog.all) {
+    final LabRun? run = p.labRuns[l.id];
+    if (run != null && !run.done) {
+      return NextStep('Continue lab: ${l.title}', labStatus(p, l), (BuildContext c) => push(c, LabIntroScreen(labId: l.id)));
+    }
+  }
+  for (final LabSpec l in LabCatalog.forDept(d.id)) {
+    if (!p.labPassed(l.id)) {
+      return NextStep('Practical lab: ${l.title}', l.environment.label, (BuildContext c) => push(c, LabIntroScreen(labId: l.id)));
+    }
+  }
   for (final TrainingModule m in d.modules) {
     if (!p.completedModules.contains(m.id)) {
       return NextStep(p.studiedLessons.contains(m.id) ? 'Practise: ${m.title}' : 'Learn: ${m.title}', 'Training module in ${d.title}',
@@ -76,10 +91,13 @@ NextStep nextStep(CareerSimStore store) {
 
 /// The career simulator home (the Labs tab).
 class CareerSimDashboard extends StatelessWidget {
-  const CareerSimDashboard({super.key, required this.studentName, required this.majorLabel});
+  const CareerSimDashboard({super.key, required this.studentName, required this.majorLabel, this.onOpenCourses});
 
   final String studentName;
   final String majorLabel;
+
+  /// Switches to the courses tab (provided by the campus shell).
+  final VoidCallback? onOpenCourses;
 
   void _push(BuildContext c, Widget w) => Navigator.of(c).push(MaterialPageRoute<void>(builder: (_) => w));
 
@@ -108,6 +126,8 @@ class CareerSimDashboard extends StatelessWidget {
           const SizedBox(height: 2),
           Text('Learn → practise → build experience → apply → interview → work → progress',
               style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+          const SizedBox(height: 10),
+          GradeGlowNav(onOpenCourses: onOpenCourses),
           if (store.syncWarning != null)
             Padding(
               padding: const EdgeInsets.only(top: 8),
@@ -167,6 +187,7 @@ class CareerSimDashboard extends StatelessWidget {
               ],
             ),
           ),
+          _PracticalTraining(deptId: d?.id ?? ''),
           if (d != null) ...<Widget>[
             SectionCard(
               title: 'Academic progress',
@@ -302,6 +323,64 @@ class CareerSimDashboard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PracticalTraining extends StatelessWidget {
+  const _PracticalTraining({required this.deptId});
+  final String deptId;
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerProfile p = context.watch<CareerSimStore>().profile;
+    final List<LabSpec> mine = LabCatalog.forDept(deptId);
+    final List<LabSpec> labs = mine.isEmpty ? LabCatalog.all : mine;
+    final List<LabSpec> inProgress = <LabSpec>[
+      for (final LabSpec l in LabCatalog.all)
+        if (p.labRuns[l.id] != null && !p.labRuns[l.id]!.done) l,
+    ];
+    LabSpec? next;
+    for (final LabSpec l in labs) {
+      if (!p.labPassed(l.id)) {
+        next = l;
+        break;
+      }
+    }
+    final int passed = labs.where((LabSpec l) => p.labPassed(l.id)).length;
+    void open(String id) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: id)));
+    return SectionCard(
+      title: 'Practical training',
+      subtitle: mine.isEmpty ? 'Labs for your department are not built yet — all labs are open to you.' : '$passed of ${labs.length} labs passed',
+      trailing: TextButton(
+        key: const ValueKey<String>('dash_all_labs'),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const PracticalLabsScreen())),
+        child: const Text('All labs'),
+      ),
+      child: Column(children: <Widget>[
+        for (final LabSpec l in inProgress)
+          ListTile(
+            key: ValueKey<String>('dash_continue_${l.id}'),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(environmentIcon(l.environment)),
+            title: Text('Continue: ${l.title}'),
+            subtitle: Text(labStatus(p, l)),
+            trailing: const Icon(Icons.play_arrow_rounded),
+            onTap: () => open(l.id),
+          ),
+        if (next != null && !inProgress.contains(next))
+          ListTile(
+            key: const ValueKey<String>('dash_next_lab'),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(environmentIcon(next.environment)),
+            title: Text('Next lab: ${next.title}'),
+            subtitle: Text('${next.environment.label} · ${next.minutes} min'),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => open(next!.id),
+          ),
+      ]),
     );
   }
 }
