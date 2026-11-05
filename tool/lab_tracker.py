@@ -100,8 +100,13 @@ SCHOOLS = [
     ]),
     ("School of Law", [
         ("introduction_to_law", "Law", [
-            ("Legal Research", None), ("Case Analysis", None), ("Legal Drafting", None), ("Client Consultation", None),
-            ("Negotiation and Mediation", None), ("Courtroom Practice", None), ("Full Case Assignment", None),
+            ("Legal Research", built("law_lab_research", "tested", "Real cases only; unverified citations fail; 15 matters")),
+            ("Case Analysis", built("law_lab_analysis", "tested", "Material-fact triage, outcome, IRAC; 15 matters")),
+            ("Legal Drafting", built("law_lab_drafting", "tested", "Advice letters, memos, letters before claim, briefs, attendance notes; 15 matters")),
+            ("Client Consultation", built("law_lab_consultation", "tested", "Client interview with conduct rules; 15 matters")),
+            ("Negotiation and Mediation", built("law_lab_negotiation", "tested", "Settlement model within client authority; 15 matters")),
+            ("Courtroom Practice", built("law_lab_courtroom", "tested", "Examination-in-chief with objections; judge's questions; 15 matters")),
+            ("Full Case Assignment", built("law_lab_fullcase", "tested", "Research, skeleton argument, settlement, strategy; 15 matters")),
         ]),
     ]),
     ("School of Engineering", [
@@ -207,6 +212,8 @@ SCENARIOS = {
     "nu_lab_admission": 1, "nu_lab_vitals": 1, "nu_lab_meds": 1, "nu_lab_procedures": 1, "nu_lab_emergency": 1, "nu_lab_shift": 1,
     "acc_lab_bookkeeping": 1, "acc_lab_reconciliation": 1, "acc_lab_statements": 1,
     "ma_lab_algebra": 15, "ma_lab_calculus": 15, "ma_lab_linalg": 15, "ma_lab_stats": 15, "ma_lab_de": 15, "ma_lab_applied": 15,
+    "law_lab_research": 15, "law_lab_analysis": 15, "law_lab_drafting": 15, "law_lab_consultation": 15,
+    "law_lab_negotiation": 15, "law_lab_courtroom": 15, "law_lab_fullcase": 15,
 }
 
 

@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 175, Interface completed: 0, Functionality in progress: 17, Functionality completed: 0, Tested: 6, Verified complete: 0.
+**198 labs.** Not started: 168, Interface completed: 0, Functionality in progress: 17, Functionality completed: 0, Tested: 13, Verified complete: 0.
 
 ## Majors
 
@@ -22,7 +22,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Mobile Application Development | 6 | Not started |
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
 | School of Medicine and Health Sciences | Nursing | 12 | In progress |
-| School of Law | Law | 7 | Not started |
+| School of Law | Law | 7 | Tested |
 | School of Engineering | Mechanical Engineering | 6 | Not started |
 | School of Engineering | Civil Engineering | 6 | Not started |
 | School of Engineering | Electrical Engineering | 6 | Not started |
@@ -163,13 +163,13 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Legal Research | Not started | 0 / 15 |  |  |
-| B. Case Analysis | Not started | 0 / 15 |  |  |
-| C. Legal Drafting | Not started | 0 / 15 |  |  |
-| D. Client Consultation | Not started | 0 / 15 |  |  |
-| E. Negotiation and Mediation | Not started | 0 / 15 |  |  |
-| F. Courtroom Practice | Not started | 0 / 15 |  |  |
-| G. Full Case Assignment | Not started | 0 / 15 |  |  |
+| A. Legal Research | Tested | 15 / 15 | `law_lab_research` | Real cases only; unverified citations fail; 15 matters |
+| B. Case Analysis | Tested | 15 / 15 | `law_lab_analysis` | Material-fact triage, outcome, IRAC; 15 matters |
+| C. Legal Drafting | Tested | 15 / 15 | `law_lab_drafting` | Advice letters, memos, letters before claim, briefs, attendance notes; 15 matters |
+| D. Client Consultation | Tested | 15 / 15 | `law_lab_consultation` | Client interview with conduct rules; 15 matters |
+| E. Negotiation and Mediation | Tested | 15 / 15 | `law_lab_negotiation` | Settlement model within client authority; 15 matters |
+| F. Courtroom Practice | Tested | 15 / 15 | `law_lab_courtroom` | Examination-in-chief with objections; judge's questions; 15 matters |
+| G. Full Case Assignment | Tested | 15 / 15 | `law_lab_fullcase` | Research, skeleton argument, settlement, strategy; 15 matters |
 
 ### Mechanical Engineering
 

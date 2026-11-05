@@ -1,0 +1,735 @@
+/// The caseload of Ashford & Lane Solicitors: fifteen fictional client
+/// matters decided under the real law of England and Wales. Every case
+/// citation here is a real reported decision; none are invented.
+library;
+
+class Authority {
+  const Authority(this.citation, this.proposition, {required this.relevant});
+  final String citation;
+  final String proposition;
+  final bool relevant;
+}
+
+class InterviewItem {
+  const InterviewItem(this.question, this.answer, {this.essential = true, this.leading = ''});
+
+  /// An open question a lawyer would ask.
+  final String question;
+  final String answer;
+  final bool essential;
+
+  /// The same point put as a leading question (objectionable when examining your own witness).
+  final String leading;
+}
+
+class LegalMatter {
+  const LegalMatter({
+    required this.id,
+    required this.title,
+    required this.area,
+    required this.client,
+    required this.opponent,
+    required this.summary,
+    required this.interview,
+    required this.facts,
+    required this.issue,
+    required this.wrongIssues,
+    required this.issuePattern,
+    required this.authorities,
+    required this.conclusion,
+    required this.wrongConclusions,
+    required this.conclusionPattern,
+    required this.evidence,
+    required this.wrongEvidence,
+    required this.claimValue,
+    required this.clientMinimum,
+    required this.opponentMaximum,
+    required this.monthlyCost,
+    required this.strategy,
+    this.legislation = const <String>[],
+  });
+
+  final String id;
+  final String title;
+  final String area;
+
+  /// "Name, description".
+  final String client;
+  final String opponent;
+  final String summary;
+  final List<InterviewItem> interview;
+
+  /// (fact, material?)
+  final List<(String, bool)> facts;
+  final String issue;
+  final List<String> wrongIssues;
+
+  /// Regular expression that a correct statement of the issue matches.
+  final String issuePattern;
+  final List<Authority> authorities;
+  final List<String> legislation;
+  final String conclusion;
+  final List<String> wrongConclusions;
+  final String conclusionPattern;
+
+  /// The key evidence still needed.
+  final String evidence;
+  final List<String> wrongEvidence;
+
+  /// Settlement figures (£).
+  final double claimValue;
+  final double clientMinimum;
+  final double opponentMaximum;
+  final double monthlyCost;
+
+  /// 0 = proceed to trial, 1 = settle, 2 = advise the client not to pursue.
+  final int strategy;
+
+  List<Authority> get relevant => authorities.where((Authority a) => a.relevant).toList();
+
+  /// The claimant's name in a citation, used to recognise it in writing.
+  static String shortName(String citation) => citation.split(RegExp(r'\s+v\.?\s+')).first.replaceFirst(RegExp(r'^R\s*$'), 'R');
+}
+
+const Authority _balfour = Authority('Balfour v Balfour [1919] 2 KB 571', 'Agreements between spouses in a domestic setting are presumed not to be intended to create legal relations.', relevant: false);
+const Authority _bolton = Authority('Bolton v Stone [1951] AC 850', 'In deciding breach of duty, the court weighs how likely the harm was; a very small risk may reasonably be ignored.', relevant: false);
+const Authority _cunningham = Authority('R v Cunningham [1957] 2 QB 396', 'In statutory offences requiring malice, recklessness means foreseeing the risk and taking it anyway.', relevant: false);
+const Authority _paris = Authority('Paris v Stepney Borough Council [1951] AC 367', 'An employer must take account of an employee’s known special vulnerability when deciding what precautions are reasonable.', relevant: false);
+const Authority _lestrange = Authority("L'Estrange v F Graucob Ltd [1934] 2 KB 394", 'A person who signs a contractual document is bound by its terms whether or not they read them.', relevant: false);
+const Authority _leechBrain = Authority('Smith v Leech Brain & Co Ltd [1962] 2 QB 405', 'A defendant must take the victim as they find them (the “thin skull” rule) once some injury of that kind is foreseeable.', relevant: false);
+const Authority _donoghue = Authority('Donoghue v Stevenson [1932] AC 562', 'A manufacturer owes a duty of care to the ultimate consumer of its products; the “neighbour” principle.', relevant: true);
+
+const List<LegalMatter> lawMatters = <LegalMatter>[
+  // ---------------------------------------------------------------- beginner
+  LegalMatter(
+    id: 'm01',
+    title: 'Reid — the £12 television',
+    area: 'Contract formation',
+    client: 'Tom Reid, retail customer',
+    opponent: 'Brightvale Electricals Ltd',
+    summary: 'A television normally priced £1,199 was displayed in a shop window with a £12 label. Mr Reid took it to the till and the shop refused to sell it at £12. He wants to force the sale.',
+    interview: <InterviewItem>[
+      InterviewItem('Where exactly was the price shown?', 'On a card next to the TV in the shop window.', leading: 'The price was only on a card in the window, wasn’t it?'),
+      InterviewItem('What happened at the till?', 'I offered to pay £12 and the manager said it was a mistake and refused.', leading: 'The manager refused your £12, didn’t he?'),
+      InterviewItem('Did anyone at the shop say they would sell it at that price?', 'No, nobody said anything until I got to the till.', leading: 'Nobody ever agreed to sell at £12, correct?'),
+      InterviewItem('Did you pay or take the TV away?', 'No, I left without it.', essential: false),
+      InterviewItem('When did this happen?', 'Last Saturday.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('The price label was displayed in the shop window.', true),
+      ('Mr Reid presented the item at the till and offered £12.', true),
+      ('The shop refused at the till before any payment.', true),
+      ('Mr Reid drove to the shop in his partner’s car.', false),
+      ('It was raining that day.', false),
+    ],
+    issue: 'Whether goods displayed with a price are an offer that a customer can accept, or only an invitation to treat',
+    wrongIssues: <String>['Whether the shop was negligent in labelling the TV', 'Whether Mr Reid was misled under criminal law', 'Whether the TV was of satisfactory quality'],
+    issuePattern: r'invitation to treat|(display|window).{0,40}offer|offer.{0,40}(display|window)',
+    authorities: <Authority>[
+      Authority('Pharmaceutical Society of Great Britain v Boots Cash Chemists (Southern) Ltd [1953] 1 QB 401', 'Goods displayed for sale are an invitation to treat; the customer makes the offer at the till, which the shop may accept or refuse.', relevant: true),
+      Authority('Fisher v Bell [1961] 1 QB 394', 'An article displayed in a shop window with a price is an invitation to treat, not an offer for sale.', relevant: true),
+      _balfour,
+      _bolton,
+    ],
+    conclusion: 'No contract was formed: the display was an invitation to treat, Mr Reid made the offer at the till, and the shop was entitled to refuse it',
+    wrongConclusions: <String>['A binding contract was formed at £12 when Mr Reid picked up the TV', 'The shop must sell at £12 because the price was displayed', 'The shop committed a criminal offence so the sale must go ahead'],
+    conclusionPattern: r'no (binding )?contract|(entitled|free|able) to refuse|not (bound|obliged)',
+    evidence: 'A photograph of the window display and label',
+    wrongEvidence: <String>['Mr Reid’s bank statements for the year', 'A medical report', 'The shop’s staff rota'],
+    claimValue: 1187,
+    clientMinimum: 50,
+    opponentMaximum: 120,
+    monthlyCost: 150,
+    strategy: 2,
+  ),
+  LegalMatter(
+    id: 'm02',
+    title: 'Okafor — the fitness tracker challenge',
+    area: 'Contract formation',
+    client: 'Grace Okafor, consumer',
+    opponent: 'StrideFit Ltd',
+    summary: 'StrideFit advertised: “£500 to anyone who walks 10,000 steps a day for 60 days using our tracker — £20,000 deposited with Barclays to show our sincerity.” Ms Okafor did it, with full tracker logs. StrideFit now says the advert was “just marketing”.',
+    interview: <InterviewItem>[
+      InterviewItem('What exactly did the advert say?', 'It promised £500 and said they had put £20,000 in the bank to show they meant it.', leading: 'The advert promised £500 and mentioned money in the bank, didn’t it?'),
+      InterviewItem('Did you do everything the advert asked?', 'Yes — 60 days, over 10,000 steps every day, using their tracker.', leading: 'You completed all 60 days, didn’t you?'),
+      InterviewItem('Do you have records of your steps?', 'Yes, the app has a full log and I took screenshots.'),
+      InterviewItem('Did you tell StrideFit before you started?', 'No, I just started doing it.', essential: false),
+      InterviewItem('How did you find the advert?', 'On their website homepage.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('The advert promised £500 for completing 60 days of 10,000 steps.', true),
+      ('The advert said £20,000 had been deposited to show sincerity.', true),
+      ('Ms Okafor completed the conditions using the tracker.', true),
+      ('Ms Okafor did not notify StrideFit before starting.', true),
+      ('Ms Okafor prefers running to walking.', false),
+    ],
+    issue: 'Whether the advertisement was a unilateral offer accepted by performing the conditions',
+    wrongIssues: <String>['Whether the tracker was of satisfactory quality', 'Whether StrideFit was negligent', 'Whether Ms Okafor and StrideFit intended a domestic arrangement'],
+    issuePattern: r'unilateral|offer.{0,60}(perform|conditions|completing)|accept.{0,40}perform',
+    authorities: <Authority>[
+      Authority('Carlill v Carbolic Smoke Ball Co [1893] 1 QB 256', 'An advertisement can be a unilateral offer to the world, accepted by performing its conditions; notice of acceptance is waived, and a deposit shows intention to be bound.', relevant: true),
+      Authority('Partridge v Crittenden [1968] 1 WLR 1204', 'Advertisements are generally invitations to treat — the contrast that Carlill-type promises fall outside.', relevant: true),
+      _paris,
+      _cunningham,
+    ],
+    conclusion: 'StrideFit made a unilateral offer which Ms Okafor accepted by completing the challenge, so she is entitled to the £500',
+    wrongConclusions: <String>['All advertisements are invitations to treat, so there is no contract', 'There is no contract because she did not notify StrideFit before starting', 'She can claim only if she was injured'],
+    conclusionPattern: r'(entitled|owed|due|recover).{0,30}£?500|unilateral offer.{0,60}accept',
+    evidence: 'A copy or screenshot of the advertisement and her step logs',
+    wrongEvidence: <String>['Her running club membership', 'A witness statement from her landlord', 'Her employment contract'],
+    claimValue: 500,
+    clientMinimum: 450,
+    opponentMaximum: 500,
+    monthlyCost: 60,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm03',
+    title: 'Patel — the car that got away',
+    area: 'Contract formation',
+    client: 'Arjun Patel, buyer',
+    opponent: 'Linda Shaw, private seller',
+    summary: 'Ms Shaw offered Mr Patel her car for £8,000. He replied “I’ll give you £7,000.” She said no. Two days later he said “Fine, I accept £8,000,” but she had already sold to someone else.',
+    interview: <InterviewItem>[
+      InterviewItem('What did Ms Shaw first offer?', 'The car for £8,000, by text message.', leading: 'She offered it to you for £8,000, didn’t she?'),
+      InterviewItem('How did you respond to that offer?', 'I texted back that I’d give her £7,000.', leading: 'You only offered £7,000, right?'),
+      InterviewItem('What happened after that?', 'She said no. Two days later I texted “I accept £8,000” but she’d sold it.'),
+      InterviewItem('Did she ever say the £8,000 offer was still open?', 'No.', leading: 'She never kept the offer open, did she?'),
+      InterviewItem('Why do you want this car in particular?', 'It’s a rare colour.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Ms Shaw offered the car for £8,000.', true),
+      ('Mr Patel replied offering £7,000.', true),
+      ('Ms Shaw rejected the £7,000.', true),
+      ('Mr Patel later tried to accept £8,000.', true),
+      ('The car is a rare colour.', false),
+    ],
+    issue: 'Whether a counter-offer destroyed the original offer so that it could no longer be accepted',
+    wrongIssues: <String>['Whether the car was of satisfactory quality', 'Whether Ms Shaw was negligent', 'Whether text messages can ever form contracts'],
+    issuePattern: r'counter[- ]?offer',
+    authorities: <Authority>[
+      Authority('Hyde v Wrench (1840) 3 Beav 334', 'A counter-offer rejects the original offer, which cannot afterwards be accepted.', relevant: true),
+      Authority("L'Estrange v F Graucob Ltd [1934] 2 KB 394", 'A signed document binds the signer — not in point, as nothing was signed.', relevant: false),
+      _donoghue,
+      _leechBrain,
+    ],
+    conclusion: 'There is no contract: the £7,000 counter-offer rejected the original £8,000 offer, so the later acceptance came too late',
+    wrongConclusions: <String>['A contract at £8,000 was formed when he accepted', 'A contract at £7,000 was formed', 'Ms Shaw must compensate him for the lost car'],
+    conclusionPattern: r'no (binding )?contract|counter[- ]?offer.{0,60}(reject|destroy|terminat|ended)',
+    evidence: 'The text-message thread with Ms Shaw',
+    wrongEvidence: <String>['The car’s MOT certificate', 'Mr Patel’s driving licence', 'The new buyer’s bank details'],
+    claimValue: 1500,
+    clientMinimum: 0,
+    opponentMaximum: 0,
+    monthlyCost: 200,
+    strategy: 2,
+  ),
+  LegalMatter(
+    id: 'm04',
+    title: 'Hartley Farms — the silent supplier',
+    area: 'Contract formation',
+    client: 'Hartley Farms Ltd, buyer',
+    opponent: 'Greenacre Seeds Ltd',
+    summary: 'Hartley Farms emailed Greenacre: “We will buy 2 tonnes of seed at £900 a tonne. If we hear nothing by Friday we will treat the deal as agreed.” Greenacre never replied and did not deliver. Hartley bought elsewhere at £1,150 a tonne.',
+    interview: <InterviewItem>[
+      InterviewItem('What did your email say?', 'That we’d buy 2 tonnes at £900 and treat silence by Friday as agreement.', leading: 'You told them silence would count as agreement, didn’t you?'),
+      InterviewItem('Did Greenacre respond in any way?', 'No reply at all, and no delivery.', leading: 'They never replied, did they?'),
+      InterviewItem('Had you dealt with them on these terms before?', 'No, it was the first order.'),
+      InterviewItem('What did replacement seed cost?', '£1,150 a tonne.', essential: false),
+      InterviewItem('Who sent the email?', 'Our farm manager.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Hartley stated it would treat silence as acceptance.', true),
+      ('Greenacre never replied.', true),
+      ('There was no previous course of dealing.', true),
+      ('Replacement seed cost £1,150 a tonne.', true),
+      ('The email was sent at 9:14 am.', false),
+    ],
+    issue: 'Whether silence can amount to acceptance of an offer',
+    wrongIssues: <String>['Whether the seed was fit for purpose', 'Whether Greenacre was negligent', 'Whether the postal rule applies'],
+    issuePattern: r'silence',
+    authorities: <Authority>[
+      Authority('Felthouse v Bindley (1862) 11 CB (NS) 869', 'An offeror cannot impose a contract by declaring that silence will be treated as acceptance.', relevant: true),
+      _balfour,
+      _bolton,
+      _paris,
+    ],
+    conclusion: 'No contract was formed because silence is not acceptance, so Hartley cannot recover the extra cost from Greenacre',
+    wrongConclusions: <String>['A contract was formed on Friday because Greenacre stayed silent', 'Greenacre must pay the £500 difference', 'There is a contract because email is instantaneous'],
+    conclusionPattern: r'silence.{0,40}(not|cannot|is no).{0,20}accept|no (binding )?contract',
+    evidence: 'The email to Greenacre and any reply records',
+    wrongEvidence: <String>['Weather records for the planting season', 'Greenacre’s staff list', 'Hartley’s land registry title'],
+    claimValue: 500,
+    clientMinimum: 0,
+    opponentMaximum: 0,
+    monthlyCost: 250,
+    strategy: 2,
+  ),
+  LegalMatter(
+    id: 'm05',
+    title: 'Morris — the contaminated drink',
+    area: 'Negligence',
+    client: 'Kerry Morris, consumer',
+    opponent: 'Clearbrook Drinks Ltd (manufacturer)',
+    summary: 'Ms Morris’s friend bought her a bottle of ginger beer in an opaque bottle. She drank some and found decomposed matter inside, and was ill for two weeks. She did not buy the drink herself.',
+    interview: <InterviewItem>[
+      InterviewItem('Who bought the drink?', 'My friend bought it for me at a café.', leading: 'Your friend bought it, not you, right?'),
+      InterviewItem('Could you see inside the bottle?', 'No, the bottle was dark and opaque.', leading: 'The bottle was opaque, wasn’t it?'),
+      InterviewItem('What happened to your health?', 'Gastroenteritis — I was off work for two weeks; my GP has records.'),
+      InterviewItem('Was the bottle sealed when it reached you?', 'Yes, the café opened it at the table.'),
+      InterviewItem('What did the café say?', 'They apologised.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Ms Morris did not buy the drink, so she has no contract with anyone.', true),
+      ('The bottle was opaque and sealed until served.', true),
+      ('She suffered illness confirmed by her GP.', true),
+      ('The café staff apologised.', false),
+      ('Clearbrook manufactured and sealed the bottle.', true),
+    ],
+    issue: 'Whether a manufacturer owes a duty of care to the ultimate consumer with whom it has no contract',
+    wrongIssues: <String>['Whether the café breached a contract with Ms Morris', 'Whether the friend is liable', 'Whether silence was acceptance'],
+    issuePattern: r'duty of care|manufacturer.{0,60}consumer',
+    authorities: <Authority>[
+      _donoghue,
+      Authority('Caparo Industries plc v Dickman [1990] 2 AC 605', 'Duty of care in novel situations: foreseeability, proximity, and whether it is fair, just and reasonable — established categories like Donoghue need no new test.', relevant: true),
+      _balfour,
+      _cunningham,
+    ],
+    conclusion: 'Clearbrook owed Ms Morris a duty of care as the ultimate consumer and is likely liable in negligence for her illness',
+    wrongConclusions: <String>['She has no claim because she did not buy the drink', 'Only the café can be liable', 'Her friend must compensate her'],
+    conclusionPattern: r'(owed|owes).{0,30}duty|liable in negligence',
+    evidence: 'Her GP records and the bottle (or photographs of it)',
+    wrongEvidence: <String>['Her friend’s bank card statement', 'The café’s menu', 'Her employment contract'],
+    claimValue: 6000,
+    clientMinimum: 4000,
+    opponentMaximum: 5200,
+    monthlyCost: 400,
+    strategy: 1,
+  ),
+  // ---------------------------------------------------------------- intermediate
+  LegalMatter(
+    id: 'm06',
+    title: 'Ellison — the delayed letter of acceptance',
+    area: 'Contract formation',
+    client: 'Ruth Ellison, buyer of a business',
+    opponent: 'Fenwick Holdings Ltd',
+    summary: 'Fenwick offered by letter to sell Ms Ellison its café business for £60,000, asking for a reply by post. She posted her acceptance on Monday. It arrived on Thursday, after Fenwick sold to someone else on Wednesday.',
+    interview: <InterviewItem>[
+      InterviewItem('How did Fenwick ask you to reply?', 'Their letter said “please reply by post”.', leading: 'They asked you to reply by post, didn’t they?'),
+      InterviewItem('When and how did you send your acceptance?', 'First-class post on Monday — I have the Post Office receipt.', leading: 'You posted it on Monday, right?'),
+      InterviewItem('Was it correctly addressed and stamped?', 'Yes, to the address on their letter.'),
+      InterviewItem('When did Fenwick sell to the other buyer?', 'Wednesday, according to their email.'),
+      InterviewItem('Why did you want this café?', 'I used to work there.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Fenwick asked for acceptance by post.', true),
+      ('Acceptance was posted on Monday, correctly addressed.', true),
+      ('Fenwick sold to another buyer on Wednesday.', true),
+      ('The letter arrived on Thursday.', true),
+      ('Ms Ellison previously worked at the café.', false),
+    ],
+    issue: 'Whether acceptance by post is effective when posted, so that a contract existed before Fenwick sold elsewhere',
+    wrongIssues: <String>['Whether silence was acceptance', 'Whether the café was of satisfactory quality', 'Whether Fenwick was negligent in running the café'],
+    issuePattern: r'postal rule|(posted|posting).{0,60}(accept|effective)|accept.{0,60}post',
+    authorities: <Authority>[
+      Authority('Adams v Lindsell (1818) 1 B & Ald 681', 'Where post is a reasonable means of acceptance, acceptance is complete when the letter is posted.', relevant: true),
+      Authority('Household Fire and Carriage Accident Insurance Co Ltd v Grant (1879) 4 Ex D 216', 'The postal rule applies even if the letter of acceptance is delayed or lost.', relevant: true),
+      _paris,
+      _leechBrain,
+    ],
+    conclusion: 'A contract was formed on Monday when the acceptance was posted, so Fenwick is in breach by selling to someone else',
+    wrongConclusions: <String>['No contract, because the acceptance arrived after the sale', 'No contract, because Fenwick never read the letter', 'The contract is with the second buyer only'],
+    conclusionPattern: r'(contract|accept).{0,40}(formed|complete|effective).{0,40}(post|monday)|in breach',
+    evidence: 'The Post Office proof of posting and Fenwick’s original letter',
+    wrongEvidence: <String>['The café’s hygiene rating', 'Ms Ellison’s old payslips', 'The second buyer’s identity documents'],
+    claimValue: 15000,
+    clientMinimum: 9000,
+    opponentMaximum: 11500,
+    monthlyCost: 900,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm07',
+    title: 'Ng — the faulty laptop',
+    area: 'Consumer law',
+    client: 'David Ng, consumer',
+    opponent: 'TechZone Retail Ltd',
+    summary: 'Mr Ng bought a £1,100 laptop online. After 20 days the screen started flickering and it now shuts down without warning. TechZone offers only a repair.',
+    interview: <InterviewItem>[
+      InterviewItem('When did you receive the laptop?', '20 days ago — I have the delivery email.', leading: 'You got it less than 30 days ago, didn’t you?'),
+      InterviewItem('What exactly is wrong with it?', 'The screen flickers and it shuts down several times a day.', leading: 'It’s been faulty since you got it, hasn’t it?'),
+      InterviewItem('Have you damaged or misused it?', 'No, it has never been dropped or wet.'),
+      InterviewItem('What did TechZone offer?', 'Only a repair, which could take six weeks.'),
+      InterviewItem('What colour is it?', 'Silver.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Mr Ng is a consumer buying from a trader.', true),
+      ('The fault appeared within 30 days of delivery.', true),
+      ('There is no misuse.', true),
+      ('TechZone offered only a repair.', true),
+      ('The laptop is silver.', false),
+    ],
+    issue: 'Whether the laptop is of satisfactory quality and whether Mr Ng can use the short-term right to reject for a full refund',
+    wrongIssues: <String>['Whether TechZone owed a duty of care in negligence', 'Whether there was an offer and acceptance', 'Whether the price label was an invitation to treat'],
+    issuePattern: r'satisfactory quality|right to reject',
+    authorities: <Authority>[
+      Authority('Donoghue v Stevenson [1932] AC 562', 'Negligence duty of manufacturers — not needed here, as the statute gives contractual rights against the seller.', relevant: false),
+      _bolton,
+      _balfour,
+      _lestrange,
+    ],
+    legislation: <String>[
+      'Consumer Rights Act 2015, s 9 — goods must be of satisfactory quality.',
+      'Consumer Rights Act 2015, s 22 — short-term right to reject within 30 days.',
+      'Consumer Rights Act 2015, s 20 — a rejected item is refunded in full.',
+    ],
+    conclusion: 'The laptop is not of satisfactory quality and Mr Ng can exercise his short-term right to reject within 30 days for a full refund',
+    wrongConclusions: <String>['He must accept a repair first', 'He has no rights because he bought online', 'He can only sue the manufacturer in negligence'],
+    conclusionPattern: r'(full )?refund|short[- ]term right to reject',
+    evidence: 'The delivery confirmation and a record of the faults (video or log)',
+    wrongEvidence: <String>['His university transcript', 'A valuation of his flat', 'TechZone’s annual accounts'],
+    claimValue: 1100,
+    clientMinimum: 1100,
+    opponentMaximum: 1100,
+    monthlyCost: 120,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm08',
+    title: 'Ashworth Print — the late courier',
+    area: 'Contract remedies',
+    client: 'Swiftline Couriers Ltd (defendant)',
+    opponent: 'Ashworth Print Ltd',
+    summary: 'Swiftline was paid £80 to deliver printing plates by 9 am. They arrived at noon. Ashworth says it lost an unusually lucrative £40,000 government contract as a result and sues Swiftline for it. Ashworth never mentioned the contract when booking.',
+    interview: <InterviewItem>[
+      InterviewItem('What did Ashworth tell you when booking?', 'Just a normal next-day 9 am delivery — nothing about any contract.', leading: 'They never told you about the government contract, did they?'),
+      InterviewItem('How late was the delivery?', 'Three hours — it arrived at noon.'),
+      InterviewItem('What would ordinarily follow from a late delivery?', 'Usually a delay to their print run and some overtime.', leading: 'Normally a delay just means some overtime, doesn’t it?'),
+      InterviewItem('Do your terms limit liability?', 'Our standard terms cap liability at £500, but we can’t find the signed booking.'),
+      InterviewItem('Was the van damaged?', 'No.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Delivery was three hours late.', true),
+      ('Ashworth did not disclose the special contract when booking.', true),
+      ('The claimed loss is an unusually lucrative contract.', true),
+      ('The van was not damaged.', false),
+      ('Normal losses would be delay and overtime costs.', true),
+    ],
+    issue: 'Whether the lost government contract is too remote a loss to recover for breach of contract',
+    wrongIssues: <String>['Whether a contract was formed', 'Whether Swiftline owed a duty of care to the government', 'Whether the plates were of satisfactory quality'],
+    issuePattern: r'remote|remoteness',
+    authorities: <Authority>[
+      Authority('Hadley v Baxendale (1854) 9 Exch 341', 'Recoverable loss is that arising naturally from the breach, or that both parties contemplated as probable when contracting.', relevant: true),
+      Authority('Victoria Laundry (Windsor) Ltd v Newman Industries Ltd [1949] 2 KB 528', 'Ordinary lost profits are recoverable, but exceptionally lucrative contracts not known to the defendant are too remote.', relevant: true),
+      _leechBrain,
+      _cunningham,
+    ],
+    conclusion: 'The lost £40,000 contract is too remote because Swiftline did not know of it; Swiftline is liable only for ordinary losses such as delay costs',
+    wrongConclusions: <String>['Swiftline must pay the full £40,000', 'Swiftline has no liability at all for being late', 'Ashworth can only recover the £80 fee in all cases'],
+    conclusionPattern: r'too remote|only.{0,40}(ordinary|normal|natural)',
+    evidence: 'The booking record showing what Ashworth told Swiftline',
+    wrongEvidence: <String>['The van’s service history', 'The driver’s school records', 'The government’s tender scoring'],
+    claimValue: 40000,
+    clientMinimum: 0,
+    opponentMaximum: 2500,
+    monthlyCost: 1500,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm09',
+    title: 'Davies — the learner driver',
+    area: 'Negligence',
+    client: 'Owen Davies, injured pedestrian',
+    opponent: 'Sophie Lane, learner driver',
+    summary: 'Ms Lane, on her third driving lesson, mounted the pavement while turning and broke Mr Davies’s leg. Her insurer argues she did her best for a beginner.',
+    interview: <InterviewItem>[
+      InterviewItem('Where were you when the car hit you?', 'On the pavement, waiting to cross.', leading: 'You were on the pavement, weren’t you?'),
+      InterviewItem('What did the car do?', 'It turned left too wide and mounted the kerb.'),
+      InterviewItem('What injuries did you suffer?', 'A broken leg — six weeks off work; I have hospital records.'),
+      InterviewItem('Did anyone see it happen?', 'Yes, a bus driver gave his details.'),
+      InterviewItem('Do you drive yourself?', 'Yes.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Mr Davies was on the pavement.', true),
+      ('Ms Lane was a learner driver doing her best.', true),
+      ('The car mounted the kerb while turning.', true),
+      ('There is an independent witness.', true),
+      ('Mr Davies also drives.', false),
+    ],
+    issue: 'Whether a learner driver is judged by the standard of a reasonably competent driver when deciding breach of duty',
+    wrongIssues: <String>['Whether there was a contract between the parties', 'Whether the injury was too remote in contract', 'Whether silence was acceptance'],
+    issuePattern: r'(standard|reasonabl).{0,60}(competent|driver)|learner',
+    authorities: <Authority>[
+      Authority('Nettleship v Weston [1971] 2 QB 691', 'A learner driver is judged by the objective standard of a reasonably competent driver; inexperience is no defence.', relevant: true),
+      _bolton,
+      _balfour,
+      _lestrange,
+    ],
+    conclusion: 'Ms Lane fell below the standard of a reasonably competent driver, so she breached her duty and is liable for Mr Davies’s injuries',
+    wrongConclusions: <String>['She is not liable because she was a learner doing her best', 'Mr Davies has no claim because there was no contract', 'Only the driving instructor can be liable'],
+    conclusionPattern: r'(breach|liable|below the standard)',
+    evidence: 'The bus driver’s witness statement and hospital records',
+    wrongEvidence: <String>['Ms Lane’s exam certificates', 'Mr Davies’s car insurance renewal', 'The road’s planning permission'],
+    claimValue: 18000,
+    clientMinimum: 13000,
+    opponentMaximum: 15500,
+    monthlyCost: 900,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm10',
+    title: 'Estate of Mr Hollis — the unseen patient',
+    area: 'Negligence (causation)',
+    client: 'Mrs Hollis, widow',
+    opponent: 'Riverside NHS Trust',
+    summary: 'Mr Hollis attended A&E vomiting after drinking tea at work. The duty doctor did not examine him and sent him home. He died hours later of arsenic poisoning. Expert evidence says that even with prompt examination he would not have been saved in time.',
+    interview: <InterviewItem>[
+      InterviewItem('What happened at A&E?', 'The nurse phoned the doctor, who said go home and see your GP. Nobody examined him.', leading: 'The doctor never examined him, did he?'),
+      InterviewItem('What was the cause of death?', 'Arsenic poisoning, according to the post-mortem.'),
+      InterviewItem('What has the medical expert said about timing?', 'That even if treated straight away, the antidote would not have worked in time.'),
+      InterviewItem('Has anyone been charged over the arsenic?', 'The police are investigating his workplace.', essential: false),
+      InterviewItem('How long were you married?', '31 years.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('The doctor failed to examine Mr Hollis.', true),
+      ('He died of arsenic poisoning.', true),
+      ('Expert evidence: he would have died even with proper treatment.', true),
+      ('The police are investigating the workplace.', false),
+      ('The couple were married for 31 years.', false),
+    ],
+    issue: 'Whether the hospital’s breach of duty caused the death, applying the “but for” test',
+    wrongIssues: <String>['Whether a hospital can owe a duty of care at all', 'Whether there was a contract with the hospital', 'Whether the loss was too remote in contract'],
+    issuePattern: r'caus|but[- ]for',
+    authorities: <Authority>[
+      Authority('Barnett v Chelsea & Kensington Hospital Management Committee [1969] 1 QB 428', 'A hospital owed a duty and breached it by not examining, but was not liable because the patient would have died anyway: “but for” causation fails.', relevant: true),
+      Authority('Bolam v Friern Hospital Management Committee [1957] 1 WLR 582', 'The standard of care for professionals is that of a responsible body of practitioners — relevant to breach, which is admitted here.', relevant: true),
+      _balfour,
+      _cunningham,
+    ],
+    conclusion: 'The Trust breached its duty but is not liable for the death because, on the expert evidence, Mr Hollis would have died anyway — causation fails',
+    wrongConclusions: <String>['The Trust is liable because the doctor was negligent', 'No duty was owed so there is no claim', 'The claim succeeds in contract'],
+    conclusionPattern: r'caus.{0,40}(fail|not (established|proved))|would have died (anyway|regardless)|not liable',
+    evidence: 'The independent medical expert’s report on causation',
+    wrongEvidence: <String>['The couple’s marriage certificate', 'The hospital’s parking policy', 'Mr Hollis’s school reports'],
+    claimValue: 120000,
+    clientMinimum: 0,
+    opponentMaximum: 5000,
+    monthlyCost: 4000,
+    strategy: 2,
+  ),
+  // ---------------------------------------------------------------- advanced
+  LegalMatter(
+    id: 'm11',
+    title: 'Clarke — dismissed without a hearing',
+    area: 'Employment law',
+    client: 'Janet Clarke, former warehouse supervisor',
+    opponent: 'Westbrook Logistics Ltd',
+    summary: 'After three years’ service Ms Clarke was dismissed on the spot when £300 went missing from a cash box. There was no investigation, no meeting and no chance to respond. She denies taking it.',
+    interview: <InterviewItem>[
+      InterviewItem('How long did you work there?', 'Three years and two months.', leading: 'You had over two years’ service, didn’t you?'),
+      InterviewItem('How were you dismissed?', 'The manager called me in and said “you’re sacked” — no meeting or investigation.', leading: 'They didn’t investigate at all, did they?'),
+      InterviewItem('Were you allowed to respond or appeal?', 'No, and I was not offered an appeal.'),
+      InterviewItem('Who else had access to the cash box?', 'Four other staff had keys.'),
+      InterviewItem('When were you dismissed?', 'Five weeks ago.', essential: true),
+    ],
+    facts: <(String, bool)>[
+      ('Ms Clarke had more than two years’ continuous service.', true),
+      ('There was no investigation or disciplinary hearing.', true),
+      ('Four other staff had access to the cash box.', true),
+      ('She was dismissed five weeks ago (tribunal time limit is three months less a day).', true),
+      ('She commutes by bus.', false),
+    ],
+    issue: 'Whether the dismissal was unfair because the employer had no reasonable grounds, after a reasonable investigation, for believing in misconduct',
+    wrongIssues: <String>['Whether a contract of employment was formed', 'Whether the employer was negligent', 'Whether the loss was too remote'],
+    issuePattern: r'unfair(ly)? dismiss|reasonable (investigation|belief|grounds)',
+    authorities: <Authority>[
+      Authority('British Home Stores Ltd v Burchell [1980] ICR 303', 'For misconduct dismissals the employer must genuinely believe in the misconduct, on reasonable grounds, after as much investigation as was reasonable.', relevant: true),
+      _paris,
+      _leechBrain,
+      _balfour,
+    ],
+    legislation: <String>[
+      'Employment Rights Act 1996, s 94 — right not to be unfairly dismissed.',
+      'Employment Rights Act 1996, s 98 — conduct is a potentially fair reason, but the employer must act reasonably.',
+      'Employment Rights Act 1996, s 111 — claims within three months of dismissal (subject to early conciliation).',
+    ],
+    conclusion: 'The dismissal is likely to be unfair because there was no reasonable investigation or hearing, so the Burchell test is not met',
+    wrongConclusions: <String>['The dismissal was fair because theft is gross misconduct', 'She cannot claim because she was not given written reasons', 'Only a negligence claim is available'],
+    conclusionPattern: r'unfair',
+    evidence: 'Her contract, payslips and any record of the dismissal meeting',
+    wrongEvidence: <String>['Her bus pass', 'The warehouse fire certificate', 'Her school qualifications'],
+    claimValue: 14000,
+    clientMinimum: 9000,
+    opponentMaximum: 11000,
+    monthlyCost: 1100,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm12',
+    title: 'Ahmed — the hotel safe notice',
+    area: 'Contract terms',
+    client: 'Yasmin Ahmed, hotel guest',
+    opponent: 'Kingsway Hotel Ltd',
+    summary: 'Ms Ahmed booked and paid for a room at reception. In the room, a notice said the hotel was not liable for items not deposited in the safe. Her laptop was stolen from the room because staff left the door unlocked.',
+    interview: <InterviewItem>[
+      InterviewItem('When did you first see the notice about liability?', 'Only when I got to the room, after paying at reception.', leading: 'You only saw the notice after paying, didn’t you?'),
+      InterviewItem('Did anything you signed mention it?', 'No, I signed nothing at reception.', leading: 'You never signed anything about it, did you?'),
+      InterviewItem('How was the laptop taken?', 'Housekeeping left the door unlocked; CCTV shows a stranger entering.'),
+      InterviewItem('Had you stayed there before?', 'No, first time.'),
+      InterviewItem('What was the laptop worth?', '£1,400 — I have the receipt.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('The contract was made at reception.', true),
+      ('The exclusion notice was only in the room.', true),
+      ('No previous dealings with the hotel.', true),
+      ('Staff left the door unlocked.', true),
+      ('The room had a sea view.', false),
+    ],
+    issue: 'Whether an exclusion notice seen only after the contract was made was incorporated into the contract',
+    wrongIssues: <String>['Whether the room was of satisfactory quality', 'Whether silence was acceptance', 'Whether the hotel made a unilateral offer'],
+    issuePattern: r'incorporat|notice.{0,60}(after|before).{0,30}contract',
+    authorities: <Authority>[
+      Authority('Olley v Marlborough Court Hotel Ltd [1949] 1 KB 532', 'A notice in a hotel room seen after the contract was made at reception is not part of the contract.', relevant: true),
+      Authority('Thornton v Shoe Lane Parking Ltd [1971] 2 QB 163', 'Terms must be brought to the customer’s attention before or at the time of contracting.', relevant: true),
+      Authority("L'Estrange v F Graucob Ltd [1934] 2 KB 394", 'Signed terms bind — distinguishable, because Ms Ahmed signed nothing.', relevant: true),
+      _bolton,
+    ],
+    conclusion: 'The exclusion notice was not incorporated because it came after the contract was made, so the hotel cannot rely on it and is liable for the laptop',
+    wrongConclusions: <String>['The hotel is protected because the notice was displayed in the room', 'She is bound because she should have read all notices', 'She can only claim on her own insurance'],
+    conclusionPattern: r'not (been )?incorporat|cannot rely',
+    evidence: 'The booking receipt, the notice (photograph) and the CCTV',
+    wrongEvidence: <String>['Her passport stamps', 'The hotel’s food hygiene rating', 'Her university degree certificate'],
+    claimValue: 1400,
+    clientMinimum: 1200,
+    opponentMaximum: 1400,
+    monthlyCost: 150,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm13',
+    title: 'Pemberton Ltd — the glowing reference',
+    area: 'Negligent misstatement',
+    client: 'Pemberton Wholesale Ltd',
+    opponent: 'Hale & Co, accountants',
+    summary: 'Before granting £50,000 credit to a customer, Pemberton asked the customer’s accountants, Hale & Co, whether it was creditworthy. Hale replied, without any disclaimer, that the customer was “sound for £50,000”. Hale knew Pemberton would rely on it. The customer was insolvent and Pemberton lost £50,000.',
+    interview: <InterviewItem>[
+      InterviewItem('Who asked for the reference, and why?', 'We did, directly, to decide whether to give £50,000 credit.', leading: 'You asked them specifically about this credit, didn’t you?'),
+      InterviewItem('Did Hale know what you would use it for?', 'Yes, our letter said so.', leading: 'They knew you would rely on it, didn’t they?'),
+      InterviewItem('Did their reply include any disclaimer?', 'No disclaimer at all.'),
+      InterviewItem('What did their own files show about the customer?', 'Their files showed serious unpaid debts at the time.'),
+      InterviewItem('Do you still trade with other customers they audit?', 'Yes.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Pemberton asked Hale directly for a specific purpose.', true),
+      ('Hale knew Pemberton would rely on the statement.', true),
+      ('There was no disclaimer.', true),
+      ('Hale’s own files showed the customer’s debts.', true),
+      ('Pemberton trades with other Hale clients.', false),
+    ],
+    issue: 'Whether the accountants owed a duty of care for a negligent statement relied on by a known recipient for a known purpose',
+    wrongIssues: <String>['Whether a unilateral contract was formed', 'Whether the customer’s goods were of satisfactory quality', 'Whether the loss was caused by a learner driver'],
+    issuePattern: r'(misstatement|negligent statement)|assum.{0,20}responsib|duty of care',
+    authorities: <Authority>[
+      Authority('Hedley Byrne & Co Ltd v Heller & Partners Ltd [1964] AC 465', 'A duty of care can arise for negligent statements where there is a special relationship and assumption of responsibility; there the disclaimer defeated the claim.', relevant: true),
+      Authority('Caparo Industries plc v Dickman [1990] 2 AC 605', 'Auditors owe no duty to the general public; a duty needs proximity — the statement made to a known person for a known purpose.', relevant: true),
+      _donoghue,
+      _cunningham,
+    ],
+    conclusion: 'Hale & Co owed a duty of care because they assumed responsibility to a known recipient for a known purpose with no disclaimer, so they are likely liable for the £50,000 loss',
+    wrongConclusions: <String>['No duty, because accountants never owe duties to third parties', 'The claim fails because there was a disclaimer', 'Only the customer can be sued'],
+    conclusionPattern: r'(owed|owes).{0,30}duty|likely liable|assum.{0,20}responsib',
+    evidence: 'The reference request, Hale’s reply and Hale’s file notes on the customer',
+    wrongEvidence: <String>['Pemberton’s staff handbook', 'The customer’s product catalogue', 'Pemberton’s office lease'],
+    claimValue: 50000,
+    clientMinimum: 35000,
+    opponentMaximum: 42000,
+    monthlyCost: 2500,
+    strategy: 1,
+  ),
+  LegalMatter(
+    id: 'm14',
+    title: 'R v Mills — the borrowed stock',
+    area: 'Criminal law (theft)',
+    client: 'Daniel Mills, defendant',
+    opponent: 'Crown Prosecution Service',
+    summary: 'Mr Mills, a shop assistant, took six phone cases home without paying. He says he believed his manager “wouldn’t mind, as they were end-of-line stock being thrown out”. He is charged with theft.',
+    interview: <InterviewItem>[
+      InterviewItem('What did you believe about the phone cases?', 'They were end-of-line and in the skip pile; staff often took those.', leading: 'You thought they were being thrown away, didn’t you?'),
+      InterviewItem('Had the manager said anything about end-of-line stock?', 'He once said staff could take damaged stock from the skip pile.'),
+      InterviewItem('Did you hide the cases?', 'No, I carried them out in my hand past the manager.', leading: 'You didn’t hide them, did you?'),
+      InterviewItem('Has anyone else taken stock from that pile?', 'Yes, two colleagues, openly.'),
+      InterviewItem('What is your favourite phone brand?', 'Not relevant really.', essential: false),
+    ],
+    facts: <(String, bool)>[
+      ('Mr Mills believed staff could take end-of-line stock.', true),
+      ('The manager had previously said damaged skip stock could be taken.', true),
+      ('He carried the items openly past the manager.', true),
+      ('Colleagues had taken similar stock openly.', true),
+      ('He likes a particular phone brand.', false),
+    ],
+    issue: 'Whether Mr Mills was dishonest, applying the test for dishonesty to his actual belief about the facts',
+    wrongIssues: <String>['Whether there was a contract of sale', 'Whether the shop owed him a duty of care', 'Whether the goods were of satisfactory quality'],
+    issuePattern: r'dishonest',
+    authorities: <Authority>[
+      Authority('Ivey v Genting Casinos (UK) Ltd [2017] UKSC 67', 'Dishonesty: establish the defendant’s actual knowledge or belief as to the facts, then ask whether the conduct was dishonest by the standards of ordinary decent people.', relevant: true),
+      Authority('R v Barton and Booth [2020] EWCA Crim 575', 'The Ivey test applies in criminal cases, replacing the second (subjective) limb of the earlier Ghosh test.', relevant: true),
+      _cunningham,
+      _leechBrain,
+    ],
+    legislation: <String>[
+      'Theft Act 1968, s 1 — dishonest appropriation of property belonging to another with intention to permanently deprive.',
+      'Theft Act 1968, s 2(1)(b) — not dishonest if he believed the owner would consent if they knew the circumstances.',
+    ],
+    conclusion: 'There is a strong argument he was not dishonest: given his genuine belief that the manager would consent, ordinary decent people would not regard his conduct as dishonest (and s 2(1)(b) applies)',
+    wrongConclusions: <String>['He is automatically guilty because he did not pay', 'Dishonesty is judged only by his own personal standards', 'The case must be dealt with in contract law'],
+    conclusionPattern: r'not dishonest|2\(1\)\(b\)|would consent',
+    evidence: 'Statements from the colleagues and CCTV showing him leaving openly',
+    wrongEvidence: <String>['His phone contract', 'The shop’s VAT returns', 'His school attendance record'],
+    claimValue: 0,
+    clientMinimum: 0,
+    opponentMaximum: 0,
+    monthlyCost: 0,
+    strategy: 0,
+  ),
+  LegalMatter(
+    id: 'm15',
+    title: 'Brook Builders — the promised bonus',
+    area: 'Contract (consideration)',
+    client: 'Brook Builders Ltd, subcontractor',
+    opponent: 'Granite Homes Ltd, main contractor',
+    summary: 'Brook agreed to fit out 30 flats for £180,000 but underpriced the job and was in difficulty. Granite, facing a penalty if the flats were late, promised an extra £10,000 per flat completed on time. Brook completed eight more flats on time; Granite now refuses to pay, saying Brook was already obliged to do the work.',
+    interview: <InterviewItem>[
+      InterviewItem('Who suggested the extra payment?', 'Granite’s project manager offered it at a site meeting.', leading: 'Granite offered the money, not you, didn’t they?'),
+      InterviewItem('Why did Granite want the work on time?', 'They faced a penalty clause with the developer if the flats were late.', leading: 'Granite benefited because it avoided the penalty, didn’t it?'),
+      InterviewItem('Did you threaten to stop work?', 'No, we never threatened anything.'),
+      InterviewItem('What happened after the promise?', 'We completed eight more flats on time; they paid nothing extra.'),
+      InterviewItem('Is the promise in writing?', 'It is in the site meeting minutes.', essential: true),
+    ],
+    facts: <(String, bool)>[
+      ('Brook was already contractually bound to do the work.', true),
+      ('Granite would avoid a penalty and obtain a practical benefit.', true),
+      ('There was no duress or threat by Brook.', true),
+      ('The promise is recorded in meeting minutes.', true),
+      ('The site meeting was held on a Tuesday.', false),
+    ],
+    issue: 'Whether a promise of extra payment for performing an existing contractual duty is supported by consideration through a practical benefit',
+    wrongIssues: <String>['Whether the flats were of satisfactory quality', 'Whether silence amounted to acceptance', 'Whether the loss was too remote'],
+    issuePattern: r'consideration|practical benefit',
+    authorities: <Authority>[
+      Authority('Williams v Roffey Bros & Nicholls (Contractors) Ltd [1991] 1 QB 1', 'A promise to pay more for performance of an existing duty is enforceable where the promisor obtains a practical benefit and there is no duress or fraud.', relevant: true),
+      Authority('Stilk v Myrick (1809) 2 Camp 317', 'Performing an existing contractual duty is generally not good consideration — refined by Williams v Roffey.', relevant: true),
+      _balfour,
+      _bolton,
+    ],
+    conclusion: 'Granite’s promise is enforceable because it received a practical benefit (avoiding the penalty) and there was no duress, so Brook can recover £80,000',
+    wrongConclusions: <String>['The promise is unenforceable because Brook was already bound to do the work', 'Brook can recover nothing because the promise was oral', 'Granite can recover the original price'],
+    conclusionPattern: r'enforceable|practical benefit|£?80,?000',
+    evidence: 'The site meeting minutes and the main contract’s penalty clause',
+    wrongEvidence: <String>['The flats’ colour schemes', 'Brook’s vehicle insurance', 'The site canteen menu'],
+    claimValue: 80000,
+    clientMinimum: 60000,
+    opponentMaximum: 70000,
+    monthlyCost: 3500,
+    strategy: 1,
+  ),
+];

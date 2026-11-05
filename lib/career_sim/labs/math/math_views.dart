@@ -640,8 +640,8 @@ class _WorkingViewState extends State<WorkingView> {
 
 // ------------------------------------------------------------ numeric / data
 
-class _QuestionFields extends StatelessWidget {
-  const _QuestionFields({required this.questions, required this.controllers, required this.choices, required this.enabled, required this.onChoice});
+class QuestionFields extends StatelessWidget {
+  const QuestionFields({required this.questions, required this.controllers, required this.choices, required this.enabled, required this.onChoice});
   final List<MathQuestion> questions;
   final Map<String, TextEditingController> controllers;
   final Map<String, int?> choices;
@@ -672,7 +672,7 @@ class _QuestionFields extends StatelessWidget {
       ]);
 }
 
-Map<String, String> _answers(List<MathQuestion> qs, Map<String, TextEditingController> c, Map<String, int?> choices) => <String, String>{
+Map<String, String> questionAnswers(List<MathQuestion> qs, Map<String, TextEditingController> c, Map<String, int?> choices) => <String, String>{
       for (final MathQuestion q in qs) q.id: switch (q) { NumberQuestion() => c[q.id]!.text, ChoiceQuestion() => choices[q.id]?.toString() ?? '' },
     };
 
@@ -734,11 +734,11 @@ class _NumericViewState extends State<NumericView> {
       if (s.data != null) DataTableView(data: s.data!),
       if (curves.isNotEmpty) GraphPlot(curves: curves, window: s.window ?? (-5, 5, -5, 5)),
       const SizedBox(height: 8),
-      _QuestionFields(questions: s.questions, controllers: _c, choices: _choices, enabled: _result == null, onChoice: (String id, int i) => setState(() => _choices[id] = i)),
+      QuestionFields(questions: s.questions, controllers: _c, choices: _choices, enabled: _result == null, onChoice: (String id, int i) => setState(() => _choices[id] = i)),
       _Hints(hints: s.hints, onReveal: (_) {}),
       if (_result == null)
         labSubmitButton('numeric_submit', () async {
-          final TaskResult? r = await gradeLabStep(context, () => NumericGrader.grade(s, _answers(s.questions, _c, _choices)), widget.onGraded);
+          final TaskResult? r = await gradeLabStep(context, () => NumericGrader.grade(s, questionAnswers(s.questions, _c, _choices)), widget.onGraded);
           if (mounted && r != null) setState(() => _result = r);
         })
       else
@@ -805,11 +805,11 @@ class _GraphStepViewState extends State<GraphStepView> {
         ]),
       if (s.questions.isNotEmpty) ...<Widget>[
         const SizedBox(height: 6),
-        _QuestionFields(questions: s.questions, controllers: _c, choices: _choices, enabled: _result == null, onChoice: (String id, int i) => setState(() => _choices[id] = i)),
+        QuestionFields(questions: s.questions, controllers: _c, choices: _choices, enabled: _result == null, onChoice: (String id, int i) => setState(() => _choices[id] = i)),
       ],
       if (_result == null)
         labSubmitButton('graph_submit', () async {
-          final TaskResult? r = await gradeLabStep(context, () => GraphGrader.grade(s, Map<String, double>.of(_p), _answers(s.questions, _c, _choices)), widget.onGraded);
+          final TaskResult? r = await gradeLabStep(context, () => GraphGrader.grade(s, Map<String, double>.of(_p), questionAnswers(s.questions, _c, _choices)), widget.onGraded);
           if (mounted && r != null) setState(() => _result = r);
         })
       else

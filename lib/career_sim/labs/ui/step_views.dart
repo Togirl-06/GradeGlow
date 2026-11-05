@@ -18,6 +18,8 @@ import '../lab_grading.dart';
 import '../lab_models.dart';
 import '../math/math_steps.dart';
 import '../math/math_views.dart';
+import '../work/work_steps.dart';
+import '../work/work_views.dart';
 import 'lab_tools.dart';
 
 typedef StepGraded = Future<void> Function(TaskResult result);
@@ -52,6 +54,11 @@ class LabStepView extends StatelessWidget {
       GraphStep() => GraphStepView(lab: lab, step: s, onGraded: onGraded),
       MatrixStep() => MatrixView(lab: lab, step: s, onGraded: onGraded),
       OdeStep() => OdeView(lab: lab, step: s, onGraded: onGraded),
+      TriageStep() => TriageView(lab: lab, step: s, onGraded: onGraded),
+      SequenceStep() => SequenceView(lab: lab, step: s, onGraded: onGraded),
+      DocumentStep() => DocumentView(lab: lab, step: s, onGraded: onGraded),
+      DialogueStep() => DialogueView(lab: lab, step: s, onGraded: onGraded),
+      SimulationStep() => SimulationView(lab: lab, step: s, onGraded: onGraded),
       _ => const Text('Unsupported step.'),
     };
     return Column(
