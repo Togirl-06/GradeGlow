@@ -88,6 +88,8 @@ test("programs print output and read stdin", { timeout: 120000 }, async () => {
   const pyErr = await handle(runner, { op: "program", language: "python3", code: "print(1/0)" });
   assert.equal(pyErr.ok, false);
   assert.match(pyErr.stderr, /ZeroDivisionError/);
+  const big = await handle(runner, { op: "program", language: "python3", code: "import sys\nprint(len(sys.stdin.read()))", stdin: "x".repeat(20000) });
+  assert.equal(big.stdout, "20000\n", "large inputs (hidden tests) reach Python intact");
   const js = await handle(runner, { op: "program", language: "javascript", code: "console.log('sum', [1,2,3].reduce((a,b)=>a+b))" });
   assert.equal(js.stdout, "sum 6\n");
 });

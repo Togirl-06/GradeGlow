@@ -85,8 +85,17 @@
       };
       pyodide.setStdout(sink(function (s) { out += s; }));
       pyodide.setStderr(sink(function (s) { err += s; }));
-      let consumed = false;
-      pyodide.setStdin({ stdin: function () { if (consumed) return null; consumed = true; return job.stdin || ""; } });
+      // Byte-level stdin: large test inputs exceed Pyodide's line buffer.
+      const input = new TextEncoder().encode(job.stdin || "");
+      let offset = 0;
+      pyodide.setStdin({
+        read: function (buf) {
+          const n = Math.min(buf.length, input.length - offset);
+          buf.set(input.subarray(offset, offset + n));
+          offset += n;
+          return n;
+        },
+      });
       const ns = pyodide.globals.get("dict")();
       let code = 0;
       onRunning();
