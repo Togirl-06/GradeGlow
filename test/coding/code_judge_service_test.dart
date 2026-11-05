@@ -3,11 +3,16 @@ import 'dart:convert';
 import 'package:ai_study_buddy/data/leetcode_problem_bank.dart';
 import 'package:ai_study_buddy/models/leetcode_problem.dart';
 import 'package:ai_study_buddy/services/code_judge_service.dart';
-import 'package:ai_study_buddy/vu_v2/labs/vu_v2_cs_problem_workspace.dart';
+import 'package:ai_study_buddy/career_sim/model/career_models.dart';
+import 'package:ai_study_buddy/career_sim/model/tasks.dart';
+import 'package:ai_study_buddy/career_sim/store/career_repository.dart';
+import 'package:ai_study_buddy/career_sim/store/career_sim_store.dart';
+import 'package:ai_study_buddy/career_sim/ui/task_views.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:provider/provider.dart';
 
 Map<String, Object?> _verdict(String v, {int passed = 0, int total = 3}) => <String, Object?>{
       'result': <String, Object?>{
@@ -72,35 +77,55 @@ void main() {
     expect(r.message, 'Too many runs.');
   });
 
-  Future<void> pumpWorkspace(WidgetTester tester, CodeJudgeService judge) async {
-    tester.view.physicalSize = const Size(1400, 1000);
+  const CodeTaskSpec spec = CodeTaskSpec(
+    id: 'pair',
+    title: 'Twin Sum Lookup',
+    brief: 'Implement it.',
+    problemKey: 'impl:GGO-001',
+  );
+
+  Future<List<TaskResult>> pumpTask(WidgetTester tester, CodeJudgeService judge) async {
+    tester.view.physicalSize = const Size(1200, 2400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(MaterialApp(
-      home: VuV2CsProblemWorkspace(
-        problem: problem,
-        problemIndex: 1,
-        totalProblems: 1,
-        playlist: <LeetcodeProblem>[problem],
-        judge: judge,
+    final List<TaskResult> graded = <TaskResult>[];
+    final CareerSimStore store = CareerSimStore(repository: MemoryCareerRepository(), judge: judge);
+    await tester.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(
+      value: store,
+      child: MaterialApp(
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: TaskView(spec: spec, onGraded: (TaskResult r) async => graded.add(r)),
+          ),
+        ),
       ),
     ));
     await tester.pumpAndSettle();
+    return graded;
   }
 
   testWidgets('Submit shows the server verdict (Wrong Answer is not Accepted)', (WidgetTester tester) async {
-    await pumpWorkspace(tester, _service(_verdict('Wrong Answer', passed: 1)));
-    await tester.tap(find.text('Submit'));
+    final List<TaskResult> graded = await pumpTask(tester, _service(_verdict('Wrong Answer', passed: 1)));
+    await tester.tap(find.byKey(const ValueKey<String>('code_submit')));
     await tester.pumpAndSettle();
     expect(find.textContaining('Wrong Answer'), findsWidgets);
-    expect(find.text('Accepted'), findsNothing);
+    expect(graded.single.passed, isFalse);
+    expect(graded.single.verdict, 'Wrong Answer');
   });
 
-  testWidgets('Submit marks Accepted only when the server says so', (WidgetTester tester) async {
-    await pumpWorkspace(tester, _service(_verdict('Accepted', passed: 3)));
-    await tester.tap(find.text('Submit'));
+  testWidgets('Submit passes only when the server says Accepted', (WidgetTester tester) async {
+    final List<TaskResult> graded = await pumpTask(tester, _service(_verdict('Accepted', passed: 3)));
+    await tester.tap(find.byKey(const ValueKey<String>('code_submit')));
     await tester.pumpAndSettle();
-    expect(find.text('Accepted'), findsWidgets);
-    expect(find.textContaining('Runtime 1.50 ms'), findsOneWidget);
+    expect(find.textContaining('Accepted'), findsWidgets);
+    expect(graded.single.passed, isTrue);
+    expect(graded.single.score, 100);
+  });
+
+  testWidgets('Run never records a grade; a missing runner records nothing', (WidgetTester tester) async {
+    final List<TaskResult> graded = await pumpTask(tester, _service(_verdict('Accepted', passed: 3)));
+    await tester.tap(find.byKey(const ValueKey<String>('code_run')));
+    await tester.pumpAndSettle();
+    expect(graded, isEmpty);
   });
 }

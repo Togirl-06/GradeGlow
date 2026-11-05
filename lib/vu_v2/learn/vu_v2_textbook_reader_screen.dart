@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../data/university_learning_engine.dart';
+import '../../career_sim/career_sim.dart';
+
 import '../data/vu_v2_topic_content.dart';
 import '../data/vu_v2_topic_content_models.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_rich_text.dart';
 import '../design/vu_v2_theme.dart';
-import '../labs/engine/laboratory_engine.dart';
 
 /// Full textbook chapter reader — long-form notes, not slide cards.
 class VuV2TextbookReaderScreen extends StatefulWidget {
@@ -189,29 +189,9 @@ class _VuV2TextbookReaderScreenState extends State<VuV2TextbookReaderScreen> {
               child: Column(
                 children: <Widget>[
                   VuV2PrimaryButton(
-                    label: 'Apply this chapter in the laboratory',
-                    icon: Icons.science_outlined,
-                    onPressed: () {
-                      final UniversityLabLink link = UniversityLearningEngine.labForLesson(
-                            subjectId: widget.subjectId,
-                            lessonTitle: widget.topicTitle,
-                            moduleTitle: widget.courseTitle,
-                          ) ??
-                          UniversityLabLink(
-                            labId: widget.subjectId,
-                            stationId: 'engine',
-                            title: widget.topicTitle,
-                            purpose: 'Apply the chapter on the interactive workspace.',
-                            objectives: const <String>['Perform the work'],
-                          );
-                      LaboratoryEngine.open(
-                        context: context,
-                        link: link,
-                        subjectId: widget.subjectId,
-                        courseTitle: widget.courseTitle,
-                        topicTitle: widget.topicTitle,
-                      );
-                    },
+                    label: 'Practise this in your department',
+                    icon: Icons.work_outline_rounded,
+                    onPressed: () => CareerSim.openForSubject(context, widget.subjectId),
                   ),
                   const SizedBox(height: 8),
                   VuV2PrimaryButton(

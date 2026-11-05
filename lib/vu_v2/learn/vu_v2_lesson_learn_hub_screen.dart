@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/university_learning_engine.dart';
+import '../../career_sim/model/content_models.dart';
 import '../../data/biology_degree_catalog.dart';
 import '../../data/chemistry_degree_catalog.dart';
 import '../../data/health_faculty_catalog.dart';
@@ -27,7 +27,6 @@ import '../data/vu_v2_mixed_quiz.dart';
 import '../data/vu_v2_topic_content.dart';
 import '../design/vu_v2_components.dart';
 import '../design/vu_v2_theme.dart';
-import '../labs/university_lab_result.dart';
 import 'vu_v2_assessment_screen.dart';
 import 'vu_v2_lesson_activity_router.dart';
 import 'vu_v2_textbook_reader_screen.dart';
@@ -60,13 +59,11 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
   VuV2ProgressStore? _store(BuildContext context) =>
       progress ?? VuV2Scope.maybeOf(context)?.progress;
 
-  UniversityLabLink? get _lab => VuV2LessonActivityRouter.linkedLab(
-        subjectId: subjectId,
-        lessonTitle: lesson.title,
-        moduleTitle: courseTitle,
-      );
+  Department? get _dept => VuV2LessonActivityRouter.linkedDepartment(subjectId);
 
-  bool get _requiresLab => _lab != null;
+  /// Mastery is the lecture plus the knowledge check. Professional practice
+  /// happens in the career simulator and is graded there.
+  bool get _requiresLab => false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +78,12 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
   Widget _scaffold(BuildContext context, VuV2ProgressStore? store) {
     final bool lectureDone =
         store?.isStepComplete(lesson.id, VuV2LessonStep.aiProfessor) ?? false;
-    final bool labDone =
-        store?.isStepComplete(lesson.id, VuV2LessonStep.realWorldLab) ?? false;
     final bool checkDone =
         store?.isStepComplete(lesson.id, VuV2LessonStep.knowledgeCheck) ??
             false;
     final bool mastered =
         store?.meetsMastery(lesson.id, requiresLab: _requiresLab) ?? false;
-    final UniversityLabLink? lab = _lab;
+    final Department? dept = _dept;
 
     return Scaffold(
       appBar: AppBar(title: Text(lesson.title)),
@@ -131,8 +126,8 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   mastered
-                      ? 'You learned it from the professor, used it in the lab, and proved it.'
-                      : 'Professor teaches conversationally → you perform the laboratory → you prove it on the check.',
+                      ? 'You learned it from the professor and proved it on the check.'
+                      : 'Professor teaches conversationally → you prove it on the check → you practise it professionally in your department.',
                   style: TextStyle(color: VuV2Colors.mute, height: 1.45),
                 ),
               ],
@@ -143,25 +138,9 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
             lectureDone: lectureDone,
             onStart: () => _openAiTutor(context),
           ),
-          if (lab != null) ...<Widget>[
-            const SizedBox(height: 12),
-            _JourneyStepCard(
-              step: 2,
-              emoji: '🔬',
-              title: lab.title,
-              subtitle:
-                  '${lab.purpose} Mission, equipment, decisions, data, report — not a quiz.',
-              cta: labDone ? 'Replay investigation' : 'Enter the laboratory',
-              status: labDone
-                  ? 'Complete'
-                  : (lectureDone ? 'Ready' : 'Best after the lecture'),
-              done: labDone,
-              onTap: () => _openLab(context, lab),
-            ),
-          ],
           const SizedBox(height: 12),
           _JourneyStepCard(
-            step: lab == null ? 2 : 3,
+            step: 2,
             emoji: '✅',
             title: 'Knowledge check',
             subtitle:
@@ -173,6 +152,20 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
             done: checkDone,
             onTap: () => _openQuiz(context),
           ),
+          if (dept != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _JourneyStepCard(
+              step: 3,
+              emoji: dept.emoji,
+              title: 'Professional practice · ${dept.title}',
+              subtitle:
+                  'Graded tasks, projects and real roles in the ${dept.title} department. Builds your career record.',
+              cta: 'Open department',
+              status: 'Career simulator',
+              done: false,
+              onTap: () => VuV2LessonActivityRouter.openPractice(context, subjectId),
+            ),
+          ],
           const SizedBox(height: 12),
           _JourneyStepCard(
             step: null,
@@ -236,7 +229,7 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
     if (completed == true) {
       await session.setContinue(
         title: lesson.title,
-        subtitle: '$facultyTitle · lecture complete · enter the lab',
+        subtitle: '$facultyTitle · lecture complete · take the check',
         progress: 0.55,
       );
       if (!context.mounted) return;
@@ -246,32 +239,6 @@ class VuV2LessonLearnHubScreen extends StatelessWidget {
         requiresLab: _requiresLab,
       );
     }
-  }
-
-  Future<void> _openLab(BuildContext context, UniversityLabLink lab) async {
-    await session.setContinue(
-      title: lesson.title,
-      subtitle: '$facultyTitle · Professional lab',
-      progress: 0.7,
-    );
-    if (!context.mounted) return;
-    final UniversityLabResult? result =
-        await VuV2LessonActivityRouter.openLinkedLab(
-      context: context,
-      link: lab,
-      subjectId: subjectId,
-      courseTitle: courseTitle,
-      topicTitle: lesson.title,
-      labLevel: VuV2LessonActivityRouter.levelFor(
-        _store(context)?.completedLessonIds.length ?? 0,
-      ),
-    );
-    if (!context.mounted || result == null) return;
-    await _store(context)?.markStep(
-      lesson.id,
-      VuV2LessonStep.realWorldLab,
-      requiresLab: true,
-    );
   }
 
   Future<void> _openQuiz(BuildContext context) async {
@@ -323,7 +290,7 @@ class _PrivateProfessorHero extends StatelessWidget {
     _Pillar(icon: '🗣️', label: 'Professor teaches'),
     _Pillar(icon: '✨', label: 'Speech-synced visuals'),
     _Pillar(icon: '❓', label: 'In-lecture questions'),
-    _Pillar(icon: '🔬', label: 'Then the lab'),
+    _Pillar(icon: '💼', label: 'Then practise'),
   ];
 
   @override
@@ -759,35 +726,10 @@ abstract final class VuV2AiTutorLauncher {
       _ => subjectId,
     };
 
-    final UniversityLabLink? linkedLab = UniversityLearningEngine.labForLesson(
-      subjectId: subjectId,
-      lessonTitle: lessonTitle,
-      moduleTitle: moduleTitle,
-    );
-
-    Future<void> Function()? onEnterLab;
-    if (linkedLab != null) {
-      onEnterLab = () async {
-        final UniversityLabResult? result =
-            await VuV2LessonActivityRouter.openLinkedLab(
-          context: context,
-          link: linkedLab,
-          subjectId: subjectId,
-          courseTitle: courseTitle,
-          topicTitle: lessonTitle,
-          labLevel: VuV2LessonActivityRouter.levelFor(
-            VuV2Scope.maybeOf(context)?.progress.completedLessonIds.length ?? 0,
-          ),
-        );
-        if (result == null) return;
-        if (!context.mounted) return;
-        await VuV2Scope.maybeOf(context)?.progress.markStep(
-              lesson.id,
-              VuV2LessonStep.realWorldLab,
-              requiresLab: true,
-            );
-      };
-    }
+    final Department? practiceDept = VuV2LessonActivityRouter.linkedDepartment(subjectId);
+    final Future<void> Function()? onEnterLab = practiceDept == null
+        ? null
+        : () => VuV2LessonActivityRouter.openPractice(context, subjectId);
 
     final Future<void> Function()? baseCompleted = onCompleted;
     onCompleted = () async {
@@ -812,7 +754,7 @@ abstract final class VuV2AiTutorLauncher {
           onStartNextLesson: onNext,
           onPractice: onPractice,
           onCompleted: onCompleted,
-          linkedLabTitle: linkedLab?.title,
+          linkedLabTitle: practiceDept == null ? null : 'Practise in ${practiceDept.title}',
           onEnterLab: onEnterLab,
         ),
       ),

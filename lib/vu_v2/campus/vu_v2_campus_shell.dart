@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../career_sim/career_sim.dart';
 import '../../screens/ai_tutor_screen.dart';
 import '../../services/appearance_service.dart';
 import '../data/vu_v2_progress_store.dart';
@@ -13,7 +14,6 @@ import 'vu_v2_campus_home.dart';
 import 'vu_v2_community_screen.dart';
 import 'vu_v2_notifications_screen.dart';
 import 'vu_v2_progress_tab.dart';
-import '../labs/vu_v2_labs_hub.dart';
 
 class VuV2CampusShell extends StatefulWidget {
   const VuV2CampusShell({
@@ -77,7 +77,7 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
           embedded: true,
         );
       case VuV2Dest.labs:
-        return VuV2LabsHub(session: session, progress: progress);
+        return CareerSimDashboard(studentName: session.displayName, majorLabel: session.majorLabel);
       case VuV2Dest.community:
         return VuV2CommunityScreen(session: session, progress: progress);
       case VuV2Dest.profile:
@@ -165,9 +165,9 @@ class _VuV2CampusShellState extends State<VuV2CampusShell> {
                   label: 'Courses',
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.science_outlined),
-                  selectedIcon: Icon(Icons.science_rounded),
-                  label: 'Labs',
+                  icon: Icon(Icons.work_outline_rounded),
+                  selectedIcon: Icon(Icons.work_rounded),
+                  label: 'Career',
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.more_horiz_rounded),
@@ -440,9 +440,9 @@ class _SideNav extends StatelessWidget {
               onTap: onAiTutor,
             ),
             _NavItem(
-              icon: Icons.science_outlined,
-              selectedIcon: Icons.science_rounded,
-              label: 'Labs',
+              icon: Icons.work_outline_rounded,
+              selectedIcon: Icons.work_rounded,
+              label: 'Career',
               selected: dest == VuV2Dest.labs,
               onTap: () => onSelect(VuV2Dest.labs),
             ),

@@ -4,6 +4,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'career_sim/ai/career_ai.dart';
+import 'career_sim/store/career_sim_store.dart';
+
 import 'config/app_bootstrap.dart';
 import 'config/app_branding.dart';
 import 'screens/login_screen.dart';
@@ -66,6 +69,7 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
   late final AuthService _authService;
   late final UserService _userService;
   late final OpenAiService _openAiService;
+  late final CareerSimStore _careerSim;
   late final QuestionService _questionService;
   late final MaterialService _materialService;
   late final SolutionService _solutionService;
@@ -102,6 +106,7 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
     _authService = AuthService();
     _userService = UserService(_authService);
     _openAiService = OpenAiService();
+    _careerSim = CareerSimStore(ai: OpenAiCareerAi(_openAiService));
     _questionService = QuestionService(_openAiService);
     _materialService = MaterialService(_authService, _questionService);
     _solutionService = SolutionService(_authService);
@@ -240,6 +245,7 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
     return MultiProvider(
       providers: [
         Provider<OpenAiService>.value(value: _openAiService),
+        ChangeNotifierProvider<CareerSimStore>.value(value: _careerSim),
         ChangeNotifierProvider<AppearanceService>.value(
           value: _appearanceService,
         ),
