@@ -1,0 +1,583 @@
+Resolving dependencies...
+Downloading packages...
+  _flutterfire_internals 1.3.59 (1.3.79 available)
+  archive 4.5.2 (4.6.0 available)
+  audioplayers 6.7.0 (6.8.1 available)
+  audioplayers_android 5.2.1 (5.3.0 available)
+  audioplayers_darwin 6.4.0 (6.5.0 available)
+  audioplayers_linux 4.2.1 (4.3.0 available)
+  audioplayers_platform_interface 7.1.1 (7.2.0 available)
+  audioplayers_web 5.2.1 (5.3.0 available)
+  audioplayers_windows 4.3.1 (4.4.1 available)
+  cli_util 0.4.2 (0.6.0 available)
+  clock 1.1.2 (1.1.3 available)
+  cloud_firestore 5.6.12 (7.1.0 available)
+  cloud_firestore_platform_interface 6.6.12 (8.1.0 available)
+  cloud_firestore_web 4.4.12 (5.8.0 available)
+  code_assets 1.1.0 (2.1.0 available)
+  cross_file 0.3.5+2 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  dbus 0.7.15 (0.8.0 available)
+  file_picker 9.2.3 (13.3.2 available)
+  file_selector_linux 0.9.4 (0.9.4+1 available)
+  file_selector_macos 0.9.5 (0.9.5+2 available)
+  file_selector_windows 0.9.3+5 (0.9.3+6 available)
+  firebase_auth 5.7.0 (7.0.1 available)
+  firebase_auth_platform_interface 7.7.3 (9.1.2 available)
+  firebase_auth_web 5.15.3 (6.3.2 available)
+  firebase_core 3.15.2 (5.1.0 available)
+  firebase_core_platform_interface 6.0.3 (8.1.1 available)
+  firebase_core_web 2.24.1 (4.1.0 available)
+  firebase_crashlytics 4.3.10 (6.0.1 available)
+  firebase_crashlytics_platform_interface 3.8.10 (3.9.2 available)
+  firebase_storage 12.4.10 (14.0.1 available)
+  firebase_storage_platform_interface 5.2.10 (6.0.9 available)
+  firebase_storage_web 3.10.17 (3.11.15 available)
+  flutter_dotenv 5.2.1 (6.0.1 available)
+  flutter_local_notifications 18.0.1 (22.3.3 available)
+  flutter_local_notifications_linux 5.0.0 (8.0.2 available)
+  flutter_local_notifications_platform_interface 8.0.0 (12.2.0 available)
+  flutter_plugin_android_lifecycle 2.0.34 (2.0.35 available)
+  flutter_svg 2.3.0 (2.3.2 available)
+  flutter_timezone 4.1.1 (5.1.1 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.18 available)
+  google_sign_in_ios 5.9.0 (6.3.8 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.3 available)
+  hooks 2.0.0 (2.2.0 available)
+  html 0.15.6 (0.15.7 available)
+  image 4.11.0 (4.12.0 available)
+  image_picker 1.2.2 (1.2.4 available)
+  image_picker_android 0.8.13+17 (0.8.13+25 available)
+  image_picker_ios 0.8.13+6 (0.8.13+14 available)
+  image_picker_platform_interface 2.11.1 (2.11.2 available)
+  intl 0.20.2 (0.20.3 available)
+  jni 1.0.0 (1.1.1 available)
+  jni_flutter 1.0.1 (1.0.4+1 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  mime 2.0.0 (2.1.0 available)
+  objective_c 9.4.1 (9.6.2 available)
+  package_config 2.2.0 (3.0.0 available)
+  path_provider 2.1.5 (2.1.6 available)
+  path_provider_linux 2.2.1 (2.2.2 available)
+  path_provider_platform_interface 2.1.2 (2.1.3 available)
+  permission_handler 12.0.3 (13.0.2 available)
+  permission_handler_android 13.0.1 (14.1.1 available)
+  permission_handler_apple 9.4.9 (9.6.5 available)
+  permission_handler_html 0.1.3+5 (0.1.4+1 available)
+  permission_handler_platform_interface 4.3.0 (4.4.1 available)
+  permission_handler_windows 0.2.1 (0.2.3 available)
+  petitparser 7.0.2 (7.1.0 available)
+  platform 3.1.6 (3.2.0 available)
+  posix 6.5.0 (6.5.4 available)
+  pub_semver 2.2.0 (2.2.1 available)
+  record 6.2.1 (7.1.2 available)
+  record_android 1.5.2 (2.2.0 available)
+  record_ios 1.2.1 (2.1.1 available)
+  record_linux 1.3.1 (2.1.3 available)
+  record_macos 1.2.2 (2.1.1 available)
+  record_platform_interface 1.6.0 (2.1.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  record_web 1.3.0 (2.1.3 available)
+  record_windows 1.0.7 (2.3.0 available)
+  shared_preferences 2.5.5 (2.5.6 available)
+  shared_preferences_android 2.4.26 (2.5.4 available)
+  shared_preferences_foundation 2.5.6 (2.6.1 available)
+  sign_in_with_apple 6.1.4 (8.2.0 available)
+  sign_in_with_apple_platform_interface 1.1.0 (2.0.0 available)
+  sign_in_with_apple_web 2.1.1 (3.0.0 available)
+  speech_to_text 7.4.0 (7.5.0 available)
+  speech_to_text_platform_interface 2.4.0 (2.5.0 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  synchronized 3.4.1 (3.5.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  timezone 0.9.4 (0.11.2 available)
+  url_launcher 6.3.2 (6.3.3 available)
+  url_launcher_android 6.3.32 (6.3.33 available)
+  url_launcher_ios 6.4.1 (6.4.2 available)
+  url_launcher_linux 3.2.2 (3.2.3 available)
+  url_launcher_macos 3.2.5 (3.2.6 available)
+  url_launcher_windows 3.1.5 (3.1.6 available)
+  uuid 4.5.3 (4.6.0 available)
+  vector_graphics 1.2.2 (1.2.6 available)
+  vector_graphics_compiler 1.2.5 (1.3.4 available)
+  vm_service 15.1.0 (15.4.0 available)
+  web 1.1.1 (1.1.2 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 7.0.1 (7.1.0 available)
+  yaml 3.1.3 (3.1.4 available)
+Got dependencies!
+108 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart
+00:00 +0: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
+00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:01 +4 -1: loading /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+00:03 +4 -1: /home/runner/work/GradeGlow/GradeGlow/test/coding/problem_export_test.dart: server judge problem bank matches the app
+00:03 +5 -1: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: mastery requires professor, lab, and knowledge check
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:04 +6 -1: /home/runner/work/GradeGlow/GradeGlow/test/ai_json_test.dart: repairs LaTeX backslashes and newlines in flashcard JSON
+00:04 +7 -2: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+00:06 +7 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: the guide's schools all have a department
+00:06 +8 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: departments are distinct, not reskins: no task is shared between departments
+00:06 +9 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every department has training, a project, a certification, postings, an interview and a workplace
+00:06 +10 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: postings reference real modules, skills and certifications
+00:06 +11 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every task's skills belong to its department
+00:06 +12 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every code task is gradable by the server judge
+00:06 +13 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: task content is well formed
+00:06 +14 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: interview plans are consistent
+00:06 +15 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: workplaces have assignments, a leadership assignment and titles
+00:06 +16 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every school major maps to a department
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:07 +17 -3: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:09 +17 -4: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:12 +17 -5: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:13 +17 -6: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/store_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/store_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/store_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:16 +17 -7: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:17 +17 -8: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_rules_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_rules_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_rules_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+00:18 +17 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/debug_starter_export_test.dart: export bug-fix starters for the judge check
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:18 +18 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: parser precedence, implicit multiplication and functions
+00:18 +19 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: parser errors are reported, not thrown as crashes
+00:18 +20 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: parser relations, chains, "or" and ±
+00:18 +21 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: parser equivalence by sampling
+00:18 +22 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: parser roots, including double roots and poles
+00:18 +23 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker a correct solution scores 100
+00:18 +24 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker the first wrong line is identified
+00:18 +25 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker right answer with a broken step is flagged
+00:18 +26 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker dividing by x loses a root
+00:18 +27 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker quadratic formula with ±
+00:18 +28 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker extraneous roots must be rejected at the end
+00:19 +29 -8: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker inequality: forgetting to flip the sign is caught
+00:19 +29 -9: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+00:19 +30 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker simplify, antiderivative and evaluate modes
+00:19 +31 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker systems hold at the solution
+00:19 +32 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: working checker working is required
+00:19 +33 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: other graders ODE solutions are checked by substitution
+00:19 +34 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: other graders numbers, choices and matrices
+00:19 +35 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: reference calculations statistics match textbook values
+00:19 +36 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: reference calculations matrices
+00:19 +37 -9: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_engine_test.dart: reference calculations calculus and finance helpers
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:21 +38 -10: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:22 +38 -11: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/rules_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/career_sim/rules_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/career_sim/rules_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                 ^^^^^^^^^^^^^^
+lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+      interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                 ^^^^^^^^^^^^^^
+00:28 +38 -12: loading /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart [E]
+  Failed to load "/home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart":
+  Compilation failed for testPath=/home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: lib/career_sim/labs/content/eng_mechanical.dart:187:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('real', 'A real engine between these temperatures will have efficiency', <String>['higher than the Carnot value', 'equal to it', 'lower than it'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:329:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('why', 'Why is turbulent flow wanted here?', <String>['It mixes the dosed chemical quickly', 'It reduces pumping power', 'It removes all friction'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:451:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('cube', 'Doubling the load on a ball bearing changes its life by a factor of', <String>['1/2', '1/4', '1/8'], 2),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:493:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('rss', 'Statistical tolerancing is justified when', <String>['parts are high-volume with independent variation', 'only one assembly is ever made', 'safety-critical parts must never interfere'], 0),
+                   ^^^^^^^^^^^^^^
+  lib/career_sim/labs/content/eng_mechanical.dart:566:18: Error: Method not found: 'ChoiceQuestion'.
+        interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
+                   ^^^^^^^^^^^^^^
+  .
+00:30 +38 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_speech_hygiene_test.dart: drops open-your-notes framing and keeps the teaching
+00:30 +39 -12: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: max recording duration is 4 hours
+00:30 +40 -12: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: formatRecordingDuration shows hours for long recordings
+00:30 +41 -12: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: WavAudioChunker splits oversized wav files
+00:30 +42 -12: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile unit circle routes to trigonometry
+00:30 +43 -12: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile trigonometric equations do not route to algebra
+00:30 +44 -12: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureFallback unit circle lecture teaches unit circle not linear functions
+00:31 +45 -12: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: textbookSpeechSentences strips bold markdown for read-aloud
+00:31 +46 -12: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: speechTextFromMarkdown strips bold markdown for TTS
+00:31 +47 -12: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: textbook chapter includes reading path and diagrams
+00:31 +48 -12: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: velocity chapter is wrapped with navigation
+00:31 +49 -12: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: acceleration chapter includes deep dive and full examples
+00:31 +50 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: skull lights at the spoken word and holds until the next structure
+00:31 +51 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: axial skeleton lights the axis as a group
+00:31 +52 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: mitochondria illuminate in the animal cell
+00:31 +53 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: gravity lights the weight arrow on a force diagram
+00:31 +54 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: identify tap does not leak the answer from speech
+00:31 +55 -12: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: right ventricle then pulmonary artery for heart flow
+00:31 +56 -12: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes fixes under-reported data size
+00:31 +57 -12: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: rebuildWavBytes fixes wrong header size and sample rate
+00:31 +58 -12: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes is a no-op when sizes are correct
+00:31 +59 -12: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech raises quiet recordings
+00:31 +60 -12: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech rejects silent recordings
+00:32 +61 -12: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: maps percent bands onto a 4.0 letter scale
+00:32 +62 -12: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: predicts term GPA from quiz average
+00:32 +63 -12: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: flags weak courses and a rising trend
+00:32 +64 -12: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: builds a forecast from a user profile
+00:32 +65 -12: Some tests failed.
+
+Failing tests:
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart: loading /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart
+  ... and 8 more
