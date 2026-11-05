@@ -56,6 +56,33 @@ by the Cloud Functions tests.
 the server's own harness to show that it fails the hidden tests, and runs a
 reference fix to show that it passes (`functions/test/career_debug_starters.test.js`).
 
+## Practical labs (`lib/career_sim/labs`)
+
+Every lab follows the same six screens: introduction, a professional
+environment with working tools, assignment briefing, interactive work,
+evaluation that explains each mark, and completion. Progress is saved after
+every step, so leaving and coming back resumes at the same step with drafts kept.
+
+**Code runs on the student's device** (`web/code_runner`): Python 3 through
+Pyodide, JavaScript in a worker, SQL through SQLite (sql.js, bundled). On the
+web this is a Web Worker; on Android/iOS it is a hidden WebView. Grading uses
+the server judge's own harness, bundled by `tool/build_code_runner.js`, and CI
+checks the results match the server. Infinite loops hit a 6-second limit.
+
+| School | Labs built | What the student actually does |
+|---|---|---|
+| Computer Science | 5 | Writes and runs programs, fixes failing code against hidden tests, queries a university database in a SQL workbench, simulates CPU scheduling and paging, traces a search |
+| Nursing | 6 | Works from patient charts: identity checks, history taking, vitals with NEWS2 scoring (RCP 2017), medication administration against a MAR, escalation decisions |
+| Medicine | 3 | Patient history, clinical reasoning on the same records, anatomy identification |
+| Accounting | 3 | Posts journal entries to a bakery's ledger, bank reconciliation, builds statements that must balance |
+
+**Not built to the blueprint yet:** Software Engineering, AI, Data Science,
+Cybersecurity, IT, Web and Mobile specialisations; Law; all Engineering
+disciplines; the other Business majors; Mathematics, Biology, Chemistry,
+Physics; English. These schools still have only their department training
+tasks. No 3D anatomy. Python downloads Pyodide from jsDelivr on first use, so
+it needs internet once. The phone runner compiles but was not tried on a device.
+
 ## Fixes to existing code found along the way
 
 * Debug Desk starters kept the old function names, so the judge could never
@@ -66,8 +93,9 @@ reference fix to show that it passes (`functions/test/career_debug_starters.test
 
 ## Not done / limitations
 
-* **Code runner not deployed.** See `docs/sim_rebuild/CODE_RUNNER_SETUP.md`.
-  Until it is, code submissions say the runner is unavailable and record nothing.
+* **Server code runner not deployed.** Labs and career coding tasks now run on
+  the device, so they work without it. Arena submissions that need the server
+  still need `docs/sim_rebuild/CODE_RUNNER_SETUP.md`.
 * **The interviewer is rule-driven**, not a free-form AI conversation. Question
   choice and scores come from rubrics, so they are reproducible. AI only adds
   coaching afterwards.
