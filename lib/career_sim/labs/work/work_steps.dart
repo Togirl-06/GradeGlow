@@ -499,12 +499,14 @@ abstract final class SimulationGrader {
         fb.add('✗ ${c.label} — ${o?.label ?? c.output} is $shown${o?.unit.isEmpty ?? true ? '' : ' ${o!.unit}'}.');
       }
     }
+    final bool specMet = ok == s.constraints.length;
+    if (!specMet) fb.insert(1, 'The design does not meet every requirement of the specification, so it cannot be signed off.');
     if (s.questions.isNotEmpty) {
       final TaskResult r = NumericGrader.grade(NumericStep(id: s.id, title: s.title, instructions: '', questions: s.questions), answers);
       ok += r.breakdown['correct'] ?? 0;
       total += s.questions.length;
       fb.addAll(r.feedback);
     }
-    return gradeResult(s, total == 0 ? 0 : ok / total, fb, breakdown: <String, int>{'met': ok, 'items': total});
+    return gradeResult(s, total == 0 ? 0 : ok / total, fb, breakdown: <String, int>{'met': ok, 'items': total}, forceFail: !specMet);
   }
 }
