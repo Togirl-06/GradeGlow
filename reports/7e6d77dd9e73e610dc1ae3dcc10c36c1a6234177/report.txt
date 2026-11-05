@@ -1,6 +1,6 @@
 Flutter 3.47.9 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision c197ca5199 (4 days ago) • 2026-10-29 10:10:20 -0400
-Engine • hash 9e025265bef30b838c0c1b68cad19decf97048f2 (revision 89c39edfdf) (6 days ago) • 2026-10-27 19:51:20.000Z
+Framework • revision c197ca5199 (7 days ago) • 2026-10-29 10:10:20 -0400
+Engine • hash 9e025265bef30b838c0c1b68cad19decf97048f2 (revision 89c39edfdf) (8 days ago) • 2026-10-27 19:51:20.000Z
 Tools • Dart 3.13.7 • DevTools 2.60.0
 ## flutter pub get
   shared_preferences 2.5.5 (2.5.6 available)
@@ -43,14 +43,14 @@ analyzer errors: 0
 analyzer warnings: 22
    info • Don't invoke 'print' in production code. Try using a logging framework • tool/count_problems.dart:4:3 • avoid_print
 
-53 issues found. (ran in 14.9s)
+53 issues found. (ran in 20.2s)
 ## flutter test
-00:37 +259: All tests passed!
-00:36 +255: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: each practical resolves to a topic
-00:36 +256: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
-00:37 +257: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishActivityPanel sentence builder shows word bank
-00:37 +258: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishLessonScreen shows sentence builder at pp_build
-00:37 +259: All tests passed!
+00:47 +259: All tests passed!
+00:45 +255: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: each practical resolves to a topic
+00:46 +256: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
+00:47 +257: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishActivityPanel sentence builder shows word bank
+00:47 +258: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishLessonScreen shows sentence builder at pp_build
+00:47 +259: All tests passed!
 ## functions tests
 # tests 30
 # pass 30

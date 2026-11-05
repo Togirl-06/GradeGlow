@@ -68,7 +68,7 @@ Downloading packages...
   permission_handler_apple 9.4.9 (9.6.5 available)
   permission_handler_html 0.1.3+5 (0.1.4+1 available)
   permission_handler_platform_interface 4.3.0 (4.4.1 available)
-  permission_handler_windows 0.2.1 (0.2.2 available)
+  permission_handler_windows 0.2.1 (0.2.3 available)
   petitparser 7.0.2 (7.1.0 available)
   platform 3.1.6 (3.2.0 available)
   posix 6.5.0 (6.5.4 available)
@@ -113,276 +113,274 @@ Got dependencies!
 Try `flutter pub outdated` for more information.
 00:00 +0: loading /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart
 00:00 +0: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
-00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
-00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: micro prompts resolve as easy; explicit difficulty is respected
-00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
-00:00 +4: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: rapid review resolves as hard
-00:00 +5: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
-00:00 +6: loading /home/runner/work/GradeGlow/GradeGlow/test/chemistry_navigation_test.dart
-00:05 +6: /home/runner/work/GradeGlow/GradeGlow/test/chemistry_navigation_test.dart: Chemistry lesson hub opens without crash
-00:09 +7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: (setUpAll)
-00:09 +7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
-00:10 +8: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_software (school_cs) opens Software Company Floor
-00:10 +9: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/student_journey_test.dart: TEST 1: create a character and customize their appearance
-00:10 +10: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +11: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +12: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +13: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +14: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +15: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +16: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +17: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +18: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +19: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +20: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +21: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +22: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +23: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
-00:10 +24: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_data (school_cs) opens Data Analytics Center
-00:11 +25: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_cyber (school_cs) opens Cyber Defense Center
-00:11 +26: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_it (school_cs) opens IT Support Desk
-00:11 +27: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_web (school_cs) opens Web & Mobile Studio
-00:11 +28: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_career (school_cs) opens Tech Career Simulation
-00:11 +29: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_career (school_cs) opens Tech Career Simulation
-00:11 +30: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_anatomy (school_medicine) opens 3D Anatomy Table
-00:12 +31: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_history (school_medicine) opens Patient History Room
-00:12 +32: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_diagnosis (school_medicine) opens Diagnosis Board
-00:12 +33: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_clinic (school_medicine) opens Virtual Patient Clinic
-00:12 +34: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_labsci (school_medicine) opens Diagnostic Laboratory
-00:12 +35: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_pharmacy (school_medicine) opens Pharmacy & Counselling
-00:12 +36: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: (setUpAll)
-00:12 +36: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_career (school_medicine) opens Hospital Rotation
-00:13 +37: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
-00:13 +38: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
-00:13 +39: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
-00:13 +40: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
-00:13 +41: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_anatomy (school_nursing) opens Anatomy & Skeleton Models
-00:13 +42: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
-00:13 +43: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_public (school_nursing) opens Community & Public Health
-00:13 +44: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_meds (school_nursing) opens Medication Safety Lab
-00:13 +45: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_career (school_nursing) opens Clinical Placement
-00:14 +46: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_real_cases (school_law) opens Real Case Study Center
-00:14 +47: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_school (school_law) opens Law Library & Lessons
-00:14 +48: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_client (school_law) opens Client Interview Room
-00:14 +49: /home/runner/work/GradeGlow/GradeGlow/test/coding/problem_export_test.dart: server judge problem bank matches the app
-00:14 +50: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_firm (school_law) opens Law Firm Desk
-00:14 +51: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_court (school_law) opens Moot Courtroom
-00:14 +52: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_mech (school_engineering) opens Mechanical Workshop
-00:15 +53: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_civil (school_engineering) opens Civil Construction Site
-00:15 +54: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
-00:15 +55: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_chem (school_engineering) opens Chemical Process Plant
-00:15 +56: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_aero (school_engineering) opens Aerospace Hangar
-00:15 +57: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_industrial (school_engineering) opens Industrial Factory Floor
-00:15 +58: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_industrial (school_engineering) opens Industrial Factory Floor
-00:15 +59: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_industrial (school_engineering) opens Industrial Factory Floor
-00:15 +60: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_industrial (school_engineering) opens Industrial Factory Floor
-00:15 +61: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
-00:15 +62: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
-00:15 +63: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
-00:16 +64: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
-00:16 +65: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
-00:16 +66: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
-00:16 +67: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hr (school_business) opens HR Department
-00:16 +68: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
-00:16 +69: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_startup (school_business) opens Startup Incubator
-00:16 +70: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_school (school_business) opens Business Lecture Rooms
-00:16 +71: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_policy (school_economics) opens Economic Policy Center
-00:16 +72: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
-00:16 +73: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_trade (school_economics) opens Global Trade Floor
-00:16 +74: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_whiteboard (school_math) opens Interactive Whiteboard
-00:17 +75: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_applied (school_math) opens Applied Math Lab
-00:17 +76: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
-00:17 +77: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +78: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +79: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +80: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +81: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +82: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +83: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +84: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +85: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +86: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +87: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +88: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +89: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +90: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +91: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +92: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +93: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +94: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +95: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +96: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +97: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +98: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +99: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +100: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
-00:17 +101: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
-00:17 +102: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_newsroom (school_arts) opens Newsroom
-00:17 +103: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_lab (school_biology) opens Biology Lab
-00:17 +104: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_anatomy (school_biology) opens Anatomy Models
-00:18 +105: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_career (school_biology) opens Research Career
-00:18 +106: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Software Engineer
-00:18 +107: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +108: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +109: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +110: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +111: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +112: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +113: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
-00:18 +114: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_lessons (school_chemistry) opens Chemistry Lessons
-00:18 +115: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_career (school_chemistry) opens Chemist Career
-00:18 +116: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_lab (school_physics) opens Physics Lab
-00:18 +117: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_practical (school_physics) opens Practical Experiments
-00:19 +118: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
-00:19 +119: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: (tearDownAll)
-00:19 +119: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: 15 districts (campus + city), each with at least one building
-00:19 +120: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: building ids unique, doors walkable and reachable from spawn
-00:19 +121: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: every employer building exists and matches its employer
-00:19 +122: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: interiors: no overlaps, everything reachable, exit open
-00:19 +123: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: every career station id with tasks has a world station in some hiring employer
-00:19 +124: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/world_test.dart: key services exist somewhere in the world
-00:20 +125: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/spec_gap_test.dart
+00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
+00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
+00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: mixer keeps intro first, core steps in order, and every activity
+00:00 +4: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: micro prompts resolve as easy; explicit difficulty is respected
+00:00 +5: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_mixer_test.dart: rapid review resolves as hard
+00:06 +6: /home/runner/work/GradeGlow/GradeGlow/test/chemistry_navigation_test.dart: Chemistry lesson hub opens without crash
+00:11 +7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: (setUpAll)
+00:11 +7: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +8: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +9: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +10: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +11: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +12: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +13: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +14: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +15: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +16: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:12 +17: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:13 +18: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:13 +19: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_arena (school_cs) opens Algorithm Arena
+00:13 +20: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/student_journey_test.dart: TESTS 8–14 end to end: business_manager
+00:13 +21: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_software (school_cs) opens Software Company Floor
+00:13 +22: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_software (school_cs) opens Software Company Floor
+00:13 +23: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_ai (school_cs) opens AI Research Lab
+00:13 +24: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_data (school_cs) opens Data Analytics Center
+00:14 +25: /home/runner/work/GradeGlow/GradeGlow/test/ai_json_test.dart: repairs LaTeX backslashes and newlines in flashcard JSON
+00:14 +26: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_cyber (school_cs) opens Cyber Defense Center
+00:14 +27: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_it (school_cs) opens IT Support Desk
+00:14 +28: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_web (school_cs) opens Web & Mobile Studio
+00:14 +29: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station cs_career (school_cs) opens Tech Career Simulation
+00:15 +30: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: (setUpAll)
+00:15 +30: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_anatomy (school_medicine) opens 3D Anatomy Table
+00:15 +31: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:15 +32: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:16 +33: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+00:16 +34: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_clinic (school_medicine) opens Virtual Patient Clinic
+00:16 +35: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+00:16 +36: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_labsci (school_medicine) opens Diagnostic Laboratory
+00:16 +37: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_pharmacy (school_medicine) opens Pharmacy & Counselling
+00:16 +38: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station med_career (school_medicine) opens Hospital Rotation
+00:17 +39: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_ward (school_nursing) opens Patient Care Ward
+00:17 +40: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_assess (school_nursing) opens Patient Assessment Lab
+00:17 +41: /home/runner/work/GradeGlow/GradeGlow/test/coding/problem_export_test.dart: server judge problem bank matches the app
+00:17 +42: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_case (school_nursing) opens Clinical Case Simulator
+00:17 +43: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_anatomy (school_nursing) opens Anatomy & Skeleton Models
+00:18 +44: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_public (school_nursing) opens Community & Public Health
+00:18 +45: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_meds (school_nursing) opens Medication Safety Lab
+00:18 +46: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station nurse_career (school_nursing) opens Clinical Placement
+00:18 +47: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_real_cases (school_law) opens Real Case Study Center
+00:18 +48: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_real_cases (school_law) opens Real Case Study Center
+00:18 +49: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_real_cases (school_law) opens Real Case Study Center
+00:18 +50: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station law_real_cases (school_law) opens Real Case Study Center
+00:18 +51: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +52: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +53: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:19 +54: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:20 +55: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:20 +56: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_mech (school_engineering) opens Mechanical Workshop
+00:20 +57: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit marks Accepted only when the server says so
+00:20 +58: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_civil (school_engineering) opens Civil Construction Site
+00:20 +59: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_elec (school_engineering) opens Electrical Lab
+00:20 +60: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_chem (school_engineering) opens Chemical Process Plant
+00:20 +61: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_aero (school_engineering) opens Aerospace Hangar
+00:21 +62: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_industrial (school_engineering) opens Industrial Factory Floor
+00:21 +63: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station eng_career (school_engineering) opens Engineering Firm
+00:21 +64: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +65: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +66: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +67: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +68: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +69: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +70: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +71: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +72: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +73: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +74: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +75: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +76: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +77: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +78: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +79: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +80: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +81: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +82: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +83: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +84: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +85: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +86: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +87: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hq (school_business) opens Corporate HQ
+00:21 +88: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_accounting (school_business) opens Accounting Firm
+00:21 +89: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_finance (school_business) opens Markets Desk
+00:21 +90: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_marketing (school_business) opens Marketing Agency
+00:22 +91: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_hr (school_business) opens HR Department
+00:22 +92: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_startup (school_business) opens Startup Incubator
+00:22 +93: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station biz_school (school_business) opens Business Lecture Rooms
+00:22 +94: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_policy (school_economics) opens Economic Policy Center
+00:22 +95: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Software Engineer
+00:22 +96: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:22 +97: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:22 +98: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:22 +99: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:22 +100: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:22 +101: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_research (school_economics) opens Economic Research Desk
+00:22 +102: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/playthrough_test.dart: full playthrough: Business Manager
+00:22 +103: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station econ_trade (school_economics) opens Global Trade Floor
+00:23 +104: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_whiteboard (school_math) opens Interactive Whiteboard
+00:23 +105: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_applied (school_math) opens Applied Math Lab
+00:23 +106: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station math_career (school_math) opens Quant Career Simulation
+00:23 +107: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_writing (school_arts) opens Writing Studio
+00:23 +108: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:23 +109: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:23 +110: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:23 +111: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:23 +112: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:23 +113: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:23 +114: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_psych (school_arts) opens Psychology Lab
+00:24 +115: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station arts_newsroom (school_arts) opens Newsroom
+00:24 +116: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_lab (school_biology) opens Biology Lab
+00:24 +117: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_anatomy (school_biology) opens Anatomy Models
+00:24 +118: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station bio_career (school_biology) opens Research Career
+00:25 +119: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_bench (school_chemistry) opens Chemistry Bench
+00:25 +119: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/spec_gap_test.dart
 ALL PASSED: 19 passed, 0 failed
-00:20 +125: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board seven careers with seven-rung ladders
-00:20 +126: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board salaries rise with rank and doctors earn more than nurses
-00:20 +127: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board every employer has an interviewer and a listing per rank
-00:20 +128: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board listings carry title, salary, requirements, hours and duties
-00:20 +129: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Careers & job board entry roles are always open; senior postings rotate
-00:20 +130: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach an empty resume scores low and says what to add
-00:20 +131: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach a complete, tailored resume scores high
-00:20 +132: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach tailoring to the employer raises the score
-00:20 +133: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach shouting is flagged
-00:20 +134: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Resume coach syncFacts pulls education, jobs and certifications from the player record
-00:20 +135: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications a qualified graduate clears an entry role
-00:20 +136: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications lack of experience blocks mid-level roles with a clear reason
-00:20 +137: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications experience unlocks the same role
-00:20 +138: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications high school education is a hard fail for professional roles
-00:20 +139: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications selective employers are harder than friendly ones
-00:20 +140: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications responses arrive only after the delay, as phone messages
-00:20 +141: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications rejections explain what to improve; reapplying has a cooldown
-00:20 +142: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications duplicate and over-limit applications are blocked
-00:20 +143: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications missing the interview slot closes the application
-00:20 +144: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications waiting-list outcomes resolve into an offer or a rejection
-00:20 +145: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/employment_test.dart: Applications records and inbox survive JSON round-trips
-00:21 +146: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge empty answer scores zero everywhere
-00:21 +147: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge strong answers score well, weak ones poorly
-00:21 +148: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge technical answer with the right concepts beats a vague one
-00:21 +149: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge slang, hedging and profanity hurt professionalism and confidence
-00:21 +150: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge examples dimension rewards concrete evidence
-00:21 +151: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge short vague answers trigger a follow-up; polished ones do not
-00:21 +152: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge all scores stay within 0..10
-00:21 +153: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank every career has role-specific questions and the six classics exist
-00:21 +154: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank interviews get longer with seniority
-00:21 +155: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession asks one question at a time and reaches a decision
-00:21 +156: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession poor interview is rejected with actionable feedback
-00:21 +157: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession follow-ups are capped and do not stall the interview
-00:21 +158: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession selective employers need a higher hiring score
-00:21 +159: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession results require at least one answer
-00:21 +160: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/iso_test.dart: project/unproject round-trips and depth increases toward the viewer
-00:22 +161: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: every career has a degree; degree ids match the career catalog
-00:22 +162: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: exam questions are well-formed
-00:22 +163: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: full degree flow: enrol, lectures, study, exam, graduate
-00:22 +164: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: failing an exam costs study time; weekend lectures rejected; json round trip
-00:22 +165: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: law needs a bachelor first
-00:22 +166: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure every career has a healthy library at every rank
-00:22 +167: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure all scenarios are well-formed
-00:22 +168: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure generated scenarios are reproducible from their id
-00:22 +169: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure daily assignments are deterministic, vary by day and avoid recent tasks
-00:22 +170: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure tasks fit the rank they are assigned to
-00:22 +171: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ideal answers earn (near) full marks on EVERY scenario, including rubric-graded text
-00:22 +172: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading terrible answers never score well
-00:22 +173: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading multi-select penalises over-selection
-00:22 +174: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ordering gives partial credit by correct pairs
-00:22 +175: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading numeric grading: exact, close and wrong
-00:22 +176: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading text grading: keyword rubric, minimum length and profanity
-00:22 +177: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading inspection rewards essentials and punishes wasteful actions
-00:22 +178: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading generated numeric answers are consistent (reconciliation really reconciles)
-00:22 +179: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading a pluggable AI judge is used for text, and falls back when it throws
-00:23 +180: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/npc_motion_test.dart
+00:25 +120: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_lessons (school_chemistry) opens Chemistry Lessons
+00:25 +121: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station chem_career (school_chemistry) opens Chemist Career
+00:25 +122: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_lab (school_physics) opens Physics Lab
+00:25 +123: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_practical (school_physics) opens Practical Experiments
+00:26 +124: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +125: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +126: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +127: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +128: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +129: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +130: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +131: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +132: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +133: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +134: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +135: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +136: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +137: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +138: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +139: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +140: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +141: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +142: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +143: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +144: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +145: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: station phys_career (school_physics) opens Physicist Career
+00:26 +146: /home/runner/work/GradeGlow/GradeGlow/test/acceptance/campus_stations_test.dart: (tearDownAll)
+00:27 +146: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge empty answer scores zero everywhere
+00:27 +147: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge strong answers score well, weak ones poorly
+00:27 +148: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge technical answer with the right concepts beats a vague one
+00:27 +149: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge slang, hedging and profanity hurt professionalism and confidence
+00:27 +150: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge examples dimension rewards concrete evidence
+00:27 +151: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge short vague answers trigger a follow-up; polished ones do not
+00:27 +152: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: HeuristicInterviewJudge all scores stay within 0..10
+00:27 +153: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank every career has role-specific questions and the six classics exist
+00:27 +154: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewQuestionBank interviews get longer with seniority
+00:27 +155: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession asks one question at a time and reaches a decision
+00:27 +156: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession poor interview is rejected with actionable feedback
+00:27 +157: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession follow-ups are capped and do not stall the interview
+00:27 +158: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession selective employers need a higher hiring score
+00:27 +159: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/interview_test.dart: InterviewSession results require at least one answer
+00:28 +160: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/iso_test.dart: project/unproject round-trips and depth increases toward the viewer
+00:28 +161: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: every career has a degree; degree ids match the career catalog
+00:28 +162: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: exam questions are well-formed
+00:28 +163: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: full degree flow: enrol, lectures, study, exam, graduate
+00:28 +164: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: failing an exam costs study time; weekend lectures rejected; json round trip
+00:28 +165: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/university_test.dart: law needs a bachelor first
+00:29 +166: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure every career has a healthy library at every rank
+00:29 +167: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure all scenarios are well-formed
+00:29 +168: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure generated scenarios are reproducible from their id
+00:29 +169: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure daily assignments are deterministic, vary by day and avoid recent tasks
+00:29 +170: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Scenario structure tasks fit the rank they are assigned to
+00:29 +171: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ideal answers earn (near) full marks on EVERY scenario, including rubric-graded text
+00:29 +172: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading terrible answers never score well
+00:29 +173: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading multi-select penalises over-selection
+00:29 +174: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading ordering gives partial credit by correct pairs
+00:29 +175: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading numeric grading: exact, close and wrong
+00:29 +176: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading text grading: keyword rubric, minimum length and profanity
+00:29 +177: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading inspection rewards essentials and punishes wasteful actions
+00:29 +178: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading generated numeric answers are consistent (reconciliation really reconciles)
+00:29 +179: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/workplace_content_test.dart: Grading a pluggable AI judge is used for text, and falls back when it throws
+00:29 +180: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/npc_motion_test.dart
 NPCs: 65, walking: 65
 ALL PASSED: 265 passed, 0 failed
-00:23 +180: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/lecture_test.dart
+00:30 +180: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/lecture_test.dart
 ALL PASSED: 698 passed, 0 failed
-00:24 +180: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school has its own building on the map
-00:24 +181: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school building has a station for each of its labs, a lecture room and a professor
-00:24 +182: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every lab station opens a real screen
-00:24 +183: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: the apartment has separate rooms joined by doorways
-00:24 +184: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: real cases are well formed
-00:24 +185: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: walking the BFS path to every building costs time and arrives
-00:24 +186: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: cannot walk into walls, diagonals, or buildings closed at night
-00:24 +187: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: home is always enterable
-00:25 +188: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/hiring_outcomes_test.dart
+00:31 +180: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school has its own building on the map
+00:31 +181: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every school building has a station for each of its labs, a lecture room and a professor
+00:31 +182: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: every lab station opens a real screen
+00:31 +183: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: the apartment has separate rooms joined by doorways
+00:31 +184: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/campus_test.dart: real cases are well formed
+00:31 +185: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: walking the BFS path to every building costs time and arrives
+00:31 +186: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: cannot walk into walls, diagonals, or buildings closed at night
+00:31 +187: /home/runner/work/GradeGlow/GradeGlow/test/life_sim/movement_test.dart: home is always enterable
+00:32 +188: loading /home/runner/work/GradeGlow/GradeGlow/test/life_sim/hiring_outcomes_test.dart
 ALL PASSED: 16 passed, 0 failed
-00:25 +188: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile unit circle routes to trigonometry
-00:25 +189: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile trigonometric equations do not route to algebra
-00:25 +190: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureFallback unit circle lecture teaches unit circle not linear functions
-00:25 +191: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: layout exposes nursing NPCs and interactables
-00:25 +192: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: tick moves player toward target
-00:26 +193: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: textbook chapter includes reading path and diagrams
-00:26 +194: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: velocity chapter is wrapped with navigation
-00:26 +195: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: acceleration chapter includes deep dive and full examples
-00:27 +196: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: formal greeting explains Dear
-00:27 +197: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Luke formally
-00:27 +198: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Rob informally
-00:27 +199: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: rejects Hi Luke for formal Luke greeting
-00:27 +200: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes fixes under-reported data size
-00:27 +201: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: rebuildWavBytes fixes wrong header size and sample rate
-00:27 +202: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes is a no-op when sizes are correct
-00:27 +203: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech raises quiet recordings
-00:27 +204: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech rejects silent recordings
-00:27 +205: /home/runner/work/GradeGlow/GradeGlow/test/lecture_speech_hygiene_test.dart: drops open-your-notes framing and keeps the teaching
-00:28 +206: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: budget allocations that sum to 80k produce finite KPIs
-00:28 +207: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: cost cutting lowers customers vs retention strategy
-00:28 +208: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: all eight majors have case challenges and jobs
-00:28 +209: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: flagship Apex Commerce job exists
-00:28 +210: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: each engineering major has at least two missions and three jobs
-00:28 +211: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: flagship Apex mech job exists
-00:29 +212: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: mastery requires professor, lab, and knowledge check
-00:29 +213: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: lab report grades reasoning from the simulation result
-00:29 +214: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
-00:30 +215: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
-00:30 +216: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
-00:30 +217: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
-00:31 +218: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
-00:31 +219: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
-00:31 +220: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Business curriculum matches the supplied topic outline
-00:31 +221: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: long filler answers do not pass (the old scorer passed them)
-00:31 +222: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: long filler answers do not pass (the old scorer passed them)
-00:31 +223: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: long filler answers do not pass (the old scorer passed them)
-00:31 +224: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: short answers do not pass
-00:31 +225: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: specific, reasoned answers pass
-00:31 +226: /home/runner/work/GradeGlow/GradeGlow/test/science_interview_scoring_test.dart: keyword matching respects word boundaries
-00:31 +227: loading /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart
-00:32 +227: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: Duolingo loop: micro prompt → question → grade → feedback
-00:32 +228: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: mistake injects retry and awards partial XP
-00:32 +229: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: lesson completes with summary
-00:32 +230: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: max recording duration is 4 hours
-00:32 +231: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: formatRecordingDuration shows hours for long recordings
-00:32 +232: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: WavAudioChunker splits oversized wav files
-00:33 +233: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: skull lights at the spoken word and holds until the next structure
-00:33 +234: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: axial skeleton lights the axis as a group
-00:33 +235: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: mitochondria illuminate in the animal cell
-00:33 +236: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: gravity lights the weight arrow on a force diagram
-00:33 +237: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: identify tap does not leak the answer from speech
-00:33 +238: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: right ventricle then pulmonary artery for heart flow
-00:33 +239: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: question bank adds topic-only extras to a session
-00:33 +240: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras never come from a different lesson topic
-00:33 +241: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: present perfect extras stay on present perfect topic
-00:33 +242: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: engine session uses topic bank only
-00:33 +243: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: each lesson has topic supplements in the bank
-00:33 +244: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras prefer challenge-level questions
-00:34 +245: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: all eight programs have distinct hub focus tags
-00:34 +246: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: dyspnea critical penicillin fails
-00:34 +247: /home/runner/work/GradeGlow/GradeGlow/test/api_error_messages_test.dart: hides Dart null-check crashes from the tutor banner
-00:35 +248: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: maps percent bands onto a 4.0 letter scale
-00:35 +249: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: predicts term GPA from quiz average
-00:35 +250: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: flags weak courses and a rising trend
-00:35 +251: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: builds a forecast from a user profile
-00:35 +252: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: textbookSpeechSentences strips bold markdown for read-aloud
-00:35 +253: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: speechTextFromMarkdown strips bold markdown for TTS
-00:36 +254: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: practical lab catalog has 11 experiments
-00:36 +255: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: each practical resolves to a topic
-00:36 +256: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
-00:37 +257: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishActivityPanel sentence builder shows word bank
-00:37 +258: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishLessonScreen shows sentence builder at pp_build
-00:37 +259: All tests passed!
+00:32 +188: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile unit circle routes to trigonometry
+00:32 +189: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile trigonometric equations do not route to algebra
+00:32 +190: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureFallback unit circle lecture teaches unit circle not linear functions
+00:33 +191: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: layout exposes nursing NPCs and interactables
+00:33 +192: /home/runner/work/GradeGlow/GradeGlow/test/vu_game_controller_test.dart: tick moves player toward target
+00:33 +193: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: textbook chapter includes reading path and diagrams
+00:33 +194: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: velocity chapter is wrapped with navigation
+00:33 +195: /home/runner/work/GradeGlow/GradeGlow/test/physics_textbook_chapter_test.dart: acceleration chapter includes deep dive and full examples
+00:34 +196: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: formal greeting explains Dear
+00:34 +197: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Luke formally
+00:34 +198: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: greet Rob informally
+00:34 +199: /home/runner/work/GradeGlow/GradeGlow/test/english_greeting_grader_test.dart: rejects Hi Luke for formal Luke greeting
+00:35 +200: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes fixes under-reported data size
+00:35 +201: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: rebuildWavBytes fixes wrong header size and sample rate
+00:35 +202: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: repairWavHeaderBytes is a no-op when sizes are correct
+00:35 +203: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech raises quiet recordings
+00:35 +204: /home/runner/work/GradeGlow/GradeGlow/test/wav_header_repair_test.dart: boostWavForSpeech rejects silent recordings
+00:35 +205: /home/runner/work/GradeGlow/GradeGlow/test/lecture_speech_hygiene_test.dart: drops open-your-notes framing and keeps the teaching
+00:36 +206: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: budget allocations that sum to 80k produce finite KPIs
+00:36 +207: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: cost cutting lowers customers vs retention strategy
+00:36 +208: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: all eight majors have case challenges and jobs
+00:36 +209: /home/runner/work/GradeGlow/GradeGlow/test/business_declining_company_test.dart: flagship Apex Commerce job exists
+00:36 +210: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: each engineering major has at least two missions and three jobs
+00:36 +211: /home/runner/work/GradeGlow/GradeGlow/test/engineering_career_parity_test.dart: flagship Apex mech job exists
+00:37 +212: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: mastery requires professor, lab, and knowledge check
+00:37 +213: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: lab report grades reasoning from the simulation result
+00:37 +214: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:38 +215: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:38 +216: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:38 +217: /home/runner/work/GradeGlow/GradeGlow/test/biology_navigation_test.dart: Biology lesson hub shows active-learning pipeline
+00:39 +218: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +219: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +220: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +221: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +222: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: School of Business shows all majors
+00:40 +223: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Management major opens Business Administration courses
+00:40 +224: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: Business curriculum matches the supplied topic outline
+00:40 +225: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: every Business topic has a full textbook chapter
+00:40 +226: /home/runner/work/GradeGlow/GradeGlow/test/business_school_navigation_test.dart: lecture notes do not change mastery or XP
+00:41 +227: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: Duolingo loop: micro prompt → question → grade → feedback
+00:41 +228: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: mistake injects retry and awards partial XP
+00:41 +229: /home/runner/work/GradeGlow/GradeGlow/test/english_lesson_engine_test.dart: lesson completes with summary
+00:41 +230: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: max recording duration is 4 hours
+00:41 +231: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: formatRecordingDuration shows hours for long recordings
+00:41 +232: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: WavAudioChunker splits oversized wav files
+00:42 +233: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: skull lights at the spoken word and holds until the next structure
+00:42 +234: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: axial skeleton lights the axis as a group
+00:42 +235: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: mitochondria illuminate in the animal cell
+00:42 +236: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: gravity lights the weight arrow on a force diagram
+00:42 +237: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: identify tap does not leak the answer from speech
+00:42 +238: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: right ventricle then pulmonary artery for heart flow
+00:42 +239: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: question bank adds topic-only extras to a session
+00:43 +240: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras never come from a different lesson topic
+00:43 +241: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: present perfect extras stay on present perfect topic
+00:43 +242: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: engine session uses topic bank only
+00:43 +243: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: each lesson has topic supplements in the bank
+00:43 +244: /home/runner/work/GradeGlow/GradeGlow/test/english_question_bank_test.dart: extras prefer challenge-level questions
+00:43 +245: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: all eight programs have distinct hub focus tags
+00:43 +246: /home/runner/work/GradeGlow/GradeGlow/test/health_programs_coverage_test.dart: dyspnea critical penicillin fails
+00:44 +247: /home/runner/work/GradeGlow/GradeGlow/test/api_error_messages_test.dart: hides Dart null-check crashes from the tutor banner
+00:44 +248: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: maps percent bands onto a 4.0 letter scale
+00:44 +249: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: predicts term GPA from quiz average
+00:44 +250: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: flags weak courses and a rising trend
+00:44 +251: /home/runner/work/GradeGlow/GradeGlow/test/gpa_predictor_test.dart: builds a forecast from a user profile
+00:45 +252: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: textbookSpeechSentences strips bold markdown for read-aloud
+00:45 +253: /home/runner/work/GradeGlow/GradeGlow/test/textbook_speech_test.dart: speechTextFromMarkdown strips bold markdown for TTS
+00:45 +254: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: practical lab catalog has 11 experiments
+00:45 +255: /home/runner/work/GradeGlow/GradeGlow/test/physics_practical_lab_test.dart: each practical resolves to a topic
+00:46 +256: /home/runner/work/GradeGlow/GradeGlow/test/law_program_screen_test.dart: LawProgramScreen builds without error
+00:47 +257: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishActivityPanel sentence builder shows word bank
+00:47 +258: /home/runner/work/GradeGlow/GradeGlow/test/english_sentence_builder_widget_test.dart: EnglishLessonScreen shows sentence builder at pp_build
+00:47 +259: All tests passed!
