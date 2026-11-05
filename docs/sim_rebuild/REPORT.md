@@ -1,5 +1,10 @@
 # GradeGlow simulator rebuild — final report
 
+> **Superseded.** The life simulator, 3D world and per-school career games described
+> here were removed on branch `career-sim` and replaced by the professional career
+> simulator. See [../career_sim/REPORT.md](../career_sim/REPORT.md). The code judge,
+> problem bank and runner setup below still apply.
+
 Branch: `sim-rebuild` (not merged; `main` auto-deploys). Backup of the starting
 point: branch `backup/pre-sim-rebuild-2026-11-02` (= `main` @ `dadc8ee`).
 Audit: [AUDIT.md](AUDIT.md). Code runner setup: [CODE_RUNNER_SETUP.md](CODE_RUNNER_SETUP.md).
