@@ -71,7 +71,7 @@ Future<CareerSimStore> pumpLab(WidgetTester t, String labId, {MemoryCareerReposi
   addTearDown(t.view.reset);
   final CareerSimStore store = CareerSimStore(repository: repo ?? MemoryCareerRepository(), runner: runner ?? FakeLabRunner(const <String, List<List<Object?>>>{}));
   await store.ensureLoaded(userId: 'u', majorId: major);
-  await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(home: LabIntroScreen(labId: labId))));
+  await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(key: UniqueKey(), home: LabIntroScreen(labId: labId))));
   await t.pumpAndSettle();
   return store;
 }
@@ -162,7 +162,7 @@ void main() {
     await again.ensureLoaded(userId: 'u');
     expect(again.labRun(csSystemsLab.id)!.stepIndex, 1);
     expect(again.labRun(csSystemsLab.id)!.results['fcfs']!.passed, isTrue);
-    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: again, child: MaterialApp(home: LabIntroScreen(labId: csSystemsLab.id))));
+    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: again, child: MaterialApp(key: UniqueKey(), home: LabIntroScreen(labId: csSystemsLab.id))));
     await t.pumpAndSettle();
     expect(find.textContaining('In progress · 1/5 steps'), findsOneWidget);
     await tap(t, k('lab_continue'));
@@ -245,7 +245,7 @@ void main() {
     await tap(t, k('vitals_submit'));
     expect(store.labRun(nursingVitalsLab.id)!.results['news_rounds']!.score, 100);
 
-    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(home: LabIntroScreen(labId: nursingMedsLab.id))));
+    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(key: UniqueKey(), home: LabIntroScreen(labId: nursingMedsLab.id))));
     await t.pumpAndSettle();
     await enterWork(t);
     final MarStep mar = nursingMedsLab.scenarios.first.steps.first as MarStep;
@@ -275,7 +275,7 @@ void main() {
     expect(store.labRun(accountingBookkeepingLab.id)!.results['journal']!.score, 100);
     await finish(t);
 
-    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(home: LabIntroScreen(labId: accountingReconciliationLab.id))));
+    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(key: UniqueKey(), home: LabIntroScreen(labId: accountingReconciliationLab.id))));
     await t.pumpAndSettle();
     await enterWork(t);
     final ReconciliationStep r = accountingReconciliationLab.scenarios.first.steps.first as ReconciliationStep;
@@ -286,7 +286,7 @@ void main() {
     await tap(t, k('recon_submit'));
     expect(store.labRun(accountingReconciliationLab.id)!.results['recon']!.score, 100);
 
-    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(home: LabIntroScreen(labId: accountingStatementsLab.id))));
+    await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(value: store, child: MaterialApp(key: UniqueKey(), home: LabIntroScreen(labId: accountingStatementsLab.id))));
     await t.pumpAndSettle();
     await enterWork(t);
     final StatementsStep s = accountingStatementsLab.scenarios.first.steps.first as StatementsStep;

@@ -101,17 +101,24 @@ class SqlTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (table.columns.isEmpty) return Text('No rows returned.', style: TextStyle(color: VuV2Colors.mute));
+    if (table.columns.isEmpty && table.rows.isEmpty) return Text('No rows returned.', style: TextStyle(color: VuV2Colors.mute));
+    int width = table.columns.length;
+    for (final List<Object?> r in table.rows) {
+      if (r.length > width) width = r.length;
+    }
+    final List<String> cols = <String>[for (int i = 0; i < width; i++) i < table.columns.length ? table.columns[i] : ''];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         headingRowHeight: 32,
         dataRowMinHeight: 28,
         dataRowMaxHeight: 32,
-        columns: <DataColumn>[for (final String c in table.columns) DataColumn(label: Text(c, style: const TextStyle(fontWeight: FontWeight.w700)))],
+        columns: <DataColumn>[for (final String c in cols) DataColumn(label: Text(c, style: const TextStyle(fontWeight: FontWeight.w700)))],
         rows: <DataRow>[
           for (final List<Object?> r in table.rows.take(100))
-            DataRow(cells: <DataCell>[for (final Object? v in r) DataCell(Text(v == null ? 'NULL' : '$v', style: _mono))]),
+            DataRow(cells: <DataCell>[
+              for (int i = 0; i < width; i++) DataCell(Text(i >= r.length ? '' : (r[i] == null ? 'NULL' : '${r[i]}'), style: _mono)),
+            ]),
         ],
       ),
     );

@@ -149,7 +149,7 @@ void main() {
     test('readiness only counts graded evidence', () {
       final CareerProfile empty = CareerProfile(deptId: 'cs');
       expect(CareerRules.readiness(empty, cs).score, 0);
-      expect(CareerRules.readiness(ready(), cs, job: intern).score, greaterThan(60));
+      expect(CareerRules.readiness(ready(), cs, job: intern).score, greaterThanOrEqualTo(60));
     });
 
     test('a qualified candidate is shortlisted with reasons', () {

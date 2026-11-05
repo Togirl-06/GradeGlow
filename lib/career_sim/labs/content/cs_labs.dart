@@ -1,5 +1,4 @@
 import '../../engine/text_rubric.dart';
-import '../../model/career_models.dart';
 import '../../model/tasks.dart';
 import '../lab_models.dart';
 
