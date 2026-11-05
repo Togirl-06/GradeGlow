@@ -952,6 +952,17 @@ class CareerProfile {
 
   bool labPassed(String labId) => labCompletions.any((LabCompletion c) => c.labId == labId && c.passed);
 
+  bool labScenarioPassed(String labId, String scenarioId) =>
+      labCompletions.any((LabCompletion c) => c.labId == labId && c.scenarioId == scenarioId && c.passed);
+
+  LabCompletion? bestLabScenario(String labId, String scenarioId) {
+    LabCompletion? best;
+    for (final LabCompletion c in labCompletions) {
+      if (c.labId == labId && c.scenarioId == scenarioId && (best == null || c.score > best.score)) best = c;
+    }
+    return best;
+  }
+
   Employment? get currentJob {
     for (final Employment e in employment.reversed) {
       if (e.active) return e;
