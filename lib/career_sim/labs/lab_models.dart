@@ -12,13 +12,15 @@ enum LabEnvironment {
   computingLab,
   hospitalWard,
   clinicRoom,
-  accountingFirm;
+  accountingFirm,
+  mathsLab;
 
   String get label => switch (this) {
         LabEnvironment.computingLab => 'Computer Science and Computing Laboratory',
         LabEnvironment.hospitalWard => 'GradeGlow Teaching Hospital',
         LabEnvironment.clinicRoom => 'Medical Simulation and Clinical Skills Centre',
         LabEnvironment.accountingFirm => 'Professional Accounting Firm',
+        LabEnvironment.mathsLab => 'Mathematics Problem-Solving Laboratory',
       };
 }
 
@@ -28,7 +30,7 @@ enum LabDifficulty {
   advanced;
 
   String get label => switch (this) {
-        LabDifficulty.foundation => 'Foundation',
+        LabDifficulty.foundation => 'Beginner',
         LabDifficulty.intermediate => 'Intermediate',
         LabDifficulty.advanced => 'Advanced',
       };
@@ -664,12 +666,23 @@ class StatementsStep extends LabStep {
 // ------------------------------------------------------------ labs
 
 class LabScenario {
-  const LabScenario({required this.id, required this.title, required this.briefing, required this.steps, this.people = const <LabPerson>[]});
+  const LabScenario({
+    required this.id,
+    required this.title,
+    required this.briefing,
+    required this.steps,
+    this.people = const <LabPerson>[],
+    this.level = LabDifficulty.foundation,
+  });
   final String id;
   final String title;
   final Briefing briefing;
   final List<LabStep> steps;
   final List<LabPerson> people;
+
+  /// Beginner, intermediate or advanced. Harder levels unlock as easier
+  /// scenarios are passed (see [LabGrader.scenarioUnlocked]).
+  final LabDifficulty level;
 }
 
 class LabSpec {
@@ -723,6 +736,8 @@ class LabSpec {
     }
     return null;
   }
+
+  List<LabScenario> atLevel(LabDifficulty level) => scenarios.where((LabScenario s) => s.level == level).toList();
 
   LabScenario? scenario(String id) {
     for (final LabScenario s in scenarios) {

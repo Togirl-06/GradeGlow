@@ -12,6 +12,8 @@ import '../../ui/task_views.dart';
 import '../lab_catalog.dart';
 import '../lab_grading.dart';
 import '../lab_models.dart';
+import '../lab_blueprint.g.dart';
+import '../math/math_views.dart';
 import 'lab_tools.dart';
 import 'step_views.dart';
 
@@ -20,6 +22,7 @@ IconData environmentIcon(LabEnvironment e) => switch (e) {
       LabEnvironment.hospitalWard => Icons.local_hospital_rounded,
       LabEnvironment.clinicRoom => Icons.medical_services_rounded,
       LabEnvironment.accountingFirm => Icons.account_balance_rounded,
+      LabEnvironment.mathsLab => Icons.functions_rounded,
     };
 
 String labStatus(CareerProfile p, LabSpec lab) {
@@ -33,7 +36,9 @@ String labStatus(CareerProfile p, LabSpec lab) {
   return 'Not started';
 }
 
-/// Directory of every practical lab, grouped by major.
+/// Directory of every practical lab, grouped by major. Labs in the
+/// university blueprint that are not built yet are listed with their status
+/// and cannot be opened.
 class PracticalLabsScreen extends StatefulWidget {
   const PracticalLabsScreen({super.key});
 
@@ -47,12 +52,18 @@ class _PracticalLabsScreenState extends State<PracticalLabsScreen> {
   @override
   Widget build(BuildContext context) {
     final CareerSimStore store = context.watch<CareerSimStore>();
-    final String dept = store.profile.deptId;
-    final List<LabSpec> labs = _mine && LabCatalog.forDept(dept).isNotEmpty ? LabCatalog.forDept(dept) : LabCatalog.all;
-    final Map<String, List<LabSpec>> byMajor = <String, List<LabSpec>>{};
-    for (final LabSpec l in labs) {
-      byMajor.putIfAbsent(l.majorId, () => <LabSpec>[]).add(l);
+    final Department? dept = CareerCatalog.department(store.profile.deptId);
+    final Set<String> deptMajors = <String>{...?dept?.majors};
+    final bool mine = _mine && blueprintLabs.any((BlueprintLab b) => deptMajors.contains(b.majorId));
+    final Map<String, List<BlueprintLab>> byMajor = <String, List<BlueprintLab>>{};
+    for (final BlueprintLab b in blueprintLabs) {
+      if (mine && !deptMajors.contains(b.majorId)) continue;
+      byMajor.putIfAbsent(b.majorId, () => <BlueprintLab>[]).add(b);
     }
+    // Majors with working labs first.
+    final List<MapEntry<String, List<BlueprintLab>>> majors = byMajor.entries.toList()
+      ..sort((MapEntry<String, List<BlueprintLab>> a, MapEntry<String, List<BlueprintLab>> b) =>
+          b.value.where((BlueprintLab l) => l.built).length.compareTo(a.value.where((BlueprintLab l) => l.built).length));
     return Scaffold(
       appBar: AppBar(title: const Text('Practical Labs')),
       body: ListView(
@@ -60,30 +71,87 @@ class _PracticalLabsScreenState extends State<PracticalLabsScreen> {
         children: <Widget>[
           Wrap(spacing: 8, children: <Widget>[
             ChoiceChip(key: const ValueKey<String>('labs_mine'), label: const Text('My field'), selected: _mine, onSelected: (_) => setState(() => _mine = true)),
-            ChoiceChip(key: const ValueKey<String>('labs_all'), label: const Text('All labs'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
+            ChoiceChip(key: const ValueKey<String>('labs_all'), label: const Text('All majors'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
           ]),
           const SizedBox(height: 8),
-          if (_mine && LabCatalog.forDept(dept).isEmpty)
-            Text('Your department\'s practical labs are not built yet. Showing every available lab.', style: TextStyle(color: VuV2Colors.mute)),
-          for (final MapEntry<String, List<LabSpec>> e in byMajor.entries)
-            SectionCard(
-              title: LabCatalog.majorLabels[e.key] ?? e.key,
-              subtitle: e.value.first.environment.label,
-              child: Column(children: <Widget>[
-                for (final LabSpec l in e.value)
-                  ListTile(
-                    key: ValueKey<String>('lab_${l.id}'),
-                    contentPadding: EdgeInsets.zero,
-                    leading: Icon(environmentIcon(l.environment)),
-                    title: Text('Lab ${l.number}: ${l.title}'),
-                    subtitle: Text('${l.difficulty.label} · ${l.minutes} min · ${labStatus(store.profile, l)}'),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: l.id))),
-                  ),
-              ]),
+          Text('${blueprintLabs.where((BlueprintLab b) => b.built).length} of ${blueprintLabs.length} university labs are open. Labs marked "Not started" are planned and cannot be opened yet.',
+              style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          for (final MapEntry<String, List<BlueprintLab>> e in majors)
+            Card(
+              margin: const EdgeInsets.only(top: 10),
+              child: ExpansionTile(
+                key: ValueKey<String>('major_${e.key}'),
+                initiallyExpanded: e.value.any((BlueprintLab l) => l.built) && (mine || majors.indexOf(e) < 2),
+                title: Text(e.value.first.major, style: const TextStyle(fontWeight: FontWeight.w800)),
+                subtitle: Text('${e.value.first.school} · ${e.value.where((BlueprintLab l) => l.built).length}/${e.value.length} labs open'),
+                childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                children: <Widget>[for (final BlueprintLab b in e.value) LabCard(blueprint: b)],
+              ),
             ),
         ],
       ),
+    );
+  }
+}
+
+/// One lab: name, description, skills, difficulty, status, previous score,
+/// scenarios and a Start or Continue button.
+class LabCard extends StatelessWidget {
+  const LabCard({super.key, required this.blueprint});
+  final BlueprintLab blueprint;
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    final LabSpec? lab = blueprint.built ? LabCatalog.lab(blueprint.labId) : null;
+    if (lab == null) {
+      return ListTile(
+        key: ValueKey<String>('planned_${blueprint.majorId}_${blueprint.letter}'),
+        contentPadding: EdgeInsets.zero,
+        enabled: false,
+        leading: const Icon(Icons.lock_clock_rounded),
+        title: Text('${blueprint.letter}. ${blueprint.title}'),
+        subtitle: Text(blueprintStatusLabels[blueprint.status] ?? blueprint.status),
+      );
+    }
+    final Department? d = CareerCatalog.department(lab.deptId);
+    final LabRun? run = store.labRun(lab.id);
+    final bool inProgress = run != null && !run.done;
+    final LabCompletion? best = store.profile.bestLab(lab.id);
+    final int passedScenarios = lab.scenarios.where((LabScenario s) => store.profile.labScenarioPassed(lab.id, s.id)).length;
+    void open() => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: lab.id)));
+    return Container(
+      key: ValueKey<String>('lab_${lab.id}'),
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(border: Border.all(color: VuV2Colors.mute.withValues(alpha: 0.25)), borderRadius: BorderRadius.circular(12)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+        Row(children: <Widget>[
+          Icon(environmentIcon(lab.environment), color: VuV2Colors.orange, size: 20),
+          const SizedBox(width: 8),
+          Expanded(child: Text('${blueprint.letter}. ${lab.title}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800))),
+        ]),
+        const SizedBox(height: 4),
+        Text(lab.summary, maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+        const SizedBox(height: 4),
+        Text('Skills: ${lab.skills.map((String s) => d?.skillLabel(s) ?? s).join(', ')}', style: TextStyle(color: VuV2Colors.ink, fontSize: 12)),
+        const SizedBox(height: 6),
+        Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
+          StatusChip(lab.difficulty.label),
+          StatusChip('${lab.scenarios.length} scenario${lab.scenarios.length == 1 ? '' : 's'} · $passedScenarios passed'),
+          StatusChip(labStatus(store.profile, lab), color: VuV2Colors.mute),
+          if (best != null) StatusChip('Previous best ${best.score}/100', color: VuV2Colors.mute),
+        ]),
+        const SizedBox(height: 6),
+        Align(
+          alignment: Alignment.centerRight,
+          child: FilledButton.tonal(
+            key: ValueKey<String>('open_${lab.id}'),
+            onPressed: open,
+            child: Text(inProgress ? 'Continue' : (best == null ? 'Start' : 'Open')),
+          ),
+        ),
+      ]),
     );
   }
 }
@@ -103,6 +171,7 @@ class LabIntroScreen extends StatelessWidget {
     final bool inProgress = run != null && !run.done;
     final List<String> missing = store.labPrerequisitesMissing(lab);
     final List<LabCompletion> history = store.profile.labCompletions.where((LabCompletion c) => c.labId == lab.id).toList();
+    final LabScenario? next = store.nextLabScenario(lab);
     Future<void> open(String scenarioId, {bool restart = false}) async {
       final LabRun? r = await runCareerAction<LabRun>(context, () => store.startLab(lab, scenarioId: scenarioId, restart: restart));
       if (r != null && context.mounted) {
@@ -140,23 +209,28 @@ class LabIntroScreen extends StatelessWidget {
                       '${LabCatalog.lab(id)?.title ?? id}${store.profile.labPassed(id) ? ' — passed' : ' — recommended first'}',
                   ]),
           ),
-          SectionCard(
-            title: 'Scenarios',
-            child: Column(children: <Widget>[
-              for (final LabScenario sc in lab.scenarios)
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(sc.title),
-                  subtitle: Text('${sc.steps.length} tasks · ${sc.briefing.what}'),
-                ),
-            ]),
-          ),
+          for (final LabDifficulty level in LabDifficulty.values)
+            if (lab.atLevel(level).isNotEmpty)
+              SectionCard(
+                title: '${level.label} scenarios',
+                subtitle: level == LabDifficulty.foundation
+                    ? 'Open to everyone.'
+                    : 'Unlock by passing ${LabGrader.unlockAfter} ${LabDifficulty.values[level.index - 1].label.toLowerCase()} scenarios.',
+                child: Column(children: <Widget>[
+                  for (final LabScenario sc in lab.atLevel(level)) _ScenarioTile(lab: lab, scenario: sc, onOpen: () => open(sc.id, restart: true)),
+                ]),
+              ),
           if (history.isNotEmpty)
             SectionCard(
               title: 'Previous results',
               child: Column(children: <Widget>[
-                for (final LabCompletion c in history.reversed)
-                  ListTile(dense: true, contentPadding: EdgeInsets.zero, title: Text('${c.score}/100 · ${c.passed ? 'Passed' : 'Not passed'}'), subtitle: Text('Day ${c.day}')),
+                for (final LabCompletion c in history.reversed.take(10))
+                  ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text('${c.score}/100 · ${c.passed ? 'Passed' : 'Not passed'}'),
+                    subtitle: Text('${lab.scenario(c.scenarioId)?.title ?? c.scenarioId} · Day ${c.day}'),
+                  ),
               ]),
             ),
           if (missing.isNotEmpty)
@@ -169,9 +243,44 @@ class LabIntroScreen extends StatelessWidget {
             const SizedBox(height: 6),
             BusyButton(key: const ValueKey<String>('lab_restart'), label: 'Start over', icon: Icons.restart_alt_rounded, outlined: true, onPressed: () => open(run.scenarioId, restart: true)),
           ] else
-            BusyButton(key: const ValueKey<String>('lab_start'), label: history.isEmpty ? 'Start lab' : 'Retake lab', icon: Icons.play_arrow_rounded, onPressed: () => open(lab.scenarios.first.id, restart: true)),
+            BusyButton(
+              key: const ValueKey<String>('lab_start'),
+              label: next == null ? 'Retake lab' : (history.isEmpty ? 'Start lab' : 'Next scenario: ${next.title}'),
+              icon: Icons.play_arrow_rounded,
+              onPressed: () => open((next ?? lab.scenarios.first).id, restart: true),
+            ),
         ],
       ),
+    );
+  }
+}
+
+class _ScenarioTile extends StatelessWidget {
+  const _ScenarioTile({required this.lab, required this.scenario, required this.onOpen});
+  final LabSpec lab;
+  final LabScenario scenario;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    final bool unlocked = store.labScenarioUnlocked(lab, scenario);
+    final LabCompletion? best = store.profile.bestLabScenario(lab.id, scenario.id);
+    final LabRun? run = store.labRun(lab.id);
+    final bool current = run != null && !run.done && run.scenarioId == scenario.id;
+    return ListTile(
+      key: ValueKey<String>('scenario_${scenario.id}'),
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        !unlocked ? Icons.lock_rounded : (best?.passed ?? false) ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+        color: (best?.passed ?? false) ? VuV2Colors.success : VuV2Colors.mute,
+      ),
+      title: Text(scenario.title),
+      subtitle: Text('${scenario.steps.length} task${scenario.steps.length == 1 ? '' : 's'} · ${scenario.briefing.what}'
+          '${best == null ? '' : ' · best ${best.score}/100'}${current ? ' · in progress' : ''}', maxLines: 3, overflow: TextOverflow.ellipsis),
+      trailing: unlocked && !current
+          ? TextButton(key: ValueKey<String>('start_${scenario.id}'), onPressed: onOpen, child: Text(best == null ? 'Start' : 'Retake'))
+          : null,
     );
   }
 }
@@ -204,6 +313,8 @@ class EnvironmentTools extends StatelessWidget {
         if (lab.id == 'md_lab_anatomy') {
           tools.add(const ExpansionTile(key: ValueKey<String>('tool_atlas'), tilePadding: EdgeInsets.zero, leading: Icon(Icons.accessibility_new_rounded), title: Text('Anatomy atlas'), children: <Widget>[AnatomyAtlas()]));
         }
+      case LabEnvironment.mathsLab:
+        tools.addAll(mathsTools(lab));
       case LabEnvironment.accountingFirm:
         tools.add(const ExpansionTile(
           key: ValueKey<String>('tool_policies'),
@@ -489,6 +600,7 @@ class _CompletePhase extends StatelessWidget {
   Widget build(BuildContext context) {
     final CareerSimStore store = careerStore(context);
     final bool passed = store.profile.labCompletions.any((LabCompletion c) => c.labId == lab.id && c.passed && c.day == run.completedDay && c.score == run.score);
+    final LabScenario? nextScenario = store.nextLabScenario(lab);
     LabSpec? next;
     for (final LabSpec l in LabCatalog.forMajor(lab.majorId)) {
       if (!store.profile.labPassed(l.id) && l.id != lab.id) {
@@ -512,6 +624,18 @@ class _CompletePhase extends StatelessWidget {
             if (!passed) 'Retake the lab to pass every task — your best result is kept.',
           ], icon: Icons.check_rounded),
         ),
+        if (nextScenario != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: BusyButton(
+              key: const ValueKey<String>('next_scenario'),
+              label: 'Next challenge: ${nextScenario.title} (${nextScenario.level.label})',
+              icon: Icons.trending_up_rounded,
+              onPressed: () async {
+                await runCareerAction<LabRun>(context, () => store.startLab(lab, scenarioId: nextScenario.id, restart: true));
+              },
+            ),
+          ),
         if (next != null)
           FilledButton.icon(
             key: const ValueKey<String>('next_lab'),

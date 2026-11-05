@@ -16,6 +16,8 @@ import '../../ui/task_views.dart';
 import '../content/accounting_labs.dart';
 import '../lab_grading.dart';
 import '../lab_models.dart';
+import '../math/math_steps.dart';
+import '../math/math_views.dart';
 import 'lab_tools.dart';
 
 typedef StepGraded = Future<void> Function(TaskResult result);
@@ -45,6 +47,11 @@ class LabStepView extends StatelessWidget {
       ReconciliationStep() => _ReconView(step: s, onGraded: onGraded),
       StatementsStep() => _StatementsView(step: s, onGraded: onGraded),
       AnatomyIdStep() => _AnatomyIdView(step: s, onGraded: onGraded),
+      WorkingStep() => WorkingView(lab: lab, step: s, onGraded: onGraded),
+      NumericStep() => NumericView(lab: lab, step: s, onGraded: onGraded),
+      GraphStep() => GraphStepView(lab: lab, step: s, onGraded: onGraded),
+      MatrixStep() => MatrixView(lab: lab, step: s, onGraded: onGraded),
+      OdeStep() => OdeView(lab: lab, step: s, onGraded: onGraded),
       _ => const Text('Unsupported step.'),
     };
     return Column(
@@ -74,6 +81,11 @@ Future<TaskResult?> _grade(BuildContext context, TaskResult Function() grade, St
   await onGraded(r);
   return r;
 }
+
+/// Public entry points for step views defined in other files.
+Future<TaskResult?> gradeLabStep(BuildContext context, TaskResult Function() grade, StepGraded onGraded) => _grade(context, grade, onGraded);
+
+Widget labSubmitButton(String key, Future<void> Function() go, {String label = 'Submit for evaluation'}) => _submit(key, go, label: label);
 
 Widget _submit(String key, Future<void> Function() go, {String label = 'Submit for evaluation'}) =>
     BusyButton(key: ValueKey<String>(key), label: label, icon: Icons.fact_check_rounded, onPressed: go);

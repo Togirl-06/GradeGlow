@@ -16,6 +16,10 @@ class LabGradingException implements Exception {
   String toString() => message;
 }
 
+/// A graded result for [s] from the fraction of marks earned.
+TaskResult gradeResult(LabStep s, double fraction, List<String> feedback, {Map<String, int> breakdown = const <String, int>{}, bool forceFail = false}) =>
+    _result(s, fraction, feedback, breakdown: breakdown, forceFail: forceFail);
+
 TaskResult _result(LabStep s, double fraction, List<String> feedback, {Map<String, int> breakdown = const <String, int>{}, bool forceFail = false}) {
   final int score = (fraction * 100).round().clamp(0, 100);
   return TaskResult(taskId: s.id, score: score, passed: !forceFail && score >= s.passMark, feedback: feedback, breakdown: breakdown);
@@ -306,6 +310,32 @@ abstract final class LabGrader {
   }
 
   /// A scenario's score: the average of its steps; passed when every step passed.
+  /// Scenarios passed at a level needed to unlock the next level.
+  static const int unlockAfter = 2;
+
+  /// Beginner scenarios are always open. Intermediate opens once
+  /// [unlockAfter] beginner scenarios are passed (or all of them, if fewer
+  /// exist); advanced likewise needs intermediate passes.
+  static bool scenarioUnlocked(LabSpec lab, LabScenario sc, bool Function(String scenarioId) passed) {
+    if (sc.level == LabDifficulty.foundation) return true;
+    final LabDifficulty below = LabDifficulty.values[sc.level.index - 1];
+    final List<LabScenario> lower = lab.atLevel(below);
+    if (lower.isEmpty) return true;
+    final int need = lower.length < unlockAfter ? lower.length : unlockAfter;
+    return lower.where((LabScenario s) => passed(s.id)).length >= need;
+  }
+
+  /// The scenario to offer next: the first unlocked one not yet passed,
+  /// easiest level first; null when every scenario is passed.
+  static LabScenario? nextScenario(LabSpec lab, bool Function(String scenarioId) passed) {
+    for (final LabDifficulty level in LabDifficulty.values) {
+      for (final LabScenario s in lab.atLevel(level)) {
+        if (!passed(s.id) && scenarioUnlocked(lab, s, passed)) return s;
+      }
+    }
+    return null;
+  }
+
   static (int, bool) scenario(LabScenario sc, Map<String, TaskResult> results) {
     if (sc.steps.isEmpty) return (0, false);
     int sum = 0;

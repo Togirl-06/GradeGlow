@@ -280,8 +280,12 @@ class CareerSimStore extends ChangeNotifier {
   Future<LabRun> startLab(LabSpec lab, {String? scenarioId, bool restart = false}) async {
     final LabRun? existing = profile.labRuns[lab.id];
     if (existing != null && !existing.done && !restart) return existing;
-    final String sid = scenarioId ?? lab.scenarios.first.id;
-    if (lab.scenario(sid) == null) throw CareerActionException('Scenario not found.');
+    final String sid = scenarioId ?? (nextLabScenario(lab) ?? lab.scenarios.first).id;
+    final LabScenario? sc = lab.scenario(sid);
+    if (sc == null) throw CareerActionException('Scenario not found.');
+    if (!labScenarioUnlocked(lab, sc)) {
+      throw CareerActionException('${sc.level.label} scenarios unlock after you pass ${LabGrader.unlockAfter} at the level below.');
+    }
     final LabRun run = LabRun(labId: lab.id, scenarioId: sid, startedDay: profile.day);
     profile.labRuns[lab.id] = run;
     _log('Started lab: ${lab.title}.', 'lab');
@@ -370,6 +374,12 @@ class CareerSimStore extends ChangeNotifier {
     await _commit();
     return c;
   }
+
+  bool labScenarioUnlocked(LabSpec lab, LabScenario sc) =>
+      LabGrader.scenarioUnlocked(lab, sc, (String id) => profile.labScenarioPassed(lab.id, id));
+
+  /// The next scenario the student should take in [lab], or null when all are passed.
+  LabScenario? nextLabScenario(LabSpec lab) => LabGrader.nextScenario(lab, (String id) => profile.labScenarioPassed(lab.id, id));
 
   /// Labs whose prerequisites are not yet passed.
   List<String> labPrerequisitesMissing(LabSpec lab) => <String>[
