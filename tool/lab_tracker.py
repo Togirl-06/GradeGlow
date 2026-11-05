@@ -119,12 +119,20 @@ SCHOOLS = [
             ("Failure Analysis", built("me_lab_failure", "tested", "5 failure investigations x 3 levels")),
         ]),
         ("civil_engineering", "Civil Engineering", [
-            ("Structural Analysis", None), ("Concrete and Materials Testing", None), ("Geotechnical Engineering", None),
-            ("Surveying", None), ("Transportation and Infrastructure", None), ("Construction Project Management", None),
+            ("Structural Analysis", built("ce_lab_structures", "tested", "Beams, cantilevers, trusses, columns, load combinations")),
+            ("Concrete and Materials Testing", built("ce_lab_materials", "tested", "Mix design, tensile test, expansion, FoS, cube acceptance")),
+            ("Geotechnical Engineering", built("ce_lab_geotech", "tested", "Bearing, effective stress, settlement, slopes, retaining walls")),
+            ("Surveying", built("ce_lab_surveying", "tested", "Levelling, setting out, areas, gradients, tape corrections")),
+            ("Transportation and Infrastructure", built("ce_lab_transport", "tested", "SSD, curves, drainage, traffic flow, channels")),
+            ("Construction Project Management", built("ce_lab_construction", "tested", "Crashing, crews, pours, orders, crane lifts")),
         ]),
         ("electrical_engineering", "Electrical Engineering", [
-            ("Circuit Construction", None), ("Circuit Analysis", None), ("Electronic Systems", None),
-            ("Digital Logic", None), ("Power Systems", None), ("Fault Diagnosis", None),
+            ("Circuit Construction", built("ee_lab_construction", "tested", "Virtual bench: LED, divider, networks, RC, fuses")),
+            ("Circuit Analysis", built("ee_lab_analysis", "tested", "Max power, AC impedance, PFC, three-phase, voltage drop")),
+            ("Electronic Systems", built("ee_lab_electronics", "tested", "Op-amps, transistor switches, 555, filters, batteries")),
+            ("Digital Logic", built("ee_lab_logic", "tested", "Truth tables for every input; expressions; verification")),
+            ("Power Systems", built("ee_lab_power", "tested", "Losses, transformers, generators, PV, fault level")),
+            ("Fault Diagnosis", built("ee_lab_faults", "tested", "5 fault investigations x 3 levels")),
         ]),
         ("chemical_engineering", "Chemical Engineering", [
             ("Chemical Process Fundamentals", None), ("Reaction Engineering", None), ("Separation Processes", None),
@@ -219,6 +227,8 @@ SCENARIOS = {
     "law_lab_research": 15, "law_lab_analysis": 15, "law_lab_drafting": 15, "law_lab_consultation": 15,
     "law_lab_negotiation": 15, "law_lab_courtroom": 15, "law_lab_fullcase": 15,
     "me_lab_mechanics": 15, "me_lab_thermo": 15, "me_lab_fluids": 15, "me_lab_machine": 15, "me_lab_cad": 15, "me_lab_failure": 15,
+    "ce_lab_structures": 15, "ce_lab_materials": 15, "ce_lab_geotech": 15, "ce_lab_surveying": 15, "ce_lab_transport": 15, "ce_lab_construction": 15,
+    "ee_lab_construction": 15, "ee_lab_analysis": 15, "ee_lab_electronics": 15, "ee_lab_logic": 15, "ee_lab_power": 15, "ee_lab_faults": 15,
 }
 
 

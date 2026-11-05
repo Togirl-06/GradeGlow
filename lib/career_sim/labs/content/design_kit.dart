@@ -249,3 +249,16 @@ List<LabScenario> fromInvestigations(String prefix, List<Investigation> vs, {Lab
 // Short constraint constructors.
 SimConstraint atMost(String o, double v, String label) => SimConstraint(o, '<=', v, label);
 SimConstraint atLeast(String o, double v, String label) => SimConstraint(o, '>=', v, label);
+
+/// Specifications that tighten cumulatively: A, A + B, A + B + C.
+List<List<SimConstraint>> cum(List<SimConstraint> a, List<SimConstraint> b, List<SimConstraint> c) => <List<SimConstraint>>[
+      a,
+      <SimConstraint>[...a, ...b],
+      <SimConstraint>[...a, ...b, ...c],
+    ];
+
+/// One compliant design that satisfies all three levels.
+List<Map<String, double>> same(Map<String, double> m) => <Map<String, double>>[m, m, m];
+
+SimConstraint le(String o, double v, String label) => SimConstraint(o, '<=', v, label);
+SimConstraint ge(String o, double v, String label) => SimConstraint(o, '>=', v, label);

@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 162, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 18, Verified complete: 0.
+**198 labs.** Not started: 150, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 30, Verified complete: 0.
 
 ## Majors
 
@@ -24,8 +24,8 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Medicine and Health Sciences | Nursing | 12 | In progress |
 | School of Law | Law | 7 | Tested |
 | School of Engineering | Mechanical Engineering | 6 | In progress |
-| School of Engineering | Civil Engineering | 6 | Not started |
-| School of Engineering | Electrical Engineering | 6 | Not started |
+| School of Engineering | Civil Engineering | 6 | Tested |
+| School of Engineering | Electrical Engineering | 6 | Tested |
 | School of Engineering | Chemical Engineering | 6 | Not started |
 | School of Engineering | Aerospace Engineering | 6 | Not started |
 | School of Engineering | Industrial Engineering | 6 | Not started |
@@ -186,23 +186,23 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Structural Analysis | Not started | 0 / 15 |  |  |
-| B. Concrete and Materials Testing | Not started | 0 / 15 |  |  |
-| C. Geotechnical Engineering | Not started | 0 / 15 |  |  |
-| D. Surveying | Not started | 0 / 15 |  |  |
-| E. Transportation and Infrastructure | Not started | 0 / 15 |  |  |
-| F. Construction Project Management | Not started | 0 / 15 |  |  |
+| A. Structural Analysis | Tested | 15 / 15 | `ce_lab_structures` | Beams, cantilevers, trusses, columns, load combinations |
+| B. Concrete and Materials Testing | Tested | 15 / 15 | `ce_lab_materials` | Mix design, tensile test, expansion, FoS, cube acceptance |
+| C. Geotechnical Engineering | Tested | 15 / 15 | `ce_lab_geotech` | Bearing, effective stress, settlement, slopes, retaining walls |
+| D. Surveying | Tested | 15 / 15 | `ce_lab_surveying` | Levelling, setting out, areas, gradients, tape corrections |
+| E. Transportation and Infrastructure | Tested | 15 / 15 | `ce_lab_transport` | SSD, curves, drainage, traffic flow, channels |
+| F. Construction Project Management | Tested | 15 / 15 | `ce_lab_construction` | Crashing, crews, pours, orders, crane lifts |
 
 ### Electrical Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Circuit Construction | Not started | 0 / 15 |  |  |
-| B. Circuit Analysis | Not started | 0 / 15 |  |  |
-| C. Electronic Systems | Not started | 0 / 15 |  |  |
-| D. Digital Logic | Not started | 0 / 15 |  |  |
-| E. Power Systems | Not started | 0 / 15 |  |  |
-| F. Fault Diagnosis | Not started | 0 / 15 |  |  |
+| A. Circuit Construction | Tested | 15 / 15 | `ee_lab_construction` | Virtual bench: LED, divider, networks, RC, fuses |
+| B. Circuit Analysis | Tested | 15 / 15 | `ee_lab_analysis` | Max power, AC impedance, PFC, three-phase, voltage drop |
+| C. Electronic Systems | Tested | 15 / 15 | `ee_lab_electronics` | Op-amps, transistor switches, 555, filters, batteries |
+| D. Digital Logic | Tested | 15 / 15 | `ee_lab_logic` | Truth tables for every input; expressions; verification |
+| E. Power Systems | Tested | 15 / 15 | `ee_lab_power` | Losses, transformers, generators, PV, fault level |
+| F. Fault Diagnosis | Tested | 15 / 15 | `ee_lab_faults` | 5 fault investigations x 3 levels |
 
 ### Chemical Engineering
 

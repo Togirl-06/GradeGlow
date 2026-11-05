@@ -1,6 +1,8 @@
 import 'content/accounting_labs.dart';
 import 'content/cs_labs.dart';
 import 'content/health_labs.dart';
+import 'content/eng_civil.dart';
+import 'content/eng_electrical.dart';
 import 'content/eng_mechanical.dart';
 import 'content/law_labs.dart';
 import 'content/math_labs_applied.dart';
@@ -9,7 +11,7 @@ import 'lab_models.dart';
 
 /// Every practical lab, by major.
 abstract final class LabCatalog {
-  static final List<LabSpec> all = <LabSpec>[...csLabs, ...nursingLabs, ...medicineLabs, ...accountingLabs, ...mathLabs, ...lawLabs, ...mechanicalLabs];
+  static final List<LabSpec> all = <LabSpec>[...csLabs, ...nursingLabs, ...medicineLabs, ...accountingLabs, ...mathLabs, ...lawLabs, ...mechanicalLabs, ...civilLabs, ...electricalLabs];
 
   static final List<LabSpec> mathLabs = <LabSpec>[
     mathAlgebraLab,
@@ -39,5 +41,7 @@ abstract final class LabCatalog {
     'mathematics': 'Mathematics',
     'introduction_to_law': 'Law',
     'mechanical_engineering': 'Mechanical Engineering',
+    'civil_engineering': 'Civil Engineering',
+    'electrical_engineering': 'Electrical Engineering',
   };
 }
