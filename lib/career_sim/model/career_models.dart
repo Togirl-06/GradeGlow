@@ -5,6 +5,8 @@
 /// interview plans, workplaces) lives in `../content/`.
 library;
 
+import '../labs/lab_models.dart';
+
 /// Professional stages. A student only moves up by being hired or by passing
 /// a promotion review, never automatically.
 enum CareerStage {
@@ -861,8 +863,12 @@ class CareerProfile {
     List<CertificationRecord>? certifications,
     List<CareerEvent>? log,
     Map<String, String>? writings,
+    Map<String, LabRun>? labRuns,
+    List<LabCompletion>? labCompletions,
     this.updatedAtMs = 0,
   })  : writings = writings ?? <String, String>{},
+        labRuns = labRuns ?? <String, LabRun>{},
+        labCompletions = labCompletions ?? <LabCompletion>[],
         taskResults = taskResults ?? <String, TaskResult>{},
         completedModules = completedModules ?? <String>{},
         studiedLessons = studiedLessons ?? <String>{},
@@ -899,6 +905,8 @@ class CareerProfile {
             _mapList(j['certifications']).map(CertificationRecord.fromJson).toList(),
         log: _mapList(j['log']).map(CareerEvent.fromJson).toList(),
         writings: _map(j['writings']).map((String k, dynamic v) => MapEntry<String, String>(k, '$v')),
+        labRuns: _map(j['labRuns']).map((String k, dynamic v) => MapEntry<String, LabRun>(k, LabRun.fromJson(_map(v)))),
+        labCompletions: _mapList(j['labCompletions']).map(LabCompletion.fromJson).toList(),
         updatedAtMs: _int(j['updatedAtMs']),
       );
 
@@ -928,7 +936,21 @@ class CareerProfile {
 
   /// Saved written work (project write-ups) by task key.
   final Map<String, String> writings;
+
+  /// The current (or last) run of each practical lab, saved after every step.
+  final Map<String, LabRun> labRuns;
+  final List<LabCompletion> labCompletions;
   int updatedAtMs;
+
+  LabCompletion? bestLab(String labId) {
+    LabCompletion? best;
+    for (final LabCompletion c in labCompletions) {
+      if (c.labId == labId && (best == null || c.score > best.score)) best = c;
+    }
+    return best;
+  }
+
+  bool labPassed(String labId) => labCompletions.any((LabCompletion c) => c.labId == labId && c.passed);
 
   Employment? get currentJob {
     for (final Employment e in employment.reversed) {
@@ -969,6 +991,8 @@ class CareerProfile {
             certifications.map((CertificationRecord c) => c.toJson()).toList(),
         'log': log.map((CareerEvent e) => e.toJson()).toList(),
         'writings': writings,
+        'labRuns': labRuns.map((String k, LabRun v) => MapEntry<String, dynamic>(k, v.toJson())),
+        'labCompletions': labCompletions.map((LabCompletion c) => c.toJson()).toList(),
         'updatedAtMs': updatedAtMs,
       };
 }

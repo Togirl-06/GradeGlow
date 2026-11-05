@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/coding_languages.dart';
 import '../../models/leetcode_problem.dart';
 import '../../services/code_judge_service.dart';
+import '../../services/lab_runner/lab_runner_host.dart';
 import '../../vu_v2/design/vu_v2_theme.dart';
 import '../ai/career_ai.dart';
 import '../content/catalog.dart';
@@ -296,7 +297,7 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
           content: Text(widget.spec.isBugFix ? 'Change the code to fix the bug before submitting.' : 'Write your solution in the editor first.')));
       return;
     }
-    final JudgeResult r = await careerStore(context).judge.judge(problem: p, languageId: _lang, code: _code.text, submit: submit);
+    final JudgeResult r = await careerStore(context).runner.judge(p, _lang, _code.text, submit: submit);
     if (!mounted) return;
     setState(() {
       _last = r;
@@ -359,9 +360,12 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
         Wrap(
           spacing: 8,
           runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
             BusyButton(key: const ValueKey<String>('code_run'), label: 'Run sample tests', icon: Icons.play_arrow_rounded, tonal: true, onPressed: () => _judge(false)),
-            BusyButton(key: const ValueKey<String>('code_submit'), label: 'Submit to judge', icon: Icons.cloud_upload_rounded, onPressed: () => _judge(true)),
+            BusyButton(key: const ValueKey<String>('code_submit'), label: 'Submit for grading', icon: Icons.fact_check_rounded, onPressed: () => _judge(true)),
+            Text(careerStore(context).runner.where, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            LabRunnerHost(runner: careerStore(context).runner),
           ],
         ),
         if (r != null) ...<Widget>[

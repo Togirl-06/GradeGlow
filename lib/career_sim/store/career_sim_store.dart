@@ -3,12 +3,16 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 
 import '../../services/code_judge_service.dart';
+import '../../services/lab_runner/lab_runner.dart';
 import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
+import '../labs/lab_catalog.dart';
+import '../labs/lab_grading.dart';
+import '../labs/lab_models.dart';
 import '../model/tasks.dart';
 import 'career_repository.dart';
 
@@ -23,10 +27,11 @@ class CareerActionException implements Exception {
 /// Holds the student's career profile and applies every rule-checked change.
 /// Each change is saved to the device, and to Firestore when signed in.
 class CareerSimStore extends ChangeNotifier {
-  CareerSimStore({CareerRepository? repository, int Function()? clock, CodeJudgeService? judge, this.ai})
+  CareerSimStore({CareerRepository? repository, int Function()? clock, CodeJudgeService? judge, LabRunner? runner, this.ai})
       : _repo = repository ?? DefaultCareerRepository(),
         _clock = clock ?? (() => DateTime.now().millisecondsSinceEpoch),
-        _judge = judge;
+        _judge = judge,
+        _runner = runner;
 
   final CareerRepository _repo;
   final int Function() _clock;
@@ -34,6 +39,12 @@ class CareerSimStore extends ChangeNotifier {
 
   /// Server code judge (created on first use so tests can inject one).
   CodeJudgeService get judge => _judge ??= CodeJudgeService();
+
+  LabRunner? _runner;
+
+  /// Runs and grades code: on the student's device on web and phones, on the
+  /// server elsewhere.
+  LabRunner get runner => _runner ??= LabRunner.create(fallback: judge);
 
   /// Optional AI for the lecturer / interviewer / supervisor roles.
   CareerAi? ai;
@@ -260,6 +271,111 @@ class CareerSimStore extends ChangeNotifier {
     await _commit();
     return rec;
   }
+
+  // ------------------------------------------------------------ practical labs
+
+  LabRun? labRun(String labId) => profile.labRuns[labId];
+
+  /// Starts a lab, or continues the unfinished run unless [restart].
+  Future<LabRun> startLab(LabSpec lab, {String? scenarioId, bool restart = false}) async {
+    final LabRun? existing = profile.labRuns[lab.id];
+    if (existing != null && !existing.done && !restart) return existing;
+    final String sid = scenarioId ?? lab.scenarios.first.id;
+    if (lab.scenario(sid) == null) throw CareerActionException('Scenario not found.');
+    final LabRun run = LabRun(labId: lab.id, scenarioId: sid, startedDay: profile.day);
+    profile.labRuns[lab.id] = run;
+    _log('Started lab: ${lab.title}.', 'lab');
+    await _commit();
+    return run;
+  }
+
+  LabRun _run(LabSpec lab) {
+    final LabRun? r = profile.labRuns[lab.id];
+    if (r == null) throw CareerActionException('Start the lab first.');
+    return r;
+  }
+
+  Future<void> setLabPhase(LabSpec lab, LabPhase phase) async {
+    final LabRun r = _run(lab);
+    if (r.done) throw CareerActionException('This run is finished. Start the lab again to retake it.');
+    if (phase == LabPhase.evaluation || phase == LabPhase.complete) {
+      final LabScenario sc = lab.scenario(r.scenarioId)!;
+      final List<LabStep> missing = sc.steps.where((LabStep s) => !r.results.containsKey(s.id)).toList();
+      if (missing.isNotEmpty) throw CareerActionException('Complete "${missing.first.title}" first.');
+    }
+    r.phase = phase;
+    await _commit();
+  }
+
+  Future<void> saveLabDraft(LabSpec lab, String stepId, String draft) async {
+    final LabRun? r = profile.labRuns[lab.id];
+    if (r == null || r.done) return;
+    if (r.drafts[stepId] == draft) return;
+    r.drafts[stepId] = draft;
+    await _commit();
+  }
+
+  /// Records a graded attempt at a step (the latest attempt counts).
+  Future<TaskResult> recordLabStep(LabSpec lab, LabStep step, TaskResult result) async {
+    final LabRun r = _run(lab);
+    if (r.done) throw CareerActionException('This run is finished.');
+    final TaskResult dated = result.copyWith(day: profile.day);
+    r.results[step.id] = dated;
+    final String key = 'lab:${lab.id}/${step.id}';
+    final bool firstPass = dated.passed && !(profile.taskResults[key]?.passed ?? false);
+    if (profile.taskResults[key] == null || dated.score >= profile.taskResults[key]!.score) profile.taskResults[key] = dated;
+    if (firstPass) _award(step.skills.isNotEmpty ? step.skills : lab.skills, CareerRules.practicePoints);
+    await _commit();
+    return dated;
+  }
+
+  Future<void> goToLabStep(LabSpec lab, int index) async {
+    final LabRun r = _run(lab);
+    final LabScenario sc = lab.scenario(r.scenarioId)!;
+    if (index < 0 || index >= sc.steps.length) return;
+    r.stepIndex = index;
+    r.phase = LabPhase.work;
+    await _commit();
+  }
+
+  /// Ends the run: records the result, skills, portfolio and readiness.
+  Future<LabCompletion> finishLab(LabSpec lab) async {
+    final LabRun r = _run(lab);
+    if (r.done) throw CareerActionException('This run is already finished.');
+    final LabScenario sc = lab.scenario(r.scenarioId)!;
+    final List<LabStep> missing = sc.steps.where((LabStep s) => !r.results.containsKey(s.id)).toList();
+    if (missing.isNotEmpty) throw CareerActionException('Complete "${missing.first.title}" first.');
+    final (int score, bool passed) = LabGrader.scenario(sc, r.results);
+    r.score = score;
+    r.completedDay = profile.day;
+    r.phase = LabPhase.complete;
+    final LabCompletion c = LabCompletion(labId: lab.id, scenarioId: sc.id, score: score, passed: passed, day: profile.day);
+    final bool firstPass = passed && !profile.labPassed(lab.id);
+    profile.labCompletions.add(c);
+    if (firstPass) {
+      _award(lab.skills, CareerRules.projectPoints);
+      if (lab.addsToPortfolio && !profile.portfolio.any((PortfolioItem i) => i.id == lab.id)) {
+        profile.portfolio.add(PortfolioItem(
+          id: lab.id,
+          deptId: lab.deptId,
+          title: lab.title,
+          summary: lab.summary,
+          score: score,
+          skills: lab.skills,
+          day: profile.day,
+        ));
+      }
+    }
+    _log('${passed ? 'Passed' : 'Completed'} lab "${lab.title}" ($score/100).', passed ? 'milestone' : 'lab');
+    await _commit();
+    return c;
+  }
+
+  /// Labs whose prerequisites are not yet passed.
+  List<String> labPrerequisitesMissing(LabSpec lab) => <String>[
+        for (final String id in lab.prerequisites)
+          if (!profile.labPassed(id)) LabCatalog.lab(id)?.title ?? id,
+      ];
 
   // ------------------------------------------------------------ stage
 

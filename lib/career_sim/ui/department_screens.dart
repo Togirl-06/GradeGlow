@@ -9,6 +9,9 @@ import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../model/tasks.dart';
 import '../store/career_sim_store.dart';
+import '../labs/lab_catalog.dart';
+import '../labs/lab_models.dart';
+import '../labs/ui/lab_screens.dart';
 import 'common.dart';
 import 'job_screens.dart';
 import 'task_views.dart';
@@ -98,6 +101,23 @@ class DepartmentScreen extends StatelessWidget {
                     ),
                 ],
               ),
+            ),
+          if (LabCatalog.forDept(d.id).isNotEmpty)
+            SectionCard(
+              title: 'Practical labs',
+              subtitle: 'Professional environments with working tools, graded tasks and saved progress.',
+              child: Column(children: <Widget>[
+                for (final LabSpec l in LabCatalog.forDept(d.id))
+                  ListTile(
+                    key: ValueKey<String>('dept_lab_${l.id}'),
+                    contentPadding: EdgeInsets.zero,
+                    leading: Icon(environmentIcon(l.environment)),
+                    title: Text('Lab ${l.number}: ${l.title}'),
+                    subtitle: Text(labStatus(p, l)),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: l.id))),
+                  ),
+              ]),
             ),
           if (d.certifications.isNotEmpty)
             SectionCard(

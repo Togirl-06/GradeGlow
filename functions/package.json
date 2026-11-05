@@ -10,5 +10,9 @@
     "firebase-functions": "^6.4.0",
     "stripe": "^17.7.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "pyodide": "^0.27.7",
+    "sql.js": "^1.13.0"
+  }
 }

@@ -13,6 +13,8 @@ const List<SkillDef> _skills = <SkillDef>[
   SkillDef('cs_algo', 'Algorithms & complexity'),
   SkillDef('cs_debug', 'Debugging & testing'),
   SkillDef('cs_review', 'Code review & collaboration'),
+  SkillDef('cs_db', 'Databases & SQL'),
+  SkillDef('cs_os', 'Operating systems'),
 ];
 
 const ClassifyTaskSpec _complexity = ClassifyTaskSpec(

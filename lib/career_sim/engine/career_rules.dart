@@ -5,6 +5,8 @@ library;
 import 'dart:math' as math;
 
 import '../content/catalog.dart';
+import '../labs/lab_catalog.dart';
+import '../labs/lab_models.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../model/tasks.dart';
@@ -126,7 +128,10 @@ abstract final class CareerRules {
         ? job!.requirements.modules
         : d.modules.map((TrainingModule m) => m.id).toList();
     final int doneModules = wantModules.where(p.completedModules.contains).length;
-    final double training = wantModules.isEmpty ? 1 : doneModules / wantModules.length;
+    final List<LabSpec> labs = LabCatalog.forDept(d.id);
+    final int labsPassed = labs.where((LabSpec l) => p.labPassed(l.id)).length;
+    final int trainingTotal = wantModules.length + labs.length;
+    final double training = trainingTotal == 0 ? 1 : (doneModules + labsPassed) / trainingTotal;
 
     final Map<String, int> wantSkills = job?.requirements.skills.isNotEmpty == true
         ? job!.requirements.skills
@@ -151,8 +156,8 @@ abstract final class CareerRules {
     final double interview = bestMock / 100;
 
     final List<ReadinessItem> items = <ReadinessItem>[
-      ReadinessItem('Training completed', (training * 100).round(), 30,
-          '$doneModules of ${wantModules.length} required modules complete.'),
+      ReadinessItem('Training and practical labs', (training * 100).round(), 30,
+          '$doneModules of ${wantModules.length} modules and $labsPassed of ${labs.length} labs complete.'),
       ReadinessItem('Skills demonstrated', (skills * 100).round(), 25,
           'Skill levels are earned only by passing graded work.'),
       ReadinessItem('Portfolio', (portfolio * 100).round(), 15,

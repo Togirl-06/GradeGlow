@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GradeGlow lab runner</title>
+<!-- Hosted in an invisible WebView on Android/iOS. The app calls
+     ggRun(jsonString); results go back through the GGRunner JavaScript channel.
+     The app reloads this page when a run exceeds its time limit. -->
+<script src="gg_judge.js"></script>
+<script src="runner_core.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/sql-wasm.js"></script>
+</head>
+<body>
+<script>
+  const PYODIDE_URL = "https://cdn.jsdelivr.net/pyodide/v0.27.7/full/";
+  let current = null;
+  function post(obj) { if (window.GGRunnerChannel) window.GGRunnerChannel.postMessage(JSON.stringify(obj)); }
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      const s = document.createElement("script");
+      s.src = src; s.onload = resolve; s.onerror = function () { reject(new Error("Could not load " + src)); };
+      document.head.appendChild(s);
+    });
+  }
+  const runner = GGRunner.createRunner({
+    judgeLib: GGJudge,
+    loadPyodide: async function () { await loadScript(PYODIDE_URL + "pyodide.js"); return loadPyodide({ indexURL: PYODIDE_URL }); },
+    initSqlJs: function () { return initSqlJs({ locateFile: function (f) { return "https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/" + f; } }); },
+    onRunning: function () { if (current !== null) post({ id: current, phase: "running" }); },
+  });
+  let queue = Promise.resolve();
+  window.ggRun = function (json) {
+    const msg = JSON.parse(json);
+    queue = queue.then(async function () {
+      current = msg.id;
+      try { post({ id: msg.id, ok: true, result: await GGRunner.handle(runner, msg) }); }
+      catch (e) { post({ id: msg.id, ok: false, error: (e && e.message) || String(e) }); }
+      finally { current = null; }
+    });
+    return true;
+  };
+  post({ ready: true });
+</script>
+</body>
+</html>
