@@ -273,6 +273,8 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
   /// The problem's own starter, or one generated with the judged function name
   /// (buggy code for debug problems).
   String _starter(String lang) {
+    final String? buggy = widget.spec.buggyStarter[lang];
+    if (buggy != null) return buggy;
     final LeetcodeProblem? p = _problem;
     final CodingLanguage? l = CodingLanguage.byId(lang);
     if (p == null || l == null) return '';
@@ -289,8 +291,9 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
     final LeetcodeProblem? p = _problem;
     if (p == null) return;
     final String starter = _starter(_lang).trim();
-    if (_code.text.trim().isEmpty || (submit && _code.text.trim() == starter && !p.isDebug)) {
-      ScaffoldMessenger.maybeOf(context)?.showSnackBar(const SnackBar(content: Text('Write your solution in the editor first.')));
+    if (_code.text.trim().isEmpty || (submit && _code.text.trim() == starter)) {
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(
+          content: Text(widget.spec.isBugFix ? 'Change the code to fix the bug before submitting.' : 'Write your solution in the editor first.')));
       return;
     }
     final JudgeResult r = await careerStore(context).judge.judge(problem: p, languageId: _lang, code: _code.text, submit: submit);

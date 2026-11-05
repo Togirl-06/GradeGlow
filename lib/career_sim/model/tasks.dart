@@ -44,6 +44,7 @@ class CodeTaskSpec extends TaskSpec {
     required this.problemKey,
     super.skills,
     this.context = const <String>[],
+    this.buggyStarter = const <String, String>{},
   }) : super(passMark: 100);
 
   /// `impl:<id>` or `debug:<id>` — the judge's key.
@@ -52,8 +53,14 @@ class CodeTaskSpec extends TaskSpec {
   /// Workplace context lines (ticket, acceptance criteria).
   final List<String> context;
 
+  /// Broken code the student must fix, by language (python3, javascript).
+  /// The judge grades the result against the problem's hidden tests.
+  final Map<String, String> buggyStarter;
+
+  bool get isBugFix => buggyStarter.isNotEmpty || problemKey.startsWith('debug:');
+
   @override
-  String get kindLabel => problemKey.startsWith('debug:') ? 'Bug fix' : 'Coding';
+  String get kindLabel => isBugFix ? 'Bug fix' : 'Coding';
 }
 
 // ---------------------------------------------------------------------------

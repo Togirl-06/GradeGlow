@@ -158,7 +158,7 @@ class LeetcodeProblemBank {
           tags: branded.tags,
           functionName: branded.functionName,
           kind: LeetcodeProblemKind.debug,
-          starterCode: p.starterCode,
+          starterCode: branded.starterCode,
           hiddenTests: p.hiddenTests,
         ),
       );

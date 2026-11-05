@@ -2,6 +2,7 @@ import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../model/tasks.dart';
+import 'cs_bugs.dart';
 
 // Department of Computer Science: training, projects, certifications,
 // postings, the technical interview and the engineering workplace.
@@ -116,8 +117,9 @@ const TrainingModule _m2 = TrainingModule(
     CodeTaskSpec(
       id: 'brackets_debug',
       title: 'Fix the bracket matcher',
-      brief: 'A teammate\'s validator accepts invalid input. Find and fix the defect.',
-      problemKey: 'debug:GG-0012',
+      brief: 'A teammate\'s validator accepts "(]" as valid. Find and fix the defect.',
+      problemKey: 'impl:GGO-002',
+      buggyStarter: bugBracketsIgnoresType,
       skills: <String>['cs_debug'],
     ),
   ],
@@ -166,8 +168,9 @@ const TrainingModule _m3 = TrainingModule(
     CodeTaskSpec(
       id: 'bsearch_debug',
       title: 'Fix the binary search',
-      brief: 'The search loops forever or returns the wrong index for some inputs. Correct the bounds.',
-      problemKey: 'debug:GG-0001',
+      brief: 'The search misses targets when the range shrinks to one element. Correct the bounds.',
+      problemKey: 'impl:GGO-004',
+      buggyStarter: bugBinarySearchBounds,
       skills: <String>['cs_debug', 'cs_algo'],
     ),
     ClassifyTaskSpec(
@@ -372,7 +375,13 @@ const Certification _certPractice = Certification(
   issuer: 'GradeGlow Department of Computer Science',
   requiresModules: <String>['cs_m3', 'cs_m5'],
   tasks: <TaskSpec>[
-    CodeTaskSpec(id: 'kadane', title: 'Fix the max-stretch function', brief: 'Debug.', problemKey: 'debug:GG-0007'),
+    CodeTaskSpec(
+      id: 'kadane',
+      title: 'Fix the best-streak function',
+      brief: 'It returns 0 when every day is negative. Fix it.',
+      problemKey: 'impl:GGO-101',
+      buggyStarter: bugStreakAllNegative,
+    ),
     _reviewRefunds,
     WrittenTaskSpec(
       id: 'incident',
@@ -747,10 +756,15 @@ const List<AssignmentSpec> _csAssignments = <AssignmentSpec>[
   AssignmentSpec(
     id: 'cs_a2',
     title: 'PAY-130 · Receipt template validator rejects valid input',
-    ticket: 'Receipt templates use nested placeholders. The validator\'s bracket matcher is broken for nested and '
-        'sequential pairs. Fix it.',
+    ticket: 'Receipt templates use nested placeholders. The validator lets templates with unclosed brackets through. Fix it.',
     acceptance: <String>['Debugged code passes all hidden tests', 'Handoff note explains the root cause'],
-    task: CodeTaskSpec(id: 'brackets', title: 'Fix the validator', brief: 'Fix bracketsBalanced.', problemKey: 'debug:GG-0012'),
+    task: CodeTaskSpec(
+      id: 'brackets',
+      title: 'Fix the validator',
+      brief: 'Templates with an unclosed "(" pass validation. Fix bracketsOk.',
+      problemKey: 'impl:GGO-002',
+      buggyStarter: bugBracketsLeftover,
+    ),
   ),
   AssignmentSpec(
     id: 'cs_a3',
@@ -772,9 +786,15 @@ const List<AssignmentSpec> _csAssignments = <AssignmentSpec>[
   AssignmentSpec(
     id: 'cs_a5',
     title: 'INC-77 · Ledger search returns the wrong row',
-    ticket: 'Incident: the ledger lookup loops or returns the wrong index on some inputs. Fix the binary search bounds.',
+    ticket: 'Incident: the ledger lookup returns -1 for rows that exist. Fix the binary search bounds.',
     acceptance: <String>['All hidden tests pass', 'Incident note: cause, fix, prevention'],
-    task: CodeTaskSpec(id: 'bsearch', title: 'Fix the search', brief: 'Fix sortedProbe.', problemKey: 'debug:GG-0001'),
+    task: CodeTaskSpec(
+      id: 'bsearch',
+      title: 'Fix the search',
+      brief: 'Fix findIndex.',
+      problemKey: 'impl:GGO-004',
+      buggyStarter: bugBinarySearchBounds,
+    ),
     deadlineDays: 1,
   ),
   AssignmentSpec(
