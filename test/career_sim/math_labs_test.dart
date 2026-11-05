@@ -124,8 +124,8 @@ void main() {
     expect(find.textContaining('The first incorrect step is line 1'), findsOneWidget);
     expect(store.labRun(mathAlgebraLab.id)!.results['alg_b1_1']!.passed, isFalse);
 
-    // Revise and resubmit.
-    await tap(t, k('revise'));
+    // The result is shown above the task and the editor is ready to revise and resubmit.
+    expect(k('task_result'), findsOneWidget);
     await t.enterText(k('working_input'), '3x - 6 = 2x + 5\nx - 6 = 5\nx = 11');
     await tap(t, k('working_submit'));
     expect(find.textContaining('Every line is valid'), findsOneWidget);

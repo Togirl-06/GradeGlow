@@ -142,13 +142,13 @@ abstract final class Stats {
 typedef Matrix = List<List<double>>;
 
 abstract final class Mat {
-  static Matrix mul(Matrix a, Matrix b) => <List<double>>[
+  static Matrix mul(Matrix a, Matrix b) => _clean(<List<double>>[
         for (int i = 0; i < a.length; i++)
           <double>[
             for (int j = 0; j < b.first.length; j++)
               <double>[for (int k = 0; k < b.length; k++) a[i][k] * b[k][j]].fold<double>(0, (double s, double v) => s + v),
           ],
-      ];
+      ]);
 
   static Matrix add(Matrix a, Matrix b, [double sb = 1]) => <List<double>>[
         for (int i = 0; i < a.length; i++) <double>[for (int j = 0; j < a[i].length; j++) a[i][j] + sb * b[i][j]],
@@ -199,7 +199,7 @@ abstract final class Mat {
         m[r] = <double>[for (int k = 0; k < 2 * n; k++) m[r][k] - f * m[c][k]];
       }
     }
-    return <List<double>>[for (final List<double> r in m) r.sublist(n)];
+    return _clean(<List<double>>[for (final List<double> r in m) r.sublist(n)]);
   }
 
   /// Reduced row echelon form.

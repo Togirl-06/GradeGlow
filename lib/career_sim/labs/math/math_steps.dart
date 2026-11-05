@@ -238,6 +238,13 @@ abstract final class WorkingChecker {
     final List<double> all = <double>[];
     for (final Relation r in st.alternatives) {
       if (!r.isEquation) return null;
+      // An explicit value (x = 7) counts even outside the search interval.
+      final Expr l = r.parts[0], rr = r.parts[1];
+      if ((l is Var && l.name == v && rr.variables.isEmpty) || (rr is Var && rr.name == v && l.variables.isEmpty)) {
+        final double x = (l is Var ? rr : l).eval(const <String, double>{});
+        if (x.isFinite && !all.any((double y) => (x - y).abs() < 1e-6 * (1 + y.abs()))) all.add(x);
+        continue;
+      }
       final List<double>? rs = roots(r.difference, v, range.$1, range.$2);
       if (rs == null) return null;
       for (final double x in rs) {
