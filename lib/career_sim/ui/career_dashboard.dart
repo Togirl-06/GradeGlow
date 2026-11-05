@@ -6,7 +6,6 @@ import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
-import '../model/tasks.dart';
 import '../store/career_sim_store.dart';
 import 'career_centre.dart';
 import 'common.dart';
