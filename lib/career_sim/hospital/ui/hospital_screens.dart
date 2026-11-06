@@ -232,11 +232,11 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
         title: const Row(children: <Widget>[
           Icon(Icons.school_rounded, color: Colors.white),
           SizedBox(width: 8),
-          Text('GradeGlow', style: TextStyle(fontWeight: FontWeight.w900)),
+          Flexible(child: Text('GradeGlow', overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w900))),
           SizedBox(width: 12),
           Icon(Icons.local_hospital_rounded, color: GG.red),
           SizedBox(width: 6),
-          Text('Virtual Hospital', style: TextStyle(fontWeight: FontWeight.w700)),
+          Flexible(child: Text('Virtual Hospital', overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w700))),
         ]),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(40),

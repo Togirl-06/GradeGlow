@@ -255,7 +255,7 @@ class _TopBar extends StatelessWidget {
       child: Row(children: <Widget>[
         const Icon(Icons.school_rounded, color: Colors.white, size: 30),
         const SizedBox(width: 8),
-        const Text('GradeGlow', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
+        Flexible(child: Text('GradeGlow', overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, fontSize: wide ? 22 : 18, fontWeight: FontWeight.w900))),
         const Spacer(),
         if (wide) ...<Widget>[
           link('top_home', Icons.home_rounded, 'Home', () {}),

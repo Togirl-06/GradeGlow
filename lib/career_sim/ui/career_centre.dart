@@ -56,7 +56,7 @@ class _CareerCentreScreenState extends State<CareerCentreScreen> {
           SizedBox(width: 8),
           Text('GradeGlow', style: TextStyle(fontWeight: FontWeight.w900)),
           SizedBox(width: 12),
-          Text('|  Career Center', style: TextStyle(color: GG.mute, fontWeight: FontWeight.w600)),
+          Flexible(child: Text('|  Career Center', overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.mute, fontWeight: FontWeight.w600))),
         ]),
         actions: <Widget>[Padding(padding: const EdgeInsets.only(right: 12), child: GGAvatar(name: store.profile.resume.fullName.isEmpty ? 'Student' : store.profile.resume.fullName, size: 34))],
         bottom: PreferredSize(

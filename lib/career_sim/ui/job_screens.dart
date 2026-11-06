@@ -53,6 +53,7 @@ class _JobBoardBodyState extends State<JobBoardBody> {
         const SizedBox(height: 10),
         DropdownButtonFormField<String>(
           key: const ValueKey<String>('level_filter'),
+          isExpanded: true,
           initialValue: _level,
           dropdownColor: GG.panel2,
           decoration: const InputDecoration(isDense: true),
@@ -65,6 +66,7 @@ class _JobBoardBodyState extends State<JobBoardBody> {
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           key: const ValueKey<String>('mode_filter'),
+          isExpanded: true,
           initialValue: _mode,
           dropdownColor: GG.panel2,
           decoration: const InputDecoration(isDense: true),

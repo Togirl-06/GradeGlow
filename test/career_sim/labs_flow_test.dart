@@ -318,7 +318,7 @@ void main() {
       ('nav_schools', 'Departments'),
       ('nav_labs', 'Practical Labs'),
       ('nav_assessments', 'Assessments'),
-      ('nav_career', 'Career Centre'),
+      ('nav_career', '|  Career Center'),
       ('nav_applications', 'Applications'),
       ('nav_workplace', 'Workplace'),
       ('nav_portfolio', 'My Portfolio'),
