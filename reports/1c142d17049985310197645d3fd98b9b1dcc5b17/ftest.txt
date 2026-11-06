@@ -1,0 +1,975 @@
+Resolving dependencies...
+Downloading packages...
+  _flutterfire_internals 1.3.59 (1.3.79 available)
+  archive 4.5.2 (4.6.0 available)
+  audioplayers 6.7.0 (6.8.1 available)
+  audioplayers_android 5.2.1 (5.3.0 available)
+  audioplayers_darwin 6.4.0 (6.5.0 available)
+  audioplayers_linux 4.2.1 (4.3.0 available)
+  audioplayers_platform_interface 7.1.1 (7.2.0 available)
+  audioplayers_web 5.2.1 (5.3.0 available)
+  audioplayers_windows 4.3.1 (4.4.1 available)
+  cli_util 0.4.2 (0.6.0 available)
+  clock 1.1.2 (1.1.3 available)
+  cloud_firestore 5.6.12 (7.1.0 available)
+  cloud_firestore_platform_interface 6.6.12 (8.1.0 available)
+  cloud_firestore_web 4.4.12 (5.8.0 available)
+  code_assets 1.1.0 (2.2.0 available)
+  cross_file 0.3.5+2 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  dbus 0.7.15 (0.8.0 available)
+  file_picker 9.2.3 (13.3.2 available)
+  file_selector_linux 0.9.4 (0.9.4+1 available)
+  file_selector_macos 0.9.5 (0.9.5+2 available)
+  file_selector_windows 0.9.3+5 (0.9.3+6 available)
+  firebase_auth 5.7.0 (7.0.1 available)
+  firebase_auth_platform_interface 7.7.3 (9.1.2 available)
+  firebase_auth_web 5.15.3 (6.3.2 available)
+  firebase_core 3.15.2 (5.1.0 available)
+  firebase_core_platform_interface 6.0.3 (8.1.1 available)
+  firebase_core_web 2.24.1 (4.1.0 available)
+  firebase_crashlytics 4.3.10 (6.0.1 available)
+  firebase_crashlytics_platform_interface 3.8.10 (3.9.2 available)
+  firebase_storage 12.4.10 (14.0.1 available)
+  firebase_storage_platform_interface 5.2.10 (6.0.9 available)
+  firebase_storage_web 3.10.17 (3.11.15 available)
+  flutter_dotenv 5.2.1 (6.0.1 available)
+  flutter_local_notifications 18.0.1 (23.0.0 available)
+  flutter_local_notifications_linux 5.0.0 (9.0.0 available)
+  flutter_local_notifications_platform_interface 8.0.0 (13.0.0 available)
+  flutter_plugin_android_lifecycle 2.0.34 (2.0.35 available)
+  flutter_svg 2.3.0 (2.3.2 available)
+  flutter_timezone 4.1.1 (5.1.1 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.18 available)
+  google_sign_in_ios 5.9.0 (6.4.0 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.3 available)
+  hooks 2.0.0 (2.2.0 available)
+  html 0.15.6 (0.15.7 available)
+  image 4.11.0 (4.12.0 available)
+  image_picker 1.2.2 (1.2.4 available)
+  image_picker_android 0.8.13+17 (0.8.13+25 available)
+  image_picker_ios 0.8.13+6 (0.8.13+15 available)
+  image_picker_platform_interface 2.11.1 (2.11.2 available)
+  intl 0.20.2 (0.20.3 available)
+  jni 1.0.0 (1.1.2 available)
+  jni_flutter 1.0.1 (1.0.4+1 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  mime 2.0.0 (2.1.0 available)
+  objective_c 9.4.1 (9.6.3 available)
+  package_config 2.2.0 (3.0.0 available)
+  path_provider 2.1.5 (2.1.6 available)
+  path_provider_linux 2.2.1 (2.2.2 available)
+  path_provider_platform_interface 2.1.2 (2.1.3 available)
+  permission_handler 12.0.3 (13.0.2 available)
+  permission_handler_android 13.0.1 (14.1.1 available)
+  permission_handler_apple 9.4.9 (9.6.5 available)
+  permission_handler_html 0.1.3+5 (0.1.4+1 available)
+  permission_handler_platform_interface 4.3.0 (4.4.1 available)
+  permission_handler_windows 0.2.1 (0.2.4 available)
+  petitparser 7.0.2 (7.1.0 available)
+  platform 3.1.6 (3.2.0 available)
+  posix 6.5.0 (6.5.4 available)
+  pub_semver 2.2.0 (2.2.1 available)
+  record 6.2.1 (7.1.2 available)
+  record_android 1.5.2 (2.2.0 available)
+  record_ios 1.2.1 (2.1.1 available)
+  record_linux 1.3.1 (2.1.3 available)
+  record_macos 1.2.2 (2.1.1 available)
+  record_platform_interface 1.6.0 (2.1.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  record_web 1.3.0 (2.1.3 available)
+  record_windows 1.0.7 (2.3.0 available)
+  shared_preferences 2.5.5 (2.5.6 available)
+  shared_preferences_android 2.4.26 (2.5.4 available)
+  shared_preferences_foundation 2.5.6 (2.6.1 available)
+  sign_in_with_apple 6.1.4 (8.2.0 available)
+  sign_in_with_apple_platform_interface 1.1.0 (2.0.0 available)
+  sign_in_with_apple_web 2.1.1 (3.0.0 available)
+  speech_to_text 7.4.0 (7.5.0 available)
+  speech_to_text_platform_interface 2.4.0 (2.5.0 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  synchronized 3.4.1 (3.6.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  timezone 0.9.4 (0.11.2 available)
+  url_launcher 6.3.2 (6.3.3 available)
+  url_launcher_android 6.3.32 (6.3.33 available)
+  url_launcher_ios 6.4.1 (6.4.2 available)
+  url_launcher_linux 3.2.2 (3.2.3 available)
+  url_launcher_macos 3.2.5 (3.2.6 available)
+  url_launcher_windows 3.1.5 (3.1.6 available)
+  uuid 4.5.3 (4.6.0 available)
+  vector_graphics 1.2.2 (1.2.6 available)
+  vector_graphics_compiler 1.2.5 (1.3.4 available)
+  vm_service 15.1.0 (15.4.0 available)
+  web 1.1.1 (1.1.2 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 7.0.1 (7.1.0 available)
+  yaml 3.1.3 (3.1.4 available)
+Got dependencies!
+108 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart
+00:00 +0: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
+00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
+00:03 +4: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: sends problem key, language, code and mode with the ID token
+00:03 +5: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: never accepts locally: unsupported language, signed out, network failure
+00:03 +6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: server errors are surfaced, not turned into results
+00:03 +7: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:03 +8: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:04 +9: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:05 +10: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit passes only when the server says Accepted
+00:05 +11: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit passes only when the server says Accepted
+00:05 +12: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Run never records a grade; a missing runner records nothing
+00:05 +13: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart: every built lab is in the tracker with its real scenario count
+00:06 +14: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart: every built lab is in the tracker with its real scenario count
+00:06 +15: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_blueprint_test.dart: every built lab is in the tracker with its real scenario count
+00:06 +16: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every department has training, a project, a certification, postings, an interview and a workplace
+00:06 +17: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every department has training, a project, a certification, postings, an interview and a workplace
+00:06 +18: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every department has training, a project, a certification, postings, an interview and a workplace
+00:06 +19: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every department has training, a project, a certification, postings, an interview and a workplace
+00:06 +20: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every department has training, a project, a certification, postings, an interview and a workplace
+00:06 +21: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: postings reference real modules, skills and certifications
+00:06 +22: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every task's skills belong to its department
+00:06 +23: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every code task is gradable by the server judge
+00:07 +24: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: task content is well formed
+00:07 +25: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: interview plans are consistent
+00:07 +26: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: workplaces have assignments, a leadership assignment and titles
+00:07 +27: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/content_test.dart: every school major maps to a department
+00:10 +28: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra: 15 distinct scenarios, 5 per level
+00:10 +29: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b1: model answers score 100, wrong answers fail
+00:10 +30: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b2: model answers score 100, wrong answers fail
+00:10 +31: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b3: model answers score 100, wrong answers fail
+00:10 +32: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b4: model answers score 100, wrong answers fail
+00:10 +33: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b5: model answers score 100, wrong answers fail
+00:10 +34: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i1: model answers score 100, wrong answers fail
+00:10 +35: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i2: model answers score 100, wrong answers fail
+00:10 +36: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i3: model answers score 100, wrong answers fail
+00:10 +37: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i4: model answers score 100, wrong answers fail
+00:10 +38: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i5: model answers score 100, wrong answers fail
+00:10 +39: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a1: model answers score 100, wrong answers fail
+00:10 +40: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +41: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +42: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +43: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +44: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +45: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +46: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +47: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +48: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +49: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +50: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +51: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:11 +52: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +53: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +54: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +55: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +56: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +57: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +58: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +59: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +60: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +61: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +62: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +63: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +64: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +65: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +66: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +67: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +68: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +69: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +70: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +71: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +72: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +73: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +74: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +75: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +76: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +77: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +78: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +79: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +80: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +81: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:11 +82: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +83: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +84: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +85: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +86: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +87: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +88: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +89: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +90: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +91: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +92: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +93: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +94: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +95: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +96: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +97: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +98: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +99: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +100: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +101: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +102: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +103: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +104: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +105: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +106: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +107: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +108: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +109: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +110: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +111: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +112: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +113: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +114: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +115: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +116: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +117: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +118: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +119: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +120: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +121: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +122: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +123: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +124: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +125: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +126: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +127: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +128: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +129: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +130: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +131: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +132: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +133: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +134: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +135: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +136: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:12 +137: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: upload, check and save a resume through the screens; listing shows the match
+00:13 +138: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:14 +139: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:15 +140: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:20 +141: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:21 +142: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:22 +143: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:23 +144: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:25 +145: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:26 +146: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Business & Economics: every module, project and certification screen opens
+00:26 +147: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:26 +148: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:27 +149: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:27 +150: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:27 +151: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:27 +152: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:27 +153: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:27 +154: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/store_test.dart: internship completion with good performance yields a return offer the student must accept
+00:27 +155: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: English & Communication: every module, project and certification screen opens
+00:27 +156: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Natural Sciences: every module, project and certification screen opens
+00:28 +156 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Natural Sciences: every module, project and certification screen opens
+00:28 +157 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +157 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: every department has patients and every case is internally consistent [E]
+  Expected: true
+    Actual: <false>
+  ward_postop should have a safety-critical step
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/career_sim/hospital_test.dart 30:7             main.<fn>
+  
+00:28 +158 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +159 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +160 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +161 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +162 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +163 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +163 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +163 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: ward_postop (nursing): a careful clinician passes; doing nothing fails [E]
+  Expected: true
+    Actual: <false>
+  missing a safety-critical step is never hidden by the total
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/career_sim/hospital_test.dart 54:9             main.<fn>
+  
+00:28 +163 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +163 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: ward_postop (medicine): a careful clinician passes; doing nothing fails [E]
+  Expected: true
+    Actual: <false>
+  missing a safety-critical step is never hidden by the total
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/career_sim/hospital_test.dart 54:9             main.<fn>
+  
+00:28 +164 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +165 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +166 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +167 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +168 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +169 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +170 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +171 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +172 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +173 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +174 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +175 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +176 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +177 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +178 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +179 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +180 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +181 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +182 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +183 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +184 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +185 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +186 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +187 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +188 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +189 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +190 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +191 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +192 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:28 +193 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:29 +194 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:29 +195 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:29 +196 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:29 +197 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:30 +198 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:30 +199 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:30 +200 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:30 +201 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:31 +202 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:31 +203 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:31 +204 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextContainingWidgetFinder:<Found 3 widgets with text containing bed rest: [
+            Text-[<'room_warning'>]("⚠ Stopped: A patient with suspected heart attack stays on bed
+rest and on a monitor; exertion can extend the damage or trigger a dangerous arrhythmia.", inherit:
+true, color: Color(alpha: 1.0000, red: 0.9373, green: 0.2667, blue: 0.2667, colorSpace:
+ColorSpace.sRGB), weight: 700, dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),
+            Text-[<'supervisor_says'>]("Supervisor: Stopped: A patient with suspected heart attack
+stays on bed rest and on a monitor; exertion can extend the damage or trigger a dangerous
+arrhythmia.", inherit: true, color: Color(alpha: 1.0000, red: 0.9451, green: 0.9608, blue: 0.9765,
+colorSpace: ColorSpace.sRGB), dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),
+            Text("Let him walk to the bathroom\n\nA patient with suspected heart attack stays on bed
+rest and on a monitor; exertion can extend the damage or trigger a dangerous arrhythmia.",
+dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),
+          ]>
+   Which: is too many
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart:200:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart line 200
+The test description was:
+  walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:32 +204 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m2/chest_pain: correct answers pass through the screen and are saved
+00:32 +204 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief [E]
+  Test failed. See exception logs above.
+  The test description was: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+  
+00:32 +205 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m3/heart_label: correct answers pass through the screen and are saved
+00:32 +206 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m3/heart_label: correct answers pass through the screen and are saved
+00:33 +207 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: every 3D question names real structures, and the anatomy lab has 3D scenarios at each level
+00:33 +208 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m3/blood_flow: correct answers pass through the screen and are saved
+00:33 +209 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m3/blood_flow: correct answers pass through the screen and are saved
+00:33 +210 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: 3D scene tests (node): every structure can be tapped and sides are right
+00:34 +211 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: 3D scene tests (node): every structure can be tapped and sides are right
+00:34 +212 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: law/law_m2/offer_or_not: correct answers pass through the screen and are saved
+00:34 +213 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:34 +214 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:34 +215 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:35 +216 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:35 +217 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:35 +218 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:35 +219 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:36 +220 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:36 +221 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:36 +222 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:36 +223 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:37 +224 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:37 +225 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:37 +226 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:37 +227 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:38 +228 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:38 +229 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:38 +230 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:38 +231 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: business/bz_m_intl/incoterms: correct answers pass through the screen and are saved
+00:38 +232 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: mathematics/ma_m_stats/stats: correct answers pass through the screen and are saved
+00:38 +233 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: mathematics/ma_m_stats/bayes: correct answers pass through the screen and are saved
+00:38 +234 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: mathematics/ma_m_model/regression: correct answers pass through the screen and are saved
+00:39 +235 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: mathematics/ma_m_model/proof: correct answers pass through the screen and are saved
+00:39 +236 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: communication/co_m_edit/edit: correct answers pass through the screen and are saved
+00:39 +237 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: communication/co_m_news/fact_check: correct answers pass through the screen and are saved
+00:39 +238 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/cell_label: correct answers pass through the screen and are saved
+00:39 +239 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +240 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +241 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +242 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +243 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +244 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +245 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +246 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +247 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +248 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +249 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +250 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +251 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +252 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +253 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +254 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +255 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +256 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +257 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +258 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +259 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +260 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +261 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +262 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:40 +263 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: model answers pass and wrong answers fail law_lab_drafting
+00:40 +264 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +265 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +266 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +267 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +268 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +269 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +270 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +271 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +272 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +273 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +274 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +275 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +276 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +277 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +278 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +279 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +280 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +281 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +282 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +283 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +284 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +285 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +286 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +287 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +288 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +289 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +290 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +291 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:40 +292 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: model answers pass and wrong answers fail che_lab_safety
+00:40 +293 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +294 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +295 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +296 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +297 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +298 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +299 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +300 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +301 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +302 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +303 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +304 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +305 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +306 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +307 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +308 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +309 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +310 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +311 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +312 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +313 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +314 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +315 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +316 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +317 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +318 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +319 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +320 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +321 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +322 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +323 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +324 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +325 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:40 +326 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: model answers pass and wrong answers fail ch_lab_stoichiometry
+00:40 +327 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +328 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +329 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +330 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +331 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +332 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +333 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +334 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +335 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +336 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +337 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +338 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +339 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +340 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +341 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +342 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +343 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +344 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +345 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +346 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +347 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +348 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +349 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +350 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +351 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +352 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +353 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +354 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +355 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +356 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +357 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +358 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +359 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +360 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +361 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +362 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +363 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +364 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +365 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +366 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +367 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +368 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +369 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +370 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +371 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +372 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +373 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +374 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +375 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +376 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +377 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +378 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +379 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +380 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +381 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +382 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +383 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +384 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +385 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +386 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +387 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +388 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +389 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +390 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +391 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +392 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +393 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +394 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +395 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +396 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +397 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +398 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +399 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +400 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +401 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +402 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +403 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +404 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +405 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +406 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +407 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +408 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +409 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +410 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +411 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +412 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +413 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +414 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:40 +415 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: model answers pass and wrong answers fail nu_lab_documentation
+00:40 +416 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +417 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +418 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +419 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +420 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +421 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +422 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +423 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +424 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +425 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +426 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +427 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +428 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +429 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +430 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +431 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +432 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +433 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +434 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +435 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +436 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +437 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +438 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +439 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +440 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +441 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +442 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +443 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +444 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:40 +445 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: Law shift: inbox, research file, document, supervisor review, work log
+00:40 +446 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_content_test.dart: Law shift: inbox, research file, document, supervisor review, work log
+00:44 +447 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +448 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +449 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +450 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +451 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +452 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +453 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +454 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +455 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +456 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +457 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +458 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +459 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +460 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +461 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +462 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +463 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:45 +464 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:46 +465 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:49 +466 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:49 +467 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:49 +468 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +469 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +470 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +471 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +472 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +473 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +474 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +475 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +476 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +477 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +478 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +479 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +480 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +481 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +482 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +483 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +484 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +485 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +486 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +487 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +488 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_fundamentals
+00:50 +489 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +490 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +491 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +492 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +493 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +494 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +495 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +496 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +497 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:51 +498 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: every CAD drawing scenario: the model passes and an empty sheet fails
+00:51 +499 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:53 +500 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:54 +501 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:55 +502 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:56 +503 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:56 +504 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_vitals
+00:56 +505 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_meds
+00:57 +506 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: pay rules (virtual USD)
+00:57 +507 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_procedures
+00:58 +508 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_procedures
+00:58 +509 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_procedures
+00:58 +510 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: wallet on the dashboard opens My Earnings, labelled as virtual
+00:58 +511 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: wallet on the dashboard opens My Earnings, labelled as virtual
+00:59 +512 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: wallet on the dashboard opens My Earnings, labelled as virtual
+00:59 +513 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_anatomy
+01:00 +514 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_anatomy
+01:00 +515 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_anatomy
+01:00 +516 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_assessment
+01:01 +517 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart: export lab answer keys
+01:01 +518 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart: export lab answer keys
+01:01 +519 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_bookkeeping
+01:01 +520 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_reconciliation
+01:02 +521 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_reconciliation
+01:02 +522 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_reconciliation
+01:02 +523 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_reconciliation
+01:02 +524 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/resume_test.dart: reads amara_okafor_nursing_chrome.pdf
+01:02 +525 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +526 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +527 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +528 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +529 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +530 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +531 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +532 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +533 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +534 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +535 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +536 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +537 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +538 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +539 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +540 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+01:02 +541 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/resume_test.dart: every marketplace role is complete and paid in USD
+01:03 +542 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_algebra
+01:03 +543 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_calculus
+01:03 +544 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_linalg
+01:04 +545 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:04 +546 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:05 +547 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:05 +548 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:06 +549 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:06 +550 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:07 +551 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:07 +552 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:07 +553 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:08 +554 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:08 +555 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+01:09 +556 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: me_lab_mechanics
+01:09 +557 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Programming lab: run with input, submit runs every test case
+01:09 +558 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Programming lab: run with input, submit runs every test case
+01:09 +559 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: me_lab_fluids
+01:10 +560 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+01:10 +561 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+01:10 +562 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+01:11 +563 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+01:11 +564 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+01:12 +565 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ce_lab_materials
+01:12 +566 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Algorithms lab: binary search trace
+01:12 +567 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ce_lab_geotech
+01:12 +568 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+01:12 +569 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+01:13 +570 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+01:13 +571 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+01:13 +572 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ee_lab_construction
+01:14 +573 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing vitals and medication safety through the monitor and MAR
+01:14 +574 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing vitals and medication safety through the monitor and MAR
+01:14 +575 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing vitals and medication safety through the monitor and MAR
+01:15 +576 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ee_lab_logic
+01:15 +577 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:15 +578 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:15 +579 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:16 +580 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:16 +581 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:16 +582 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:17 +583 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:17 +584 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:17 +585 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:18 +586 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:18 +587 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:19 +588 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:19 +589 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:19 +590 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:20 +591 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:20 +592 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:20 +593 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:20 +594 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:21 +595 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+01:21 +596 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ae_lab_project
+01:21 +597 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+01:22 +598 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+01:22 +599 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+01:22 +600 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ai_lab_nlp
+01:22 +601 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ai_lab_nlp
+01:22 +602 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ai_lab_genai
+01:23 +603 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ai_lab_ethics
+01:23 +604 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/design_variety_test.dart: design scenarios use a different worked case at each level
+01:23 +605 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/design_variety_test.dart: design scenarios use a different worked case at each level
+01:23 +606 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_human
+01:23 +607 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_human
+01:23 +608 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_genetics
+01:24 +609 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +610 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +611 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +612 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +613 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +614 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +615 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +616 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +617 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +618 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +619 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +620 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_micro
+01:24 +621 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/rules_test.dart: readiness, screening and hiring readiness counts the labs of the student's own major track
+01:24 +622 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/rules_test.dart: readiness, screening and hiring readiness counts the labs of the student's own major track
+01:24 +623 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +624 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +625 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +626 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +627 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +628 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +629 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +630 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:24 +631 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:25 +632 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:25 +633 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:25 +634 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_microscopy
+01:25 +635 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_research
+01:25 +636 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_operations
+01:25 +637 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_strategy
+01:26 +638 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_people
+01:26 +639 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_projects
+01:26 +640 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_analytics
+01:27 +641 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_capstone
+01:27 +642 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_atomic
+01:27 +643 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_molecular
+01:27 +644 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_equations
+01:28 +645 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_stoichiometry
+01:28 +646 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_acids
+01:29 +647 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_titration
+01:29 +648 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_analytical
+01:29 +649 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:29 +650 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:30 +651 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:30 +652 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:30 +653 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:30 +654 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_forensics
+01:31 +655 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+01:31 +656 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_ir
+01:31 +657 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_awareness
+01:31 +658 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_cleaning
+01:32 +659 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_analysis
+01:32 +660 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_analysis
+01:32 +661 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_viz
+01:32 +662 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_stats
+01:32 +663 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_predictive
+01:32 +664 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_predictive
+01:32 +665 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_predictive
+01:32 +666 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_predictive
+01:33 +667 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_capstone
+01:33 +668 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_micro
+01:33 +669 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_micro
+01:33 +670 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_micro
+01:33 +671 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_micro
+01:33 +672 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_macro
+01:34 +673 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_structures
+01:34 +674 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_data
+01:34 +675 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_data
+01:34 +676 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_data
+01:35 +677 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_policy
+01:35 +678 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_international
+01:35 +679 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_international
+01:35 +680 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_international
+01:35 +681 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_international
+01:35 +682 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_grammar
+01:35 +683 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_reading
+01:36 +684 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:36 +685 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:36 +686 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:36 +687 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:36 +688 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:36 +689 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:36 +690 -4: /home/runner/work/GradeGlow/GradeGlow/test/lecture_visual_sync_test.dart: right ventricle then pulmonary artery for heart flow
+01:36 +691 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_professional
+01:36 +692 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_speaking
+01:36 +693 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_editing
+01:37 +694 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_communication
+01:37 +695 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_communication
+01:37 +696 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_communication
+01:37 +697 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_communication
+01:37 +698 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_communication
+01:37 +699 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_communication
+01:37 +700 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_opportunity
+01:37 +701 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_discovery
+01:38 +702 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_validation
+01:38 +703 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_validation
+01:38 +704 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_validation
+01:38 +705 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_validation
+01:38 +706 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_validation
+01:38 +707 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_canvas
+01:38 +708 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_finance
+01:38 +709 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_pitchprep
+01:39 +710 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_pitch
+01:39 +711 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_startup
+01:39 +712 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_math
+01:39 +713 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_fsa
+01:39 +714 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_investment
+01:40 +715 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_portfolio
+01:40 +716 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_corporate
+01:40 +717 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_risk
+01:40 +718 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_capstone
+01:41 +719 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_recruitment
+01:41 +720 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_interviews
+01:41 +721 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_onboarding
+01:41 +722 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_performance
+01:42 +723 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_relations
+01:42 +724 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_workforce
+01:42 +725 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_capstone
+01:42 +726 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_manufacturing
+01:43 +727 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_quality
+01:43 +728 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_or
+01:43 +729 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_supply
+01:43 +730 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_improvement
+01:44 +731 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_simulation
+01:44 +732 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_helpdesk
+01:44 +733 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_hardware
+01:44 +734 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_netadmin
+01:44 +735 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_sysadmin
+01:45 +736 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_itsm
+01:45 +737 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_research
+01:45 +738 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_trade
+01:46 +739 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_strategy
+01:46 +740 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_supply
+01:46 +741 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:46 +742 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_culture
+01:47 +743 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_capstone
+01:47 +744 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_research
+01:47 +745 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_brand
+01:47 +746 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_content
+01:47 +747 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_ads
+01:48 +748 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_social
+01:48 +749 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_analytics
+01:48 +750 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:48 +751 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_exam
+01:49 +752 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_diagnostics
+01:49 +753 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_reasoning
+01:49 +754 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_research
+01:50 +755 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_ui
+01:50 +756 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_flutter
+01:50 +757 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_backend
+01:50 +758 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_testing
+01:51 +759 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_deploy
+01:51 +760 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_project
+01:51 +761 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_assessment
+01:51 +762 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_documentation
+01:51 +763 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_medsurg
+01:52 +764 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_paediatric
+01:52 +765 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_maternity
+01:52 +766 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_icu
+01:52 +767 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_mechanics
+01:53 +768 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_electricity
+01:53 +769 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_magnetism
+01:53 +770 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_waves
+01:53 +771 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_thermo
+01:54 +772 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_modern
+01:54 +773 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_experimental
+01:54 +774 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_requirements
+01:54 +775 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_design
+01:55 +776 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_development
+01:55 +777 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_git
+01:55 +778 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_testing
+01:55 +779 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_maintenance
+01:55 +780 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_htmlcss
+01:56 +781 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_js
+01:56 +782 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_frontend
+01:56 +783 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_backend
+01:56 +784 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_a11y
+01:56 +785 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_client
+01:57 +786 -4: Some tests failed.
+
+Failing tests:
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: every department has patients and every case is internally consistent
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: ward_postop (medicine): a careful clinician passes; doing nothing fails
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: ward_postop (nursing): a careful clinician passes; doing nothing fails
