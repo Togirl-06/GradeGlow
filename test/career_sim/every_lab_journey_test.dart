@@ -15,7 +15,24 @@ import 'package:ai_study_buddy/career_sim/store/career_sim_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'labs_flow_test.dart' show k, pumpLab, tap;
+import 'labs_flow_test.dart' show k, pumpLab;
+
+/// Settles, but tolerates views with an indefinite loading animation (the
+/// anatomy atlas decodes its SVG asynchronously, which never settles in tests).
+Future<void> settle(WidgetTester t) async {
+  try {
+    await t.pumpAndSettle(const Duration(milliseconds: 100), EnginePhase.sendSemanticsUpdate, const Duration(seconds: 5));
+  } on FlutterError {
+    await t.pump(const Duration(milliseconds: 500));
+  }
+}
+
+Future<void> tap(WidgetTester t, Finder f) async {
+  expect(f, findsWidgets, reason: '$f');
+  await t.ensureVisible(f.first);
+  await t.tap(f.first);
+  await settle(t);
+}
 
 void main() {
   for (final LabSpec lab in LabCatalog.all) {
@@ -34,7 +51,7 @@ void main() {
         expect(find.textContaining('ticket ${i + 1} of ${sc.steps.length}: ${step.title}'), findsOneWidget, reason: '${lab.id}: showing ${step.id}');
         expect(t.takeException(), isNull, reason: '${lab.id}: ${step.id} rendered without errors');
         await store.recordLabStep(lab, step, TaskResult(taskId: step.id, score: 100, passed: true));
-        await t.pumpAndSettle();
+        await settle(t);
         if (i < sc.steps.length - 1) await tap(t, k('step_next'));
       }
       await tap(t, k('to_evaluation'));
