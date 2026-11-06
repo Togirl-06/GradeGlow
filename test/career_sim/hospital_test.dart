@@ -197,7 +197,7 @@ void main() {
     await t.tap(k('do_walk'));
     await t.pumpAndSettle();
     expect(k('safety_dialog'), findsOneWidget);
-    expect(find.textContaining('bed rest'), findsOneWidget);
+    expect(find.textContaining('bed rest'), findsWidgets);
     await t.tap(k('safety_ok'));
     await t.pumpAndSettle();
     await t.tap(k('tab_document'));

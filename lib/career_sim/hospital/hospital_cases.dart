@@ -317,7 +317,7 @@ final List<PatientCase> hospitalCases = <PatientCase>[
       const Requirement('ask:severity', 'Pain scored', 'assessment', hint: 'How bad is her pain, in numbers?'),
       const Requirement('exam:wound', 'Wound checked', 'assessment'),
       const Requirement('exam:calves', 'DVT check', 'assessment'),
-      const Requirement('allergies', 'Allergies checked', 'safety'),
+      const Requirement('allergies', 'Allergies checked (she reacts to codeine)', 'safety', critical: true, hint: 'What must you know before any pain relief?'),
       const Requirement('do:analgesia', 'Pain treated', 'recognition', by: 45, hint: 'Is her pain controlled?'),
       const Requirement('do:breathing', 'Breathing exercises taught', 'reasoning'),
     ],
