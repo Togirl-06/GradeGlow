@@ -700,5 +700,41 @@
   "note": "Investigate deliberately faulty programs, write the fix, and pass the tests; triage bugs a",
   "scenarios": 15,
   "title": "Software Testing and Quality Assurance"
+ },
+ "web_lab_a11y": {
+  "major": "web_development",
+  "note": "Measure colour contrast, audit pages against WCAG, test with a screen-reader user, check r",
+  "scenarios": 15,
+  "title": "Accessibility and Responsive Testing"
+ },
+ "web_lab_backend": {
+  "major": "web_development",
+  "note": "Build API handlers with validation and status codes, rate limiting and access control, des",
+  "scenarios": 15,
+  "title": "Backend Development"
+ },
+ "web_lab_client": {
+  "major": "web_development",
+  "note": "Deliver a website for a real-feeling client: discovery, estimate, user acceptance testing,",
+  "scenarios": 15,
+  "title": "Client Project"
+ },
+ "web_lab_frontend": {
+  "major": "web_development",
+  "note": "Implement state reducers with undo, client-side routing, pagination and filtering, and sol",
+  "scenarios": 15,
+  "title": "Frontend Application Development"
+ },
+ "web_lab_htmlcss": {
+  "major": "web_development",
+  "note": "Lay out grids and type scales, write semantic markup to a brief, review CSS and build a sp",
+  "scenarios": 15,
+  "title": "HTML and CSS Studio"
+ },
+ "web_lab_js": {
+  "major": "web_development",
+  "note": "Implement shopping-cart logic, form validation and event timing (debounce and throttle) in",
+  "scenarios": 15,
+  "title": "JavaScript Development"
  }
 }

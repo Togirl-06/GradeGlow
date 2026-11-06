@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 27, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 153, Verified complete: 0.
+**198 labs.** Not started: 21, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 159, Verified complete: 0.
 
 ## Majors
 
@@ -18,7 +18,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Data Science | 6 | Tested |
 | School of Computer Science and Technology | Cybersecurity | 6 | Tested |
 | School of Computer Science and Technology | Information Technology | 5 | Tested |
-| School of Computer Science and Technology | Web Development | 6 | Not started |
+| School of Computer Science and Technology | Web Development | 6 | Tested |
 | School of Computer Science and Technology | Mobile Application Development | 6 | Not started |
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
 | School of Medicine and Health Sciences | Nursing | 12 | In progress |
@@ -112,12 +112,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. HTML and CSS Studio | Not started | 0 / 15 |  |  |
-| B. JavaScript Development | Not started | 0 / 15 |  |  |
-| C. Frontend Application Development | Not started | 0 / 15 |  |  |
-| D. Backend Development | Not started | 0 / 15 |  |  |
-| E. Accessibility and Responsive Testing | Not started | 0 / 15 |  |  |
-| F. Client Project | Not started | 0 / 15 |  |  |
+| A. HTML and CSS Studio | Tested | 15 / 15 | `web_lab_htmlcss` | Lay out grids and type scales, write semantic markup to a brief, review CSS and build a sp |
+| B. JavaScript Development | Tested | 15 / 15 | `web_lab_js` | Implement shopping-cart logic, form validation and event timing (debounce and throttle) in |
+| C. Frontend Application Development | Tested | 15 / 15 | `web_lab_frontend` | Implement state reducers with undo, client-side routing, pagination and filtering, and sol |
+| D. Backend Development | Tested | 15 / 15 | `web_lab_backend` | Build API handlers with validation and status codes, rate limiting and access control, des |
+| E. Accessibility and Responsive Testing | Tested | 15 / 15 | `web_lab_a11y` | Measure colour contrast, audit pages against WCAG, test with a screen-reader user, check r |
+| F. Client Project | Tested | 15 / 15 | `web_lab_client` | Deliver a website for a real-feeling client: discovery, estimate, user acceptance testing, |
 
 ### Mobile Application Development
 
