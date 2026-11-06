@@ -41,7 +41,7 @@ service cloud.firestore {
     // Written only by Cloud Functions (Admin SDK). Students can read their own
     // records, but grades, coding results and rate limits cannot be forged.
     function isServerOwned(subcollection) {
-      return subcollection in ['life_server', 'server', 'coding_results', 'coding_submissions', 'assessments'];
+      return subcollection in ['life_server', 'server', 'coding_results', 'coding_submissions', 'assessments', 'career_server'];
     }
 
     // Coding leaderboard: points are awarded server-side on a first Accepted.

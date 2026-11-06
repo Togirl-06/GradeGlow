@@ -64,7 +64,7 @@ ResumeQuality resumeQuality(ParsedResume p) {
 }
 
 /// Common alternative spellings, so "JS" matches "JavaScript".
-const Map<String, List<String>> _aliases = <String, List<String>>{
+const Map<String, List<String>> resumeAliases = <String, List<String>>{
   'javascript': <String>['js', 'node.js', 'nodejs', 'typescript'],
   'rest apis': <String>['rest api', 'restful', 'api', 'apis'],
   'sql': <String>['mysql', 'postgresql', 'postgres', 'sqlite', 'sql server'],
@@ -95,7 +95,7 @@ bool resumeMentions(String text, String term) {
   }
 
   if (has(k)) return true;
-  for (final String a in _aliases[k] ?? const <String>[]) {
+  for (final String a in resumeAliases[k] ?? const <String>[]) {
     if (has(a)) return true;
   }
   return false;

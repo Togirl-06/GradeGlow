@@ -52,7 +52,7 @@ class InterviewSession {
   bool get questionsDone => current == null;
   int get asked => turns.length;
 
-  static const List<Concept> _star = <Concept>[
+  static const List<Concept> starRubric = <Concept>[
     Concept('situation', 'Describes the situation', <String>['when i', 'during', 'at my', 'in my', 'once', 'last year', 'on a', 'while']),
     Concept('action', 'Explains your own actions', <String>['i decided', 'i started', 'i asked', 'i made', 'i took', 'i spoke', 'i built', 'i checked', 'i suggested', 'i organi*', 'i created', 'i wrote', 'i led', 'i set']),
     Concept('result', 'States the result', <String>['result*', 'outcome', 'as a result', 'which led', 'in the end', 'improv*', 'reduc*', 'increas*', 'finished', 'deliver*', 'learned']),
@@ -104,7 +104,7 @@ class InterviewSession {
       throw StateError('The current question is not an open question.');
     }
     if (text.trim().isEmpty) throw ArgumentError('Answer the question first.');
-    final List<Concept> rubric = <Concept>[...q.rubric, if (q.behavioural) ..._star];
+    final List<Concept> rubric = <Concept>[...q.rubric, if (q.behavioural) ...starRubric];
     final TextAssessment t = TextRubric.assess(text, rubric, minWords: q.minWords, maxWords: 300);
     _structure.add(t.structure);
     _record(q, text, t.score, <String>[

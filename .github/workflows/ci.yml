@@ -74,6 +74,9 @@ jobs:
       - name: Functions tests
         id: ntest
         continue-on-error: true
+        env:
+          # The career server tests replay what the Flutter tests generated.
+          CAREER_PARITY_REQUIRED: "1"
         run: |
           echo "## functions tests" >> ci_report.txt
           set -o pipefail
@@ -111,6 +114,7 @@ jobs:
           mkdir -p /tmp/r && cp ci_report.txt /tmp/r/report.txt
           cp analyze.txt ftest.txt ntest.txt /tmp/r/ 2>/dev/null || true
           cp build/coding_problems.json /tmp/r/ 2>/dev/null || true
+          cp build/career_catalog.json build/career_parity.json /tmp/r/ 2>/dev/null || true
           cp build/screens/*.png /tmp/r/ 2>/dev/null || true
           cp pubspec.lock /tmp/r/pubspec.lock.txt 2>/dev/null || true
           git config user.name "gradeglow-ci"

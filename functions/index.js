@@ -485,3 +485,4 @@ exports.stripeWebhook = onRequest(
 
 exports.codeJudge = require("./code_judge").codeJudge;
 exports.codeJudgeCatalog = require("./code_judge").codeJudgeCatalog;
+exports.careerServer = require("./career").careerServer;

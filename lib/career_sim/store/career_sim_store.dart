@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -21,6 +22,7 @@ import '../labs/lab_grading.dart';
 import '../labs/lab_models.dart';
 import '../model/tasks.dart';
 import '../resume/resume_parser.dart';
+import '../server/career_server.dart';
 import 'career_repository.dart';
 
 /// A request the rules refused. The message is shown to the student.
@@ -34,7 +36,7 @@ class CareerActionException implements Exception {
 /// Holds the student's career profile and applies every rule-checked change.
 /// Each change is saved to the device, and to Firestore when signed in.
 class CareerSimStore extends ChangeNotifier {
-  CareerSimStore({CareerRepository? repository, int Function()? clock, CodeJudgeService? judge, LabRunner? runner, this.ai})
+  CareerSimStore({CareerRepository? repository, int Function()? clock, CodeJudgeService? judge, LabRunner? runner, this.ai, this.server})
       : _repo = repository ?? DefaultCareerRepository(),
         _clock = clock ?? (() => DateTime.now().millisecondsSinceEpoch),
         _judge = judge,
@@ -55,6 +57,12 @@ class CareerSimStore extends ChangeNotifier {
 
   /// Optional AI for the lecturer / interviewer / supervisor roles.
   CareerAi? ai;
+
+  /// Career server that verifies scores and keeps the real wallet. Null means
+  /// local only (tests, or no Firebase).
+  CareerServer? server;
+  bool _flushing = false;
+  final math.Random _rand = math.Random();
 
   CareerProfile profile = CareerProfile();
   bool loaded = false;
@@ -106,11 +114,17 @@ class CareerSimStore extends ChangeNotifier {
     } else {
       notifyListeners();
     }
+    if (_serverOn) unawaited(refreshVerified());
   }
 
   Future<void> _commit() async {
     profile.updatedAtMs = _clock();
     notifyListeners();
+    await _persist();
+    if (profile.serverOutbox.isNotEmpty) unawaited(flushServer());
+  }
+
+  Future<void> _persist() async {
     final Map<String, dynamic> json = profile.toJson();
     try {
       await _repo.saveLocal(_uid, json);
@@ -132,6 +146,93 @@ class CareerSimStore extends ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  // ------------------------------------------------------------ server
+
+  bool get _serverOn => server != null && (_uid ?? '').isNotEmpty;
+
+  /// Queues an event for the career server. It is sent after the next save.
+  void _report(String action, Map<String, dynamic> payload) {
+    if (server == null) return;
+    final String op = '${action}_${_clock()}_${_rand.nextInt(1 << 30).toRadixString(36)}';
+    profile.serverOutbox.add(<String, dynamic>{'op': op, 'action': action, 'payload': payload});
+  }
+
+  /// Verified balance from the server (null until the first sync).
+  int? get verifiedBalanceCents => (profile.verified?['balanceCents'] as num?)?.toInt();
+
+  /// Reports the server refused, newest last.
+  List<Map<String, dynamic>> get serverRejections => <Map<String, dynamic>>[
+        for (final Object? r in (profile.verified?['rejections'] as List<dynamic>?) ?? const <dynamic>[])
+          if (r is Map) Map<String, dynamic>.from(r),
+      ];
+
+  /// The server's verified view of an application, or null.
+  Map<String, dynamic>? verifiedApplication(String appId) {
+    for (final Object? a in (profile.verified?['applications'] as List<dynamic>?) ?? const <dynamic>[]) {
+      if (a is Map && a['id'] == appId) return Map<String, dynamic>.from(a);
+    }
+    return null;
+  }
+
+  /// Sends queued reports in order. Stops (and keeps the rest) when offline.
+  Future<void> flushServer() async {
+    final CareerServer? s = server;
+    if (s == null || !_serverOn || _flushing) return;
+    _flushing = true;
+    bool changed = false;
+    final CareerProfile p = profile;
+    try {
+      while (p.serverOutbox.isNotEmpty) {
+        final Map<String, dynamic> m = p.serverOutbox.first;
+        final CareerServerReply r;
+        try {
+          r = await s.send('${m['op']}', '${m['action']}', Map<String, dynamic>.from(m['payload'] as Map<dynamic, dynamic>));
+        } on CareerServerOffline {
+          break;
+        }
+        p.serverOutbox.removeAt(0);
+        changed = true;
+        _absorb(p, r, '${m['action']}');
+      }
+    } finally {
+      _flushing = false;
+    }
+    if (changed && identical(p, profile)) {
+      notifyListeners();
+      try {
+        await _persist();
+      } catch (_) {}
+    }
+  }
+
+  /// Fetches the server's current view (wallet, jobs, applications).
+  Future<void> refreshVerified() async {
+    final CareerServer? s = server;
+    if (s == null || !_serverOn) return;
+    try {
+      final CareerServerReply r = await s.send('', 'state', const <String, dynamic>{});
+      _absorb(profile, r, 'state');
+      notifyListeners();
+      await _persist();
+    } on CareerServerOffline {
+      return;
+    } catch (_) {}
+    if (profile.serverOutbox.isNotEmpty) await flushServer();
+  }
+
+  void _absorb(CareerProfile p, CareerServerReply r, String action) {
+    final Map<String, dynamic> v = <String, dynamic>{...?p.verified};
+    if (r.rejected) {
+      final List<dynamic> rej = <dynamic>[...((v['rejections'] as List<dynamic>?) ?? const <dynamic>[])];
+      rej.add(<String, dynamic>{'action': action, 'message': r.message, 'day': p.day});
+      v['rejections'] = rej.length > 20 ? rej.sublist(rej.length - 20) : rej;
+    } else {
+      v.addAll(r.state);
+      v['syncedAtMs'] = _clock();
+    }
+    p.verified = v;
   }
 
   /// Adds simulated pay to the ledger (in-game money only).
@@ -374,6 +475,7 @@ class CareerSimStore extends ChangeNotifier {
     profile.labCompletions.add(c);
     if (firstScenarioPass && profile.currentJob == null) {
       _pay(PayRules.stipend(sc.level, score), 'Training stipend: ${lab.title} (${sc.level.label.toLowerCase()})', 'lab');
+      _report('lab', <String, dynamic>{'labId': lab.id, 'scenarioId': sc.id, 'score': score});
     }
     if (firstPass) {
       _award(lab.skills, CareerRules.projectPoints);
@@ -853,6 +955,7 @@ class CareerSimStore extends ChangeNotifier {
           if (d >= sub + 2) {
             final ScreeningReport r = p.keywords.isNotEmpty ? MarketRules.screen(profile, p, a, d) : CareerRules.screen(profile, dept, p, a, d);
             a.screening = r;
+            _report('screen', CareerServerPayloads.screen(profile, p, a, r, d));
             if (r.shortlisted) {
               a.move(ApplicationStatus.shortlisted, d, 'Screening score ${r.score}');
               a.interviewSlots = <int>[d + 1, d + 2, d + 3];
@@ -892,6 +995,11 @@ class CareerSimStore extends ChangeNotifier {
   void _decide(JobApplication a, JobPosting p, int d, List<String> news) {
     final HiringDecision h = CareerRules.decide(p, a);
     a.decision = h;
+    final TaskResult? asmt = a.assessment;
+    _report('decide', <String, dynamic>{
+      'applicationId': a.id,
+      if (asmt != null) 'assessment': <String, dynamic>{'score': asmt.score, 'passed': asmt.passed},
+    });
     switch (h.outcome) {
       case HiringOutcome.offer:
         final WorkplaceDef? w = CareerCatalog.workplace(p.workplaceId);
@@ -937,6 +1045,7 @@ class CareerSimStore extends ChangeNotifier {
     final (OfferNegotiation n, int salary) = MarketRules.negotiate(p, a, message, profile.day);
     a.negotiation = n;
     if (salary != a.offer!.salary) a.offer = a.offer!.withSalary(salary);
+    _report('negotiate', <String, dynamic>{'applicationId': a.id, 'message': message});
     a.history.add(StatusChange(status: a.status, day: profile.day, note: n.accepted ? 'Negotiated a higher offer' : 'Negotiation: offer unchanged'));
     _log('Negotiated with ${p.company.name}: ${n.accepted ? 'offer increased' : 'offer unchanged'}.');
     await _commit();
@@ -951,6 +1060,7 @@ class CareerSimStore extends ChangeNotifier {
     if (!interviewAvailable(a)) throw CareerActionException('This interview is not scheduled for today.');
     a.interview = InterviewRecord.fromJson(<String, dynamic>{...r.toJson(), 'day': profile.day});
     a.move(ApplicationStatus.interviewCompleted, profile.day, 'Interview score ${r.overall}');
+    _report('interview', CareerServerPayloads.interview(a, r, interviewPlanFor(a)));
     _log('Interviewed with ${_posting(a).company.name} (${r.overall}/100).');
     await _commit();
   }
@@ -1001,6 +1111,7 @@ class CareerSimStore extends ChangeNotifier {
       contract: EmploymentContract(signedName: signed, signedDay: profile.day, terms: MarketRules.contractTerms(o, '')),
     );
     profile.employment.add(e);
+    _report('accept', <String, dynamic>{'applicationId': a.id, 'employmentId': e.id, 'title': e.title});
     if (o.stage.index > profile.stage.index) profile.stage = o.stage;
     a.move(ApplicationStatus.hired, profile.day, 'Offer accepted');
     _log('Hired: ${o.title} at ${o.employer}.', 'milestone');
@@ -1091,6 +1202,7 @@ class CareerSimStore extends ChangeNotifier {
     _log('Supervisor evaluation: ${s.title} — ${ev.rating} (${ev.overall}).', 'work');
     // One approved work week; a paycheck is processed when the period is complete.
     e.unpaidWeeks += 1;
+    _report('work', <String, dynamic>{'employmentId': e.id, 'assignmentRecordId': '${e.id}#${e.assignments.indexOf(r)}'});
     _runPayroll(e);
     if (e.evaluated.length % reviewEvery == 0) _review(e);
     await _commit();
@@ -1117,6 +1229,7 @@ class CareerSimStore extends ChangeNotifier {
   void _review(Employment e) {
     final PerformanceReview r = MarketRules.review(profile, e, CareerCatalog.department(e.deptId), profile.day);
     e.reviews.add(r);
+    _report('review', <String, dynamic>{'employmentId': e.id, 'outcome': r.outcome});
     if (r.newSalary != e.salary) e.salary = r.newSalary;
     _log('Performance review ${r.cycle}: ${r.outcome}${r.raisePercent > 0 ? ' — ${r.raisePercent}% raise' : ''}.', 'milestone');
   }
@@ -1139,6 +1252,7 @@ class CareerSimStore extends ChangeNotifier {
       e.stage = to;
       e.title = title;
       e.salary = salary;
+      _report('promote', <String, dynamic>{'employmentId': e.id, 'title': title});
       if (to.index > profile.stage.index) profile.stage = to;
       _log('Promoted to $title.', 'milestone');
       await _commit();
@@ -1161,6 +1275,7 @@ class CareerSimStore extends ChangeNotifier {
     final bool passed = c.every((Criterion x) => x.met);
     e.endDay = profile.day;
     e.endReason = 'Internship completed';
+    _report('end', <String, dynamic>{'employmentId': e.id});
     e.finalReview = passed
         ? 'Final evaluation passed: performance ${e.performance}, on time ${(e.onTimeRate * 100).round()}%.'
         : 'Internship completed without a return offer: performance ${e.performance}, on time ${(e.onTimeRate * 100).round()}%.';
@@ -1191,6 +1306,7 @@ class CareerSimStore extends ChangeNotifier {
         stage: ret.stageOnHire,
       );
       profile.applications.add(a);
+      _report('returnOffer', <String, dynamic>{'internEmploymentId': e.id, 'applicationId': a.id, 'performance': e.performance});
       _log('Return offer: ${a.offer!.title} at ${ret.company.name}.', 'employer');
     }
     await _commit();
@@ -1203,6 +1319,7 @@ class CareerSimStore extends ChangeNotifier {
     if (e.open != null) throw CareerActionException('Hand in your open assignment before resigning.');
     e.endDay = profile.day;
     e.endReason = 'Resigned';
+    _report('end', <String, dynamic>{'employmentId': e.id});
     _log('Resigned from ${e.title} at ${e.employer}.');
     await _commit();
   }
@@ -1210,7 +1327,12 @@ class CareerSimStore extends ChangeNotifier {
   /// Starts again from an empty profile (Account → reset simulator).
   Future<void> resetAll() async {
     final String major = profile.majorId;
-    profile = CareerProfile(majorId: major, deptId: CareerCatalog.forMajor(major)?.id ?? '');
+    final Employment? job = profile.currentJob;
+    final List<Map<String, dynamic>> pending = <Map<String, dynamic>>[...profile.serverOutbox];
+    final Map<String, dynamic>? verified = profile.verified;
+    profile = CareerProfile(majorId: major, deptId: CareerCatalog.forMajor(major)?.id ?? '', serverOutbox: pending, verified: verified);
+    // The server's wallet is kept; only the open job is closed there.
+    if (job != null) _report('end', <String, dynamic>{'employmentId': job.id});
     await _commit();
   }
 }

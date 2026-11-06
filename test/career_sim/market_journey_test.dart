@@ -18,6 +18,7 @@ import 'package:ai_study_buddy/career_sim/labs/lab_models.dart';
 import 'package:ai_study_buddy/career_sim/model/career_models.dart';
 import 'package:ai_study_buddy/career_sim/model/content_models.dart';
 import 'package:ai_study_buddy/career_sim/model/tasks.dart';
+import 'package:ai_study_buddy/career_sim/server/career_server.dart';
 import 'package:ai_study_buddy/career_sim/store/career_repository.dart';
 import 'package:ai_study_buddy/career_sim/store/career_sim_store.dart';
 import 'package:ai_study_buddy/career_sim/ui/employment_screens.dart';
@@ -30,6 +31,17 @@ import 'package:provider/provider.dart';
 
 import 'hospital_solver.dart';
 import 'labs_flow_test.dart' show FakeLabRunner, k;
+
+/// Records what the app reports to the career server. The functions tests in
+/// CI replay these reports through the real server code (build/career_journey).
+class RecordingCareerServer implements CareerServer {
+  final List<Map<String, dynamic>> sent = <Map<String, dynamic>>[];
+  @override
+  Future<CareerServerReply> send(String opId, String action, Map<String, dynamic> payload) async {
+    sent.add(<String, dynamic>{'opId': opId, 'action': action, 'payload': jsonDecode(jsonEncode(payload))});
+    return const CareerServerReply(rejected: false, message: '', state: <String, dynamic>{}, reply: <String, dynamic>{});
+  }
+}
 
 Uint8List fixture(String name) => File('test/fixtures/resumes/$name').readAsBytesSync();
 
@@ -91,7 +103,8 @@ void main() {
   for (final Case c in cases) {
     test('employment journey: ${c.dept} — ${c.posting} with ${c.file}', () async {
       final MemoryCareerRepository repo = MemoryCareerRepository();
-      final CareerSimStore s = CareerSimStore(repository: repo, runner: FakeLabRunner(const <String, List<List<Object?>>>{}));
+      final RecordingCareerServer server = RecordingCareerServer();
+      final CareerSimStore s = CareerSimStore(repository: repo, runner: FakeLabRunner(const <String, List<List<Object?>>>{}), server: server);
       await s.ensureLoaded(userId: 'u_${c.dept}', majorId: c.major);
       final JobPosting job = CareerCatalog.posting(c.posting)!;
       expect(job.deptId, c.dept);
@@ -229,6 +242,29 @@ void main() {
       expect(e.reviews.single.outcome, 'Excellent performance', reason: e.reviews.single.scores.toString());
       expect(e.reviews.single.raisePercent, 5);
       expect(e.salary, greaterThan(salary));
+
+      // Every report reached the server, in order, exactly once.
+      await pumpEventQueue();
+      await s.flushServer();
+      expect(s.profile.serverOutbox, isEmpty);
+      final List<String> actions = server.sent.map((Map<String, dynamic> m) => m['action'] as String).where((String a) => a != 'state').toList();
+      expect(actions, <String>['lab', 'screen', 'interview', 'decide', 'accept', 'work', 'work', 'work', 'work', 'review']);
+      expect(server.sent.where((Map<String, dynamic> m) => m['action'] != 'state').map((Map<String, dynamic> m) => m['opId']).toSet().length, actions.length);
+      final int ledgerTotal = s.profile.ledger.fold<int>(0, (int x, MoneyEntry m) => x + m.cents);
+      Directory('build/career_journey').createSync(recursive: true);
+      File('build/career_journey/${c.dept}.json').writeAsStringSync(jsonEncode(<String, dynamic>{
+        'dept': c.dept,
+        'nowMs': DateTime.now().millisecondsSinceEpoch,
+        'events': server.sent.where((Map<String, dynamic> m) => m['action'] != 'state').toList(),
+        'expect': <String, dynamic>{
+          'balanceCents': ledgerTotal,
+          'salary': e.salary,
+          'screening': sr.score,
+          'interview': rec.overall,
+          'offerSalary': o.salary,
+          'paychecks': periods,
+        },
+      }));
 
       // 15–16. Close and reopen the app: everything is still there.
       final CareerSimStore again = CareerSimStore(repository: repo, runner: FakeLabRunner(const <String, List<List<Object?>>>{}));

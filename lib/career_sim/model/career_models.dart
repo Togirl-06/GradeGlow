@@ -1418,8 +1418,11 @@ class CareerProfile {
     this.defaultResumeId = '',
     Map<String, HospitalRun>? hospitalRuns,
     List<HospitalResult>? hospitalResults,
+    List<Map<String, dynamic>>? serverOutbox,
+    this.verified,
     this.updatedAtMs = 0,
-  })  : ledger = ledger ?? <MoneyEntry>[],
+  })  : serverOutbox = serverOutbox ?? <Map<String, dynamic>>[],
+        ledger = ledger ?? <MoneyEntry>[],
         hospitalRuns = hospitalRuns ?? <String, HospitalRun>{},
         hospitalResults = hospitalResults ?? <HospitalResult>[],
         paychecks = paychecks ?? <Paycheck>[],
@@ -1474,6 +1477,8 @@ class CareerProfile {
             if (e.value is Map) e.key: HospitalRun.fromJson(_map(e.value)),
         },
         hospitalResults: _mapList(j['hospitalResults']).map(HospitalResult.fromJson).toList(),
+        serverOutbox: _mapList(j['serverOutbox']),
+        verified: j['verified'] is Map ? _map(j['verified']) : null,
         updatedAtMs: _int(j['updatedAtMs']),
       );
 
@@ -1523,6 +1528,14 @@ class CareerProfile {
   /// Virtual hospital runs (by case, shift or 'triage') and results.
   final Map<String, HospitalRun> hospitalRuns;
   final List<HospitalResult> hospitalResults;
+
+  /// Reports waiting to be sent to the career server (oldest first).
+  final List<Map<String, dynamic>> serverOutbox;
+
+  /// The server's last view of verified applications, jobs and wallet
+  /// (null until the first successful sync). Display only: the app cannot
+  /// change what the server holds.
+  Map<String, dynamic>? verified;
 
   bool hospitalPassed(String id) => hospitalResults.any((HospitalResult r) => r.id == id && r.passed);
   int updatedAtMs;
@@ -1608,6 +1621,8 @@ class CareerProfile {
         'defaultResumeId': defaultResumeId,
         'hospitalRuns': <String, dynamic>{for (final MapEntry<String, HospitalRun> e in hospitalRuns.entries) e.key: e.value.toJson()},
         'hospitalResults': hospitalResults.map((HospitalResult r) => r.toJson()).toList(),
+        'serverOutbox': serverOutbox,
+        if (verified != null) 'verified': verified,
         'updatedAtMs': updatedAtMs,
       };
 }
