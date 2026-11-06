@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../ai/career_ai.dart';
 import '../engine/interview_engine.dart';
 import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
+import '../store/career_sim_store.dart';
 import 'common.dart';
 import 'job_screens.dart';
 import 'task_views.dart';
@@ -84,10 +86,59 @@ class _InterviewScreenState extends State<InterviewScreen> {
     }
   }
 
+  CareerAi? get _ai {
+    try {
+      return context.read<CareerSimStore>().ai;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Replaces line [i] with the AI's spoken version when it arrives. The
+  /// scripted line stays if AI is unavailable or adds anything new.
+  Future<void> _voice(int i, String scripted, String heard) async {
+    final CareerAi? ai = _ai;
+    if (ai == null || scripted.isEmpty) return;
+    final String? v = await ai.voice(character: 'the interviewer, ${widget.plan.interviewer}, in a job interview', scripted: scripted, heard: heard);
+    if (v == null || !mounted || i >= _lines.length || _lines[i].text != scripted) return;
+    setState(() => _lines[i] = _Line(true, v));
+  }
+
   void _afterAnswer(String shown) {
     _lines.add(_Line(false, shown));
     _lines.add(_Line(true, _s.lastReaction));
+    _voice(_lines.length - 1, _s.lastReaction, shown);
     _pushQuestion();
+  }
+
+  static const Map<String, String> _topicOptions = <String, String>{
+    'team': 'who they would work with: the team, colleagues or manager',
+    'training': 'training, learning, mentoring or career growth',
+    'success': 'how success or performance is measured or what is expected',
+    'culture': 'the culture, values or what a typical day is like',
+    'tools': 'tools, software, technology or equipment used',
+    'next': 'next steps, timeline or how the hiring decision is made',
+    'salary': 'pay, salary or benefits',
+  };
+
+  String _replyFor(String topic) => switch (topic) {
+        'team' => widget.company.team,
+        'training' => widget.company.training,
+        'success' => widget.company.success,
+        'culture' => widget.company.culture,
+        'tools' => widget.company.tools,
+        'next' => widget.company.nextSteps,
+        _ => 'Compensation and benefits are set out in writing if we make an offer.',
+      };
+
+  /// When the rules did not recognise the question, AI works out what it is
+  /// about and the interviewer answers from the company's written profile.
+  Future<void> _understand(int i, String question, String fallback) async {
+    final CareerAi? ai = _ai;
+    if (ai == null) return;
+    final String? topic = await ai.classify(text: question, options: _topicOptions, context: 'A job candidate asked the interviewer a question.');
+    if (topic == null || !mounted || i >= _lines.length || _lines[i].text != fallback) return;
+    setState(() => _lines[i] = _Line(true, _replyFor(topic)));
   }
 
   void _submitOpen() {
@@ -130,6 +181,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
         _lines.add(_Line(true, a.reply));
         _ask.clear();
       });
+      if (a.topic.isEmpty && a.reply.startsWith('I don\'t have a specific answer')) _understand(_lines.length - 1, q.trim(), a.reply);
     } on StateError catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
     }

@@ -283,7 +283,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
                         constraints: const BoxConstraints(maxWidth: 340),
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: const <BoxShadow>[BoxShadow(color: Color(0x44000000), blurRadius: 10)]),
-                        child: Text(s.patientLine, style: const TextStyle(color: Color(0xFF0F172A), fontSize: 15, fontWeight: FontWeight.w600)),
+                        child: Text(context.watch<CareerSimStore>().patientSays(s.patientLine), style: const TextStyle(color: Color(0xFF0F172A), fontSize: 15, fontWeight: FontWeight.w600)),
                       ),
                     ),
                   ),

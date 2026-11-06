@@ -368,6 +368,9 @@ class PatientSim {
     ];
   }
 
+  /// Every topic this patient can talk about (case-specific first).
+  List<Topic> get allTopics => <Topic>[...c.topics, ...generalTopics];
+
   /// Which topic a question is about (null = not understood).
   String? topicOf(String question) {
     final String q = question.toLowerCase();
@@ -384,14 +387,18 @@ class PatientSim {
     switch (a.kind) {
       case 'ask':
         _note('you', a.text);
-        final String? topic = topicOf(a.text);
-        for (final String t in topicsOf(a.text)) {
+        // `id` carries a topic worked out by AI when the words alone did not
+        // match; it is stored with the action so replays give the same result.
+        final bool hinted = a.id.isNotEmpty && allTopics.any((Topic t) => t.id == a.id);
+        final String? topic = topicOf(a.text) ?? (hinted ? a.id : null);
+        final List<String> heard = <String>{...topicsOf(a.text), if (hinted) a.id}.toList();
+        for (final String t in heard) {
           _flag('ask:$t');
           if (t == 'identity') _flag('identity');
           if (t == 'allergies') _flag('allergies');
         }
         advance(1);
-        final List<String> ts = topicsOf(a.text);
+        final List<String> ts = heard;
         say(topic == null
             ? reply(a.text)
             : (ts.length > 1 && ts.first == 'intro' ? '${topicAnswer('intro')} ${topicAnswer(ts[1])}' : topicAnswer(topic)));

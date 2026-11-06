@@ -17,7 +17,7 @@ const sentences = (rubric) => rubric.map((c) => `In my last placement I made sur
 
 function strongScreen(appId) {
   return {
-    applicationId: appId, postingId: JOB_ID, submittedDay: JOB.openDay + 1, stage: "graduate", labsPassed: 3, modules: 2,
+    applicationId: appId, postingId: JOB_ID, submittedDay: JOB.openDay + 1, stage: "junior", labsPassed: 3, modules: 2,
     resume: { name: "Sam Taylor", email: "sam@example.com", phone: "555 0100", headline: "Graduate",
       summary: "Motivated graduate with practical project experience, strong communication and a record of delivering accurate work on time.",
       education: [`BSc ${JOB.educationFields[0] || "Studies"} — 2019 – 2023`], experience: ["Assistant 2018 – present — Built a tracker used by 40 staff; Reduced errors by 20%"],

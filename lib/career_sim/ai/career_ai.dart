@@ -16,6 +16,44 @@ enum CareerAiRole {
 
 abstract class CareerAi {
   Future<String> ask({required CareerAiRole role, required String context, required String question});
+
+  /// Works out which of [options] (id → description) the student's words
+  /// mean, or null when none fits. Used only to *understand* phrasing; the
+  /// rules still decide every fact, reply and score.
+  Future<String?> classify({required String text, required Map<String, String> options, required String context});
+
+  /// A short, natural spoken line in a character's voice that says the same
+  /// thing as [scripted] (same facts, nothing added). Null keeps the script.
+  Future<String?> voice({required String character, required String scripted, required String heard});
+}
+
+/// Parses an AI classification reply: the first option id it names exactly.
+String? pickOption(String reply, Iterable<String> ids) {
+  final String r = reply.toLowerCase();
+  if (RegExp(r'\bnone\b').hasMatch(r) && !ids.any((String id) => RegExp('\\b${RegExp.escape(id.toLowerCase())}\\b').hasMatch(r))) return null;
+  String? best;
+  int at = 1 << 30;
+  for (final String id in ids) {
+    final RegExpMatch? m = RegExp('(?<![a-z0-9_])${RegExp.escape(id.toLowerCase())}(?![a-z0-9_])').firstMatch(r);
+    if (m != null && m.start < at) {
+      at = m.start;
+      best = id;
+    }
+  }
+  return best;
+}
+
+/// Rejects a voiced line that adds numbers or drugs not in the script, is too
+/// long, or is empty, so AI wording can never change clinical facts.
+String? safeVoice(String? line, String scripted) {
+  if (line == null) return null;
+  final String l = line.trim().replaceAll(RegExp(r'^["“]|["”]$'), '');
+  if (l.isEmpty || l.length > scripted.length * 2 + 80) return null;
+  final Set<String> nums = RegExp(r'\d+(?:[.,]\d+)?').allMatches(scripted).map((Match m) => m[0]!).toSet();
+  for (final Match m in RegExp(r'\d+(?:[.,]\d+)?').allMatches(l)) {
+    if (!nums.contains(m[0])) return null;
+  }
+  return l;
 }
 
 class OpenAiCareerAi implements CareerAi {
@@ -43,5 +81,41 @@ class OpenAiCareerAi implements CareerAi {
       question,
       courseContext: '${rolePrompt(role)}\n\n$context',
     );
+  }
+
+  static const Duration _timeout = Duration(seconds: 8);
+
+  @override
+  Future<String?> classify({required String text, required Map<String, String> options, required String context}) async {
+    if (options.isEmpty || text.trim().isEmpty) return null;
+    final String list = options.entries.map((MapEntry<String, String> e) => '- ${e.key}: ${e.value}').join('\n');
+    final String prompt = 'You map what a student said to ONE option id. $context\n'
+        'Options:\n$list\n- none: none of these\n'
+        'Student said: "${text.replaceAll('"', "'")}"\n'
+        'Reply with only the option id.';
+    try {
+      final String r = await _service
+          .tutorReply(const <Map<String, dynamic>>[], prompt, courseContext: 'You are a strict intent classifier. Output one id only.')
+          .timeout(_timeout);
+      return pickOption(r, options.keys);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Future<String?> voice({required String character, required String scripted, required String heard}) async {
+    if (scripted.trim().isEmpty) return null;
+    final String prompt = 'Rephrase this line as $character would say it out loud, replying to "${heard.replaceAll('"', "'")}". '
+        'Keep exactly the same facts. Do not add symptoms, numbers, medicines, diagnoses or advice. One or two short sentences.\n'
+        'Line: "${scripted.replaceAll('"', "'")}"\nReply with the line only.';
+    try {
+      final String r = await _service
+          .tutorReply(const <Map<String, dynamic>>[], prompt, courseContext: 'You voice characters in a training simulation. Never change facts.')
+          .timeout(_timeout);
+      return safeVoice(r, scripted);
+    } catch (_) {
+      return null;
+    }
   }
 }

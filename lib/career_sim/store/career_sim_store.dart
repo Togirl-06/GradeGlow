@@ -542,11 +542,44 @@ class CareerSimStore extends ChangeNotifier {
   }
 
   /// One action at the bedside; saved immediately so the case can be resumed.
+  /// Spoken versions of patients' scripted replies (display only).
+  final Map<String, String> _voiced = <String, String>{};
+
+  /// What the patient visibly says: the AI's wording when it has arrived for
+  /// this exact scripted line, otherwise the script.
+  String patientSays(String scripted) => _voiced[scripted] ?? scripted;
+
+  /// When the rules do not recognise a question, AI picks which of the
+  /// patient's topics it is about. Facts and scores still come from the case.
+  Future<SimAction> _understand(PatientSim s, SimAction a) async {
+    final CareerAi? x = ai;
+    if (x == null || a.kind != 'ask' || a.id.isNotEmpty || a.text.trim().isEmpty || s.topicsOf(a.text).isNotEmpty) return a;
+    final String? t = await x.classify(
+      text: a.text,
+      options: <String, String>{for (final Topic t in s.allTopics) t.id: t.label},
+      context: 'A student nurse or doctor is speaking to a patient in hospital.',
+    );
+    return t == null ? a : SimAction('ask', t, a.text);
+  }
+
+  void _voicePatient(PatientSim s, SimAction a) {
+    final CareerAi? x = ai;
+    final String line = s.patientLine;
+    if (x == null || a.kind != 'ask' || line.isEmpty || _voiced.containsKey(line)) return;
+    unawaited(x.voice(character: 'the patient, ${s.c.name}, speaking to a student in hospital', scripted: line, heard: a.text).then((String? v) {
+      if (v == null) return;
+      _voiced[line] = v;
+      notifyListeners();
+    }));
+  }
+
   Future<PatientSim> hospitalAct(String caseId, SimAction a) async {
     final HospitalRun? r = profile.hospitalRuns[caseId];
     if (r == null || r.done) throw CareerActionException('Start this patient case first.');
     final PatientSim s = hospitalSim(caseId)!;
+    a = await _understand(s, a);
     s.apply(a);
+    _voicePatient(s, a);
     r.actions.add(a.toJson());
     await _commit();
     return s;
@@ -607,7 +640,10 @@ class CareerSimStore extends ChangeNotifier {
     final HospitalRun? r = profile.hospitalRuns[wardShift.id];
     if (r == null || r.done) throw CareerActionException('Start the shift first.');
     final ShiftSim s = shiftSim(wardShift.id)!;
+    final PatientSim? p = s.sims[caseId];
+    if (p != null) a = await _understand(p, a);
     s.apply(caseId, a);
+    if (p != null) _voicePatient(p, a);
     r.actions.add(<String, dynamic>{'c': caseId, ...a.toJson()});
     await _commit();
     return s;
