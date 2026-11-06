@@ -2,6 +2,7 @@
 
 import 'gen_aerospace.dart';
 import 'gen_biology.dart';
+import 'gen_bizadmin.dart';
 import 'gen_chemistry.dart';
 import 'gen_economics.dart';
 import 'gen_finance.dart';
@@ -15,6 +16,7 @@ import '../lab_models.dart';
 final List<LabSpec> generatedLabs = <LabSpec>[
   ...aerospaceEngineeringGenLabs,
   ...biologyGenLabs,
+  ...businessAdministrationGenLabs,
   ...chemistryGenLabs,
   ...economicsGenLabs,
   ...financeGenLabs,
@@ -27,6 +29,7 @@ final List<LabSpec> generatedLabs = <LabSpec>[
 const Map<String, String> generatedMajorLabels = <String, String>{
   'aerospace_engineering': 'Aerospace Engineering',
   'biology': 'Biology',
+  'business_administration': 'Business Administration',
   'chemistry': 'Chemistry',
   'economics': 'Economics',
   'finance': 'Finance',

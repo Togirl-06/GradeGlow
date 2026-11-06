@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 83, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 97, Verified complete: 0.
+**198 labs.** Not started: 77, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 103, Verified complete: 0.
 
 ## Majors
 
@@ -29,7 +29,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Engineering | Chemical Engineering | 6 | Tested |
 | School of Engineering | Aerospace Engineering | 6 | Tested |
 | School of Engineering | Industrial Engineering | 6 | Tested |
-| School of Business and Economics | Business Administration | 6 | Not started |
+| School of Business and Economics | Business Administration | 6 | Tested |
 | School of Business and Economics | Accounting | 8 | In progress |
 | School of Business and Economics | Finance | 7 | Tested |
 | School of Business and Economics | Economics | 6 | Tested |
@@ -241,12 +241,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Business Operations | Not started | 0 / 15 |  |  |
-| B. Strategic Management | Not started | 0 / 15 |  |  |
-| C. Human and Team Management | Not started | 0 / 15 |  |  |
-| D. Project Management | Not started | 0 / 15 |  |  |
-| E. Business Analytics | Not started | 0 / 15 |  |  |
-| F. Management Capstone | Not started | 0 / 15 |  |  |
+| A. Business Operations | Tested | 15 / 15 | `ba_lab_operations` | Run a Greenleaf store: staffing, stock, opening hours, pricing and customer service — ever |
+| B. Strategic Management | Tested | 15 / 15 | `ba_lab_strategy` | SWOT analysis, objectives, strategic options, KPIs and risk assessment for Greenleaf. |
+| C. Human and Team Management | Tested | 15 / 15 | `ba_lab_people` | Allocate staff, resolve team conflict, address performance and make leadership calls. |
+| D. Project Management | Tested | 15 / 15 | `ba_lab_projects` | Schedule tasks with dependencies, track earned value and manage project risk. |
+| E. Business Analytics | Tested | 15 / 15 | `ba_lab_analytics` | Use company data: like-for-like growth, basket metrics, customer retention, break-even and |
+| F. Management Capstone | Tested | 15 / 15 | `ba_lab_capstone` | Manage Greenleaf’s regional business through several decision cycles: price, marketing, st |
 
 ### Accounting
 

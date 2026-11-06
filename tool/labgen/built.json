@@ -35,6 +35,42 @@
   "scenarios": 15,
   "title": "Aircraft Systems"
  },
+ "ba_lab_analytics": {
+  "major": "business_administration",
+  "note": "Use company data: like-for-like growth, basket metrics, customer retention, break-even and",
+  "scenarios": 15,
+  "title": "Business Analytics"
+ },
+ "ba_lab_capstone": {
+  "major": "business_administration",
+  "note": "Manage Greenleaf\u2019s regional business through several decision cycles: price, marketing, st",
+  "scenarios": 15,
+  "title": "Management Capstone"
+ },
+ "ba_lab_operations": {
+  "major": "business_administration",
+  "note": "Run a Greenleaf store: staffing, stock, opening hours, pricing and customer service \u2014 ever",
+  "scenarios": 15,
+  "title": "Business Operations"
+ },
+ "ba_lab_people": {
+  "major": "business_administration",
+  "note": "Allocate staff, resolve team conflict, address performance and make leadership calls.",
+  "scenarios": 15,
+  "title": "Human and Team Management"
+ },
+ "ba_lab_projects": {
+  "major": "business_administration",
+  "note": "Schedule tasks with dependencies, track earned value and manage project risk.",
+  "scenarios": 15,
+  "title": "Project Management"
+ },
+ "ba_lab_strategy": {
+  "major": "business_administration",
+  "note": "SWOT analysis, objectives, strategic options, KPIs and risk assessment for Greenleaf.",
+  "scenarios": 15,
+  "title": "Strategic Management"
+ },
  "bi_lab_cell": {
   "major": "biology",
   "note": "Surface area to volume, osmosis, counting mitotic cells, enzyme kinetics and preparing cel",
