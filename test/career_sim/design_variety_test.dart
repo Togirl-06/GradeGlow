@@ -2,6 +2,7 @@ import 'package:ai_study_buddy/career_sim/labs/lab_catalog.dart';
 import 'package:ai_study_buddy/career_sim/labs/lab_models.dart';
 import 'package:ai_study_buddy/career_sim/labs/math/math_steps.dart';
 import 'package:ai_study_buddy/career_sim/labs/work/work_steps.dart';
+import 'package:ai_study_buddy/career_sim/labs/work/drawing_step.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -40,5 +41,26 @@ void main() {
       }
     }
     expect(varied / byProblem.length, greaterThan(0.9), reason: 'Problems repeating a worked case: ${same.join(', ')}');
+  });
+
+  test('no scenario repeats another scenario of the same task step for step', () {
+    String sig(LabStep st) => switch (st) {
+          TriageStep() => 'triage:${st.items.map((TriageItem i) => i.body).join('/')}',
+          NumericStep() => 'numeric:${st.questions.map((MathQuestion q) => '${q.prompt}${q is NumberQuestion ? '=${q.answer}' : ''}').join('/')}',
+          SimulationStep() => 'sim:${st.inputs.map((SimInput i) => i.name).join()}:${st.constraints.map((SimConstraint c) => '${c.output}${c.op}${c.value}').join(',')}',
+          DrawingStep() => 'draw:${st.title}:${st.spec.requireDimensions}:${st.spec.holes.map((HoleSpec h) => h.tol).join(',')}',
+          _ => '${st.runtimeType}:${st.title}:${st.instructions}',
+        };
+    final List<String> dup = <String>[];
+    for (final LabSpec l in LabCatalog.all) {
+      final Map<String, String> seen = <String, String>{};
+      for (final LabScenario s in l.scenarios) {
+        final String key = s.steps.map(sig).join(' | ');
+        final String? other = seen[key];
+        if (other != null) dup.add('${l.id}: ${s.id} repeats $other');
+        seen[key] = s.id;
+      }
+    }
+    expect(dup, isEmpty, reason: dup.take(20).join('\n'));
   });
 }

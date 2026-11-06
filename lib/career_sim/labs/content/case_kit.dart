@@ -56,72 +56,89 @@ class CaseFile {
   final List<String> sources;
 }
 
-const List<String> _suffix = <String>['', ' — with the stakeholder', ' — full assignment'];
+const List<String> _suffix = <String>['', ' — follow-up', ' — closing the case'];
 
-List<LabScenario> caseScenarios(String prefix, CaseFile c, {LabPerson? person, List<String> tools = const <String>[]}) => <LabScenario>[
-      for (int l = 0; l < 3; l++)
-        LabScenario(
-          id: '${prefix}_${c.key}_${l + 1}',
-          title: '${c.title}${_suffix[l]}',
-          level: levels3[l],
-          people: <LabPerson>[if (person != null) person],
-          briefing: Briefing(
-            what: '${c.brief} ${<String>[
-              'Work the ${c.queueName.toLowerCase()}.',
-              'Work the ${c.queueName.toLowerCase()}, then speak to ${c.person}.',
-              'Work the ${c.queueName.toLowerCase()}, speak to ${c.person}${c.procedure.isEmpty ? '' : ', plan the procedure'}${c.docType.isEmpty ? '' : ' and write the ${c.docType.toLowerCase()}'}.',
-            ][l]}',
-            why: 'This is the work a new professional is trusted with in their first months.',
-            information: c.sources,
-            tools: tools.isEmpty ? const <String>['Work queue', 'Conversation', 'Document editor', 'Calculator'] : tools,
-            expected: <String>[
-              'Every item in the queue decided correctly.',
-              'Correct queue decisions, and the right questions and conclusions in the conversation.',
-              'The whole assignment to the standard your supervisor would sign off.',
-            ][l],
-          ),
-          steps: <LabStep>[
-            TriageStep(
-              id: '${prefix}_${c.key}_${l + 1}_q',
-              title: c.queueName,
-              instructions: 'Open each item and make a decision for every field.',
-              queueName: c.queueName,
-              fields: c.fields,
-              items: c.items,
-            ),
-            if (l >= 1)
-              DialogueStep(
-                id: '${prefix}_${c.key}_${l + 1}_talk',
-                title: 'Speak to ${c.person}',
-                instructions: 'Choose what to ask or say. You have a limited number of turns — focus on what matters.',
-                person: c.person,
-                opening: c.opening,
-                options: c.options,
-                conclusions: c.conclusions,
-                maxTurns: c.options.where((DialogueOption o) => o.value == DialogueValue.essential || o.value == DialogueValue.useful).length + 2,
-              ),
-            if (l == 2 && c.procedure.isNotEmpty)
-              SequenceStep(
-                id: '${prefix}_${c.key}_${l + 1}_proc',
-                title: 'Plan the procedure',
-                instructions: 'Put the steps in the order you would carry them out.',
-                correctOrder: c.procedure,
-                mustPrecede: c.mustPrecede,
-              ),
-            if (l == 2 && c.sections.isNotEmpty)
-              DocumentStep(
-                id: '${prefix}_${c.key}_${l + 1}_doc',
-                title: 'Write the ${c.docType.toLowerCase()}',
-                instructions: 'Write each section in full sentences. The marking rubric is shown beside each section.',
-                docType: c.docType,
-                sections: c.sections,
-                model: c.model,
-                forbidden: c.forbidden,
-                sources: c.sources,
-              ),
-          ],
+/// The three scenarios of one case file. Each level is a different stage of
+/// the same job rather than a repeat: (1) work the queue; (2) follow it up in
+/// conversation; (3) plan the procedure and write the document. When a case
+/// has no procedure or document, level 3 is the whole assignment end to end.
+List<LabScenario> caseScenarios(String prefix, CaseFile c, {LabPerson? person, List<String> tools = const <String>[]}) {
+  LabStep queue(int l) => TriageStep(
+        id: '${prefix}_${c.key}_${l + 1}_q',
+        title: c.queueName,
+        instructions: 'Open each item and make a decision for every field.',
+        queueName: c.queueName,
+        fields: c.fields,
+        items: c.items,
+      );
+  LabStep talk(int l) => DialogueStep(
+        id: '${prefix}_${c.key}_${l + 1}_talk',
+        title: 'Speak to ${c.person}',
+        instructions: 'Choose what to ask or say. You have a limited number of turns — focus on what matters.',
+        person: c.person,
+        opening: c.opening,
+        options: c.options,
+        conclusions: c.conclusions,
+        maxTurns: c.options.where((DialogueOption o) => o.value == DialogueValue.essential || o.value == DialogueValue.useful).length + 2,
+      );
+  final bool hasProc = c.procedure.isNotEmpty, hasDoc = c.sections.isNotEmpty;
+  final List<String> caseNotes = <String>[for (final TriageItem i in c.items) '${i.title}: ${i.body}'];
+  final List<List<LabStep>> steps = <List<LabStep>>[
+    <LabStep>[queue(0)],
+    <LabStep>[talk(1)],
+    <LabStep>[
+      if (!(hasProc && hasDoc)) queue(2),
+      if (!hasProc && !hasDoc) talk(2),
+      if (hasProc)
+        SequenceStep(
+          id: '${prefix}_${c.key}_3_proc',
+          title: 'Plan the procedure',
+          instructions: 'Put the steps in the order you would carry them out.',
+          correctOrder: c.procedure,
+          mustPrecede: c.mustPrecede,
         ),
-    ];
+      if (hasDoc)
+        DocumentStep(
+          id: '${prefix}_${c.key}_3_doc',
+          title: 'Write the ${c.docType.toLowerCase()}',
+          instructions: 'Write each section in full sentences. The marking rubric is shown beside each section.',
+          docType: c.docType,
+          sections: c.sections,
+          model: c.model,
+          forbidden: c.forbidden,
+          sources: c.sources,
+        ),
+    ],
+  ];
+  final List<String> doing = <String>[
+    'Work the ${c.queueName.toLowerCase()}.',
+    'Follow up with ${c.person}: ask the right questions and reach the right conclusions.',
+    hasProc || hasDoc
+        ? 'Close the case: ${<String>[if (hasProc) 'plan the procedure', if (hasDoc) 'write the ${c.docType.toLowerCase()}'].join(' and ')}.'
+        : 'Handle the whole case end to end: the ${c.queueName.toLowerCase()} and the conversation with ${c.person}.',
+  ];
+  return <LabScenario>[
+    for (int l = 0; l < 3; l++)
+      LabScenario(
+        id: '${prefix}_${c.key}_${l + 1}',
+        title: '${c.title}${_suffix[l]}',
+        level: levels3[l],
+        people: <LabPerson>[if (person != null) person],
+        briefing: Briefing(
+          what: '${c.brief} ${doing[l]}',
+          why: 'This is the work a new professional is trusted with in their first months.',
+          information: <String>[...c.sources, if (l > 0) ...<String>['Case file — ${c.queueName}:', ...caseNotes]],
+          tools: tools.isEmpty ? const <String>['Work queue', 'Conversation', 'Document editor', 'Calculator'] : tools,
+          expected: <String>[
+            'Every item in the queue decided correctly.',
+            'The right questions asked, nothing unsafe said, and the right conclusions.',
+            'The case closed to the standard your supervisor would sign off.',
+          ][l],
+        ),
+        steps: steps[l],
+      ),
+  ];
+}
 
 /// Five case files → fifteen scenarios ordered beginner → advanced.
 List<LabScenario> fromCases(String prefix, List<CaseFile> cs, {LabPerson? person, List<String> tools = const <String>[]}) {

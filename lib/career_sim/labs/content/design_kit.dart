@@ -194,13 +194,19 @@ List<LabScenario> investigationScenarios(String prefix, Investigation v, {LabPer
           level: levels3[l],
           people: <LabPerson>[if (person != null) person],
           briefing: Briefing(
-            what: v.brief,
+            what: '${v.brief}${<String>['', ' The evidence has been logged; quantify it and confirm the cause.', ' The cause is being confirmed; decide the correction and plan the work.'][l]}',
             why: 'Finding the real cause prevents the next failure.',
-            information: const <String>['Treat every observation as evidence: does it support or contradict each explanation?'],
+            information: <String>[
+              'Treat every observation as evidence: does it support or contradict each explanation?',
+              if (l > 0) ...<String>['Evidence log:', for (int k = 0; k < v.evidence.length; k++) 'Observation ${k + 1}: ${v.evidence[k].$1}'],
+            ],
             tools: const <String>['Evidence log', 'Calculator', 'Whiteboard'],
             expected: 'A cause supported by the evidence${l > 0 ? ', a calculation that confirms it' : ''}${l > 1 ? ', and a safe corrective procedure' : ''}.',
           ),
           steps: <LabStep>[
+            // Level 1 reviews the evidence; later levels build on it instead of repeating it
+            // (unless there is no calculation to do at level 2).
+            if (l == 0 || (l == 1 && v.calc == null))
             TriageStep(
               id: '${prefix}_${v.key}_${l + 1}_ev',
               title: 'Review the evidence',
@@ -214,12 +220,12 @@ List<LabScenario> investigationScenarios(String prefix, Investigation v, {LabPer
             ),
             NumericStep(
               id: '${prefix}_${v.key}_${l + 1}_cause',
-              title: l == 0 ? 'Identify the cause' : 'Confirm the cause',
+              title: <String>['Identify the cause', 'Confirm the cause', 'Choose the correction'][l],
               instructions: 'Use the evidence${l > 0 && v.calc != null ? ' and your calculation' : ''}.',
               questions: <MathQuestion>[
-                if (l > 0 && v.calc != null) NumberQuestion('calc', v.calc!.$1, v.calc!.$2, tolerance: 0.02, relative: true, unit: v.calc!.$3, explain: v.calc!.$4),
-                pick('cause_${v.key}', 'Most likely cause', v.cause, v.wrongCauses),
-                if (l == 2) pick('fix_${v.key}', 'Recommended correction', v.fix, v.wrongFixes),
+                if (l == 1 && v.calc != null) NumberQuestion('calc', v.calc!.$1, v.calc!.$2, tolerance: 0.02, relative: true, unit: v.calc!.$3, explain: v.calc!.$4),
+                if (l < 2) pick('cause_${v.key}', 'Most likely cause', v.cause, v.wrongCauses),
+                if (l == 2 || (l == 1 && v.calc == null)) pick('fix_${v.key}', 'Recommended correction', v.fix, v.wrongFixes),
               ],
             ),
             if (l == 2 && v.steps.isNotEmpty)
