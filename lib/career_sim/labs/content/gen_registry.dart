@@ -5,6 +5,7 @@ import 'gen_ai.dart';
 import 'gen_biology.dart';
 import 'gen_bizadmin.dart';
 import 'gen_chemistry.dart';
+import 'gen_datasci.dart';
 import 'gen_economics.dart';
 import 'gen_english.dart';
 import 'gen_entrepreneurship.dart';
@@ -24,6 +25,7 @@ final List<LabSpec> generatedLabs = <LabSpec>[
   ...biologyGenLabs,
   ...businessAdministrationGenLabs,
   ...chemistryGenLabs,
+  ...dataScienceGenLabs,
   ...economicsGenLabs,
   ...englishGenLabs,
   ...entrepreneurshipGenLabs,
@@ -42,6 +44,7 @@ const Map<String, String> generatedMajorLabels = <String, String>{
   'biology': 'Biology',
   'business_administration': 'Business Administration',
   'chemistry': 'Chemistry',
+  'data_science': 'Data Science',
   'economics': 'Economics',
   'english': 'English and Communication',
   'entrepreneurship': 'Entrepreneurship',

@@ -191,6 +191,42 @@
   "scenarios": 15,
   "title": "Titration"
  },
+ "ds_lab_analysis": {
+  "major": "data_science",
+  "note": "Aggregate, summarise and correlate data in code; answer stakeholder questions; and catch m",
+  "scenarios": 15,
+  "title": "Data Analysis"
+ },
+ "ds_lab_capstone": {
+  "major": "data_science",
+  "note": "A client project at Northbeam Retail: scope it, build the KPI pipeline in code, size the a",
+  "scenarios": 15,
+  "title": "Data Science Capstone"
+ },
+ "ds_lab_cleaning": {
+  "major": "data_science",
+  "note": "Clean real-world messy data: standardise text, remove duplicates, fix dates, impute missin",
+  "scenarios": 15,
+  "title": "Data Cleaning"
+ },
+ "ds_lab_predictive": {
+  "major": "data_science",
+  "note": "Score customers with a logistic model, choose cost-aware thresholds, build and compare for",
+  "scenarios": 15,
+  "title": "Predictive Modelling"
+ },
+ "ds_lab_stats": {
+  "major": "data_science",
+  "note": "Run hypothesis tests and confidence intervals in code, plan an A/B test with enough power,",
+  "scenarios": 15,
+  "title": "Statistical Modelling"
+ },
+ "ds_lab_viz": {
+  "major": "data_science",
+  "note": "Choose the right chart, fix misleading and inaccessible charts, design a dashboard with st",
+  "scenarios": 15,
+  "title": "Data Visualization"
+ },
  "ec_lab_data": {
   "major": "economics",
   "note": "Inflation baskets, real wages, GDP per capita, labour-market rates and compound growth.",

@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 44, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 136, Verified complete: 0.
+**198 labs.** Not started: 38, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 142, Verified complete: 0.
 
 ## Majors
 
@@ -15,7 +15,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Computer Science | 5 | In progress |
 | School of Computer Science and Technology | Software Engineering | 6 | Tested |
 | School of Computer Science and Technology | Artificial Intelligence | 5 | Tested |
-| School of Computer Science and Technology | Data Science | 6 | Not started |
+| School of Computer Science and Technology | Data Science | 6 | Tested |
 | School of Computer Science and Technology | Cybersecurity | 6 | Not started |
 | School of Computer Science and Technology | Information Technology | 5 | Not started |
 | School of Computer Science and Technology | Web Development | 6 | Not started |
@@ -80,12 +80,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Data Cleaning | Not started | 0 / 15 |  |  |
-| B. Data Analysis | Not started | 0 / 15 |  |  |
-| C. Data Visualization | Not started | 0 / 15 |  |  |
-| D. Statistical Modelling | Not started | 0 / 15 |  |  |
-| E. Predictive Modelling | Not started | 0 / 15 |  |  |
-| F. Data Science Capstone | Not started | 0 / 15 |  |  |
+| A. Data Cleaning | Tested | 15 / 15 | `ds_lab_cleaning` | Clean real-world messy data: standardise text, remove duplicates, fix dates, impute missin |
+| B. Data Analysis | Tested | 15 / 15 | `ds_lab_analysis` | Aggregate, summarise and correlate data in code; answer stakeholder questions; and catch m |
+| C. Data Visualization | Tested | 15 / 15 | `ds_lab_viz` | Choose the right chart, fix misleading and inaccessible charts, design a dashboard with st |
+| D. Statistical Modelling | Tested | 15 / 15 | `ds_lab_stats` | Run hypothesis tests and confidence intervals in code, plan an A/B test with enough power, |
+| E. Predictive Modelling | Tested | 15 / 15 | `ds_lab_predictive` | Score customers with a logistic model, choose cost-aware thresholds, build and compare for |
+| F. Data Science Capstone | Tested | 15 / 15 | `ds_lab_capstone` | A client project at Northbeam Retail: scope it, build the KPI pipeline in code, size the a |
 
 ### Cybersecurity
 
