@@ -47,7 +47,9 @@ void main() {
     expect(keys, isNotEmpty);
     final File committed = File('functions/code_judge/problems.json');
     if (committed.existsSync()) {
-      expect(committed.readAsStringSync(), '$generated\n',
+      // Normalize CRLF so the check is stable on Windows checkouts.
+      final String committedText = committed.readAsStringSync().replaceAll('\r\n', '\n');
+      expect(committedText, '$generated\n',
           reason: 'functions/code_judge/problems.json is stale; copy build/coding_problems.json over it.');
     }
   });
