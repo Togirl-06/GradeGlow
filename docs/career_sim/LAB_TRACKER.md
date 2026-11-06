@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 49, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 131, Verified complete: 0.
+**198 labs.** Not started: 44, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 136, Verified complete: 0.
 
 ## Majors
 
@@ -14,7 +14,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 |---|---|---|---|
 | School of Computer Science and Technology | Computer Science | 5 | In progress |
 | School of Computer Science and Technology | Software Engineering | 6 | Tested |
-| School of Computer Science and Technology | Artificial Intelligence | 5 | Not started |
+| School of Computer Science and Technology | Artificial Intelligence | 5 | Tested |
 | School of Computer Science and Technology | Data Science | 6 | Not started |
 | School of Computer Science and Technology | Cybersecurity | 6 | Not started |
 | School of Computer Science and Technology | Information Technology | 5 | Not started |
@@ -70,11 +70,11 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Machine Learning | Not started | 0 / 15 |  |  |
-| B. Neural Networks | Not started | 0 / 15 |  |  |
-| C. Natural Language Processing | Not started | 0 / 15 |  |  |
-| D. Generative AI Development | Not started | 0 / 15 |  |  |
-| E. AI Ethics and Model Evaluation | Not started | 0 / 15 |  |  |
+| A. Machine Learning | Tested | 15 / 15 | `ai_lab_ml` | Implement evaluation metrics, regression and nearest-neighbour models from scratch, then d |
+| B. Neural Networks | Tested | 15 / 15 | `ai_lab_nn` | Tune a neuron by hand, size networks against memory budgets, implement forward passes and  |
+| C. Natural Language Processing | Tested | 15 / 15 | `ai_lab_nlp` | Build tokenisers, word statistics and sentiment classifiers, label data to a guideline and |
+| D. Generative AI Development | Tested | 15 / 15 | `ai_lab_genai` | Budget an LLM feature, design retrieval within a context window, write and test prompts, c |
+| E. AI Ethics and Model Evaluation | Tested | 15 / 15 | `ai_lab_ethics` | Measure fairness across groups, audit a biased model, write a model card and decide whethe |
 
 ### Data Science
 

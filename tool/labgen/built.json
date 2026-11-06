@@ -35,6 +35,36 @@
   "scenarios": 15,
   "title": "Aircraft Systems"
  },
+ "ai_lab_ethics": {
+  "major": "artificial_intelligence",
+  "note": "Measure fairness across groups, audit a biased model, write a model card and decide whethe",
+  "scenarios": 15,
+  "title": "AI Ethics and Model Evaluation"
+ },
+ "ai_lab_genai": {
+  "major": "artificial_intelligence",
+  "note": "Budget an LLM feature, design retrieval within a context window, write and test prompts, c",
+  "scenarios": 15,
+  "title": "Generative AI Development"
+ },
+ "ai_lab_ml": {
+  "major": "artificial_intelligence",
+  "note": "Implement evaluation metrics, regression and nearest-neighbour models from scratch, then d",
+  "scenarios": 15,
+  "title": "Machine Learning"
+ },
+ "ai_lab_nlp": {
+  "major": "artificial_intelligence",
+  "note": "Build tokenisers, word statistics and sentiment classifiers, label data to a guideline and",
+  "scenarios": 15,
+  "title": "Natural Language Processing"
+ },
+ "ai_lab_nn": {
+  "major": "artificial_intelligence",
+  "note": "Tune a neuron by hand, size networks against memory budgets, implement forward passes and ",
+  "scenarios": 15,
+  "title": "Neural Networks"
+ },
  "ba_lab_analytics": {
   "major": "business_administration",
   "note": "Use company data: like-for-like growth, basket metrics, customer retention, break-even and",
