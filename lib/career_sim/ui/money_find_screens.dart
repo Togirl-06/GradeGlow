@@ -56,6 +56,8 @@ class MoneyScreen extends StatelessWidget {
               const SizedBox(height: 4),
               Text('Total earned ${usd(total)} · gross pay ${usd(gross)} · simulated deductions ${usd(deductions)} · training stipends ${usd(stipends)}',
                   style: TextStyle(color: GG.mute)),
+              const SizedBox(height: 10),
+              _VerifiedLine(store: store),
             ]),
           ),
           if (last != null)
@@ -267,5 +269,49 @@ class _FindScreenState extends State<FindScreen> {
           ),
       ]),
     );
+  }
+}
+
+/// The server's verified balance, which the app cannot edit, next to the
+/// on-device figure. Differences are explained, never hidden.
+class _VerifiedLine extends StatelessWidget {
+  const _VerifiedLine({required this.store});
+  final CareerSimStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    final int? v = store.verifiedBalanceCents;
+    final int pending = store.profile.serverOutbox.length;
+    final List<Map<String, dynamic>> rejected = store.serverRejections;
+    final String text;
+    final Color color;
+    final IconData icon;
+    if (store.server == null) {
+      return const SizedBox.shrink();
+    } else if (v == null) {
+      text = pending > 0 ? 'Not yet verified: $pending update(s) waiting to reach the GradeGlow server. Sign in and stay online to verify your pay.' : 'Sign in to have your pay verified by the GradeGlow server.';
+      color = GG.mute;
+      icon = Icons.cloud_off_rounded;
+    } else if (v == store.profile.balanceCents && pending == 0) {
+      text = 'Verified by the GradeGlow server: ${usd(v)}';
+      color = GG.green;
+      icon = Icons.verified_rounded;
+    } else {
+      text = 'Verified by the GradeGlow server: ${usd(v)}${pending > 0 ? ' · $pending update(s) still syncing' : ' · the rest could not be verified'}';
+      color = GG.amber;
+      icon = Icons.verified_outlined;
+    }
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      Row(key: const ValueKey<String>('money_verified'), children: <Widget>[
+        Icon(icon, size: 18, color: color),
+        const SizedBox(width: 6),
+        Expanded(child: Text(text, style: TextStyle(color: color, fontWeight: FontWeight.w700))),
+      ]),
+      for (final Map<String, dynamic> r in rejected.reversed.take(3))
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text('Not verified (${r['action']}): ${r['message']}', style: TextStyle(color: GG.mute, fontSize: 12)),
+        ),
+    ]);
   }
 }

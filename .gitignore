@@ -59,3 +59,4 @@ functions/.env.*
 # Local junk
 desktop.ini
 analyze_vu.txt
+firestore-tests/node_modules/

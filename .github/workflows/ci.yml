@@ -85,6 +85,18 @@ jobs:
           grep -E "^# (tests|pass|fail)|not ok" ntest.txt >> ci_report.txt || true
           exit $status
 
+      - name: Firestore rules tests
+        id: rtest
+        continue-on-error: true
+        run: |
+          echo "## firestore rules tests" >> ci_report.txt
+          set -o pipefail
+          (cd firestore-tests && npm install --no-audit --no-fund 2>&1 | tail -2)
+          firestore-tests/node_modules/.bin/firebase emulators:exec --only firestore --project demo-gradeglow "node --test firestore-tests/rules.test.js" 2>&1 | tee rtest.txt
+          status=${PIPESTATUS[0]}
+          grep -E "^# (tests|pass|fail)|not ok" rtest.txt >> ci_report.txt || true
+          exit $status
+
       - name: 3D world tests
         id: wtest
         continue-on-error: true
@@ -101,6 +113,7 @@ jobs:
             echo "analyze: ${{ steps.analyze.outcome }}"
             echo "flutter tests: ${{ steps.ftest.outcome }}"
             echo "functions tests: ${{ steps.ntest.outcome }}"
+            echo "rules tests: ${{ steps.rtest.outcome }}"
             echo "3D world tests: ${{ steps.wtest.outcome }}"
           } >> ci_report.txt
           cat ci_report.txt >> "$GITHUB_STEP_SUMMARY"
@@ -112,7 +125,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p /tmp/r && cp ci_report.txt /tmp/r/report.txt
-          cp analyze.txt ftest.txt ntest.txt /tmp/r/ 2>/dev/null || true
+          cp analyze.txt ftest.txt ntest.txt rtest.txt /tmp/r/ 2>/dev/null || true
           cp build/coding_problems.json /tmp/r/ 2>/dev/null || true
           cp build/career_catalog.json build/career_parity.json build/hospital_review.json /tmp/r/ 2>/dev/null || true
           cp build/screens/*.png /tmp/r/ 2>/dev/null || true
@@ -130,5 +143,5 @@ jobs:
           done
 
       - name: Fail if anything failed
-        if: steps.analyze.outcome == 'failure' || steps.ftest.outcome == 'failure' || steps.ntest.outcome == 'failure' || steps.wtest.outcome == 'failure'
+        if: steps.analyze.outcome == 'failure' || steps.ftest.outcome == 'failure' || steps.ntest.outcome == 'failure' || steps.wtest.outcome == 'failure' || steps.rtest.outcome == 'failure'
         run: exit 1
