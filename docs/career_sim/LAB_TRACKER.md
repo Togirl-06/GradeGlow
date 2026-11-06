@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 119, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 61, Verified complete: 0.
+**198 labs.** Not started: 97, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 83, Verified complete: 0.
 
 ## Majors
 
@@ -38,9 +38,9 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Business and Economics | Human Resources Management | 7 | Not started |
 | School of Business and Economics | International Business | 7 | Not started |
 | School of Mathematics and Sciences | Mathematics | 6 | Tested |
-| School of Mathematics and Sciences | Biology | 7 | Not started |
-| School of Mathematics and Sciences | Chemistry | 8 | Not started |
-| School of Mathematics and Sciences | Physics | 7 | Not started |
+| School of Mathematics and Sciences | Biology | 7 | Tested |
+| School of Mathematics and Sciences | Chemistry | 8 | Tested |
+| School of Mathematics and Sciences | Physics | 7 | Tested |
 | School of English and Communication | English and Communication | 7 | Not started |
 
 ## Labs
@@ -348,38 +348,38 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Cell Biology | Not started | 0 / 15 |  |  |
-| B. Human Biology | Not started | 0 / 15 |  |  |
-| C. Genetics | Not started | 0 / 15 |  |  |
-| D. Microbiology | Not started | 0 / 15 |  |  |
-| E. Ecology | Not started | 0 / 15 |  |  |
-| F. Microscopy | Not started | 0 / 15 |  |  |
-| G. Biology Research Project | Not started | 0 / 15 |  |  |
+| A. Cell Biology | Tested | 15 / 15 | `bi_lab_cell` | Surface area to volume, osmosis, counting mitotic cells, enzyme kinetics and preparing cel |
+| B. Human Biology | Tested | 15 / 15 | `bi_lab_human` | Cardiac output, ventilation, oxygen delivery and uptake, and blood flow in exercise physio |
+| C. Genetics | Tested | 15 / 15 | `bi_lab_genetics` | Hardy–Weinberg, family risk, gene mapping, PCR amplification and gel electrophoresis. |
+| D. Microbiology | Tested | 15 / 15 | `bi_lab_micro` | Growth curves, plate counts, antibiotic exposure, sterilisation and disinfectant preparati |
+| E. Ecology | Tested | 15 / 15 | `bi_lab_ecology` | Mark–recapture surveys, sustainable harvests, energy flow, biodiversity and carbon sequest |
+| F. Microscopy | Tested | 15 / 15 | `bi_lab_microscopy` | Choose objectives, resolution, graticule calibration, scale bars and counting dilutions at |
+| G. Biology Research Project | Tested | 15 / 15 | `bi_lab_research` | Investigate unexpected results in the research group and decide what really happened. |
 
 ### Chemistry
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Atomic Structure | Not started | 0 / 15 |  |  |
-| B. Molecular Modelling | Not started | 0 / 15 |  |  |
-| C. Chemical Equations | Not started | 0 / 15 |  |  |
-| D. Stoichiometry | Not started | 0 / 15 |  |  |
-| E. Acids and Bases | Not started | 0 / 15 |  |  |
-| F. Titration | Not started | 0 / 15 |  |  |
-| G. Analytical Chemistry | Not started | 0 / 15 |  |  |
-| H. Chemistry Capstone | Not started | 0 / 15 |  |  |
+| A. Atomic Structure | Tested | 15 / 15 | `ch_lab_atomic` | Build atoms and ions, read isotope abundances from mass spectra and count particles with t |
+| B. Molecular Modelling | Tested | 15 / 15 | `ch_lab_molecular` | Build molecular formulas from atoms and check them against mass-spectrum and structural ev |
+| C. Chemical Equations | Tested | 15 / 15 | `ch_lab_equations` | Balance real reactions by setting coefficients; every element is checked, then smallest wh |
+| D. Stoichiometry | Tested | 15 / 15 | `ch_lab_stoichiometry` | Limiting reactants, yields, solution preparation, gas volumes and concentrated-reagent cal |
+| E. Acids and Bases | Tested | 15 / 15 | `ch_lab_acids` | pH of strong and weak acids, buffers, neutralising spills and choosing indicators. |
+| F. Titration | Tested | 15 / 15 | `ch_lab_titration` | A working burette: add titrant in 0.01 mL steps, watch the pH, stop at the end point and c |
+| G. Analytical Chemistry | Tested | 15 / 15 | `ch_lab_analytical` | Spectrophotometry, dilution for calibration, gravimetric analysis, detection limits and ch |
+| H. Chemistry Capstone | Tested | 15 / 15 | `ch_lab_capstone` | Client briefs that combine synthesis, titration, buffers, spectroscopy and safe handling i |
 
 ### Physics
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Mechanics | Not started | 0 / 15 |  |  |
-| B. Electricity | Not started | 0 / 15 |  |  |
-| C. Magnetism | Not started | 0 / 15 |  |  |
-| D. Waves and Optics | Not started | 0 / 15 |  |  |
-| E. Thermodynamics | Not started | 0 / 15 |  |  |
-| F. Modern Physics | Not started | 0 / 15 |  |  |
-| G. Experimental Physics | Not started | 0 / 15 |  |  |
+| A. Mechanics | Tested | 15 / 15 | `ph_lab_mechanics` | Projectiles, forces with friction, collisions, circular motion and energy on real test rig |
+| B. Electricity | Tested | 15 / 15 | `ph_lab_electricity` | Current limiting, parallel networks, internal resistance, resistivity and RC timing on the |
+| C. Magnetism | Tested | 15 / 15 | `ph_lab_magnetism` | Motor force, solenoid fields, transformers, generators and charged particles in magnetic f |
+| D. Waves and Optics | Tested | 15 / 15 | `ph_lab_waves` | Wavelength, refraction, lenses, diffraction gratings and standing waves on strings. |
+| E. Thermodynamics | Tested | 15 / 15 | `ph_lab_thermo` | Heating water, gas laws, insulation, heat engines and melting ice. |
+| F. Modern Physics | Tested | 15 / 15 | `ph_lab_modern` | Photoelectric effect, radioactive decay, atomic spectra, time dilation and electron wavele |
+| G. Experimental Physics | Tested | 15 / 15 | `ph_lab_experimental` | Design experiments with acceptable uncertainty: pendulums, density, resonance tubes, sprin |
 
 ### English and Communication
 

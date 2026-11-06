@@ -35,6 +35,96 @@
   "scenarios": 15,
   "title": "Aircraft Systems"
  },
+ "bi_lab_cell": {
+  "major": "biology",
+  "note": "Surface area to volume, osmosis, counting mitotic cells, enzyme kinetics and preparing cel",
+  "scenarios": 15,
+  "title": "Cell Biology"
+ },
+ "bi_lab_ecology": {
+  "major": "biology",
+  "note": "Mark\u2013recapture surveys, sustainable harvests, energy flow, biodiversity and carbon sequest",
+  "scenarios": 15,
+  "title": "Ecology"
+ },
+ "bi_lab_genetics": {
+  "major": "biology",
+  "note": "Hardy\u2013Weinberg, family risk, gene mapping, PCR amplification and gel electrophoresis.",
+  "scenarios": 15,
+  "title": "Genetics"
+ },
+ "bi_lab_human": {
+  "major": "biology",
+  "note": "Cardiac output, ventilation, oxygen delivery and uptake, and blood flow in exercise physio",
+  "scenarios": 15,
+  "title": "Human Biology"
+ },
+ "bi_lab_micro": {
+  "major": "biology",
+  "note": "Growth curves, plate counts, antibiotic exposure, sterilisation and disinfectant preparati",
+  "scenarios": 15,
+  "title": "Microbiology"
+ },
+ "bi_lab_microscopy": {
+  "major": "biology",
+  "note": "Choose objectives, resolution, graticule calibration, scale bars and counting dilutions at",
+  "scenarios": 15,
+  "title": "Microscopy"
+ },
+ "bi_lab_research": {
+  "major": "biology",
+  "note": "Investigate unexpected results in the research group and decide what really happened.",
+  "scenarios": 15,
+  "title": "Biology Research Project"
+ },
+ "ch_lab_acids": {
+  "major": "chemistry",
+  "note": "pH of strong and weak acids, buffers, neutralising spills and choosing indicators.",
+  "scenarios": 15,
+  "title": "Acids and Bases"
+ },
+ "ch_lab_analytical": {
+  "major": "chemistry",
+  "note": "Spectrophotometry, dilution for calibration, gravimetric analysis, detection limits and ch",
+  "scenarios": 15,
+  "title": "Analytical Chemistry"
+ },
+ "ch_lab_atomic": {
+  "major": "chemistry",
+  "note": "Build atoms and ions, read isotope abundances from mass spectra and count particles with t",
+  "scenarios": 15,
+  "title": "Atomic Structure"
+ },
+ "ch_lab_capstone": {
+  "major": "chemistry",
+  "note": "Client briefs that combine synthesis, titration, buffers, spectroscopy and safe handling i",
+  "scenarios": 15,
+  "title": "Chemistry Capstone"
+ },
+ "ch_lab_equations": {
+  "major": "chemistry",
+  "note": "Balance real reactions by setting coefficients; every element is checked, then smallest wh",
+  "scenarios": 15,
+  "title": "Chemical Equations"
+ },
+ "ch_lab_molecular": {
+  "major": "chemistry",
+  "note": "Build molecular formulas from atoms and check them against mass-spectrum and structural ev",
+  "scenarios": 15,
+  "title": "Molecular Modelling"
+ },
+ "ch_lab_stoichiometry": {
+  "major": "chemistry",
+  "note": "Limiting reactants, yields, solution preparation, gas volumes and concentrated-reagent cal",
+  "scenarios": 15,
+  "title": "Stoichiometry"
+ },
+ "ch_lab_titration": {
+  "major": "chemistry",
+  "note": "A working burette: add titrant in 0.01 mL steps, watch the pH, stop at the end point and c",
+  "scenarios": 15,
+  "title": "Titration"
+ },
  "ec_lab_data": {
   "major": "economics",
   "note": "Inflation baskets, real wages, GDP per capita, labour-market rates and compound growth.",
@@ -148,5 +238,47 @@
   "note": "Safety stock, inventory turns, warehouse capacity, landed cost and fleet sizing.",
   "scenarios": 15,
   "title": "Supply Chain"
+ },
+ "ph_lab_electricity": {
+  "major": "physics",
+  "note": "Current limiting, parallel networks, internal resistance, resistivity and RC timing on the",
+  "scenarios": 15,
+  "title": "Electricity"
+ },
+ "ph_lab_experimental": {
+  "major": "physics",
+  "note": "Design experiments with acceptable uncertainty: pendulums, density, resonance tubes, sprin",
+  "scenarios": 15,
+  "title": "Experimental Physics"
+ },
+ "ph_lab_magnetism": {
+  "major": "physics",
+  "note": "Motor force, solenoid fields, transformers, generators and charged particles in magnetic f",
+  "scenarios": 15,
+  "title": "Magnetism"
+ },
+ "ph_lab_mechanics": {
+  "major": "physics",
+  "note": "Projectiles, forces with friction, collisions, circular motion and energy on real test rig",
+  "scenarios": 15,
+  "title": "Mechanics"
+ },
+ "ph_lab_modern": {
+  "major": "physics",
+  "note": "Photoelectric effect, radioactive decay, atomic spectra, time dilation and electron wavele",
+  "scenarios": 15,
+  "title": "Modern Physics"
+ },
+ "ph_lab_thermo": {
+  "major": "physics",
+  "note": "Heating water, gas laws, insulation, heat engines and melting ice.",
+  "scenarios": 15,
+  "title": "Thermodynamics"
+ },
+ "ph_lab_waves": {
+  "major": "physics",
+  "note": "Wavelength, refraction, lenses, diffraction gratings and standing waves on strings.",
+  "scenarios": 15,
+  "title": "Waves and Optics"
  }
 }
