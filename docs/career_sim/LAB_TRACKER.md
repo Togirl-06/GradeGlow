@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 97, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 83, Verified complete: 0.
+**198 labs.** Not started: 90, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 90, Verified complete: 0.
 
 ## Majors
 
@@ -34,7 +34,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Business and Economics | Finance | 7 | Tested |
 | School of Business and Economics | Economics | 6 | Tested |
 | School of Business and Economics | Entrepreneurship | 8 | Not started |
-| School of Business and Economics | Marketing | 7 | Not started |
+| School of Business and Economics | Marketing | 7 | Tested |
 | School of Business and Economics | Human Resources Management | 7 | Not started |
 | School of Business and Economics | International Business | 7 | Not started |
 | School of Mathematics and Sciences | Mathematics | 6 | Tested |
@@ -301,13 +301,13 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Market Research | Not started | 0 / 15 |  |  |
-| B. Brand Strategy | Not started | 0 / 15 |  |  |
-| C. Content Marketing | Not started | 0 / 15 |  |  |
-| D. Digital Advertising | Not started | 0 / 15 |  |  |
-| E. Social Media Marketing | Not started | 0 / 15 |  |  |
-| F. Analytics and Optimization | Not started | 0 / 15 |  |  |
-| G. Client Campaign Project | Not started | 0 / 15 |  |  |
+| A. Market Research | Tested | 15 / 15 | `mk_lab_research` | Size the market, plan the survey, test prices and review research instruments for a drinks |
+| B. Brand Strategy | Tested | 15 / 15 | `mk_lab_brand` | Position brands, choose target audiences and write messaging that is distinctive and hones |
+| C. Content Marketing | Tested | 15 / 15 | `mk_lab_content` | Plan content calendars, sign off posts against brand and advertising rules, and brief crea |
+| D. Digital Advertising | Tested | 15 / 15 | `mk_lab_ads` | Build paid campaigns: budget, bids, targeting and creative choices that hit acquisition ta |
+| E. Social Media Marketing | Tested | 15 / 15 | `mk_lab_social` | Engagement analysis, community management, posting strategy and crisis response. |
+| F. Analytics and Optimization | Tested | 15 / 15 | `mk_lab_analytics` | Calculate and interpret CTR, conversion rate, CPC, CPA and ROAS, then optimise the campaig |
+| G. Client Campaign Project | Tested | 15 / 15 | `mk_lab_campaign` | Run a client campaign end to end: brief, budget, media plan, launch checks and results rep |
 
 ### Human Resources Management
 

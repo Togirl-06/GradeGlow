@@ -106,7 +106,7 @@ class R:  # rubric item
 
 
 class Sec:
-    def __init__(self, id, heading, rubric, model, guidance='', min_words=30):
+    def __init__(self, id, heading, rubric, model, guidance='', min_words=25):
         self.id, self.heading, self.rubric, self.model, self.guidance, self.min_words = id, heading, rubric, model, guidance, min_words
 
 
@@ -518,3 +518,25 @@ def build(majors):
     with open(os.path.join(ROOT, 'tool/labgen/built.json'), 'w') as f:
         json.dump(built, f, indent=1, sort_keys=True)
     return built
+
+
+# ------------------------------------------------------------ compact case helper
+
+_KIND = {'E': 'essential', 'U': 'useful', 'N': 'neutral', 'P': 'poor', 'X': 'unsafe'}
+
+
+def case(key, title, brief, queue, fields, items, person, opening, talk, conclusions=(), procedure=(), must=(), doc=None, sources=()):
+    """fields: [(id, label, [options])]; items: [(title, body, {field: answer}, why[, critical])];
+    talk: [(kind E/U/N/P/X, say, reply[, note])]; doc: (doc_type, [(heading, [(label, [regex…])…], model)], forbidden [(label, [regex…])])."""
+    fs = [F(f[0], f[1], f[2]) for f in fields]
+    its = []
+    for n, it in enumerate(items):
+        its.append(Item(f'i{n + 1}', it[0], it[1], it[2], why=it[3] if len(it) > 3 else '', critical=it[4] if len(it) > 4 else False))
+    opts = [Opt(f'o{n + 1}', t[1], t[2], _KIND[t[0]], t[3] if len(t) > 3 else '') for n, t in enumerate(talk)]
+    secs, forb, dtype = [], [], ''
+    if doc:
+        dtype = doc[0]
+        for n, (heading, rubric, model) in enumerate(doc[1]):
+            secs.append(Sec(f's{n + 1}', heading, [R(lbl, pats) for lbl, pats in rubric], model))
+        forb = [R(lbl, pats) for lbl, pats in (doc[2] if len(doc) > 2 else [])]
+    return Case(key, title, brief, queue, fs, its, person, opening, opts, conclusions, procedure, must, dtype, secs, forb, sources)

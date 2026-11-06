@@ -239,6 +239,48 @@
   "scenarios": 15,
   "title": "Supply Chain"
  },
+ "mk_lab_ads": {
+  "major": "marketing",
+  "note": "Build paid campaigns: budget, bids, targeting and creative choices that hit acquisition ta",
+  "scenarios": 15,
+  "title": "Digital Advertising"
+ },
+ "mk_lab_analytics": {
+  "major": "marketing",
+  "note": "Calculate and interpret CTR, conversion rate, CPC, CPA and ROAS, then optimise the campaig",
+  "scenarios": 15,
+  "title": "Analytics and Optimization"
+ },
+ "mk_lab_brand": {
+  "major": "marketing",
+  "note": "Position brands, choose target audiences and write messaging that is distinctive and hones",
+  "scenarios": 15,
+  "title": "Brand Strategy"
+ },
+ "mk_lab_campaign": {
+  "major": "marketing",
+  "note": "Run a client campaign end to end: brief, budget, media plan, launch checks and results rep",
+  "scenarios": 15,
+  "title": "Client Campaign Project"
+ },
+ "mk_lab_content": {
+  "major": "marketing",
+  "note": "Plan content calendars, sign off posts against brand and advertising rules, and brief crea",
+  "scenarios": 15,
+  "title": "Content Marketing"
+ },
+ "mk_lab_research": {
+  "major": "marketing",
+  "note": "Size the market, plan the survey, test prices and review research instruments for a drinks",
+  "scenarios": 15,
+  "title": "Market Research"
+ },
+ "mk_lab_social": {
+  "major": "marketing",
+  "note": "Engagement analysis, community management, posting strategy and crisis response.",
+  "scenarios": 15,
+  "title": "Social Media Marketing"
+ },
  "ph_lab_electricity": {
   "major": "physics",
   "note": "Current limiting, parallel networks, internal resistance, resistivity and RC timing on the",
