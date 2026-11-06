@@ -8,7 +8,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../model/career_models.dart';
 import '../../ui/common.dart';
 import '../../ui/task_views.dart';
@@ -17,6 +16,7 @@ import '../lab_models.dart';
 import '../ui/step_views.dart';
 import 'expr.dart';
 import 'math_steps.dart';
+import '../../ui/gg_kit.dart';
 
 // ------------------------------------------------------------ keypad
 
@@ -102,19 +102,19 @@ class _GraphPlotState extends State<GraphPlot> {
           onHorizontalDragUpdate: (DragUpdateDetails d) => trace(d.localPosition),
           child: Container(
             height: widget.height,
-            decoration: BoxDecoration(color: VuV2Colors.card, border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(color: GG.panel, border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(8)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CustomPaint(
                 size: Size(w, widget.height),
-                painter: _PlotPainter(widget, _trace, VuV2Colors.mute, VuV2Colors.ink),
+                painter: _PlotPainter(widget, _trace, GG.mute, GG.ink),
               ),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 4),
-          child: Text(readout ?? 'Tap or drag on the graph to trace the curve.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          child: Text(readout ?? 'Tap or drag on the graph to trace the curve.', style: TextStyle(color: GG.mute, fontSize: 12)),
         ),
       ]);
     });
@@ -379,7 +379,7 @@ class _GrapherToolState extends State<GrapherTool> {
         const SizedBox(width: 6),
         Expanded(child: TextField(key: const ValueKey<String>('graph_yr'), controller: _yr, onChanged: (_) => setState(() {}), decoration: const InputDecoration(labelText: 'y from, to', border: OutlineInputBorder(), isDense: true))),
       ]),
-      if (_error != null) Text(_error!, style: TextStyle(color: VuV2Colors.danger, fontSize: 12)),
+      if (_error != null) Text(_error!, style: TextStyle(color: GG.red, fontSize: 12)),
       const SizedBox(height: 6),
       GraphPlot(curves: curves, window: (xr.$1, xr.$2, yr.$1, yr.$2)),
     ]);
@@ -435,12 +435,12 @@ class _WhiteboardState extends State<Whiteboard> {
         child: Container(
           key: const ValueKey<String>('whiteboard_canvas'),
           height: 260,
-          decoration: BoxDecoration(color: Colors.white, border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(color: Colors.white, border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(8)),
           child: CustomPaint(painter: _InkPainter(_strokes), size: Size.infinite),
         ),
       ),
       Row(children: <Widget>[
-        Text('${_strokes.length} stroke${_strokes.length == 1 ? '' : 's'} · saved automatically', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        Text('${_strokes.length} stroke${_strokes.length == 1 ? '' : 's'} · saved automatically', style: TextStyle(color: GG.mute, fontSize: 12)),
         const Spacer(),
         TextButton(
           key: const ValueKey<String>('whiteboard_undo'),
@@ -512,7 +512,7 @@ class _HintsState extends State<_Hints> {
     if (widget.hints.isEmpty) return const SizedBox.shrink();
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
       for (int i = 0; i < _shown; i++)
-        Padding(padding: const EdgeInsets.only(top: 4), child: Text('Hint ${i + 1}: ${widget.hints[i]}', style: TextStyle(color: VuV2Colors.ink, fontStyle: FontStyle.italic))),
+        Padding(padding: const EdgeInsets.only(top: 4), child: Text('Hint ${i + 1}: ${widget.hints[i]}', style: TextStyle(color: GG.ink, fontStyle: FontStyle.italic))),
       if (_shown < widget.hints.length)
         TextButton.icon(
           key: const ValueKey<String>('show_hint'),
@@ -582,11 +582,11 @@ class _WorkingViewState extends State<WorkingView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
       Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: VuV2Colors.orange.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8)),
-        child: Text(s.given, key: const ValueKey<String>('working_given'), style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 16)),
+        decoration: BoxDecoration(color: GG.accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8)),
+        child: Text(s.given, key: const ValueKey<String>('working_given'), style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 16)),
       ),
       const SizedBox(height: 6),
-      Text('One step per line. The last line is your final answer (${s.finalForm.label}).', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('One step per line. The last line is your final answer (${s.finalForm.label}).', style: TextStyle(color: GG.mute, fontSize: 12)),
       const SizedBox(height: 6),
       TextField(
         key: const ValueKey<String>('working_input'),
@@ -618,7 +618,7 @@ class _WorkingViewState extends State<WorkingView> {
         Padding(
           padding: const EdgeInsets.only(top: 6),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text('Preview — not submitted. Only whether each line can be read is shown here.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text('Preview — not submitted. Only whether each line can be read is shown here.', style: TextStyle(color: GG.mute, fontSize: 12)),
             for (final LineCheck c in _checks)
               Text(_readAs(c.text), style: const TextStyle(fontFamily: 'monospace', fontSize: 12.5)),
           ]),
@@ -661,7 +661,7 @@ class QuestionFields extends StatelessWidget {
                   decoration: InputDecoration(labelText: q.prompt, suffixText: q.unit.isEmpty ? null : q.unit, border: const OutlineInputBorder(), isDense: true),
                 ),
               ChoiceQuestion() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                  Text(q.prompt, style: TextStyle(color: VuV2Colors.ink)),
+                  Text(q.prompt, style: TextStyle(color: GG.ink)),
                   Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
                     for (int i = 0; i < q.options.length; i++)
                       ChoiceChip(key: ValueKey<String>('q_${q.id}_$i'), label: Text(q.options[i]), selected: choices[q.id] == i, onSelected: enabled ? (_) => onChoice(q.id, i) : null),
@@ -682,7 +682,7 @@ class DataTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        if (data.caption.isNotEmpty) Text(data.caption, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        if (data.caption.isNotEmpty) Text(data.caption, style: TextStyle(color: GG.mute, fontSize: 12)),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
@@ -696,7 +696,7 @@ class DataTableView extends StatelessWidget {
             ],
           ),
         ),
-        Text('${data.rows.length} rows', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        Text('${data.rows.length} rows', style: TextStyle(color: GG.mute, fontSize: 12)),
       ]);
 }
 
@@ -779,7 +779,7 @@ class _GraphStepViewState extends State<GraphStepView> {
     final GraphStep s = widget.step;
     final Expr e = parseExpr(s.curve);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-      Text('y = ${s.curve}', style: TextStyle(color: VuV2Colors.ink, fontFamily: 'monospace', fontWeight: FontWeight.w700)),
+      Text('y = ${s.curve}', style: TextStyle(color: GG.ink, fontFamily: 'monospace', fontWeight: FontWeight.w700)),
       const SizedBox(height: 4),
       GraphPlot(
         curves: <PlotCurve>[
@@ -791,7 +791,7 @@ class _GraphStepViewState extends State<GraphStepView> {
       ),
       for (final GraphParam g in s.params)
         Row(children: <Widget>[
-          SizedBox(width: 92, child: Text('${g.label.isEmpty ? g.name : g.label} = ${fmtNum(_p[g.name]!)}', style: TextStyle(color: VuV2Colors.ink, fontFamily: 'monospace'))),
+          SizedBox(width: 92, child: Text('${g.label.isEmpty ? g.name : g.label} = ${fmtNum(_p[g.name]!)}', style: TextStyle(color: GG.ink, fontFamily: 'monospace'))),
           Expanded(
             child: Slider(
               key: ValueKey<String>('param_${g.name}'),
@@ -829,14 +829,14 @@ class MatrixDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Text('$name = ', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+        Text('$name = ', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(border: Border(left: BorderSide(color: VuV2Colors.ink, width: 2), right: BorderSide(color: VuV2Colors.ink, width: 2))),
+          decoration: BoxDecoration(border: Border(left: BorderSide(color: GG.ink, width: 2), right: BorderSide(color: GG.ink, width: 2))),
           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             for (final List<double> row in m)
               Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                for (final double v in row) SizedBox(width: 44, child: Text(_cell(v), textAlign: TextAlign.center, style: TextStyle(color: VuV2Colors.ink, fontFamily: 'monospace'))),
+                for (final double v in row) SizedBox(width: 44, child: Text(_cell(v), textAlign: TextAlign.center, style: TextStyle(color: GG.ink, fontFamily: 'monospace'))),
               ]),
           ]),
         ),
@@ -874,7 +874,7 @@ class _MatrixViewState extends State<MatrixView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
       Wrap(spacing: 16, runSpacing: 8, children: <Widget>[for (final MapEntry<String, List<List<double>>> e in s.given.entries) MatrixDisplay(name: e.key, m: e.value)]),
       const SizedBox(height: 10),
-      Text('${s.answerLabel} (fractions like 1/3 are fine):', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+      Text('${s.answerLabel} (fractions like 1/3 are fine):', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
       const SizedBox(height: 4),
       for (int i = 0; i < _c.length; i++)
         Row(children: <Widget>[
@@ -958,14 +958,14 @@ class _OdeViewState extends State<OdeView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
       Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: VuV2Colors.orange.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8)),
+        decoration: BoxDecoration(color: GG.accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8)),
         child: Text(
           '${s.equation}${s.initial == null ? '   (general solution)' : '   with y(${fmtNum(s.initial![0])}) = ${fmtNum(s.initial![1])}${s.initial!.length > 2 ? ', y\'(${fmtNum(s.initial![0])}) = ${fmtNum(s.initial![2])}' : ''}'}',
-          style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800),
+          style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800),
         ),
       ),
       const SizedBox(height: 6),
-      if (field != null) Text('Slope field of the equation${mine != null ? ', with your solution' : ''}${s.general ? ' (constants set to 1)' : ''}:', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      if (field != null) Text('Slope field of the equation${mine != null ? ', with your solution' : ''}${s.general ? ' (constants set to 1)' : ''}:', style: TextStyle(color: GG.mute, fontSize: 12)),
       GraphPlot(
         curves: <PlotCurve>[if (mine != null) PlotCurve(mine, _curveColors[0], env: const <String, double>{'C': 1, 'C1': 1, 'C2': 1})],
         window: (s.range.$1 - span * 0.1, s.range.$2 + span * 0.1, -6, 6),

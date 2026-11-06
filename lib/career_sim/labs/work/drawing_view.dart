@@ -7,11 +7,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../ui/common.dart';
 import '../lab_models.dart';
 import '../ui/step_views.dart';
 import 'drawing_step.dart';
+import '../../ui/gg_kit.dart';
 
 class DrawingView extends StatefulWidget {
   const DrawingView({super.key, required this.lab, required this.step, required this.onGraded});
@@ -135,7 +135,7 @@ class _DrawingViewState extends State<DrawingView> {
     final DrawingStep s = widget.step;
     final List<String> refs = _refs(_kind);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-      Text('Units: mm. The datum corner (0, 0) is bottom-left. Tap the sheet to pick a hole centre on the 1 mm grid.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('Units: mm. The datum corner (0, 0) is bottom-left. Tap the sheet to pick a hole centre on the 1 mm grid.', style: TextStyle(color: GG.mute, fontSize: 12)),
       const SizedBox(height: 6),
       LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
         final Size size = Size(c.maxWidth, math.min(320, c.maxWidth * 0.7));
@@ -143,7 +143,7 @@ class _DrawingViewState extends State<DrawingView> {
           key: const ValueKey<String>('cad_sheet'),
           onTapUp: (TapUpDetails t) => _tapSheet(t.localPosition, size),
           child: Container(
-            decoration: BoxDecoration(color: Colors.white, border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(6)),
+            decoration: BoxDecoration(color: Colors.white, border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(6)),
             child: CustomPaint(size: size, painter: _SheetPainter(_d)),
           ),
         );
@@ -186,14 +186,14 @@ class _DrawingViewState extends State<DrawingView> {
           ),
       ]),
       const SizedBox(height: 6),
-      Text(_kind == 'd' ? 'Hole' : 'From', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text(_kind == 'd' ? 'Hole' : 'From', style: TextStyle(color: GG.mute, fontSize: 12)),
       Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
         for (final String r in refs.where((String r) => _kind != 'd' || r.startsWith('c')))
           ChoiceChip(key: ValueKey<String>('cad_from_$r'), label: Text(refLabel(r)), selected: _from == r, onSelected: (_) => setState(() => _from = r)),
       ]),
       if (_kind != 'd') ...<Widget>[
         const SizedBox(height: 4),
-        Text('To', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        Text('To', style: TextStyle(color: GG.mute, fontSize: 12)),
         Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
           for (final String r in refs) ChoiceChip(key: ValueKey<String>('cad_to_$r'), label: Text(refLabel(r)), selected: _to == r, onSelected: (_) => setState(() => _to = r)),
         ]),
@@ -227,7 +227,7 @@ class _DrawingViewState extends State<DrawingView> {
         Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Wrap(spacing: 4, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
-            SizedBox(width: 80, child: Text(f.key, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w600))),
+            SizedBox(width: 80, child: Text(f.key, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w600))),
             for (final String o in f.value)
               ChoiceChip(
                 key: ValueKey<String>('cad_title_${f.key}_$o'),
@@ -251,7 +251,7 @@ class _DrawingViewState extends State<DrawingView> {
     return m.kind == 'd' ? 'Ø$val — ${refLabel(m.from)}$note' : '${m.kind == 'h' ? 'Horizontal' : 'Vertical'} $val: ${refLabel(m.from)} → ${refLabel(m.to)}$note';
   }
 
-  Widget _section(String t) => Padding(padding: const EdgeInsets.only(bottom: 4), child: Text(t, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)));
+  Widget _section(String t) => Padding(padding: const EdgeInsets.only(bottom: 4), child: Text(t, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)));
 }
 
 /// Maps millimetres on the part to pixels on the sheet.

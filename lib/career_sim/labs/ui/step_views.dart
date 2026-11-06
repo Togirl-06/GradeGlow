@@ -6,7 +6,6 @@ import '../../../data/science_diagram_catalog.dart';
 import '../../../models/science_diagram.dart';
 import '../../../services/lab_runner/lab_runner.dart';
 import '../../../services/lab_runner/lab_runner_host.dart';
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../../widgets/science/anatomy_asset_canvas.dart';
 import '../../../widgets/science/science_diagram_canvas.dart';
 import '../../model/career_models.dart';
@@ -25,6 +24,7 @@ import '../work/drawing_view.dart';
 import '../work/work_steps.dart';
 import '../work/work_views.dart';
 import 'lab_tools.dart';
+import '../../ui/gg_kit.dart';
 
 typedef StepGraded = Future<void> Function(TaskResult result);
 
@@ -67,14 +67,42 @@ class LabStepView extends StatelessWidget {
       Anatomy3DStep() => Anatomy3DView(lab: lab, step: s, onGraded: onGraded),
       _ => const Text('Unsupported step.'),
     };
+    if (s is ProgramStep || s is SqlStep) {
+      final Widget desc = GGPanel(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          Row(children: <Widget>[
+            Expanded(child: Text(s.title, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w900, fontSize: 22))),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(color: const Color(0xFF15803D), borderRadius: BorderRadius.circular(8)),
+              child: Text(lab.difficulty.label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12)),
+            ),
+          ]),
+          const SizedBox(height: 10),
+          Text(s.instructions, style: const TextStyle(color: GG.ink, height: 1.5)),
+          if (s is ProgramStep && s.cases.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 14),
+            const Text('Example:', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+            const SizedBox(height: 4),
+            Text('Input: ${s.cases.first.stdin.replaceAll('\n', ' | ')}\nOutput: ${s.cases.first.expected.replaceAll('\n', ' | ')}', style: const TextStyle(fontFamily: 'monospace', color: GG.ink, fontSize: 13)),
+          ],
+          const SizedBox(height: 10),
+          Text('${s.kind} · pass mark ${s.passMark}', style: const TextStyle(color: GG.mute, fontSize: 12)),
+        ]),
+      );
+      return LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
+        if (c.maxWidth < 900) return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[desc, const SizedBox(height: 10), body]);
+        return Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[Expanded(flex: 4, child: desc), const SizedBox(width: 12), Expanded(flex: 5, child: body)]);
+      });
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Row(children: <Widget>[StatusChip(s.kind), const SizedBox(width: 8), Text('Pass mark ${s.passMark}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12))]),
+        Row(children: <Widget>[StatusChip(s.kind), const SizedBox(width: 8), Text('Pass mark ${s.passMark}', style: TextStyle(color: GG.mute, fontSize: 12))]),
         const SizedBox(height: 6),
-        Text(s.title, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 18)),
+        Text(s.title, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 18)),
         const SizedBox(height: 4),
-        Text(s.instructions, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+        Text(s.instructions, style: TextStyle(color: GG.ink, height: 1.4)),
         const SizedBox(height: 10),
         body,
       ],
@@ -151,80 +179,99 @@ class _ProgramViewState extends State<_ProgramView> {
   Widget build(BuildContext context) {
     final LabRunner runner = careerStore(context).runner;
     final ProgramOutput? t = _trial;
+    final bool allPassed = _result?.passed ?? false;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Row(children: <Widget>[
-          DropdownButton<String>(
-            key: const ValueKey<String>('program_lang'),
-            value: _lang,
-            items: const <DropdownMenuItem<String>>[
-              DropdownMenuItem<String>(value: 'python3', child: Text('Python 3')),
-              DropdownMenuItem<String>(value: 'javascript', child: Text('JavaScript')),
-            ],
-            onChanged: (String? v) {
-              if (v == null || v == _lang) return;
-              setState(() {
-                _lang = v;
-                _code.text = widget.step.starter[v] ?? '';
-              });
-            },
-          ),
-          const Spacer(),
-          Text(runner.where, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
-        ]),
-        TextField(
-          key: const ValueKey<String>('program_code'),
+        GGCodeEditor(
           controller: _code,
-          minLines: 8,
-          maxLines: 20,
-          style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
-          decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Program'),
+          fieldKey: const ValueKey<String>('program_code'),
           onChanged: (_) => _saveDraft(),
+          header: Row(children: <Widget>[
+            DropdownButton<String>(
+              key: const ValueKey<String>('program_lang'),
+              value: _lang,
+              underline: const SizedBox.shrink(),
+              dropdownColor: GG.panel2,
+              style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700),
+              items: const <DropdownMenuItem<String>>[
+                DropdownMenuItem<String>(value: 'python3', child: Text('Python')),
+                DropdownMenuItem<String>(value: 'javascript', child: Text('JavaScript')),
+              ],
+              onChanged: (String? v) {
+                if (v == null || v == _lang) return;
+                setState(() {
+                  _lang = v;
+                  _code.text = widget.step.starter[v] ?? '';
+                });
+              },
+            ),
+            const Spacer(),
+            Text(runner.where, style: const TextStyle(color: GG.mute, fontSize: 12)),
+          ]),
         ),
         const SizedBox(height: 8),
-        Text('Sample input ${widget.step.cases.first.stdin.isEmpty ? '(none)' : ''}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
-        TextField(key: const ValueKey<String>('program_stdin'), controller: _stdin, style: const TextStyle(fontFamily: 'monospace'), decoration: const InputDecoration(border: OutlineInputBorder(), isDense: true)),
-        const SizedBox(height: 8),
-        Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
-          BusyButton(
-            key: const ValueKey<String>('program_run'),
-            label: 'Run with this input',
-            icon: Icons.play_arrow_rounded,
-            tonal: true,
-            onPressed: () async {
-              await _saveDraft();
-              final ProgramOutput o = await runner.runProgram(_lang, _code.text, stdin: _stdin.text);
-              if (mounted) setState(() => _trial = o);
-            },
+        Text('Custom input ${widget.step.cases.first.stdin.isEmpty ? '(none)' : ''}', style: const TextStyle(color: GG.mute, fontSize: 12)),
+        TextField(key: const ValueKey<String>('program_stdin'), controller: _stdin, style: const TextStyle(fontFamily: 'monospace'), decoration: const InputDecoration(isDense: true)),
+        const SizedBox(height: 10),
+        Row(children: <Widget>[
+          Expanded(
+            child: GGAsyncButton(
+              key: const ValueKey<String>('program_run'),
+              label: 'Run Code',
+              icon: Icons.play_arrow_rounded,
+              color: const Color(0xFF4F5BEA),
+              expand: true,
+              onPressed: () async {
+                await _saveDraft();
+                final ProgramOutput o = await runner.runProgram(_lang, _code.text, stdin: _stdin.text);
+                if (mounted) setState(() => _trial = o);
+              },
+            ),
           ),
-          _submit('program_submit', () async {
-            await _saveDraft();
-            final List<ProgramOutput> outs = <ProgramOutput>[];
-            for (final ProgramCase c in widget.step.cases) {
-              outs.add(await runner.runProgram(_lang, _code.text, stdin: c.stdin));
-            }
-            if (!mounted) return;
-            setState(() => _outputs = outs);
-            final TaskResult? r = await _grade(context, () => LabGrader.program(widget.step, outs), widget.onGraded);
-            if (mounted && r != null) setState(() => _result = r);
-          }, label: 'Run all tests and submit'),
-          LabRunnerHost(runner: runner),
+          const SizedBox(width: 10),
+          Expanded(
+            child: GGAsyncButton(
+              key: const ValueKey<String>('program_submit'),
+              label: 'Submit',
+              icon: Icons.check_rounded,
+              color: const Color(0xFF22B573),
+              expand: true,
+              onPressed: () async {
+                await _saveDraft();
+                final List<ProgramOutput> outs = <ProgramOutput>[];
+                for (final ProgramCase c in widget.step.cases) {
+                  outs.add(await runner.runProgram(_lang, _code.text, stdin: c.stdin));
+                }
+                if (!mounted) return;
+                setState(() => _outputs = outs);
+                final TaskResult? r = await _grade(context, () => LabGrader.program(widget.step, outs), widget.onGraded);
+                if (mounted && r != null) setState(() => _result = r);
+              },
+            ),
+          ),
         ]),
+        LabRunnerHost(runner: runner),
         if (t != null) ...<Widget>[
           const SizedBox(height: 8),
-          if (t.unavailable != null) Text(t.unavailable!, style: const TextStyle(color: VuV2Colors.danger)),
-          Text('Output', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          if (t.unavailable != null) Text(t.unavailable!, style: const TextStyle(color: GG.red)),
+          const Text('Output', style: TextStyle(color: GG.mute, fontSize: 12)),
           codeBox(t.stdout, key: const ValueKey<String>('program_output')),
           if (t.stderr.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: codeBox(t.stderr, color: const Color(0xFFFCA5A5))),
         ],
         if (_outputs.isNotEmpty && _result != null) ...<Widget>[
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
+          Row(children: <Widget>[
+            Icon(allPassed ? Icons.check_circle_rounded : Icons.cancel_rounded, color: allPassed ? GG.green : GG.red, size: 26),
+            const SizedBox(width: 8),
+            Text(allPassed ? 'Correct! Well done!' : 'Not yet — some tests failed.', style: TextStyle(color: allPassed ? GG.green : GG.red, fontWeight: FontWeight.w800, fontSize: 16)),
+          ]),
+          const SizedBox(height: 4),
           for (int i = 0; i < _outputs.length; i++)
             Text(
               'Test ${i + 1}: ${ProgramStep.normalize(_outputs[i].stdout) == ProgramStep.normalize(widget.step.cases[i].expected) ? 'passed' : 'failed'}'
               '${i == 0 ? ' — input "${widget.step.cases[0].stdin}"' : ''}',
-              style: TextStyle(color: VuV2Colors.ink),
+              style: const TextStyle(color: GG.ink),
             ),
           ResultPanel(result: _result!),
         ],
@@ -299,11 +346,11 @@ class _SqlViewState extends State<_SqlView> {
         if (o != null) ...<Widget>[
           const SizedBox(height: 8),
           if (o.unavailable != null)
-            Text(o.unavailable!, style: const TextStyle(color: VuV2Colors.danger))
+            Text(o.unavailable!, style: const TextStyle(color: GG.red))
           else if (!o.ok)
-            Text('Error: ${o.error}', key: const ValueKey<String>('sql_error'), style: const TextStyle(color: VuV2Colors.danger))
+            Text('Error: ${o.error}', key: const ValueKey<String>('sql_error'), style: const TextStyle(color: GG.red))
           else ...<Widget>[
-            Text('${o.result.rows.length} row(s)${o.changes > 0 ? ' · ${o.changes} changed' : ''}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text('${o.result.rows.length} row(s)${o.changes > 0 ? ' · ${o.changes} changed' : ''}', style: TextStyle(color: GG.mute, fontSize: 12)),
             SqlTableView(key: const ValueKey<String>('sql_result'), table: o.result),
           ],
         ],
@@ -360,7 +407,7 @@ class _SchedulingViewState extends State<_SchedulingView> {
           columns: const <DataColumn>[DataColumn(label: Text('Process')), DataColumn(label: Text('Arrival')), DataColumn(label: Text('Burst'))],
           rows: <DataRow>[for (final SchedProcess p in s.processes) DataRow(cells: <DataCell>[DataCell(Text(p.name)), DataCell(Text('${p.arrival}')), DataCell(Text('${p.burst}'))])],
         ),
-        Text('Dispatch next:', style: TextStyle(color: VuV2Colors.mute)),
+        Text('Dispatch next:', style: TextStyle(color: GG.mute)),
         Wrap(spacing: 6, children: <Widget>[
           for (final SchedProcess p in s.processes)
             OutlinedButton(
@@ -371,7 +418,7 @@ class _SchedulingViewState extends State<_SchedulingView> {
           TextButton(key: const ValueKey<String>('gantt_clear'), onPressed: _result != null ? null : () => setState(_order.clear), child: const Text('Clear')),
         ]),
         const SizedBox(height: 6),
-        SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: gantt.isEmpty ? <Widget>[Text('Gantt chart is empty.', style: TextStyle(color: VuV2Colors.mute))] : gantt)),
+        SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: gantt.isEmpty ? <Widget>[Text('Gantt chart is empty.', style: TextStyle(color: GG.mute))] : gantt)),
         const SizedBox(height: 8),
         TextField(key: const ValueKey<String>('avg_wait'), controller: _avg, keyboardType: const TextInputType.numberWithOptions(decimal: true), decoration: const InputDecoration(labelText: 'Average waiting time', border: OutlineInputBorder(), isDense: true)),
         const SizedBox(height: 8),
@@ -436,7 +483,7 @@ class _PagingViewState extends State<_PagingView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text('${s.algorithm == PagingAlgorithm.fifo ? 'FIFO' : 'LRU'} · ${s.frames} frames', style: TextStyle(color: VuV2Colors.mute)),
+        Text('${s.algorithm == PagingAlgorithm.fifo ? 'FIFO' : 'LRU'} · ${s.frames} frames', style: TextStyle(color: GG.mute)),
         const SizedBox(height: 6),
         Wrap(spacing: 4, children: <Widget>[
           for (int i = 0; i < s.references.length; i++)
@@ -445,27 +492,27 @@ class _PagingViewState extends State<_PagingView> {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 color: i == _decisions.length ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.25) : null,
-                border: Border.all(color: VuV2Colors.stroke),
+                border: Border.all(color: GG.stroke),
               ),
               child: Text('${s.references[i]}\n${i < _decisions.length ? (_decisions[i] == null ? 'H' : 'F') : ''}', textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'monospace')),
             ),
         ]),
         const SizedBox(height: 8),
         Row(children: <Widget>[
-          Text('Frames: ', style: TextStyle(color: VuV2Colors.ink)),
+          Text('Frames: ', style: TextStyle(color: GG.ink)),
           for (int f = 0; f < s.frames; f++)
             Container(
               key: ValueKey<String>('frame_$f'),
               width: 40,
               margin: const EdgeInsets.only(right: 4),
               padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(border: Border.all(color: VuV2Colors.ink)),
+              decoration: BoxDecoration(border: Border.all(color: GG.ink)),
               child: Text(f < _frames.length ? '${_frames[f]}' : '–', textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'monospace', fontWeight: FontWeight.w800)),
             ),
         ]),
         const SizedBox(height: 8),
         if (current != null) ...<Widget>[
-          Text('Reference ${_decisions.length + 1}: page $current', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+          Text('Reference ${_decisions.length + 1}: page $current', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
           Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
             OutlinedButton(key: const ValueKey<String>('page_hit'), onPressed: () => _decide(null), child: const Text('Hit')),
             if (_frames.length < s.frames)
@@ -525,7 +572,7 @@ class _TraceViewState extends State<_TraceView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text('Target: ${s.target} · lo = $_lo · hi = $_hi', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+        Text('Target: ${s.target} · lo = $_lo · hi = $_hi', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
         const SizedBox(height: 6),
         Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
           for (int i = 0; i < s.values.length; i++)
@@ -536,15 +583,15 @@ class _TraceViewState extends State<_TraceView> {
                 width: 38,
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 decoration: BoxDecoration(
-                  color: i < _lo || i > _hi ? VuV2Colors.stroke : Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
-                  border: Border.all(color: _mids.contains(i) ? VuV2Colors.orange : VuV2Colors.stroke, width: _mids.contains(i) ? 2 : 1),
+                  color: i < _lo || i > _hi ? GG.stroke : Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+                  border: Border.all(color: _mids.contains(i) ? GG.accent : GG.stroke, width: _mids.contains(i) ? 2 : 1),
                 ),
                 child: Text('$i\n${s.values[i]}', textAlign: TextAlign.center, style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
               ),
             ),
         ]),
         const SizedBox(height: 6),
-        Text(_found ? 'Search finished after ${_mids.length} probe(s).' : 'Tap the index binary search probes next.', style: TextStyle(color: VuV2Colors.mute)),
+        Text(_found ? 'Search finished after ${_mids.length} probe(s).' : 'Tap the index binary search probes next.', style: TextStyle(color: GG.mute)),
         const SizedBox(height: 8),
         if (_found && _result == null)
           _submit('trace_submit', () async {
@@ -591,7 +638,7 @@ class _IdentityViewState extends State<_IdentityView> {
         if (_band) Text('Wristband: ${IdentityCheckStep.fields.map((String f) => '$f ${s.wristband[f]}').join(' · ')}', key: const ValueKey<String>('wristband_text')),
         if (_asked) Text('Patient: "My name is ${s.stated['Name']}, born ${s.stated['Date of birth']}."'),
         const SizedBox(height: 8),
-        Text('Identifiers that do not match the record:', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+        Text('Identifiers that do not match the record:', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
         for (final String f in IdentityCheckStep.fields)
           CheckboxListTile(
             key: ValueKey<String>('mismatch_$f'),
@@ -652,12 +699,12 @@ class _HistoryViewState extends State<_HistoryView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text('${p.name}, ${p.age}: ${p.presenting}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-        Text('Questions asked: ${_asked.length} of ${s.maxQuestions}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        Text('${p.name}, ${p.age}: ${p.presenting}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+        Text('Questions asked: ${_asked.length} of ${s.maxQuestions}', style: TextStyle(color: GG.mute, fontSize: 12)),
         const SizedBox(height: 6),
         for (final int i in _asked) ...<Widget>[
           Align(alignment: Alignment.centerRight, child: Container(margin: const EdgeInsets.only(bottom: 4), padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(10)), child: Text(s.questions[i].question))),
-          Align(alignment: Alignment.centerLeft, child: Container(margin: const EdgeInsets.only(bottom: 8), padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: VuV2Colors.navyElevated, borderRadius: BorderRadius.circular(10)), child: Text('${p.name.split(' ').first}: ${s.questions[i].answer}'))),
+          Align(alignment: Alignment.centerLeft, child: Container(margin: const EdgeInsets.only(bottom: 8), padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: GG.panel2, borderRadius: BorderRadius.circular(10)), child: Text('${p.name.split(' ').first}: ${s.questions[i].answer}'))),
         ],
         if (_result == null)
           Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
@@ -711,7 +758,7 @@ class _VitalsViewState extends State<_VitalsView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         if (!done) ...<Widget>[
-          Text('Round ${_round + 1} of ${p.vitals.length}', style: TextStyle(color: VuV2Colors.mute)),
+          Text('Round ${_round + 1} of ${p.vitals.length}', style: TextStyle(color: GG.mute)),
           BedsideMonitor(vitals: p.vitals[_round]),
           const SizedBox(height: 8),
           TextField(key: const ValueKey<String>('news_total'), controller: _score, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'NEWS2 total', border: OutlineInputBorder(), isDense: true)),
@@ -781,10 +828,10 @@ class _MarViewState extends State<_MarView> {
           Container(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(10)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text('${p.medications[i].drug} ${p.medications[i].dose} ${p.medications[i].route} — due ${p.medications[i].due}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-              if (p.medications[i].notes.isNotEmpty) Text(p.medications[i].notes, style: TextStyle(color: VuV2Colors.mute)),
+              Text('${p.medications[i].drug} ${p.medications[i].dose} ${p.medications[i].route} — due ${p.medications[i].due}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+              if (p.medications[i].notes.isNotEmpty) Text(p.medications[i].notes, style: TextStyle(color: GG.mute)),
               Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
                 for (final MedDecision m in MedDecision.values)
                   ChoiceChip(
@@ -922,7 +969,7 @@ class _JournalViewState extends State<_JournalView> {
             ]),
           ),
         Text('Debits ${_money(dr)} · Credits ${_money(cr)}${(dr - cr).abs() < 0.005 && lines.isNotEmpty ? ' · balanced' : ''}',
-            style: TextStyle(color: (dr - cr).abs() < 0.005 ? VuV2Colors.success : VuV2Colors.danger, fontWeight: FontWeight.w700)),
+            style: TextStyle(color: (dr - cr).abs() < 0.005 ? GG.green : GG.red, fontWeight: FontWeight.w700)),
         if (_result == null) ...<Widget>[
           const SizedBox(height: 6),
           DropdownButtonFormField<String>(
@@ -1006,15 +1053,15 @@ class _ReconViewState extends State<_ReconView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text('Cash book balance ${_money(s.cashBookBalance)} · Bank statement balance ${_money(s.bankBalance)}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+        Text('Cash book balance ${_money(s.cashBookBalance)} · Bank statement balance ${_money(s.bankBalance)}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
         const SizedBox(height: 8),
         for (int i = 0; i < s.lines.length; i++)
           Container(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(8)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text('${s.lines[i].source}: ${s.lines[i].description}  ${s.lines[i].amount >= 0 ? '+' : '−'}${_money(s.lines[i].amount.abs())}', style: TextStyle(color: VuV2Colors.ink)),
+              Text('${s.lines[i].source}: ${s.lines[i].description}  ${s.lines[i].amount >= 0 ? '+' : '−'}${_money(s.lines[i].amount.abs())}', style: TextStyle(color: GG.ink)),
               Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
                 for (final ReconItem it in ReconItem.values)
                   ChoiceChip(key: ValueKey<String>('recon_${i}_${it.name}'), label: Text(it.label), selected: _p[i] == it, onSelected: _result != null ? null : (_) => setState(() => _p[i] = it)),
@@ -1069,7 +1116,7 @@ class _StatementsViewState extends State<_StatementsView> {
           Padding(
             padding: const EdgeInsets.only(bottom: 6),
             child: Row(children: <Widget>[
-              Expanded(child: Text('${s.trialBalance[i].name}  ${_money(s.trialBalance[i].balance)} ${s.trialBalance[i].debit ? 'Dr' : 'Cr'}', style: TextStyle(color: VuV2Colors.ink))),
+              Expanded(child: Text('${s.trialBalance[i].name}  ${_money(s.trialBalance[i].balance)} ${s.trialBalance[i].debit ? 'Dr' : 'Cr'}', style: TextStyle(color: GG.ink))),
               SizedBox(
                 width: 230,
                 child: DropdownButtonFormField<StatementLine>(
@@ -1086,11 +1133,11 @@ class _StatementsViewState extends State<_StatementsView> {
         Container(
           key: const ValueKey<String>('stmt_preview'),
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(8)),
           child: Text(
             'Income statement (from your choices): revenue ${_money(s.sum(StatementLine.revenue, _m))} − expenses ${_money(s.sum(StatementLine.expense, _m))}\n'
             'Balance sheet: assets ${_money(s.sum(StatementLine.asset, _m))} · liabilities ${_money(liabilities)} · equity incl. profit ${_money(equity)}',
-            style: TextStyle(color: VuV2Colors.ink, height: 1.4),
+            style: TextStyle(color: GG.ink, height: 1.4),
           ),
         ),
         const SizedBox(height: 8),
@@ -1143,7 +1190,7 @@ class _AnatomyIdViewState extends State<_AnatomyIdView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         SizedBox(height: 280, child: canvas),
-        Text('Structure ${_i + 1} of ${widget.step.regionIds.length}', style: TextStyle(color: VuV2Colors.mute)),
+        Text('Structure ${_i + 1} of ${widget.step.regionIds.length}', style: TextStyle(color: GG.mute)),
         Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
           for (final String n in bank)
             ChoiceChip(

@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../model/career_models.dart';
 import '../../ui/common.dart';
 import '../lab_models.dart';
 import '../ui/step_views.dart';
 import 'anatomy3d.dart';
 import 'viewer.dart';
+import '../../ui/gg_kit.dart';
 
 /// Identify structures on the 3D body (or, where 3D cannot run, from the
 /// structure list — also available as an accessible alternative).
@@ -116,18 +116,18 @@ class _Anatomy3DViewState extends State<Anatomy3DView> {
           ),
       ]),
       const SizedBox(height: 6),
-      Text('Find: ${q.prompt}', key: const ValueKey<String>('a3d_prompt'), style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 16)),
-      if (_picks[_q] != null) Text('Your answer: ${structureById(_picks[_q]!)?.name ?? _picks[_q]}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('Find: ${q.prompt}', key: const ValueKey<String>('a3d_prompt'), style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 16)),
+      if (_picks[_q] != null) Text('Your answer: ${structureById(_picks[_q]!)?.name ?? _picks[_q]}', style: TextStyle(color: GG.mute, fontSize: 12)),
       const SizedBox(height: 6),
       if (_viewer != null)
         Row(children: <Widget>[
-          Text('View:', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text('View:', style: TextStyle(color: GG.mute, fontSize: 12)),
           const SizedBox(width: 6),
           ChoiceChip(key: const ValueKey<String>('a3d_mode_3d'), label: const Text('3D model'), selected: !_list, onSelected: (_) => setState(() => _list = false)),
           const SizedBox(width: 4),
           ChoiceChip(key: const ValueKey<String>('a3d_mode_list'), label: const Text('List'), selected: _list, onSelected: (_) => setState(() => _list = true)),
         ]),
-      if (_viewer == null) Text('The 3D model runs in the browser and on phones; here, choose from the list.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      if (_viewer == null) Text('The 3D model runs in the browser and on phones; here, choose from the list.', style: TextStyle(color: GG.mute, fontSize: 12)),
       const SizedBox(height: 6),
       // The 3D view stays mounted (only hidden) so the model is not reloaded.
       if (_viewer != null)
@@ -135,7 +135,7 @@ class _Anatomy3DViewState extends State<Anatomy3DView> {
           offstage: _list,
           child: Container(
             height: 440,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: VuV2Colors.stroke)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: GG.stroke)),
             clipBehavior: Clip.antiAlias,
             child: _viewer,
           ),
@@ -145,13 +145,13 @@ class _Anatomy3DViewState extends State<Anatomy3DView> {
       Row(children: <Widget>[
         Expanded(
           child: Text(sel == null ? 'Tap a structure to select it.' : 'Selected: ${sel.name}',
-              key: const ValueKey<String>('a3d_selected'), style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w600)),
+              key: const ValueKey<String>('a3d_selected'), style: TextStyle(color: GG.ink, fontWeight: FontWeight.w600)),
         ),
         FilledButton(key: const ValueKey<String>('a3d_confirm'), onPressed: sel == null ? null : _confirm, child: const Text('Confirm answer')),
       ]),
-      if (sel != null) Text(sel.description, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      if (sel != null) Text(sel.description, style: TextStyle(color: GG.mute, fontSize: 12)),
       const SizedBox(height: 10),
-      Text('${_picks.length} of ${s.questions.length} identified', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('${_picks.length} of ${s.questions.length} identified', style: TextStyle(color: GG.mute, fontSize: 12)),
       labSubmitButton('a3d_submit', _submit),
     ]);
   }

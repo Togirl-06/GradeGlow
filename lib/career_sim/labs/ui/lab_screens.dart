@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../ai/career_ai.dart';
 import '../../content/catalog.dart';
 import '../../engine/pay_rules.dart';
@@ -18,6 +17,7 @@ import '../workplace.dart';
 import '../math/math_views.dart';
 import 'lab_tools.dart';
 import 'step_views.dart';
+import '../../ui/gg_kit.dart';
 
 IconData environmentIcon(LabEnvironment e) => switch (e) {
       LabEnvironment.computingLab => Icons.terminal_rounded,
@@ -108,14 +108,14 @@ class _PracticalLabsScreenState extends State<PracticalLabsScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          if (searching && majors.isEmpty) Padding(padding: const EdgeInsets.all(12), child: Text('No labs match "${_q.text.trim()}".', style: TextStyle(color: VuV2Colors.mute))),
+          if (searching && majors.isEmpty) Padding(padding: const EdgeInsets.all(12), child: Text('No labs match "${_q.text.trim()}".', style: TextStyle(color: GG.mute))),
           if (!searching) Wrap(spacing: 8, children: <Widget>[
             ChoiceChip(key: const ValueKey<String>('labs_mine'), label: const Text('My field'), selected: _mine, onSelected: (_) => setState(() => _mine = true)),
             ChoiceChip(key: const ValueKey<String>('labs_all'), label: const Text('All majors'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
           ]),
           const SizedBox(height: 8),
           Text('${blueprintLabs.where((BlueprintLab b) => b.built).length} of ${blueprintLabs.length} university labs are open. Labs marked "Not started" are planned and cannot be opened yet.',
-              style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+              style: TextStyle(color: GG.mute, fontSize: 12)),
           for (final MapEntry<String, List<BlueprintLab>> e in majors)
             Card(
               margin: const EdgeInsets.only(top: 10),
@@ -159,28 +159,28 @@ class LabCard extends StatelessWidget {
     final bool inProgress = run != null && !run.done;
     final LabCompletion? best = store.profile.bestLab(lab.id);
     final int passedScenarios = lab.scenarios.where((LabScenario s) => store.profile.labScenarioPassed(lab.id, s.id)).length;
-    void open() => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: lab.id)));
+    void open() => Navigator.of(context).push(ggRoute<void>((_) => LabIntroScreen(labId: lab.id)));
     return Container(
       key: ValueKey<String>('lab_${lab.id}'),
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(border: Border.all(color: VuV2Colors.mute.withValues(alpha: 0.25)), borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(border: Border.all(color: GG.mute.withValues(alpha: 0.25)), borderRadius: BorderRadius.circular(12)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
         Row(children: <Widget>[
-          Icon(environmentIcon(lab.environment), color: VuV2Colors.orange, size: 20),
+          Icon(environmentIcon(lab.environment), color: GG.accent, size: 20),
           const SizedBox(width: 8),
-          Expanded(child: Text('${blueprint.letter}. ${lab.title}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800))),
+          Expanded(child: Text('${blueprint.letter}. ${lab.title}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800))),
         ]),
         const SizedBox(height: 4),
-        Text(lab.summary, maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+        Text(lab.summary, maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.mute, fontSize: 12.5)),
         const SizedBox(height: 4),
-        Text('Skills: ${lab.skills.map((String s) => d?.skillLabel(s) ?? s).join(', ')}', style: TextStyle(color: VuV2Colors.ink, fontSize: 12)),
+        Text('Skills: ${lab.skills.map((String s) => d?.skillLabel(s) ?? s).join(', ')}', style: TextStyle(color: GG.ink, fontSize: 12)),
         const SizedBox(height: 6),
         Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
           StatusChip(lab.difficulty.label),
           StatusChip('${lab.scenarios.length} scenario${lab.scenarios.length == 1 ? '' : 's'} · $passedScenarios passed'),
-          StatusChip(labStatus(store.profile, lab), color: VuV2Colors.mute),
-          if (best != null) StatusChip('Previous best ${best.score}/100', color: VuV2Colors.mute),
+          StatusChip(labStatus(store.profile, lab), color: GG.mute),
+          if (best != null) StatusChip('Previous best ${best.score}/100', color: GG.mute),
         ]),
         const SizedBox(height: 6),
         Align(
@@ -215,7 +215,7 @@ class LabIntroScreen extends StatelessWidget {
     Future<void> open(String scenarioId, {bool restart = false}) async {
       final LabRun? r = await runCareerAction<LabRun>(context, () => store.startLab(lab, scenarioId: scenarioId, restart: restart));
       if (r != null && context.mounted) {
-        await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabSessionScreen(labId: lab.id)));
+        await Navigator.of(context).push(ggRoute<void>((_) => LabSessionScreen(labId: lab.id)));
       }
     }
 
@@ -225,25 +225,25 @@ class LabIntroScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           Row(children: <Widget>[
-            Icon(environmentIcon(lab.environment), color: VuV2Colors.orange),
+            Icon(environmentIcon(lab.environment), color: GG.accent),
             const SizedBox(width: 8),
-            Expanded(child: Text('${d?.title ?? lab.deptId} · ${lab.environment.label}', style: TextStyle(color: VuV2Colors.mute))),
+            Expanded(child: Text('${d?.title ?? lab.deptId} · ${lab.environment.label}', style: TextStyle(color: GG.mute))),
           ]),
           const SizedBox(height: 8),
-          Text(lab.summary, style: TextStyle(color: VuV2Colors.ink, height: 1.45)),
+          Text(lab.summary, style: TextStyle(color: GG.ink, height: 1.45)),
           const SizedBox(height: 8),
           Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
             StatusChip(lab.difficulty.label),
             StatusChip('About ${lab.minutes} min'),
-            StatusChip(labStatus(store.profile, lab), color: VuV2Colors.mute),
+            StatusChip(labStatus(store.profile, lab), color: GG.mute),
           ]),
           const SizedBox(height: 12),
           SectionCard(title: 'Learning objectives', child: BulletList(lab.objectives, icon: Icons.flag_outlined)),
-          SectionCard(title: 'Skills practised', child: Text(lab.skills.map((String s) => d?.skillLabel(s) ?? s).join(' · '), style: TextStyle(color: VuV2Colors.ink))),
+          SectionCard(title: 'Skills practised', child: Text(lab.skills.map((String s) => d?.skillLabel(s) ?? s).join(' · '), style: TextStyle(color: GG.ink))),
           SectionCard(
             title: 'Prerequisites',
             child: lab.prerequisites.isEmpty
-                ? Text('None.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('None.', style: TextStyle(color: GG.mute))
                 : BulletList(<String>[
                     for (final String id in lab.prerequisites)
                       '${LabCatalog.lab(id)?.title ?? id}${store.profile.labPassed(id) ? ' — passed' : ' — recommended first'}',
@@ -313,7 +313,7 @@ class _ScenarioTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: Icon(
         !unlocked ? Icons.lock_rounded : (best?.passed ?? false) ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-        color: (best?.passed ?? false) ? VuV2Colors.success : VuV2Colors.mute,
+        color: (best?.passed ?? false) ? GG.green : GG.mute,
       ),
       title: Text(scenario.title),
       subtitle: Text('${scenario.steps.length} task${scenario.steps.length == 1 ? '' : 's'} · ${scenario.briefing.what}'
@@ -388,7 +388,7 @@ class EnvironmentTools extends StatelessWidget {
         children: <Widget>[BulletList(lab.reference)],
       ));
     }
-    if (tools.isEmpty) return Text('No tools in this environment.', style: TextStyle(color: VuV2Colors.mute));
+    if (tools.isEmpty) return Text('No tools in this environment.', style: TextStyle(color: GG.mute));
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: tools);
   }
 }
@@ -416,9 +416,9 @@ class LabSessionScreen extends StatelessWidget {
             for (int i = 0; i < _phaseLabels.length; i++) ...<Widget>[
               Expanded(
                 child: Column(children: <Widget>[
-                  Container(height: 4, color: i <= run.phase.index ? VuV2Colors.orange : VuV2Colors.stroke),
+                  Container(height: 4, color: i <= run.phase.index ? GG.accent : GG.stroke),
                   const SizedBox(height: 2),
-                  Text(_phaseLabels[i], style: TextStyle(fontSize: 10, color: i == run.phase.index ? VuV2Colors.ink : VuV2Colors.mute)),
+                  Text(_phaseLabels[i], style: TextStyle(fontSize: 10, color: i == run.phase.index ? GG.ink : GG.mute)),
                 ]),
               ),
               if (i < _phaseLabels.length - 1) const SizedBox(width: 3),
@@ -472,8 +472,8 @@ class _EnvironmentPhase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(lab.environment.label, style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
-        Text(scenario.title, style: TextStyle(color: VuV2Colors.mute)),
+        Text(lab.environment.label, style: TextStyle(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+        Text(scenario.title, style: TextStyle(color: GG.mute)),
         const SizedBox(height: 10),
         _ShiftCard(lab: lab, scenario: scenario),
         if (scenario.people.isNotEmpty)
@@ -518,21 +518,21 @@ class _BriefingPhase extends StatelessWidget {
           key: const ValueKey<String>('inbox_email'),
           title: 'Inbox · 1 new message',
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text('From: ${w.supervisor.name} (${w.supervisor.role}, ${w.employer})', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-            Text('To: you (${w.role})', style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
-            Text('Subject: ${scenario.title} — ${scenario.level.label.toLowerCase()} assignment', style: TextStyle(color: VuV2Colors.ink)),
+            Text('From: ${w.supervisor.name} (${w.supervisor.role}, ${w.employer})', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+            Text('To: you (${w.role})', style: TextStyle(color: GG.mute, fontSize: 12.5)),
+            Text('Subject: ${scenario.title} — ${scenario.level.label.toLowerCase()} assignment', style: TextStyle(color: GG.ink)),
             const Divider(),
             Text('Hi — please pick this up today. Everything you need is below and in the ${lab.environment.label.toLowerCase()}. '
-                'Work through the queue; I will review each item when you submit.', style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+                'Work through the queue; I will review each item when you submit.', style: TextStyle(color: GG.ink, height: 1.4)),
           ]),
         ),
-        SectionCard(title: 'What needs to be done', child: Text(b.what, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
-        SectionCard(title: 'Why it matters', child: Text(b.why, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
+        SectionCard(title: 'What needs to be done', child: Text(b.what, style: TextStyle(color: GG.ink, height: 1.4))),
+        SectionCard(title: 'Why it matters', child: Text(b.why, style: TextStyle(color: GG.ink, height: 1.4))),
         SectionCard(title: 'Information available', child: BulletList(b.information)),
         SectionCard(title: 'Tools', child: BulletList(b.tools, icon: Icons.build_rounded)),
-        SectionCard(title: 'Expected result', child: Text(b.expected, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
+        SectionCard(title: 'Expected result', child: Text(b.expected, style: TextStyle(color: GG.ink, height: 1.4))),
         if (b.requirements.isNotEmpty)
-          SectionCard(title: 'Safety and professional requirements', child: BulletList(b.requirements, icon: Icons.health_and_safety_rounded, color: VuV2Colors.danger)),
+          SectionCard(title: 'Safety and professional requirements', child: BulletList(b.requirements, icon: Icons.health_and_safety_rounded, color: GG.red)),
         SectionCard(title: 'Tasks', child: BulletList(<String>[for (final LabStep s in scenario.steps) '${s.title} (${s.kind})'])),
         BusyButton(
           key: const ValueKey<String>('begin_work'),
@@ -562,8 +562,34 @@ class _WorkPhase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text('Work queue · ticket ${i + 1} of ${scenario.steps.length}: ${step.title}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+        Text('Work queue · ticket ${i + 1} of ${scenario.steps.length}: ${step.title}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
         const SizedBox(height: 4),
+        if (MediaQuery.sizeOf(context).width >= 1100 && (step is ProgramStep || step is SqlStep))
+          GGPanel(
+            padding: const EdgeInsets.all(8),
+            child: Wrap(spacing: 6, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
+              const Padding(padding: EdgeInsets.symmetric(horizontal: 6), child: Text('Problems', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800))),
+              for (int k = 0; k < scenario.steps.length; k++)
+                Material(
+                  color: k == i ? GG.violet : GG.panel2,
+                  borderRadius: BorderRadius.circular(8),
+                  child: InkWell(
+                    key: ValueKey<String>('step_tab_$k'),
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () => runCareerAction<void>(context, () => store.goToLabStep(lab, k)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                        if (run.results[scenario.steps[k].id] != null)
+                          Padding(padding: const EdgeInsets.only(right: 4), child: Icon(run.results[scenario.steps[k].id]!.passed ? Icons.check_rounded : Icons.close_rounded, size: 16, color: Colors.white)),
+                        Text(scenario.steps[k].title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                      ]),
+                    ),
+                  ),
+                ),
+            ]),
+          )
+        else
         Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
           for (int k = 0; k < scenario.steps.length; k++)
             ChoiceChip(
@@ -578,7 +604,7 @@ class _WorkPhase extends StatelessWidget {
         ]),
         const SizedBox(height: 10),
         if (done != null) ...<Widget>[
-          Text('Last attempt at this task', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text('Last attempt at this task', style: TextStyle(color: GG.mute, fontSize: 12)),
           ResultPanel(result: done),
           const SizedBox(height: 8),
         ],
@@ -623,7 +649,7 @@ class _WorkPhase extends StatelessWidget {
               onPressed: allDone ? () => runCareerAction<void>(context, () => store.setLabPhase(lab, LabPhase.evaluation)) : null,
             ),
         ]),
-        if (!allDone && last) Text('Submit every task to see the evaluation.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        if (!allDone && last) Text('Submit every task to see the evaluation.', style: TextStyle(color: GG.mute, fontSize: 12)),
       ],
     );
   }
@@ -651,7 +677,7 @@ class _EvaluationPhase extends StatelessWidget {
           key: const ValueKey<String>('supervisor_review'),
           title: 'Supervisor review · ${performanceRating(score, passed)}',
           subtitle: '${w.supervisor.name}, ${w.supervisor.role} · ${w.employer}',
-          child: Text(supervisorReview(lab, scenario, run.results, score, passed), style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+          child: Text(supervisorReview(lab, scenario, run.results, score, passed), style: TextStyle(color: GG.ink, height: 1.4)),
         ),
         SectionCard(
           title: 'Final result: $score/100 · ${passed ? 'Passed' : 'Not passed'}',
@@ -663,7 +689,7 @@ class _EvaluationPhase extends StatelessWidget {
                 key: ValueKey<String>('eval_${s.id}'),
                 tilePadding: EdgeInsets.zero,
                 leading: Icon(run.results[s.id]!.passed ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                    color: run.results[s.id]!.passed ? VuV2Colors.success : VuV2Colors.danger),
+                    color: run.results[s.id]!.passed ? GG.green : GG.red),
                 title: Text(s.title),
                 subtitle: Text('${run.results[s.id]!.score}/100 · ${s.kind}'),
                 children: <Widget>[BulletList(run.results[s.id]!.feedback)],
@@ -672,7 +698,7 @@ class _EvaluationPhase extends StatelessWidget {
         ),
         SectionCard(
           title: 'Professional skills demonstrated',
-          child: Text(skills.isEmpty ? 'None yet — pass a task to demonstrate a skill.' : skills.map((String s) => d?.skillLabel(s) ?? s).join(' · '), style: TextStyle(color: VuV2Colors.ink)),
+          child: Text(skills.isEmpty ? 'None yet — pass a task to demonstrate a skill.' : skills.map((String s) => d?.skillLabel(s) ?? s).join(' · '), style: TextStyle(color: GG.ink)),
         ),
         if (bad.isNotEmpty)
           SectionCard(
@@ -717,13 +743,13 @@ class _CompletePhase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Icon(passed ? Icons.verified_rounded : Icons.flag_rounded, size: 48, color: passed ? VuV2Colors.success : VuV2Colors.orange),
-        Text(passed ? 'Lab passed — ${run.score}/100' : 'Lab completed — ${run.score}/100', textAlign: TextAlign.center, style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+        Icon(passed ? Icons.verified_rounded : Icons.flag_rounded, size: 48, color: passed ? GG.green : GG.accent),
+        Text(passed ? 'Lab passed — ${run.score}/100' : 'Lab completed — ${run.score}/100', textAlign: TextAlign.center, style: TextStyle(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w900)),
         if (paid != null)
           Padding(
             padding: const EdgeInsets.only(top: 6),
             child: Text('+${usd(paid.cents)} training stipend (virtual USD)', key: const ValueKey<String>('lab_pay'), textAlign: TextAlign.center,
-                style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w800)),
+                style: TextStyle(color: GG.green, fontWeight: FontWeight.w800)),
           ),
         const SizedBox(height: 8),
         SectionCard(
@@ -752,7 +778,7 @@ class _CompletePhase extends StatelessWidget {
         if (next != null)
           FilledButton.icon(
             key: const ValueKey<String>('next_lab'),
-            onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: next!.id))),
+            onPressed: () => Navigator.of(context).pushReplacement(ggRoute<void>((_) => LabIntroScreen(labId: next!.id))),
             icon: const Icon(Icons.arrow_forward_rounded),
             label: Text('Next: ${next.title}'),
           ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../model/career_models.dart';
@@ -12,19 +11,93 @@ import 'department_screens.dart';
 import 'employment_screens.dart';
 import 'interview_screen.dart';
 import 'job_screens.dart';
+import 'workplace_screen.dart';
+import 'money_find_screens.dart';
 import 'task_views.dart';
+import 'gg_kit.dart';
 
-class CareerCentreScreen extends StatelessWidget {
-  const CareerCentreScreen({super.key});
+class CareerCentreScreen extends StatefulWidget {
+  const CareerCentreScreen({super.key, this.initialTab = 0});
+
+  /// 0 My Profile, 1 Job Opportunities.
+  final int initialTab;
+
+  @override
+  State<CareerCentreScreen> createState() => _CareerCentreScreenState();
+}
+
+class _CareerCentreScreenState extends State<CareerCentreScreen> {
+  late int _tab = widget.initialTab;
+
+  static const List<String> tabs = <String>['My Profile', 'Job Opportunities', 'My Applications', 'Interviews', 'My Workplace', 'Earnings'];
+
+  void _select(int i) {
+    if (i <= 1) {
+      setState(() => _tab = i);
+      return;
+    }
+    final Widget w = switch (i) {
+      2 => const ApplicationsTrackerScreen(),
+      3 => const InterviewCenterScreen(),
+      4 => const WorkplaceScreen(),
+      _ => const MoneyScreen(),
+    };
+    Navigator.of(context).push(ggRoute<void>((_) => w));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    return Scaffold(
+      appBar: AppBar(
+        titleSpacing: 12,
+        title: const Row(children: <Widget>[
+          Icon(Icons.school_rounded, color: GG.violet),
+          SizedBox(width: 8),
+          Text('GradeGlow', style: TextStyle(fontWeight: FontWeight.w900)),
+          SizedBox(width: 12),
+          Text('|  Career Center', style: TextStyle(color: GG.mute, fontWeight: FontWeight.w600)),
+        ]),
+        actions: <Widget>[Padding(padding: const EdgeInsets.only(right: 12), child: GGAvatar(name: store.profile.resume.fullName.isEmpty ? 'Student' : store.profile.resume.fullName, size: 34))],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(46),
+          child: SizedBox(
+            height: 46,
+            child: ListView(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 8), children: <Widget>[
+              for (int i = 0; i < tabs.length; i++)
+                InkWell(
+                  key: ValueKey<String>('cc_tab_$i'),
+                  onTap: () => _select(i),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: _tab == i ? GG.panel2 : Colors.transparent,
+                      border: Border(bottom: BorderSide(color: _tab == i ? GG.violet : Colors.transparent, width: 3)),
+                    ),
+                    child: Text(tabs[i], style: TextStyle(color: _tab == i ? GG.ink : GG.mute, fontWeight: FontWeight.w700)),
+                  ),
+                ),
+            ]),
+          ),
+        ),
+      ),
+      body: _tab == 1 ? const JobBoardBody() : const _ProfileTab(),
+    );
+  }
+}
+
+class _ProfileTab extends StatelessWidget {
+  const _ProfileTab();
 
   @override
   Widget build(BuildContext context) {
     final CareerSimStore store = context.watch<CareerSimStore>();
     final Department? d = store.department;
     final CareerProfile p = store.profile;
-    return Scaffold(
-      appBar: AppBar(title: const Text('Career Centre')),
-      body: ListView(
+    return DecoratedBox(
+      decoration: const BoxDecoration(gradient: GG.page),
+      child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           const CareerStatusCard(),
@@ -34,7 +107,7 @@ class CareerCentreScreen extends StatelessWidget {
             SectionCard(
               title: 'Choose your department',
               child: FilledButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DepartmentPickerScreen())),
+                onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const DepartmentPickerScreen())),
                 child: const Text('Choose department'),
               ),
             )
@@ -52,7 +125,7 @@ class CareerCentreScreen extends StatelessWidget {
                 title: const Text('Resume'),
                 subtitle: Text('${(CareerRules.resumeCompleteness(p.resume) * 100).round()}% complete'),
                 trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeScreen())),
+                onTap: () => Navigator.of(context).push(ggRoute<void>((_) => const ResumeScreen())),
               ),
               ListTile(
                 key: const ValueKey<String>('open_cover_letter'),
@@ -61,7 +134,7 @@ class CareerCentreScreen extends StatelessWidget {
                 title: const Text('Cover letter (general)'),
                 subtitle: Text(store.coverLetterFor('') == null ? 'Not written' : 'Saved · ${wordCount(store.coverLetterFor('')!.body)} words'),
                 trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const CoverLetterScreen())),
+                onTap: () => Navigator.of(context).push(ggRoute<void>((_) => const CoverLetterScreen())),
               ),
             ]),
           ),
@@ -69,12 +142,12 @@ class CareerCentreScreen extends StatelessWidget {
             title: 'Portfolio',
             subtitle: 'Projects you built and passed. Employers see these when you attach them.',
             child: p.portfolio.isEmpty
-                ? Text('No projects yet — complete a department project.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('No projects yet — complete a department project.', style: TextStyle(color: GG.mute))
                 : Column(children: <Widget>[
                     for (final PortfolioItem i in p.portfolio)
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: const Icon(Icons.folder_special_rounded, color: VuV2Colors.success),
+                        leading: const Icon(Icons.folder_special_rounded, color: GG.green),
                         title: Text(i.title),
                         subtitle: Text('${CareerCatalog.department(i.deptId)?.title ?? i.deptId} · score ${i.score} · day ${i.day}'),
                       ),
@@ -92,8 +165,7 @@ class CareerCentreScreen extends StatelessWidget {
                     final JobPosting? j = CareerCatalog.postingsFor(d.id).isEmpty ? null : CareerCatalog.postingsFor(d.id).first;
                     final InterviewPlan? plan = j == null ? null : CareerCatalog.interviewPlan(j.interviewPlanId);
                     if (j == null || plan == null) return;
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (_) => InterviewScreen(
+                    Navigator.of(context).push(ggRoute<void>((_) => InterviewScreen(
                         plan: plan,
                         company: j.company,
                         applicationId: 'mock',
@@ -117,7 +189,7 @@ class CareerCentreScreen extends StatelessWidget {
                 leading: const Icon(Icons.work_rounded),
                 title: const Text('Internships, graduate and entry-level roles'),
                 trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const JobBoardScreen())),
+                onTap: () => Navigator.of(context).push(ggRoute<void>((_) => const JobBoardScreen())),
               ),
               ListTile(
                 key: const ValueKey<String>('materials_tracker'),
@@ -126,7 +198,7 @@ class CareerCentreScreen extends StatelessWidget {
                 title: const Text('Application tracker'),
                 subtitle: Text('${p.applications.where((JobApplication a) => a.status.isActive).length} active'),
                 trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ApplicationsTrackerScreen())),
+                onTap: () => Navigator.of(context).push(ggRoute<void>((_) => const ApplicationsTrackerScreen())),
               ),
             ]),
           ),
@@ -169,7 +241,7 @@ class _TraineeCard extends StatelessWidget {
         children: <Widget>[
           for (final Criterion x in c)
             Row(children: <Widget>[
-              Icon(x.met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: x.met ? VuV2Colors.success : VuV2Colors.mute),
+              Icon(x.met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: x.met ? GG.green : GG.mute),
               const SizedBox(width: 6),
               Expanded(child: Text('${x.label}${x.detail.isEmpty ? '' : ' (${x.detail})'}')),
             ]),
@@ -277,7 +349,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
             child: Column(children: <Widget>[
               for (final Criterion c in check)
                 Row(children: <Widget>[
-                  Icon(c.met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: c.met ? VuV2Colors.success : VuV2Colors.mute),
+                  Icon(c.met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: c.met ? GG.green : GG.mute),
                   const SizedBox(width: 6),
                   Expanded(child: Text(c.label)),
                 ]),
@@ -291,7 +363,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
           const SizedBox(height: 10),
           TextField(key: const ValueKey<String>('cv_summary'), controller: _summary, onChanged: (_) => setState(() {}), minLines: 3, maxLines: 6, decoration: const InputDecoration(labelText: 'Professional summary (30+ words)', border: OutlineInputBorder())),
           const SizedBox(height: 16),
-          Text('Education', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+          Text('Education', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
           for (int i = 0; i < _education.length; i++)
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -322,9 +394,9 @@ class _ResumeScreenState extends State<ResumeScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Text('Skills', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+          Text('Skills', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
           if (verifiedSkills.isNotEmpty) ...<Widget>[
-            Text('Verified by graded work — tap to add:', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text('Verified by graded work — tap to add:', style: TextStyle(color: GG.mute, fontSize: 12)),
             Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
               for (final String s in verifiedSkills)
                 ActionChip(
@@ -353,8 +425,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
             ),
           ]),
           const SizedBox(height: 12),
-          Text('Projects', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
-          if (p.portfolio.isEmpty) Text('Publish a project to list it here.', style: TextStyle(color: VuV2Colors.mute)),
+          Text('Projects', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+          if (p.portfolio.isEmpty) Text('Publish a project to list it here.', style: TextStyle(color: GG.mute)),
           for (final PortfolioItem i in p.portfolio)
             CheckboxListTile(
               key: ValueKey<String>('cv_project_${i.id}'),
@@ -365,8 +437,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
               onChanged: (bool? v) => setState(() => v == true ? _projects.add(i.id) : _projects.remove(i.id)),
             ),
           const SizedBox(height: 12),
-          Text('Experience (verified from your employment record)', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
-          if (store.verifiedExperience().isEmpty) Text('None yet.', style: TextStyle(color: VuV2Colors.mute)),
+          Text('Experience (verified from your employment record)', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+          if (store.verifiedExperience().isEmpty) Text('None yet.', style: TextStyle(color: GG.mute)),
           for (final ResumeEntry e in store.verifiedExperience())
             ListTile(contentPadding: EdgeInsets.zero, title: Text(e.heading), subtitle: Text(e.detail)),
           const SizedBox(height: 16),
@@ -419,7 +491,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
             j == null
                 ? 'A general letter is copied into new applications; tailor it to each employer before submitting.'
                 : 'Tailored to ${j.title}.',
-            style: TextStyle(color: VuV2Colors.mute),
+            style: TextStyle(color: GG.mute),
           ),
           const SizedBox(height: 10),
           WrittenField(

@@ -36,7 +36,7 @@ Future<void> loadFonts() async {
     '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
     '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
   ];
-  for (final String fam in <String>['Roboto', '.SF UI Text', '.SF Pro Text', 'Inter', 'Poppins', 'packages/cupertino_icons/CupertinoIcons']) {
+  for (final String fam in <String>['FlutterTest', 'Ahem', 'Roboto', '.SF UI Text', '.SF Pro Text', 'Inter', 'Poppins', 'packages/cupertino_icons/CupertinoIcons']) {
     await load(fam, sans);
   }
   await load('monospace', <String>['/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf']);

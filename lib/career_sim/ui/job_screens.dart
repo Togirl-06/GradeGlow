@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../engine/pay_rules.dart';
@@ -17,17 +16,28 @@ import 'resume_screens.dart';
 import 'interview_screen.dart';
 import 'task_views.dart';
 import 'workplace_screen.dart';
+import 'gg_kit.dart';
 
-class JobBoardScreen extends StatefulWidget {
+class JobBoardScreen extends StatelessWidget {
   const JobBoardScreen({super.key});
 
   @override
-  State<JobBoardScreen> createState() => _JobBoardScreenState();
+  Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: const Text('Opportunities')), body: const JobBoardBody());
 }
 
-class _JobBoardScreenState extends State<JobBoardScreen> {
+/// Job opportunities: filters on the left, job cards in the middle, the
+/// student's status and earnings on the right (stacked on phones).
+class JobBoardBody extends StatefulWidget {
+  const JobBoardBody({super.key});
+
+  @override
+  State<JobBoardBody> createState() => _JobBoardBodyState();
+}
+
+class _JobBoardBodyState extends State<JobBoardBody> {
   bool _mine = true;
   String _level = '';
+  String _mode = '';
   final TextEditingController _q = TextEditingController();
 
   static const List<String> levels = <String>['Internship', 'Entry-level', 'Junior', 'Mid-level', 'Senior', 'Management'];
@@ -38,6 +48,50 @@ class _JobBoardScreenState extends State<JobBoardScreen> {
     super.dispose();
   }
 
+  Widget _filters() => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+        const Text('Filter Jobs', style: TextStyle(color: GG.ink, fontSize: 18, fontWeight: FontWeight.w800)),
+        const SizedBox(height: 10),
+        DropdownButtonFormField<String>(
+          key: const ValueKey<String>('level_filter'),
+          initialValue: _level,
+          dropdownColor: GG.panel2,
+          decoration: const InputDecoration(isDense: true),
+          items: <DropdownMenuItem<String>>[
+            const DropdownMenuItem<String>(value: '', child: Text('All Levels')),
+            for (final String l in levels) DropdownMenuItem<String>(value: l, child: Text(l)),
+          ],
+          onChanged: (String? v) => setState(() => _level = v ?? ''),
+        ),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          key: const ValueKey<String>('mode_filter'),
+          initialValue: _mode,
+          dropdownColor: GG.panel2,
+          decoration: const InputDecoration(isDense: true),
+          items: const <DropdownMenuItem<String>>[
+            DropdownMenuItem<String>(value: '', child: Text('All Locations')),
+            DropdownMenuItem<String>(value: 'Remote', child: Text('Remote')),
+            DropdownMenuItem<String>(value: 'Hybrid', child: Text('Hybrid')),
+            DropdownMenuItem<String>(value: 'On-site', child: Text('On-site')),
+          ],
+          onChanged: (String? v) => setState(() => _mode = v ?? ''),
+        ),
+        const SizedBox(height: 8),
+        Wrap(spacing: 6, children: <Widget>[
+          ChoiceChip(key: const ValueKey<String>('filter_mine'), label: const Text('My field'), selected: _mine, onSelected: (_) => setState(() => _mine = true)),
+          ChoiceChip(key: const ValueKey<String>('filter_all'), label: const Text('All fields'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
+        ]),
+        const SizedBox(height: 8),
+        TextField(
+          key: const ValueKey<String>('jobs_search'),
+          controller: _q,
+          onSubmitted: (_) => setState(() {}),
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.search_rounded), hintText: 'Title, company or skill', isDense: true),
+        ),
+        const SizedBox(height: 10),
+        GGButton(key: const ValueKey<String>('jobs_search_go'), label: 'Search', onPressed: () => setState(() {})),
+      ]);
+
   @override
   Widget build(BuildContext context) {
     final CareerSimStore store = context.watch<CareerSimStore>();
@@ -45,43 +99,95 @@ class _JobBoardScreenState extends State<JobBoardScreen> {
     final List<String> words = _q.text.toLowerCase().split(RegExp(r'\s+')).where((String w) => w.isNotEmpty).toList();
     final List<JobPosting> list = (_mine && dept.isNotEmpty ? CareerCatalog.postingsFor(dept) : CareerCatalog.postings).where((JobPosting j) {
       if (_level.isNotEmpty && j.levelLabel != _level && !(j.type == JobType.graduate && _level == 'Entry-level')) return false;
+      if (_mode.isNotEmpty && !j.location.contains(_mode) && j.workMode != _mode) return false;
       final String text = '${j.title} ${j.company.name} ${j.department} ${j.keywords.join(' ')} ${j.location}'.toLowerCase();
       return words.every(text.contains);
     }).toList();
-    return Scaffold(
-      appBar: AppBar(title: const Text('Opportunities')),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
-        children: <Widget>[
-          Text(PayRules.notice, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
-          const SizedBox(height: 8),
-          TextField(
-            key: const ValueKey<String>('jobs_search'),
-            controller: _q,
-            onChanged: (_) => setState(() {}),
-            decoration: const InputDecoration(prefixIcon: Icon(Icons.search_rounded), hintText: 'Search title, company or skill', border: OutlineInputBorder(), isDense: true),
+    final List<Widget> cards = <Widget>[
+      for (final JobPosting j in list) _PostingCard(job: j),
+      if (list.isEmpty) const Text('No jobs match these filters.', style: TextStyle(color: GG.mute)),
+      const SizedBox(height: 8),
+      const Text(PayRules.notice, style: TextStyle(color: GG.mute, fontSize: 11.5)),
+    ];
+    return DecoratedBox(
+      decoration: const BoxDecoration(gradient: GG.page),
+      child: LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
+        if (c.maxWidth < 900) {
+          return ListView(padding: const EdgeInsets.fromLTRB(14, 12, 14, 32), children: <Widget>[
+            const _StatusStrip(),
+            const SizedBox(height: 10),
+            GGPanel(child: _filters()),
+            const SizedBox(height: 12),
+            ...cards,
+          ]);
+        }
+        return Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          SizedBox(width: 260, child: Padding(padding: const EdgeInsets.all(16), child: GGPanel(child: _filters()))),
+          Expanded(child: ListView(padding: const EdgeInsets.fromLTRB(4, 16, 4, 32), children: cards)),
+          const SizedBox(width: 300, child: Padding(padding: EdgeInsets.all(16), child: _StatusColumn())),
+        ]);
+      }),
+    );
+  }
+}
+
+class _StatusColumn extends StatelessWidget {
+  const _StatusColumn();
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    final int complete = (CareerRules.resumeCompleteness(store.profile.resume) * 100).round();
+    final (String status, String next) = employmentStatus(store);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+      GGPanel(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          const Text('Your Status', style: TextStyle(color: GG.ink, fontSize: 18, fontWeight: FontWeight.w800)),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: GG.panel2, borderRadius: BorderRadius.circular(12)),
+            child: Row(children: <Widget>[
+              Icon(complete >= 70 ? Icons.check_circle_outline_rounded : Icons.pending_outlined, color: complete >= 70 ? GG.green : GG.amber, size: 34),
+              const SizedBox(width: 10),
+              Expanded(child: Text('Profile ${complete >= 70 ? 'Complete' : 'In progress'}\n($complete%)', style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700))),
+            ]),
           ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: <Widget>[
-              ChoiceChip(key: const ValueKey<String>('filter_mine'), label: const Text('My field'), selected: _mine, onSelected: (_) => setState(() => _mine = true)),
-              ChoiceChip(key: const ValueKey<String>('filter_all'), label: const Text('All fields'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
-              for (final String l in levels)
-                FilterChip(
-                  key: ValueKey<String>('level_$l'),
-                  label: Text(l),
-                  selected: _level == l,
-                  onSelected: (bool on) => setState(() => _level = on ? l : ''),
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          for (final JobPosting j in list) _PostingCard(job: j),
-          if (list.isEmpty) Text('No postings.', style: TextStyle(color: VuV2Colors.mute)),
-        ],
+          const SizedBox(height: 10),
+          Text(status, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+          const Text('Next Step:', style: TextStyle(color: GG.mute)),
+          Text(next, style: const TextStyle(color: GG.ink)),
+        ]),
       ),
+      const SizedBox(height: 12),
+      GGPanel(
+        child: Row(children: <Widget>[
+          const Icon(Icons.account_balance_wallet_rounded, color: GG.blue, size: 40),
+          const SizedBox(width: 12),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            const Text('Your Earnings', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+            Text(usd(store.profile.balanceCents), style: const TextStyle(color: GG.ink, fontSize: 24, fontWeight: FontWeight.w900)),
+          ]),
+        ]),
+      ),
+    ]);
+  }
+}
+
+class _StatusStrip extends StatelessWidget {
+  const _StatusStrip();
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    final (String status, String next) = employmentStatus(store);
+    return GGPanel(
+      child: Row(children: <Widget>[
+        const Icon(Icons.verified_user_outlined, color: GG.green),
+        const SizedBox(width: 8),
+        Expanded(child: Text('$status · Next: $next', style: const TextStyle(color: GG.ink))),
+        Text(usd(store.profile.balanceCents), style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w900)),
+      ]),
     );
   }
 }
@@ -95,22 +201,57 @@ class _PostingCard extends StatelessWidget {
     final CareerSimStore store = context.watch<CareerSimStore>();
     final int day = store.day;
     final bool open = PostingSchedule.isOpen(job, day);
-    final Department? d = CareerCatalog.department(job.deptId);
-    final int readiness = d == null ? 0 : CareerRules.readiness(store.profile, d, job: job).score;
     final ResumeUpload? cv = store.profile.resumeUpload(store.profile.defaultResumeId);
     final int? match = cv == null ? null : jobMatch(cv.parsed, job, fullText: cv.text).score;
     final JobApplication? app = store.activeApplicationFor(job.id);
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: ListTile(
-        key: ValueKey<String>('posting_${job.id}'),
-        title: Text(job.title, style: const TextStyle(fontWeight: FontWeight.w700)),
-        subtitle: Text('${job.company.name} · ${job.levelLabel} · ${job.location}${job.positions > 1 ? ' · ${job.positions} openings' : ''}\n'
-            '${money(job.salaryMin, job.salaryPeriod)}${job.salaryMax > job.salaryMin ? ' – ${money(job.salaryMax, job.salaryPeriod)}' : ''}\n'
-            '${open ? 'Closes day ${PostingSchedule.deadline(job, day)}' : 'Closed · reopens day ${PostingSchedule.reopens(job, day)}'} · ${match == null ? 'readiness $readiness' : 'resume match $match%'}'),
-        isThreeLine: true,
-        trailing: app == null ? const Icon(Icons.chevron_right_rounded) : StatusChip(app.status.label, color: statusColor(app.status)),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => JobDetailScreen(postingId: job.id))),
+    final String pay = job.salaryPeriod == 'year' ? '${usdWhole(job.salaryMin)} / year' : '\$${job.salaryMin} / ${job.salaryPeriod}';
+    final String type = job.salaryPeriod == 'hour' ? 'Hourly' : (job.type == JobType.internship ? 'Internship' : 'Full-time');
+    final String mode = job.location.split('·').last.trim();
+    Future<void> openDetail() => Navigator.of(context).push(ggRoute<void>((_) => JobDetailScreen(postingId: job.id)));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
+        color: GG.panel,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: GG.stroke)),
+        child: InkWell(
+          key: ValueKey<String>('posting_${job.id}'),
+          borderRadius: BorderRadius.circular(14),
+          onTap: openDetail,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(children: <Widget>[
+              GGLogo(name: job.company.name, size: 64),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Text(job.title, style: const TextStyle(color: GG.ink, fontSize: 16, fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 2),
+                  Text('$pay • $type • $mode', style: const TextStyle(color: Color(0xFFA996FF), fontWeight: FontWeight.w700, fontSize: 13)),
+                  const SizedBox(height: 2),
+                  Text(job.description, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: GG.mute, fontSize: 12.5)),
+                  const SizedBox(height: 2),
+                  Text('${job.company.name} · ${job.levelLabel} · ${open ? 'Closes day ${PostingSchedule.deadline(job, day)}' : 'Reopens day ${PostingSchedule.reopens(job, day)}'}${match == null ? '' : ' · resume match $match%'}',
+                      style: const TextStyle(color: GG.mute, fontSize: 11.5)),
+                ]),
+              ),
+              const SizedBox(width: 10),
+              if (app != null)
+                StatusChip(app.status.label, color: statusColor(app.status))
+              else
+                GGButton(
+                  key: ValueKey<String>('apply_${job.id}'),
+                  label: 'Apply',
+                  dense: true,
+                  onPressed: !open
+                      ? null
+                      : () async {
+                          final JobApplication? a = await runCareerAction<JobApplication>(context, () => store.startApplication(job.id));
+                          if (a != null && context.mounted) await Navigator.of(context).push(ggRoute<void>((_) => ApplicationScreen(applicationId: a.id)));
+                        },
+                ),
+            ]),
+          ),
+        ),
       ),
     );
   }
@@ -136,15 +277,15 @@ class JobDetailScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text(j.title, style: TextStyle(color: VuV2Colors.ink, fontSize: 22, fontWeight: FontWeight.w900)),
+          Text(j.title, style: TextStyle(color: GG.ink, fontSize: 22, fontWeight: FontWeight.w900)),
           const SizedBox(height: 4),
-          Text('${j.company.name} · ${j.company.industry} · ${j.location}', style: TextStyle(color: VuV2Colors.mute)),
+          Text('${j.company.name} · ${j.company.industry} · ${j.location}', style: TextStyle(color: GG.mute)),
           const SizedBox(height: 8),
           Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
             StatusChip(j.type.label),
             StatusChip('${money(j.salaryMin, j.salaryPeriod)}${j.salaryMax > j.salaryMin ? ' – ${money(j.salaryMax, j.salaryPeriod)}' : ''}'),
             StatusChip(open ? 'Deadline: day ${PostingSchedule.deadline(j, store.day)}' : 'Closed · reopens day ${PostingSchedule.reopens(j, store.day)}',
-                color: open ? null : VuV2Colors.danger),
+                color: open ? null : GG.red),
           ]),
           const SizedBox(height: 12),
           if (j.simulationNote.isNotEmpty)
@@ -153,7 +294,7 @@ class JobDetailScreen extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(color: const Color(0xFFF59E0B).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
-              child: Text(j.simulationNote, style: TextStyle(color: VuV2Colors.ink, fontSize: 12.5)),
+              child: Text(j.simulationNote, style: TextStyle(color: GG.ink, fontSize: 12.5)),
             ),
           SectionCard(
             title: 'Job details',
@@ -172,7 +313,7 @@ class JobDetailScreen extends StatelessWidget {
               if (j.requiredEducation.isNotEmpty) _Row('Required education', j.requiredEducation),
             ]),
           ),
-          SectionCard(title: 'About the role', child: Text(j.description, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
+          SectionCard(title: 'About the role', child: Text(j.description, style: TextStyle(color: GG.ink, height: 1.4))),
           SectionCard(title: 'Responsibilities', child: BulletList(j.responsibilities)),
           if (j.keywords.isNotEmpty) SectionCard(title: 'Required skills', child: Wrap(spacing: 6, runSpacing: 6, children: <Widget>[for (final String k in j.keywords) StatusChip(k)])),
           if (j.preferredKeywords.isNotEmpty || j.preferred.isNotEmpty)
@@ -203,11 +344,11 @@ class JobDetailScreen extends StatelessWidget {
             trailing: const ValidatedBadge(label: 'Rule-based'),
             child: Column(children: <Widget>[for (final ReadinessItem i in rr.items) LabeledBar(label: i.label, value: i.score, detail: i.advice)]),
           ),
-          SectionCard(title: 'About ${j.company.name}', child: Text(j.company.about, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
+          SectionCard(title: 'About ${j.company.name}', child: Text(j.company.about, style: TextStyle(color: GG.ink, height: 1.4))),
           if (app != null)
             FilledButton.icon(
               key: const ValueKey<String>('open_application'),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ApplicationScreen(applicationId: app.id))),
+              onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => ApplicationScreen(applicationId: app.id))),
               icon: const Icon(Icons.description_rounded),
               label: Text('Open application (${app.status.label})'),
             )
@@ -220,7 +361,7 @@ class JobDetailScreen extends StatelessWidget {
                   ? () async {
                       final JobApplication? a = await runCareerAction<JobApplication>(context, () => store.startApplication(j.id));
                       if (a != null && context.mounted) {
-                        await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ApplicationScreen(applicationId: a.id)));
+                        await Navigator.of(context).push(ggRoute<void>((_) => ApplicationScreen(applicationId: a.id)));
                       }
                     }
                   : null,
@@ -240,8 +381,8 @@ class _Row extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-          SizedBox(width: 150, child: Text(label, style: TextStyle(color: VuV2Colors.mute, fontSize: 13))),
-          Expanded(child: Text(value, style: TextStyle(color: VuV2Colors.ink, fontSize: 13.5, fontWeight: FontWeight.w600))),
+          SizedBox(width: 150, child: Text(label, style: TextStyle(color: GG.mute, fontSize: 13))),
+          Expanded(child: Text(value, style: TextStyle(color: GG.ink, fontSize: 13.5, fontWeight: FontWeight.w600))),
         ]),
       );
 }
@@ -257,9 +398,9 @@ class _Check extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: met ? VuV2Colors.success : VuV2Colors.mute),
+            Icon(met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: met ? GG.green : GG.mute),
             const SizedBox(width: 6),
-            Expanded(child: Text(text, style: TextStyle(color: VuV2Colors.ink, fontSize: 13.5))),
+            Expanded(child: Text(text, style: TextStyle(color: GG.ink, fontSize: 13.5))),
           ],
         ),
       );
@@ -281,7 +422,7 @@ class ApplicationsTrackerScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           Row(children: <Widget>[
-            Expanded(child: Text('Today is day ${store.day}', style: TextStyle(color: VuV2Colors.mute))),
+            Expanded(child: Text('Today is day ${store.day}', style: TextStyle(color: GG.mute))),
             const NextDayButton(),
           ]),
           const SizedBox(height: 8),
@@ -298,7 +439,7 @@ class ApplicationsTrackerScreen extends StatelessWidget {
                   ),
               ]),
             ),
-          if (apps.isEmpty) Text('No applications yet.', style: TextStyle(color: VuV2Colors.mute)),
+          if (apps.isEmpty) Text('No applications yet.', style: TextStyle(color: GG.mute)),
           for (final JobApplication a in apps)
             Card(
               child: ListTile(
@@ -306,7 +447,7 @@ class ApplicationsTrackerScreen extends StatelessWidget {
                 title: Text(CareerCatalog.posting(a.postingId)?.title ?? a.postingId),
                 subtitle: Text('${CareerCatalog.posting(a.postingId)?.company.name ?? ''} · started day ${a.createdDay}'),
                 trailing: StatusChip(a.status.label, color: statusColor(a.status)),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ApplicationScreen(applicationId: a.id))),
+                onTap: () => Navigator.of(context).push(ggRoute<void>((_) => ApplicationScreen(applicationId: a.id))),
               ),
             ),
         ],
@@ -390,11 +531,11 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           Row(children: <Widget>[
-            Expanded(child: Text(j.company.name, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 18))),
+            Expanded(child: Text(j.company.name, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 18))),
             StatusChip(a.status.label, color: statusColor(a.status)),
           ]),
           const SizedBox(height: 4),
-          Text('Day ${store.day}', style: TextStyle(color: VuV2Colors.mute)),
+          Text('Day ${store.day}', style: TextStyle(color: GG.mute)),
           const SizedBox(height: 12),
           ..._stage(context, store, a, j),
           if (a.screening != null) _ScreeningCard(report: a.screening!),
@@ -459,7 +600,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
               ),
               TextButton.icon(
                 key: const ValueKey<String>('app_upload_resume'),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeHubScreen())),
+                onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const ResumeHubScreen())),
                 icon: const Icon(Icons.upload_file_rounded),
                 label: const Text('Upload or manage resumes'),
               ),
@@ -507,7 +648,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
           SectionCard(
             title: 'Attach portfolio',
             child: items.isEmpty
-                ? Text('No portfolio projects yet.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('No portfolio projects yet.', style: TextStyle(color: GG.mute))
                 : Column(children: <Widget>[
                     for (final PortfolioItem i in items)
                       CheckboxListTile(
@@ -595,8 +736,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
             child: today && plan != null
                 ? FilledButton.icon(
                     key: const ValueKey<String>('start_interview'),
-                    onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (_) => InterviewScreen(
+                    onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => InterviewScreen(
                         plan: plan,
                         company: j.company,
                         applicationId: a.id,
@@ -647,25 +787,25 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(money(o.salary, o.salaryPeriod), key: const ValueKey<String>('offer_salary'), style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+                Text(money(o.salary, o.salaryPeriod), key: const ValueKey<String>('offer_salary'), style: TextStyle(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w900)),
                 const SizedBox(height: 6),
                 OfferDetails(offer: o),
                 const SizedBox(height: 8),
-                Text('Responsibilities', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+                Text('Responsibilities', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
                 BulletList(o.responsibilities),
                 if (o.benefits.isNotEmpty) ...<Widget>[
-                  Text('Benefits (simulated)', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+                  Text('Benefits (simulated)', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
                   BulletList(o.benefits),
                 ],
                 if (o.expectations.isNotEmpty) ...<Widget>[
-                  Text('Performance expectations', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+                  Text('Performance expectations', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
                   BulletList(o.expectations),
                 ],
                 const SizedBox(height: 8),
                 if (a.negotiation != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
-                    child: Text('Employer reply: ${a.negotiation!.reply}', key: const ValueKey<String>('negotiation_reply'), style: TextStyle(color: VuV2Colors.ink)),
+                    child: Text('Employer reply: ${a.negotiation!.reply}', key: const ValueKey<String>('negotiation_reply'), style: TextStyle(color: GG.ink)),
                   )
                 else
                   ExpansionTile(
@@ -704,7 +844,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
                     label: 'Accept and sign contract',
                     icon: Icons.handshake_rounded,
                     onPressed: () async {
-                      await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ContractScreen(applicationId: a.id)));
+                      await Navigator.of(context).push(ggRoute<void>((_) => ContractScreen(applicationId: a.id)));
                     },
                   ),
                   BusyButton(
@@ -727,7 +867,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
             title: 'Hired',
             child: FilledButton.icon(
               key: const ValueKey<String>('go_workplace'),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WorkplaceScreen())),
+              onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const WorkplaceScreen())),
               icon: const Icon(Icons.apartment_rounded),
               label: const Text('Go to the workplace'),
             ),
@@ -741,13 +881,13 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
             child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
               FilledButton.tonalIcon(
                 key: const ValueKey<String>('improve_resume'),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeHubScreen())),
+                onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const ResumeHubScreen())),
                 icon: const Icon(Icons.description_rounded),
                 label: const Text('Improve my resume'),
               ),
               FilledButton.tonalIcon(
                 key: const ValueKey<String>('similar_jobs'),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const JobBoardScreen())),
+                onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const JobBoardScreen())),
                 icon: const Icon(Icons.work_outline_rounded),
                 label: const Text('See other jobs'),
               ),
@@ -775,12 +915,12 @@ class _ScreeningCard extends StatelessWidget {
           children: <Widget>[
             for (final MapEntry<String, int> e in report.breakdown.entries) LabeledBar(label: e.key, value: e.value),
             if (report.strengths.isNotEmpty) ...<Widget>[
-              Text('Strengths', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-              BulletList(report.strengths, icon: Icons.add_circle_outline_rounded, color: VuV2Colors.success),
+              Text('Strengths', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+              BulletList(report.strengths, icon: Icons.add_circle_outline_rounded, color: GG.green),
             ],
             if (report.gaps.isNotEmpty) ...<Widget>[
-              Text('Gaps', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-              BulletList(report.gaps, icon: Icons.remove_circle_outline_rounded, color: VuV2Colors.danger),
+              Text('Gaps', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+              BulletList(report.gaps, icon: Icons.remove_circle_outline_rounded, color: GG.red),
             ],
           ],
         ),
@@ -827,12 +967,12 @@ class InterviewReportCard extends StatelessWidget {
                 final InterviewTurn best = sorted.first;
                 final InterviewTurn worst = sorted.last;
                 return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                  Text('Strongest answer (${best.score})', style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700)),
-                  Text(best.prompt, style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
+                  Text('Strongest answer (${best.score})', style: TextStyle(color: GG.green, fontWeight: FontWeight.w700)),
+                  Text(best.prompt, style: TextStyle(color: GG.ink, fontSize: 13)),
                   const SizedBox(height: 4),
-                  Text('Weakest answer (${worst.score})', style: TextStyle(color: VuV2Colors.danger, fontWeight: FontWeight.w700)),
-                  Text(worst.prompt, style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
-                  if (worst.notes.isNotEmpty) Text('To improve: ${worst.notes.join(' ')}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+                  Text('Weakest answer (${worst.score})', style: TextStyle(color: GG.red, fontWeight: FontWeight.w700)),
+                  Text(worst.prompt, style: TextStyle(color: GG.ink, fontSize: 13)),
+                  if (worst.notes.isNotEmpty) Text('To improve: ${worst.notes.join(' ')}', style: TextStyle(color: GG.mute, fontSize: 12.5)),
                 ]);
               }),
             ],

@@ -111,7 +111,7 @@ void main() {
       child: const MaterialApp(home: Scaffold(body: CareerSimDashboard(studentName: 'Ada Student', majorLabel: 'Computer Science'))),
     ));
     await t.pumpAndSettle();
-    expect(find.text('Career Simulator'), findsOneWidget);
+    expect(find.textContaining('GradeGlow Virtual University'), findsOneWidget);
 
     // 1. Enter the department.
     await tapKey(t, 'dash_department');

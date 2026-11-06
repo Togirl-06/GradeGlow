@@ -5,6 +5,7 @@ import '../../vu_v2/design/vu_v2_theme.dart';
 import '../ai/career_ai.dart';
 import '../model/career_models.dart';
 import '../store/career_sim_store.dart';
+import 'gg_kit.dart';
 
 CareerSimStore careerStore(BuildContext context, {bool listen = false}) =>
     Provider.of<CareerSimStore>(context, listen: listen);
@@ -24,10 +25,10 @@ Future<T?> runCareerAction<T>(
     }
     return value;
   } on CareerActionException catch (e) {
-    messenger?.showSnackBar(SnackBar(content: Text(e.message), backgroundColor: VuV2Colors.danger));
+    messenger?.showSnackBar(SnackBar(content: Text(e.message), backgroundColor: GG.red));
     return null;
   } catch (e) {
-    messenger?.showSnackBar(SnackBar(content: Text('Something went wrong: $e'), backgroundColor: VuV2Colors.danger));
+    messenger?.showSnackBar(SnackBar(content: Text('Something went wrong: $e'), backgroundColor: GG.red));
     return null;
   }
 }
@@ -102,10 +103,10 @@ class SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      color: VuV2Colors.card,
+      color: GG.panel,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(VuV2Radii.lg),
-        side: BorderSide(color: VuV2Colors.stroke),
+        side: BorderSide(color: GG.stroke),
       ),
       elevation: 0,
       child: Padding(
@@ -119,11 +120,11 @@ class SectionCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(title, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 16)),
+                      Text(title, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 16)),
                       if (subtitle != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
-                          child: Text(subtitle!, style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+                          child: Text(subtitle!, style: TextStyle(color: GG.mute, fontSize: 12.5)),
                         ),
                     ],
                   ),
@@ -161,12 +162,12 @@ class StatusChip extends StatelessWidget {
 }
 
 Color statusColor(ApplicationStatus s) => switch (s) {
-      ApplicationStatus.hired || ApplicationStatus.offerReceived => VuV2Colors.success,
-      ApplicationStatus.rejected || ApplicationStatus.withdrawn || ApplicationStatus.offerDeclined => VuV2Colors.danger,
+      ApplicationStatus.hired || ApplicationStatus.offerReceived => GG.green,
+      ApplicationStatus.rejected || ApplicationStatus.withdrawn || ApplicationStatus.offerDeclined => GG.red,
       ApplicationStatus.shortlisted || ApplicationStatus.interviewScheduled || ApplicationStatus.interviewCompleted =>
         const Color(0xFF3B82F6),
       ApplicationStatus.furtherAssessment => const Color(0xFFF59E0B),
-      _ => VuV2Colors.mute,
+      _ => GG.mute,
     };
 
 /// Marks content as coming from the validated rule (not AI).
@@ -178,9 +179,9 @@ class ValidatedBadge extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Icon(Icons.verified_rounded, size: 16, color: VuV2Colors.success),
+          const Icon(Icons.verified_rounded, size: 16, color: GG.green),
           const SizedBox(width: 4),
-          Text(label, style: const TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700, fontSize: 12)),
+          Text(label, style: const TextStyle(color: GG.green, fontWeight: FontWeight.w700, fontSize: 12)),
         ],
       );
 }
@@ -202,8 +203,8 @@ class LabeledBar extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Expanded(child: Text(label, style: TextStyle(color: VuV2Colors.ink, fontSize: 13))),
-              Text('$value', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700, fontSize: 13)),
+              Expanded(child: Text(label, style: TextStyle(color: GG.ink, fontSize: 13))),
+              Text('$value', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700, fontSize: 13)),
             ],
           ),
           const SizedBox(height: 4),
@@ -212,13 +213,13 @@ class LabeledBar extends StatelessWidget {
             child: LinearProgressIndicator(
               value: (value.clamp(0, 100)) / 100,
               minHeight: 7,
-              backgroundColor: VuV2Colors.stroke,
+              backgroundColor: GG.stroke,
             ),
           ),
           if (detail != null)
             Padding(
               padding: const EdgeInsets.only(top: 3),
-              child: Text(detail!, style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
+              child: Text(detail!, style: TextStyle(color: GG.mute, fontSize: 11.5)),
             ),
         ],
       ),
@@ -242,9 +243,9 @@ class BulletList extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Icon(icon, size: 16, color: color ?? VuV2Colors.mute),
+                  Icon(icon, size: 16, color: color ?? GG.mute),
                   const SizedBox(width: 6),
-                  Expanded(child: Text(s, style: TextStyle(color: VuV2Colors.ink, fontSize: 13.5, height: 1.35))),
+                  Expanded(child: Text(s, style: TextStyle(color: GG.ink, fontSize: 13.5, height: 1.35))),
                 ],
               ),
             ),
@@ -354,11 +355,11 @@ class _AiAssistPanelState extends State<AiAssistPanel> {
               label: const Text('Ask'),
             ),
           ),
-          if (_error != null) Text(_error!, style: const TextStyle(color: VuV2Colors.danger, fontSize: 12.5)),
+          if (_error != null) Text(_error!, style: const TextStyle(color: GG.red, fontSize: 12.5)),
           if (_reply != null)
             Padding(
               padding: const EdgeInsets.only(top: 6),
-              child: SelectableText(_reply!, style: TextStyle(color: VuV2Colors.ink, fontSize: 13.5, height: 1.4)),
+              child: SelectableText(_reply!, style: TextStyle(color: GG.ink, fontSize: 13.5, height: 1.4)),
             ),
         ],
       ),

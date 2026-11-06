@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/pay_rules.dart';
 import '../hospital/hospital_cases.dart';
@@ -19,6 +18,7 @@ import 'department_screens.dart';
 import 'hub_screens.dart';
 import 'job_screens.dart';
 import 'workplace_screen.dart';
+import 'gg_kit.dart';
 
 const String simulatedPayNote = PayRules.notice;
 
@@ -45,17 +45,17 @@ class MoneyScreen extends StatelessWidget {
           Container(
             key: const ValueKey<String>('money_notice'),
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: VuV2Colors.mute.withValues(alpha: 0.10), borderRadius: BorderRadius.circular(12)),
-            child: Text(simulatedPayNote, style: TextStyle(color: VuV2Colors.ink, fontSize: 12.5, height: 1.35)),
+            decoration: BoxDecoration(color: GG.mute.withValues(alpha: 0.10), borderRadius: BorderRadius.circular(12)),
+            child: Text(simulatedPayNote, style: TextStyle(color: GG.ink, fontSize: 12.5, height: 1.35)),
           ),
           const SizedBox(height: 12),
           SectionCard(
             title: 'Virtual balance',
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text(usd(p.balanceCents), key: const ValueKey<String>('money_balance'), style: TextStyle(color: VuV2Colors.ink, fontSize: 34, fontWeight: FontWeight.w900)),
+              Text(usd(p.balanceCents), key: const ValueKey<String>('money_balance'), style: TextStyle(color: GG.ink, fontSize: 34, fontWeight: FontWeight.w900)),
               const SizedBox(height: 4),
               Text('Total earned ${usd(total)} · gross pay ${usd(gross)} · simulated deductions ${usd(deductions)} · training stipends ${usd(stipends)}',
-                  style: TextStyle(color: VuV2Colors.mute)),
+                  style: TextStyle(color: GG.mute)),
             ]),
           ),
           if (last != null)
@@ -81,9 +81,9 @@ class MoneyScreen extends StatelessWidget {
                 _Rate('Next paycheck', 'after ${store.weeksToPayday(job)} more approved work week(s)'),
                 const SizedBox(height: 6),
                 Text('Each evaluated assignment is one approved work week (${job.hoursPerWeek} h). Raises come from performance reviews every four assignments and from promotions.',
-                    style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+                    style: TextStyle(color: GG.mute, fontSize: 12.5)),
               ] else ...<Widget>[
-                Text('Get hired to earn a virtual salary. Until then, the first pass of each lab scenario pays a training stipend:', style: TextStyle(color: VuV2Colors.ink)),
+                Text('Get hired to earn a virtual salary. Until then, the first pass of each lab scenario pays a training stipend:', style: TextStyle(color: GG.ink)),
                 const SizedBox(height: 6),
                 for (final LabDifficulty l in LabDifficulty.values) _Rate('${l.label} scenario', 'up to ${usd(PayRules.stipendCents[l]!)}'),
               ],
@@ -91,13 +91,13 @@ class MoneyScreen extends StatelessWidget {
               Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
                 FilledButton.tonalIcon(
                   key: const ValueKey<String>('money_jobs'),
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => job == null ? const JobBoardScreen() : const WorkplaceScreen())),
+                  onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => job == null ? const JobBoardScreen() : const WorkplaceScreen())),
                   icon: const Icon(Icons.work_rounded),
                   label: Text(job == null ? 'Find a job' : 'Go to work'),
                 ),
                 FilledButton.tonalIcon(
                   key: const ValueKey<String>('money_labs'),
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const PracticalLabsScreen())),
+                  onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const PracticalLabsScreen())),
                   icon: const Icon(Icons.science_rounded),
                   label: const Text('Practise in labs'),
                 ),
@@ -107,7 +107,7 @@ class MoneyScreen extends StatelessWidget {
           SectionCard(
             title: 'Payment history',
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-              if (p.ledger.isEmpty) Text('No payments yet.', style: TextStyle(color: VuV2Colors.mute)),
+              if (p.ledger.isEmpty) Text('No payments yet.', style: TextStyle(color: GG.mute)),
               for (final MoneyEntry e in p.ledger.reversed.take(60))
                 ListTile(
                   dense: true,
@@ -115,7 +115,7 @@ class MoneyScreen extends StatelessWidget {
                   leading: Icon(e.kind == 'lab' ? Icons.school_rounded : Icons.payments_rounded),
                   title: Text(e.text),
                   subtitle: Text('Day ${e.day}${e.paycheckId.isEmpty ? '' : ' · net after simulated deductions'}'),
-                  trailing: Text('+${usd(e.cents)}', style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w800)),
+                  trailing: Text('+${usd(e.cents)}', style: TextStyle(color: GG.green, fontWeight: FontWeight.w800)),
                 ),
             ]),
           ),
@@ -134,8 +134,8 @@ class _Rate extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(bottom: 4),
         child: Row(children: <Widget>[
-          Expanded(child: Text(what, style: TextStyle(color: VuV2Colors.ink))),
-          Text(pay, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+          Expanded(child: Text(what, style: TextStyle(color: GG.ink))),
+          Text(pay, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
         ]),
       );
 }
@@ -250,7 +250,7 @@ class _FindScreenState extends State<FindScreen> {
             ]),
           )
         else if (results.isEmpty)
-          Padding(padding: const EdgeInsets.all(24), child: Text('Nothing matches "${_q.text.trim()}".', style: TextStyle(color: VuV2Colors.mute)))
+          Padding(padding: const EdgeInsets.all(24), child: Text('Nothing matches "${_q.text.trim()}".', style: TextStyle(color: GG.mute)))
         else
           Expanded(
             child: ListView(children: <Widget>[
@@ -261,7 +261,7 @@ class _FindScreenState extends State<FindScreen> {
                   title: Text(r.title),
                   subtitle: Text('${r.kind} · ${r.detail}', maxLines: 2, overflow: TextOverflow.ellipsis),
                   trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => r.open())),
+                  onTap: () => Navigator.of(context).push(ggRoute<void>((_) => r.open())),
                 ),
             ]),
           ),

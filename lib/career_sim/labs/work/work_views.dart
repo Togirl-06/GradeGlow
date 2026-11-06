@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../model/career_models.dart';
 import '../../ui/common.dart';
 import '../lab_grading.dart';
@@ -15,6 +14,7 @@ import '../math/math_steps.dart';
 import '../math/math_views.dart';
 import '../ui/step_views.dart';
 import 'work_steps.dart';
+import '../../ui/gg_kit.dart';
 
 Map<String, TextEditingController> _controllers(List<MathQuestion> qs) => <String, TextEditingController>{for (final MathQuestion q in qs) q.id: TextEditingController()};
 
@@ -58,7 +58,7 @@ class _TriageViewState extends State<TriageView> {
     final TriageStep s = widget.step;
     final int decided = s.items.where((TriageItem i) => s.fields.every((TriageField f) => i.answers[f.id] == null || _d[i.id]?[f.id] != null)).length;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-      Text('${s.queueName}: $decided of ${s.items.length} handled', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('${s.queueName}: $decided of ${s.items.length} handled', style: TextStyle(color: GG.mute, fontSize: 12)),
       for (final TriageItem it in s.items)
         Card(
           key: ValueKey<String>('item_${it.id}'),
@@ -66,18 +66,18 @@ class _TriageViewState extends State<TriageView> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text(it.title, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+              Text(it.title, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
               if (it.meta.isNotEmpty)
-                Wrap(spacing: 6, runSpacing: 4, children: <Widget>[for (final MapEntry<String, String> m in it.meta.entries) StatusChip('${m.key}: ${m.value}', color: VuV2Colors.mute)]),
+                Wrap(spacing: 6, runSpacing: 4, children: <Widget>[for (final MapEntry<String, String> m in it.meta.entries) StatusChip('${m.key}: ${m.value}', color: GG.mute)]),
               const SizedBox(height: 4),
-              Text(it.body, style: TextStyle(color: VuV2Colors.ink, height: 1.35)),
+              Text(it.body, style: TextStyle(color: GG.ink, height: 1.35)),
               const SizedBox(height: 6),
               for (final TriageField f in s.fields)
                 if (it.answers[f.id] != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                      Text(f.label, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+                      Text(f.label, style: TextStyle(color: GG.mute, fontSize: 12)),
                       Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
                         for (final String o in f.options)
                           ChoiceChip(
@@ -129,14 +129,14 @@ class _SequenceViewState extends State<SequenceView> {
   Widget build(BuildContext context) {
     final SequenceStep s = widget.step;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-      Text('Use the arrows to put the steps in the order you would carry them out.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('Use the arrows to put the steps in the order you would carry them out.', style: TextStyle(color: GG.mute, fontSize: 12)),
       for (int i = 0; i < _order.length; i++)
         Card(
           key: ValueKey<String>('seq_pos_$i'),
           margin: const EdgeInsets.only(top: 6),
           child: Row(children: <Widget>[
-            Padding(padding: const EdgeInsets.all(10), child: Text('${i + 1}', style: TextStyle(color: VuV2Colors.orange, fontWeight: FontWeight.w900))),
-            Expanded(child: Text(s.correctOrder[_order[i]], style: TextStyle(color: VuV2Colors.ink))),
+            Padding(padding: const EdgeInsets.all(10), child: Text('${i + 1}', style: TextStyle(color: GG.accent, fontWeight: FontWeight.w900))),
+            Expanded(child: Text(s.correctOrder[_order[i]], style: TextStyle(color: GG.ink))),
             IconButton(key: ValueKey<String>('seq_up_$i'), onPressed: i == 0 ? null : () => _move(i, -1), icon: const Icon(Icons.arrow_upward_rounded)),
             IconButton(key: ValueKey<String>('seq_down_$i'), onPressed: i == _order.length - 1 ? null : () => _move(i, 1), icon: const Icon(Icons.arrow_downward_rounded)),
           ]),
@@ -201,13 +201,13 @@ class _DocumentViewState extends State<DocumentView> {
           title: const Text('File and sources'),
           children: <Widget>[BulletList(s.sources, icon: Icons.description_outlined)],
         ),
-      Text('${s.docType} · $total words · saved as you type', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('${s.docType} · $total words · saved as you type', style: TextStyle(color: GG.mute, fontSize: 12)),
       for (final DocSection sec in s.sections)
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-            Text(sec.heading, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
-            if (sec.guidance.isNotEmpty) Text(sec.guidance, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text(sec.heading, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+            if (sec.guidance.isNotEmpty) Text(sec.guidance, style: TextStyle(color: GG.mute, fontSize: 12)),
             const SizedBox(height: 4),
             TextField(
               key: ValueKey<String>('doc_${sec.id}'),
@@ -292,7 +292,7 @@ class _DialogueViewState extends State<DialogueView> {
       Container(
         key: const ValueKey<String>('dialogue_transcript'),
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: VuV2Colors.card, border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: GG.panel, border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(10)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
           _Bubble(who: s.person, text: s.opening, mine: false),
           for (final String id in _asked)
@@ -303,7 +303,7 @@ class _DialogueViewState extends State<DialogueView> {
         ]),
       ),
       const SizedBox(height: 6),
-      Text('${_asked.length} of ${s.maxTurns} turns used${out ? ' — time is up for questions.' : '. Choose what to say or do next:'}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      Text('${_asked.length} of ${s.maxTurns} turns used${out ? ' — time is up for questions.' : '. Choose what to say or do next:'}', style: TextStyle(color: GG.mute, fontSize: 12)),
       if (!out)
         Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
           for (final DialogueOption o in s.options)
@@ -311,7 +311,7 @@ class _DialogueViewState extends State<DialogueView> {
         ]),
       if (s.conclusions.isNotEmpty) ...<Widget>[
         const SizedBox(height: 10),
-        Text('Your conclusions', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+        Text('Your conclusions', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
         const SizedBox(height: 6),
         QuestionFields(questions: s.conclusions, controllers: _c, choices: _choices, enabled: true, onChoice: (String id, int i) => setState(() => _choices[id] = i)),
       ],
@@ -347,10 +347,10 @@ class _Bubble extends StatelessWidget {
           margin: const EdgeInsets.only(top: 6),
           padding: const EdgeInsets.all(8),
           constraints: const BoxConstraints(maxWidth: 520),
-          decoration: BoxDecoration(color: (mine ? VuV2Colors.orange : VuV2Colors.mute).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: (mine ? GG.accent : GG.mute).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text(who, style: TextStyle(color: VuV2Colors.mute, fontSize: 11, fontWeight: FontWeight.w700)),
-            Text(text, style: TextStyle(color: VuV2Colors.ink, height: 1.35)),
+            Text(who, style: TextStyle(color: GG.mute, fontSize: 11, fontWeight: FontWeight.w700)),
+            Text(text, style: TextStyle(color: GG.ink, height: 1.35)),
           ]),
         ),
       );
@@ -398,7 +398,7 @@ class _SimulationViewState extends State<SimulationView> {
           final double hi = ys.reduce((double a, double b) => a > b ? a : b);
           final double pad = (hi - lo).abs() * 0.1 + 1e-6;
           chart = Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text('${o.label} against ${i.label} (other settings fixed):', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text('${o.label} against ${i.label} (other settings fixed):', style: TextStyle(color: GG.mute, fontSize: 12)),
             GraphPlot(
               curves: <PlotCurve>[PlotCurve(_SimExpr(s, _v, inp, out), const Color(0xFF3B82F6))],
               window: (i.min, i.max, lo - pad, hi + pad),
@@ -412,7 +412,7 @@ class _SimulationViewState extends State<SimulationView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
       for (final SimInput i in s.inputs)
         Row(children: <Widget>[
-          SizedBox(width: 150, child: Text('${i.label}: ${fmtNum(_v[i.name]!)}${i.unit.isEmpty ? '' : ' ${i.unit}'}', style: TextStyle(color: VuV2Colors.ink))),
+          SizedBox(width: 150, child: Text('${i.label}: ${fmtNum(_v[i.name]!)}${i.unit.isEmpty ? '' : ' ${i.unit}'}', style: TextStyle(color: GG.ink))),
           Expanded(
             child: Slider(
               key: ValueKey<String>('sim_${i.name}'),
@@ -428,21 +428,21 @@ class _SimulationViewState extends State<SimulationView> {
       Container(
         key: const ValueKey<String>('sim_outputs'),
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: VuV2Colors.card, border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: GG.panel, border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(10)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
           for (final SimOutput o in s.outputs)
             Text(
               '${o.label}: ${(env[o.name] ?? double.nan).isFinite ? env[o.name]!.toStringAsFixed(o.decimals) : 'undefined'}${o.unit.isEmpty ? '' : ' ${o.unit}'}',
               key: ValueKey<String>('out_${o.name}'),
-              style: TextStyle(color: VuV2Colors.ink, fontFamily: 'monospace'),
+              style: TextStyle(color: GG.ink, fontFamily: 'monospace'),
             ),
           const Divider(),
           for (final SimConstraint c in s.constraints)
             Row(children: <Widget>[
               Icon(c.met(env[c.output] ?? double.nan) ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                  size: 16, color: c.met(env[c.output] ?? double.nan) ? VuV2Colors.success : VuV2Colors.mute),
+                  size: 16, color: c.met(env[c.output] ?? double.nan) ? GG.green : GG.mute),
               const SizedBox(width: 6),
-              Expanded(child: Text(c.label, style: TextStyle(color: VuV2Colors.ink, fontSize: 12.5))),
+              Expanded(child: Text(c.label, style: TextStyle(color: GG.ink, fontSize: 12.5))),
             ]),
         ]),
       ),

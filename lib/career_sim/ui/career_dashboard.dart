@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../engine/pay_rules.dart';
@@ -19,6 +18,7 @@ import 'job_screens.dart';
 import 'money_find_screens.dart';
 import '../hospital/ui/hospital_screens.dart';
 import 'workplace_screen.dart';
+import 'gg_kit.dart';
 
 /// The next thing the student should do, derived from their record.
 class NextStep {
@@ -31,7 +31,7 @@ class NextStep {
 NextStep nextStep(CareerSimStore store) {
   final CareerProfile p = store.profile;
   final Department? d = store.department;
-  void push(BuildContext c, Widget w) => Navigator.of(c).push(MaterialPageRoute<void>(builder: (_) => w));
+  void push(BuildContext c, Widget w) => Navigator.of(c).push(ggRoute<void>((_) => w));
   if (d == null) {
     return NextStep('Choose your department', 'Pick the school you are training in.', (BuildContext c) => push(c, const DepartmentPickerScreen()));
   }
@@ -103,7 +103,7 @@ class CareerSimDashboard extends StatelessWidget {
   /// Switches to the courses tab (provided by the campus shell).
   final VoidCallback? onOpenCourses;
 
-  void _push(BuildContext c, Widget w) => Navigator.of(c).push(MaterialPageRoute<void>(builder: (_) => w));
+  void _push(BuildContext c, Widget w) => Navigator.of(c).push(ggRoute<void>((_) => w));
 
   @override
   Widget build(BuildContext context) {
@@ -117,30 +117,35 @@ class CareerSimDashboard extends StatelessWidget {
     final int openRoles = d == null ? 0 : CareerCatalog.postingsFor(d.id).where((JobPosting j) => PostingSchedule.isOpen(j, p.day)).length;
     final Color accent = Theme.of(context).colorScheme.primary;
 
-    return SafeArea(
+    return GGTheme(
+      child: DecoratedBox(
+        decoration: const BoxDecoration(gradient: GG.page),
+        child: SafeArea(
       child: SingleChildScrollView(
         key: const ValueKey<String>('career_dashboard'),
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(children: <Widget>[
-              Expanded(child: Text('Career Simulator', style: TextStyle(color: VuV2Colors.ink, fontSize: 26, fontWeight: FontWeight.w900))),
-              Tooltip(
-                message: simulatedPayNote,
-                child: ActionChip(
-                  key: const ValueKey<String>('dash_wallet'),
-                  avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
-                  label: Text(usd(p.balanceCents), style: const TextStyle(fontWeight: FontWeight.w800)),
-                  onPressed: () => _push(context, const MoneyScreen()),
-                ),
-              ),
-            ]),
-            Text('${p.resume.fullName.isNotEmpty ? p.resume.fullName : studentName} · $majorLabel · ${p.stage.label}',
-                style: TextStyle(color: VuV2Colors.mute, fontSize: 13)),
+            _TopBar(
+              balance: usd(p.balanceCents),
+              onWallet: () => _push(context, const MoneyScreen()),
+              onLabs: () => _push(context, const PracticalLabsScreen()),
+              onCareer: () => _push(context, const CareerCentreScreen(initialTab: 1)),
+              onProfile: () => _push(context, const ResumeScreen()),
+              onFind: () => _push(context, const FindScreen()),
+            ),
             const SizedBox(height: 12),
+            _Hero(
+              name: p.resume.fullName.isNotEmpty ? p.resume.fullName : studentName,
+              subtitle: '$majorLabel · ${p.stage.label}',
+              onExplore: () => _push(context, const PracticalLabsScreen()),
+            ),
+            const SizedBox(height: 12),
+            _Schools(onOpen: (String id) => _push(context, DepartmentScreen(deptId: id))),
+            const SizedBox(height: 16),
             Material(
-              color: VuV2Colors.mute.withValues(alpha: 0.08),
+              color: GG.mute.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
               child: InkWell(
                 key: const ValueKey<String>('dash_search'),
@@ -149,9 +154,9 @@ class CareerSimDashboard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
                   child: Row(children: <Widget>[
-                    Icon(Icons.search_rounded, color: VuV2Colors.mute),
+                    Icon(Icons.search_rounded, color: GG.mute),
                     const SizedBox(width: 10),
-                    Text('Find a lab, lesson, job or screen', style: TextStyle(color: VuV2Colors.mute)),
+                    Text('Find a lab, lesson, job or screen', style: TextStyle(color: GG.mute)),
                   ]),
                 ),
               ),
@@ -177,7 +182,7 @@ class CareerSimDashboard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 8, 6),
                   child: Row(children: <Widget>[
-                    Expanded(child: Text('Day ${p.day}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700))),
+                    Expanded(child: Text('Day ${p.day}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700))),
                     const NextDayButton(),
                   ]),
                 ),
@@ -206,20 +211,155 @@ class CareerSimDashboard extends StatelessWidget {
             ]),
             const SizedBox(height: 8),
             Row(children: <Widget>[
-              Text('Recent activity', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+              Text('Recent activity', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
               const Spacer(),
               TextButton(key: const ValueKey<String>('nav_schools'), onPressed: () => _push(context, const DepartmentPickerScreen()), child: const Text('Change school')),
             ]),
-            if (p.log.isEmpty) Text('Your record starts when you complete your first task.', style: TextStyle(color: VuV2Colors.mute)),
+            if (p.log.isEmpty) Text('Your record starts when you complete your first task.', style: TextStyle(color: GG.mute)),
             for (final CareerEvent e in p.log.reversed.take(3))
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: Text('Day ${e.day} · ${e.text}', style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
+                child: Text('Day ${e.day} · ${e.text}', style: TextStyle(color: GG.ink, fontSize: 13)),
               ),
           ],
         ),
       ),
+        ),
+      ),
     );
+  }
+}
+
+class _TopBar extends StatelessWidget {
+  const _TopBar({required this.balance, required this.onWallet, required this.onLabs, required this.onCareer, required this.onProfile, required this.onFind});
+  final String balance;
+  final VoidCallback onWallet;
+  final VoidCallback onLabs;
+  final VoidCallback onCareer;
+  final VoidCallback onProfile;
+  final VoidCallback onFind;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool wide = MediaQuery.sizeOf(context).width >= 760;
+    Widget link(String key, IconData i, String label, VoidCallback onTap) => TextButton.icon(
+          key: ValueKey<String>(key),
+          onPressed: onTap,
+          style: TextButton.styleFrom(foregroundColor: GG.ink),
+          icon: Icon(i, size: 18),
+          label: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+        );
+    return GGPanel(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      color: GG.bg2,
+      child: Row(children: <Widget>[
+        const Icon(Icons.school_rounded, color: Colors.white, size: 30),
+        const SizedBox(width: 8),
+        const Text('GradeGlow', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
+        const Spacer(),
+        if (wide) ...<Widget>[
+          link('top_home', Icons.home_rounded, 'Home', () {}),
+          link('top_labs', Icons.science_rounded, 'Labs', onLabs),
+          link('top_career', Icons.work_rounded, 'Career', onCareer),
+          link('top_profile', Icons.person_rounded, 'Profile', onProfile),
+        ],
+        Tooltip(
+          message: simulatedPayNote,
+          child: ActionChip(
+            key: const ValueKey<String>('dash_wallet'),
+            avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
+            label: Text(balance, style: const TextStyle(fontWeight: FontWeight.w800)),
+            onPressed: onWallet,
+          ),
+        ),
+        IconButton(key: const ValueKey<String>('top_find'), onPressed: onFind, icon: const Icon(Icons.search_rounded)),
+      ]),
+    );
+  }
+}
+
+class _Hero extends StatelessWidget {
+  const _Hero({required this.name, required this.subtitle, required this.onExplore});
+  final String name;
+  final String subtitle;
+  final VoidCallback onExplore;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool wide = MediaQuery.sizeOf(context).width >= 760;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: SizedBox(
+        height: wide ? 280 : 230,
+        child: Stack(fit: StackFit.expand, children: <Widget>[
+          const CustomPaint(painter: CampusPainter()),
+          Padding(
+            padding: EdgeInsets.all(wide ? 28 : 18),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Text('Welcome to\nGradeGlow Virtual University', style: TextStyle(color: Colors.white, fontSize: wide ? 34 : 24, fontWeight: FontWeight.w900, height: 1.15)),
+              const SizedBox(height: 8),
+              Text('Learn. Practice. Get Hired. Earn.', style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: wide ? 18 : 15, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 4),
+              Text('$name · $subtitle', style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 13)),
+              const SizedBox(height: 14),
+              GGButton(key: const ValueKey<String>('dash_explore'), label: 'Explore Your Majors  →', onPressed: onExplore),
+            ]),
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+class _Schools extends StatelessWidget {
+  const _Schools({required this.onOpen});
+  final ValueChanged<String> onOpen;
+
+  static const List<(String, String, IconData, Color)> schools = <(String, String, IconData, Color)>[
+    ('cs', 'Computer Science & Technology', Icons.computer_rounded, Color(0xFF60A5FA)),
+    ('medicine', 'Medicine & Health Sciences', Icons.medical_services_rounded, Color(0xFF38BDF8)),
+    ('nursing', 'Nursing', Icons.monitor_heart_rounded, Color(0xFFF87171)),
+    ('law', 'Law', Icons.balance_rounded, Color(0xFFFBBF24)),
+    ('engineering', 'Engineering', Icons.settings_rounded, Color(0xFF818CF8)),
+    ('business', 'Business & Economics', Icons.insights_rounded, Color(0xFFF59E0B)),
+    ('mathematics', 'Mathematics & Sciences', Icons.science_rounded, Color(0xFFC084FC)),
+    ('communication', 'English & Communication', Icons.menu_book_rounded, Color(0xFF60A5FA)),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
+      final int cols = c.maxWidth >= 720 ? 4 : 2;
+      final double w = (c.maxWidth - 10 * (cols - 1)) / cols;
+      return Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
+        for (final (String id, String label, IconData icon, Color color) in schools)
+          SizedBox(
+            width: w,
+            child: Material(
+              color: GG.panel,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: GG.stroke)),
+              child: InkWell(
+                key: ValueKey<String>('school_$id'),
+                borderRadius: BorderRadius.circular(14),
+                onTap: () => onOpen(id),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                  child: Row(children: <Widget>[
+                    Container(
+                      width: 46,
+                      height: 46,
+                      decoration: BoxDecoration(color: color.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(12)),
+                      child: Icon(icon, color: color, size: 28),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(label, maxLines: 2, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700, fontSize: 14))),
+                  ]),
+                ),
+              ),
+            ),
+          ),
+      ]);
+    });
   }
 }
 
@@ -243,7 +383,7 @@ class _Group extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-        Text(title, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 15)),
+        Text(title, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 15)),
         const SizedBox(height: 8),
         LayoutBuilder(builder: (BuildContext context, BoxConstraints c) {
           final int cols = c.maxWidth >= 720 ? 4 : 2;
@@ -253,7 +393,7 @@ class _Group extends StatelessWidget {
               SizedBox(
                 width: w,
                 child: Material(
-                  color: VuV2Colors.mute.withValues(alpha: 0.08),
+                  color: GG.mute.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(14),
                   child: InkWell(
                     key: ValueKey<String>(t.key),
@@ -262,10 +402,10 @@ class _Group extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                        Icon(t.icon, color: VuV2Colors.orange),
+                        Icon(t.icon, color: GG.accent),
                         const SizedBox(height: 6),
-                        Text(t.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
-                        Text(t.caption, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+                        Text(t.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+                        Text(t.caption, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.mute, fontSize: 12)),
                       ]),
                     ),
                   ),
@@ -306,13 +446,13 @@ class _PracticalTraining extends StatelessWidget {
       }
     }
     final int passed = labs.where((LabSpec l) => p.labPassed(l.id)).length;
-    void open(String id) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: id)));
+    void open(String id) => Navigator.of(context).push(ggRoute<void>((_) => LabIntroScreen(labId: id)));
     return SectionCard(
       title: 'Practical training',
       subtitle: mine.isEmpty ? 'Labs for your department are not built yet — all labs are open to you.' : '$passed of ${labs.length} labs passed · each pass earns simulated pay',
       trailing: TextButton(
         key: const ValueKey<String>('dash_all_labs'),
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const PracticalLabsScreen())),
+        onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const PracticalLabsScreen())),
         child: const Text('All labs'),
       ),
       child: Column(children: <Widget>[

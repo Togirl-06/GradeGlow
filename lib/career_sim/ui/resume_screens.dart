@@ -4,13 +4,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../resume/resume_analysis.dart';
 import '../store/career_sim_store.dart';
 import 'career_centre.dart';
 import 'common.dart';
+import 'gg_kit.dart';
 
 /// Picks a resume file from the device: (file name, bytes), or null if cancelled.
 typedef ResumePicker = Future<(String, Uint8List)?> Function();
@@ -40,7 +40,7 @@ class ResumeHubScreen extends StatelessWidget {
     if (file == null || !context.mounted) return;
     final ResumeUpload? u = await runCareerAction<ResumeUpload>(context, () => store.uploadResume(file.$1, file.$2, replaceId: replaceId));
     if (u != null && context.mounted) {
-      await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ResumeReviewScreen(uploadId: u.id)));
+      await Navigator.of(context).push(ggRoute<void>((_) => ResumeReviewScreen(uploadId: u.id)));
     }
   }
 
@@ -65,33 +65,33 @@ class ResumeHubScreen extends StatelessWidget {
               ),
               OutlinedButton.icon(
                 key: const ValueKey<String>('hub_edit_profile_resume'),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeScreen())),
+                onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const ResumeScreen())),
                 icon: const Icon(Icons.edit_note_rounded),
                 label: const Text('Edit my profile resume'),
               ),
             ]),
           ),
           if (p.resumeUploads.isEmpty)
-            Text('No resume uploaded yet. You can also build one in GradeGlow with "Edit my profile resume".', style: TextStyle(color: VuV2Colors.mute)),
+            Text('No resume uploaded yet. You can also build one in GradeGlow with "Edit my profile resume".', style: TextStyle(color: GG.mute)),
           for (final ResumeUpload u in p.resumeUploads)
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                   Row(children: <Widget>[
-                    Icon(u.format == 'pdf' ? Icons.picture_as_pdf_rounded : Icons.description_rounded, color: VuV2Colors.orange),
+                    Icon(u.format == 'pdf' ? Icons.picture_as_pdf_rounded : Icons.description_rounded, color: GG.accent),
                     const SizedBox(width: 8),
-                    Expanded(child: Text(u.fileName, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800))),
+                    Expanded(child: Text(u.fileName, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800))),
                     if (p.defaultResumeId == u.id) const StatusChip('Default'),
                   ]),
                   const SizedBox(height: 4),
                   Text('Uploaded day ${u.uploadedDay} · ${(u.sizeBytes / 1024).round()} KB · quality ${resumeQuality(u.parsed).score}/100 · ${u.reviewed ? 'checked by you' : 'not yet checked'}',
-                      style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+                      style: TextStyle(color: GG.mute, fontSize: 12.5)),
                   const SizedBox(height: 8),
                   Wrap(spacing: 8, runSpacing: 6, children: <Widget>[
                     FilledButton.tonal(
                       key: ValueKey<String>('review_${u.id}'),
-                      onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ResumeReviewScreen(uploadId: u.id))),
+                      onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => ResumeReviewScreen(uploadId: u.id))),
                       child: Text(u.reviewed ? 'View / edit' : 'Check extracted details'),
                     ),
                     OutlinedButton(key: ValueKey<String>('replace_${u.id}'), onPressed: () => upload(context, replaceId: u.id), child: const Text('Replace file')),
@@ -202,7 +202,7 @@ class _ResumeReviewScreenState extends State<ResumeReviewScreen> {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           Text('Read from ${u.fileName}. Check each field and correct anything that was read wrongly — only what is in your file is shown.',
-              style: TextStyle(color: VuV2Colors.mute)),
+              style: TextStyle(color: GG.mute)),
           const SizedBox(height: 12),
           SectionCard(
             title: 'Resume quality: ${q.score}/100',
@@ -210,15 +210,15 @@ class _ResumeReviewScreenState extends State<ResumeReviewScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
               LabeledBar(label: 'Quality', value: q.score, detail: '${q.words} words'),
               if (q.strengths.isNotEmpty) ...<Widget>[
-                Text('Strengths', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-                BulletList(q.strengths, icon: Icons.add_circle_outline_rounded, color: VuV2Colors.success),
+                Text('Strengths', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+                BulletList(q.strengths, icon: Icons.add_circle_outline_rounded, color: GG.green),
               ],
               if (q.weaknesses.isNotEmpty) ...<Widget>[
-                Text('Weaknesses', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-                BulletList(q.weaknesses, icon: Icons.remove_circle_outline_rounded, color: VuV2Colors.danger),
+                Text('Weaknesses', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+                BulletList(q.weaknesses, icon: Icons.remove_circle_outline_rounded, color: GG.red),
               ],
               if (q.suggestions.isNotEmpty) ...<Widget>[
-                Text('Suggested improvements', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+                Text('Suggested improvements', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
                 BulletList(q.suggestions),
               ],
             ]),
@@ -237,7 +237,7 @@ class _ResumeReviewScreenState extends State<ResumeReviewScreen> {
           ExpansionTile(
             tilePadding: EdgeInsets.zero,
             title: const Text('Text read from the file'),
-            children: <Widget>[SelectableText(u.text, style: TextStyle(color: VuV2Colors.ink, fontSize: 12.5))],
+            children: <Widget>[SelectableText(u.text, style: TextStyle(color: GG.ink, fontSize: 12.5))],
           ),
           const SizedBox(height: 8),
           BusyButton(
@@ -273,11 +273,11 @@ class ResumeMatchCard extends StatelessWidget {
       return SectionCard(
         title: 'Resume compatibility',
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-          Text('Upload your resume to see how well it matches this job.', style: TextStyle(color: VuV2Colors.ink)),
+          Text('Upload your resume to see how well it matches this job.', style: TextStyle(color: GG.ink)),
           const SizedBox(height: 6),
           FilledButton.tonalIcon(
             key: const ValueKey<String>('match_upload'),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeHubScreen())),
+            onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const ResumeHubScreen())),
             icon: const Icon(Icons.upload_file_rounded),
             label: const Text('Upload resume'),
           ),
@@ -294,10 +294,10 @@ class ResumeMatchCard extends StatelessWidget {
         LabeledBar(label: 'Match', value: m.score),
         BulletList(m.reasons),
         if (m.missing.isNotEmpty) ...<Widget>[
-          Text('Missing keywords', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-          Wrap(spacing: 6, runSpacing: 6, children: <Widget>[for (final String k in m.missing) StatusChip(k, color: VuV2Colors.mute)]),
+          Text('Missing keywords', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+          Wrap(spacing: 6, runSpacing: 6, children: <Widget>[for (final String k in m.missing) StatusChip(k, color: GG.mute)]),
           const SizedBox(height: 4),
-          Text('Only add a skill to your resume if you really have it — pass a related lab to build the evidence.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+          Text('Only add a skill to your resume if you really have it — pass a related lab to build the evidence.', style: TextStyle(color: GG.mute, fontSize: 12.5)),
         ],
       ]),
     );

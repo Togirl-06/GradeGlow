@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../ai/career_ai.dart';
 import '../engine/interview_engine.dart';
 import '../engine/text_rubric.dart';
@@ -9,6 +8,7 @@ import '../model/content_models.dart';
 import 'common.dart';
 import 'job_screens.dart';
 import 'task_views.dart';
+import 'gg_kit.dart';
 
 class _Line {
   const _Line(this.fromInterviewer, this.text);
@@ -156,10 +156,10 @@ class _InterviewScreenState extends State<InterviewScreen> {
           margin: const EdgeInsets.only(bottom: 8),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: l.fromInterviewer ? VuV2Colors.navyElevated : Theme.of(context).colorScheme.primary.withValues(alpha: 0.14),
+            color: l.fromInterviewer ? GG.panel2 : Theme.of(context).colorScheme.primary.withValues(alpha: 0.14),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Text(l.text, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+          child: Text(l.text, style: TextStyle(color: GG.ink, height: 1.4)),
         ),
       );
 
@@ -172,7 +172,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text('${widget.plan.interviewer} · ${widget.plan.interviewerRole}', style: TextStyle(color: VuV2Colors.mute)),
+          Text('${widget.plan.interviewer} · ${widget.plan.interviewerRole}', style: TextStyle(color: GG.mute)),
           const SizedBox(height: 10),
           for (final _Line l in _lines) _bubble(l),
           const SizedBox(height: 8),
@@ -193,7 +193,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
             if (q.practical != null)
               Container(
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(12)),
                 child: TaskView(key: ValueKey<String>('practical_${q.id}'), spec: q.practical!, allowRetry: false, onGraded: _submitPractical),
               )
             else if (q.isChoice)
@@ -228,7 +228,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
               ),
             ],
           ] else ...<Widget>[
-            Text('Your questions (${_s.candidateQuestions.length}/3)', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+            Text('Your questions (${_s.candidateQuestions.length}/3)', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
             const SizedBox(height: 6),
             Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
               for (int i = 0; i < _suggested.length; i++)

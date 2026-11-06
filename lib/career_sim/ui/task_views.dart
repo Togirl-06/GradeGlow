@@ -14,6 +14,7 @@ import '../model/tasks.dart';
 import 'common.dart';
 import 'diagrams.dart';
 import 'lab_work_view.dart';
+import 'gg_kit.dart';
 
 /// Presents any task and grades it with its rule. [onGraded] persists the result.
 class TaskView extends StatelessWidget {
@@ -64,13 +65,13 @@ class TaskView extends StatelessWidget {
           children: <Widget>[
             StatusChip(spec.kindLabel),
             const SizedBox(width: 8),
-            Text('Pass mark ${spec.passMark}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text('Pass mark ${spec.passMark}', style: TextStyle(color: GG.mute, fontSize: 12)),
           ],
         ),
         const SizedBox(height: 8),
-        Text(spec.title, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 18)),
+        Text(spec.title, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 18)),
         const SizedBox(height: 6),
-        Text(spec.brief, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+        Text(spec.brief, style: TextStyle(color: GG.ink, height: 1.4)),
         const SizedBox(height: 12),
         body,
       ],
@@ -84,7 +85,7 @@ class ResultPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color c = result.passed ? VuV2Colors.success : VuV2Colors.danger;
+    final Color c = result.passed ? GG.green : GG.red;
     return Container(
       key: const ValueKey<String>('task_result'),
       margin: const EdgeInsets.only(top: 12),
@@ -101,7 +102,7 @@ class ResultPanel extends StatelessWidget {
             children: <Widget>[
               Text(result.passed ? 'Passed' : 'Not passed', style: TextStyle(color: c, fontWeight: FontWeight.w900, fontSize: 16)),
               const SizedBox(width: 8),
-              Text('${result.score}/100', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+              Text('${result.score}/100', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
               const Spacer(),
               const ValidatedBadge(),
             ],
@@ -113,7 +114,7 @@ class ResultPanel extends StatelessWidget {
               spacing: 6,
               runSpacing: 6,
               children: <Widget>[
-                for (final MapEntry<String, int> e in result.breakdown.entries) StatusChip('${e.key}: ${e.value}', color: VuV2Colors.mute),
+                for (final MapEntry<String, int> e in result.breakdown.entries) StatusChip('${e.key}: ${e.value}', color: GG.mute),
               ],
             ),
         ],
@@ -184,15 +185,15 @@ Widget _facts(List<Fact> facts) => Wrap(
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: VuV2Colors.navyElevated,
+              color: GG.panel2,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: VuV2Colors.stroke),
+              border: Border.all(color: GG.stroke),
             ),
             child: RichText(
               text: TextSpan(
-                style: TextStyle(color: VuV2Colors.ink, fontSize: 13),
+                style: TextStyle(color: GG.ink, fontSize: 13),
                 children: <InlineSpan>[
-                  TextSpan(text: '${f.label}: ', style: TextStyle(color: VuV2Colors.mute)),
+                  TextSpan(text: '${f.label}: ', style: TextStyle(color: GG.mute)),
                   TextSpan(text: f.value, style: const TextStyle(fontWeight: FontWeight.w700)),
                 ],
               ),
@@ -212,10 +213,10 @@ Widget _exhibit(String text) => Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: VuV2Colors.navyElevated,
-        border: Border(left: BorderSide(color: VuV2Colors.orange, width: 4)),
+        color: GG.panel2,
+        border: Border(left: BorderSide(color: GG.accent, width: 4)),
       ),
-      child: Text(text, style: TextStyle(color: VuV2Colors.ink, height: 1.45, fontStyle: FontStyle.italic)),
+      child: Text(text, style: TextStyle(color: GG.ink, height: 1.45, fontStyle: FontStyle.italic)),
     );
 
 class _Option extends StatelessWidget {
@@ -230,7 +231,7 @@ class _Option extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Material(
-        color: selected ? c.withValues(alpha: 0.12) : VuV2Colors.navyElevated,
+        color: selected ? c.withValues(alpha: 0.12) : GG.panel2,
         borderRadius: BorderRadius.circular(10),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
@@ -239,9 +240,9 @@ class _Option extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Row(
               children: <Widget>[
-                Icon(selected ? Icons.radio_button_checked : Icons.radio_button_unchecked, size: 20, color: selected ? c : VuV2Colors.mute),
+                Icon(selected ? Icons.radio_button_checked : Icons.radio_button_unchecked, size: 20, color: selected ? c : GG.mute),
                 const SizedBox(width: 10),
-                Expanded(child: Text(text, style: TextStyle(color: VuV2Colors.ink, height: 1.35))),
+                Expanded(child: Text(text, style: TextStyle(color: GG.ink, height: 1.35))),
               ],
             ),
           ),
@@ -322,20 +323,20 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
   Widget build(BuildContext context) {
     final LeetcodeProblem? p = _problem;
     if (p == null) {
-      return const Text('This exercise is not available in the problem bank.', style: TextStyle(color: VuV2Colors.danger));
+      return const Text('This exercise is not available in the problem bank.', style: TextStyle(color: GG.red));
     }
     final JudgeResult? r = _last;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        for (final String line in widget.spec.context) Text('• $line', style: TextStyle(color: VuV2Colors.mute)),
+        for (final String line in widget.spec.context) Text('• $line', style: TextStyle(color: GG.mute)),
         _exhibit(p.description.replaceAll('**', '').replaceAll('`', '')),
         const SizedBox(height: 8),
         for (final LeetcodeExample e in p.examples.take(2))
           Padding(padding: const EdgeInsets.only(bottom: 6), child: _mono('Input: ${e.input}\nOutput: ${e.output}')),
         Row(
           children: <Widget>[
-            Text('Language', style: TextStyle(color: VuV2Colors.mute)),
+            Text('Language', style: TextStyle(color: GG.mute)),
             const SizedBox(width: 10),
             DropdownButton<String>(
               key: const ValueKey<String>('code_lang'),
@@ -370,7 +371,7 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
           children: <Widget>[
             BusyButton(key: const ValueKey<String>('code_run'), label: 'Run sample tests', icon: Icons.play_arrow_rounded, tonal: true, onPressed: () => _judge(false)),
             BusyButton(key: const ValueKey<String>('code_submit'), label: 'Submit for grading', icon: Icons.fact_check_rounded, onPressed: () => _judge(true)),
-            Text(careerStore(context).runner.where, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+            Text(careerStore(context).runner.where, style: TextStyle(color: GG.mute, fontSize: 12)),
             LabRunnerHost(runner: careerStore(context).runner),
           ],
         ),
@@ -379,14 +380,14 @@ class _CodeTaskViewState extends State<_CodeTaskView> {
           Container(
             key: const ValueKey<String>('judge_verdict'),
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: VuV2Colors.navyElevated, borderRadius: BorderRadius.circular(8)),
+            decoration: BoxDecoration(color: GG.panel2, borderRadius: BorderRadius.circular(8)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('${_lastWasSubmit ? 'Submit' : 'Run'}: ${r.verdict}',
-                    style: TextStyle(fontWeight: FontWeight.w800, color: r.accepted ? VuV2Colors.success : VuV2Colors.ink)),
+                    style: TextStyle(fontWeight: FontWeight.w800, color: r.accepted ? GG.green : GG.ink)),
                 if (!r.notGraded) Text('${r.passed}/${r.total} tests passed${r.runtimeMs == null ? '' : ' · ${r.runtimeMs!.toStringAsFixed(0)} ms'}'),
-                if (r.message.isNotEmpty) Text(r.message, style: TextStyle(color: VuV2Colors.mute)),
+                if (r.message.isNotEmpty) Text(r.message, style: TextStyle(color: GG.mute)),
                 for (final JudgeCase c in r.cases.where((JudgeCase c) => !c.passed && !c.hidden).take(1))
                   Padding(
                     padding: const EdgeInsets.only(top: 6),
@@ -453,7 +454,7 @@ class _DecisionViewState extends State<_DecisionView> with _Graded<_DecisionView
                 Expanded(child: Text(widget.spec.steps[s].update, style: const TextStyle(color: Color(0xFF3B82F6), fontWeight: FontWeight.w600))),
               ]),
             ),
-          Text('Step ${s + 1}. ${widget.spec.steps[s].prompt}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+          Text('Step ${s + 1}. ${widget.spec.steps[s].prompt}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           for (int o = 0; o < widget.spec.steps[s].options.length; o++)
             _Option(
@@ -510,7 +511,7 @@ class _WorkupViewState extends State<_WorkupView> with _Graded<_WorkupView> {
         const SizedBox(height: 8),
         _facts(s.facts),
         const SizedBox(height: 12),
-        Text('1. Order investigations (up to ${s.maxInvestigations})', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+        Text('1. Order investigations (up to ${s.maxInvestigations})', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
         for (int i = 0; i < s.investigations.length; i++)
           CheckboxListTile(
             key: ValueKey<String>('inv_$i'),
@@ -539,13 +540,13 @@ class _WorkupViewState extends State<_WorkupView> with _Graded<_WorkupView> {
           ),
         if (_ordered) ...<Widget>[
           const SizedBox(height: 12),
-          Text('2. Working diagnosis', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+          Text('2. Working diagnosis', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
           for (int d = 0; d < s.diagnoses.length; d++)
             _Option(key: ValueKey<String>('dx_$d'), text: s.diagnoses[d], selected: _dx == d, onTap: graded != null ? null : () => setState(() => _dx = d)),
           const SizedBox(height: 8),
-          Text('3. Management', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+          Text('3. Management', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
           for (int m = 0; m < s.management.length; m++) ...<Widget>[
-            Text(s.management[m].prompt, style: TextStyle(color: VuV2Colors.ink)),
+            Text(s.management[m].prompt, style: TextStyle(color: GG.ink)),
             for (int o = 0; o < s.management[m].options.length; o++)
               _Option(
                 key: ValueKey<String>('mg_${m}_$o'),
@@ -701,11 +702,11 @@ class _LedgerViewState extends State<_LedgerView> with _Graded<_LedgerView> {
           Container(
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(10)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text('${i + 1}. ${s.transactions[i].description}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w600)),
+                Text('${i + 1}. ${s.transactions[i].description}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 _acct('dr_$i', 'Debit', _dr[i], (String? v) => setState(() => _dr[i] = v)),
                 const SizedBox(height: 8),
@@ -769,9 +770,9 @@ class _ClassifyViewState extends State<_ClassifyView> with _Graded<_ClassifyView
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text('Item ${i + 1}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+                Text('Item ${i + 1}', style: TextStyle(color: GG.mute, fontSize: 12)),
                 const SizedBox(height: 4),
-                if (code) _mono(s.items[i].text) else Text(s.items[i].text, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w600)),
+                if (code) _mono(s.items[i].text) else Text(s.items[i].text, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 6),
                 Wrap(
                   spacing: 6,
@@ -844,12 +845,12 @@ class _OrderViewState extends State<_OrderView> with _Graded<_OrderView> {
             key: ValueKey<String>('ord_row_$p'),
             margin: const EdgeInsets.only(bottom: 6),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(color: VuV2Colors.navyElevated, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: GG.panel2, borderRadius: BorderRadius.circular(10)),
             child: Row(
               children: <Widget>[
-                Text('${p + 1}.', style: TextStyle(color: VuV2Colors.mute, fontWeight: FontWeight.w700)),
+                Text('${p + 1}.', style: TextStyle(color: GG.mute, fontWeight: FontWeight.w700)),
                 const SizedBox(width: 8),
-                Expanded(child: Text(s.steps[_order[p]], style: TextStyle(color: VuV2Colors.ink))),
+                Expanded(child: Text(s.steps[_order[p]], style: TextStyle(color: GG.ink))),
                 IconButton(
                   key: ValueKey<String>('ord_up_$p'),
                   tooltip: 'Move up',
@@ -903,13 +904,13 @@ class WrittenField extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text('$n words${minWords > 0 ? ' (minimum $minWords)' : ''}',
-                  style: TextStyle(color: n < minWords ? VuV2Colors.danger : VuV2Colors.mute, fontSize: 12)),
+                  style: TextStyle(color: n < minWords ? GG.red : GG.mute, fontSize: 12)),
             );
           },
         ),
         if (rubric.isNotEmpty) ...<Widget>[
           const SizedBox(height: 6),
-          Text('The rubric checks that you address:', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text('The rubric checks that you address:', style: TextStyle(color: GG.mute, fontSize: 12)),
           BulletList(rubric.map((Concept c) => c.label).toList(), icon: Icons.check_box_outline_blank_rounded),
         ],
       ],
@@ -1072,13 +1073,13 @@ class _CourtViewState extends State<_CourtView> with _Graded<_CourtView> {
           Container(
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(10)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(s.transcript[i].speaker.toUpperCase(), style: TextStyle(color: VuV2Colors.mute, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 0.8)),
+                Text(s.transcript[i].speaker.toUpperCase(), style: TextStyle(color: GG.mute, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 0.8)),
                 const SizedBox(height: 2),
-                Text('“${s.transcript[i].text}”', style: TextStyle(color: VuV2Colors.ink, fontSize: 15, height: 1.35)),
+                Text('“${s.transcript[i].text}”', style: TextStyle(color: GG.ink, fontSize: 15, height: 1.35)),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 6,
@@ -1115,7 +1116,7 @@ class _CourtViewState extends State<_CourtView> with _Graded<_CourtView> {
         if (cur >= s.transcript.length)
           footer(() => submitWith(s, CourtroomAnswer(List<String?>.from(_rulings))))
         else
-          Text('Rule on line ${cur + 1} to continue the examination.', style: TextStyle(color: VuV2Colors.mute)),
+          Text('Rule on line ${cur + 1} to continue the examination.', style: TextStyle(color: GG.mute)),
       ],
     );
   }

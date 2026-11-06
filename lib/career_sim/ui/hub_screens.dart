@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../labs/lab_catalog.dart';
@@ -16,6 +15,7 @@ import 'common.dart';
 import 'department_screens.dart';
 import 'job_screens.dart';
 import 'workplace_screen.dart';
+import 'gg_kit.dart';
 
 /// The ten main sections, available from the top of the Career dashboard.
 class GradeGlowNav extends StatelessWidget {
@@ -26,7 +26,7 @@ class GradeGlowNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void push(Widget w) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => w));
+    void push(Widget w) => Navigator.of(context).push(ggRoute<void>((_) => w));
     final List<(String, IconData, String, VoidCallback?)> items = <(String, IconData, String, VoidCallback?)>[
       ('nav_courses', Icons.menu_book_rounded, 'My Courses', onOpenCourses),
       ('nav_schools', Icons.account_balance_rounded, 'Schools', () => push(const DepartmentPickerScreen())),
@@ -73,7 +73,7 @@ class AssessmentsScreen extends StatelessWidget {
                   title: Text(l.title),
                   subtitle: Text(labStatus(p, l)),
                   trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: l.id))),
+                  onTap: () => Navigator.of(context).push(ggRoute<void>((_) => LabIntroScreen(labId: l.id))),
                 ),
             ]),
           ),
@@ -87,7 +87,7 @@ class AssessmentsScreen extends StatelessWidget {
                     title: Text(c.title),
                     subtitle: Text(p.hasCertification(c.id) ? 'Passed' : 'Not yet taken or not passed'),
                     trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => CertificationScreen(deptId: d.id, certId: c.id))),
+                    onTap: () => Navigator.of(context).push(ggRoute<void>((_) => CertificationScreen(deptId: d.id, certId: c.id))),
                   ),
               ]),
             ),
@@ -101,7 +101,7 @@ class AssessmentsScreen extends StatelessWidget {
                     title: Text(pr.title),
                     subtitle: Text(store.projectPublished(pr.id) ? 'In portfolio' : 'Not finished'),
                     trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ProjectScreen(deptId: d.id, projectId: pr.id))),
+                    onTap: () => Navigator.of(context).push(ggRoute<void>((_) => ProjectScreen(deptId: d.id, projectId: pr.id))),
                   ),
               ]),
             ),
@@ -129,7 +129,7 @@ class PortfolioScreen extends StatelessWidget {
           SectionCard(
             title: 'Projects',
             child: p.portfolio.isEmpty
-                ? Text('No projects yet.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('No projects yet.', style: TextStyle(color: GG.mute))
                 : Column(children: <Widget>[
                     for (final PortfolioItem i in p.portfolio)
                       ExpansionTile(
@@ -147,7 +147,7 @@ class PortfolioScreen extends StatelessWidget {
           SectionCard(
             title: 'Certificates',
             child: p.certifications.isEmpty
-                ? Text('No certificates yet.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('No certificates yet.', style: TextStyle(color: GG.mute))
                 : Column(children: <Widget>[
                     for (final CertificationRecord c in p.certifications)
                       ListTile(
@@ -163,7 +163,7 @@ class PortfolioScreen extends StatelessWidget {
             title: 'Work experience log',
             subtitle: 'Shifts completed and signed off by a supervisor in the practical labs.',
             child: passedLabs.isEmpty
-                ? Text('No signed-off shifts yet.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('No signed-off shifts yet.', style: TextStyle(color: GG.mute))
                 : Column(children: <Widget>[
                     for (final LabCompletion c in passedLabs)
                       if (LabCatalog.lab(c.labId) case final LabSpec l)
@@ -178,7 +178,7 @@ class PortfolioScreen extends StatelessWidget {
           SectionCard(
             title: 'Completed practical labs',
             child: passedLabs.isEmpty
-                ? Text('No labs passed yet.', style: TextStyle(color: VuV2Colors.mute))
+                ? Text('No labs passed yet.', style: TextStyle(color: GG.mute))
                 : Column(children: <Widget>[
                     for (final LabCompletion c in passedLabs)
                       ListTile(contentPadding: EdgeInsets.zero, leading: const Icon(Icons.science_rounded), title: Text(LabCatalog.lab(c.labId)?.title ?? c.labId), subtitle: Text('${c.score}/100 · day ${c.day}')),

@@ -69,15 +69,24 @@ void main() {
     await save(t, '08_earnings');
 
     final CareerSimStore nurse = CareerSimStore(repository: MemoryCareerRepository(), runner: FakeLabRunner(const <String, List<List<Object?>>>{}));
-    await nurse.ensureLoaded(majorId: 'nursing', displayName: 'Sarah Lee');
+    await nurse.ensureLoaded(majorId: 'medicine', displayName: 'Sarah Lee');
     await pumpShot(t, nurse, const HospitalScreen());
     await save(t, '09_hospital');
     await nurse.startHospitalCase('ed_chest_pain');
-    for (final SimAction a in const <SimAction>[SimAction('intervene', 'hand_hygiene'), SimAction('measure', 'monitor'), SimAction('measure', 'ecg'), SimAction('order', 'cultures')]) {
+    for (final SimAction a in const <SimAction>[SimAction('intervene', 'hand_hygiene'), SimAction('measure', 'monitor'), SimAction('measure', 'ecg'), SimAction('order', 'troponin'), SimAction('order', 'cxr'), SimAction('order', 'cbc'), SimAction('wait', '45')]) {
       await nurse.hospitalAct('ed_chest_pain', a);
     }
     await pumpShot(t, nurse, const PatientRoomScreen(caseId: 'ed_chest_pain'));
     await save(t, '10_patient_room');
+    await nurse.hospitalAct('ed_chest_pain', const SimAction('exam', 'wristband'));
+    await pumpShot(t, nurse, const PatientRecordsScreen(caseId: 'ed_chest_pain'));
+    await save(t, '11_patient_records');
+    await pumpShot(t, emp, const CareerCentreScreen(initialTab: 1));
+    await save(t, '12_career_jobs');
+    await pumpShot(t, emp, const WorkplaceScreen(), size: const Size(390, 844));
+    await save(t, '13_workplace_phone');
+    await pumpShot(t, nurse, const PatientRoomScreen(caseId: 'ed_chest_pain'), size: const Size(390, 844));
+    await save(t, '14_patient_room_phone');
     t.view.reset();
   });
 }

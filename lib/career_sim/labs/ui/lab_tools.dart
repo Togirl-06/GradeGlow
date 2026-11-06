@@ -4,12 +4,12 @@ import '../../../data/science_diagram_catalog.dart';
 import '../../../models/science_diagram.dart';
 import '../../../services/lab_runner/lab_runner.dart';
 import '../../../services/lab_runner/lab_runner_host.dart';
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../../widgets/science/anatomy_asset_canvas.dart';
 import '../../../widgets/science/science_diagram_canvas.dart';
 import '../../ui/common.dart';
 import '../../model/tasks.dart';
 import '../lab_models.dart';
+import '../../ui/gg_kit.dart';
 
 const TextStyle _mono = TextStyle(fontFamily: 'monospace', fontSize: 13, height: 1.35);
 
@@ -63,7 +63,7 @@ class _ConsoleToolState extends State<ConsoleTool> {
             }),
           ),
           const Spacer(),
-          Text(runner.where, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text(runner.where, style: TextStyle(color: GG.mute, fontSize: 12)),
         ]),
         TextField(key: const ValueKey<String>('console_code'), controller: _code, minLines: 5, maxLines: 14, style: _mono, decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Program')),
         const SizedBox(height: 6),
@@ -81,11 +81,11 @@ class _ConsoleToolState extends State<ConsoleTool> {
           ),
           const SizedBox(width: 8),
           LabRunnerHost(runner: runner),
-          if (o != null) Text(o.ok ? 'Exit 0 · ${o.ms} ms' : (o.timedOut ? 'Stopped (time limit)' : 'Error'), style: TextStyle(color: o.ok ? VuV2Colors.success : VuV2Colors.danger)),
+          if (o != null) Text(o.ok ? 'Exit 0 · ${o.ms} ms' : (o.timedOut ? 'Stopped (time limit)' : 'Error'), style: TextStyle(color: o.ok ? GG.green : GG.red)),
         ]),
         if (o != null) ...<Widget>[
           const SizedBox(height: 6),
-          if (o.unavailable != null) Text(o.unavailable!, style: const TextStyle(color: VuV2Colors.danger)),
+          if (o.unavailable != null) Text(o.unavailable!, style: const TextStyle(color: GG.red)),
           codeBox(o.stdout, key: const ValueKey<String>('console_output')),
           if (o.stderr.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: codeBox(o.stderr, color: const Color(0xFFFCA5A5))),
         ],
@@ -101,7 +101,7 @@ class SqlTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (table.columns.isEmpty && table.rows.isEmpty) return Text('No rows returned.', style: TextStyle(color: VuV2Colors.mute));
+    if (table.columns.isEmpty && table.rows.isEmpty) return Text('No rows returned.', style: TextStyle(color: GG.mute));
     int width = table.columns.length;
     for (final List<Object?> r in table.rows) {
       if (r.length > width) width = r.length;
@@ -152,8 +152,8 @@ class _SqlWorkbenchState extends State<SqlWorkbench> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text('Tables', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-        for (final String t in widget.lab.databaseTables) Text('• $t', style: _mono.copyWith(color: VuV2Colors.ink)),
+        Text('Tables', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+        for (final String t in widget.lab.databaseTables) Text('• $t', style: _mono.copyWith(color: GG.ink)),
         const SizedBox(height: 8),
         TextField(key: const ValueKey<String>('workbench_sql'), controller: _sql, minLines: 3, maxLines: 10, style: _mono, decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'SQL')),
         const SizedBox(height: 6),
@@ -169,16 +169,16 @@ class _SqlWorkbenchState extends State<SqlWorkbench> {
           ),
           const SizedBox(width: 8),
           LabRunnerHost(runner: runner),
-          Text(runner.canRunPrograms ? 'SQLite · fresh copy each run' : runner.where, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text(runner.canRunPrograms ? 'SQLite · fresh copy each run' : runner.where, style: TextStyle(color: GG.mute, fontSize: 12)),
         ]),
         if (o != null) ...<Widget>[
           const SizedBox(height: 6),
           if (o.unavailable != null)
-            Text(o.unavailable!, style: const TextStyle(color: VuV2Colors.danger))
+            Text(o.unavailable!, style: const TextStyle(color: GG.red))
           else if (!o.ok)
-            Text('Error: ${o.error}', key: const ValueKey<String>('workbench_error'), style: const TextStyle(color: VuV2Colors.danger))
+            Text('Error: ${o.error}', key: const ValueKey<String>('workbench_error'), style: const TextStyle(color: GG.red))
           else ...<Widget>[
-            Text('${o.result.rows.length} row(s)${o.changes > 0 ? ' · ${o.changes} row(s) changed' : ''}', style: TextStyle(color: VuV2Colors.mute)),
+            Text('${o.result.rows.length} row(s)${o.changes > 0 ? ' · ${o.changes} row(s) changed' : ''}', style: TextStyle(color: GG.mute)),
             SqlTableView(table: o.result),
           ],
         ],
@@ -239,8 +239,8 @@ class PatientChartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Patient p = patient;
-    final TextStyle label = TextStyle(color: VuV2Colors.mute, fontSize: 12);
-    final TextStyle value = TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w600);
+    final TextStyle label = TextStyle(color: GG.mute, fontSize: 12);
+    final TextStyle value = TextStyle(color: GG.ink, fontWeight: FontWeight.w600);
     return DefaultTabController(
       length: 5,
       child: Column(
@@ -375,7 +375,7 @@ class _AnatomyAtlasState extends State<AnatomyAtlas> {
         const SizedBox(height: 8),
         SizedBox(height: 300, child: canvas),
         const SizedBox(height: 6),
-        Text('Or choose a structure:', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+        Text('Or choose a structure:', style: TextStyle(color: GG.mute, fontSize: 12)),
         Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
           for (final ScienceDiagramRegion r in d.regions)
             ActionChip(key: ValueKey<String>('atlas_region_${r.id}'), label: Text(r.name), onPressed: () => tap(r)),
@@ -385,11 +385,11 @@ class _AnatomyAtlasState extends State<AnatomyAtlas> {
             key: const ValueKey<String>('atlas_info'),
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(border: Border.all(color: VuV2Colors.stroke), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(border: Border.all(color: GG.stroke), borderRadius: BorderRadius.circular(10)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text(s.name, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 16)),
-              Text(s.funFact, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
-              if (_clinical[s.id] != null) Padding(padding: const EdgeInsets.only(top: 4), child: Text(_clinical[s.id]!, style: TextStyle(color: VuV2Colors.mute, height: 1.4))),
+              Text(s.name, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 16)),
+              Text(s.funFact, style: TextStyle(color: GG.ink, height: 1.4)),
+              if (_clinical[s.id] != null) Padding(padding: const EdgeInsets.only(top: 4), child: Text(_clinical[s.id]!, style: TextStyle(color: GG.mute, height: 1.4))),
             ]),
           ),
       ],

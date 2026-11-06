@@ -382,3 +382,139 @@ class VitalsChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(VitalsChartPainter old) => old.points.length != points.length;
 }
+
+/// A hospital room with the patient sitting up in bed, drawn large: wall,
+/// window, curtain, IV pole and a detailed patient whose skin, eyes and
+/// expression follow their condition.
+class RoomScenePainter extends CustomPainter {
+  RoomScenePainter(this.a, this.v, {this.distress = 0});
+  final Appearance a;
+  final Vitals v;
+  final double distress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double w = size.width;
+    final double h = size.height;
+    final Rect all = Offset.zero & size;
+    // Wall and floor.
+    canvas.drawRect(all, Paint()..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: <Color>[Color(0xFF9FB4C8), Color(0xFF7D93AB)]).createShader(all));
+    canvas.drawRect(Rect.fromLTWH(0, h * 0.78, w, h * 0.22), Paint()..color = const Color(0xFF5B6B7E));
+    // Window with blinds.
+    final Rect win = Rect.fromLTWH(w * 0.04, h * 0.08, w * 0.22, h * 0.36);
+    canvas.drawRect(win, Paint()..color = const Color(0xFFDCEBF7));
+    for (double y = win.top; y < win.bottom; y += 8) {
+      canvas.drawLine(Offset(win.left, y), Offset(win.right, y), Paint()..color = const Color(0xFFB8CAD9)..strokeWidth = 2);
+    }
+    canvas.drawRect(win, Paint()..color = const Color(0xFF55657A)..style = PaintingStyle.stroke..strokeWidth = 4);
+    // Wall panel with gas outlets.
+    final Rect panel = Rect.fromLTWH(w * 0.3, h * 0.1, w * 0.4, h * 0.12);
+    canvas.drawRRect(RRect.fromRectAndRadius(panel, const Radius.circular(6)), Paint()..color = const Color(0xFFE7EEF5));
+    for (int i = 0; i < 5; i++) {
+      canvas.drawCircle(Offset(panel.left + panel.width * (0.12 + i * 0.19), panel.center.dy), 7, Paint()..color = <Color>[const Color(0xFF22C55E), const Color(0xFF3B82F6), const Color(0xFFEAB308), const Color(0xFF94A3B8), const Color(0xFFEF4444)][i]);
+    }
+    // IV pole and bag.
+    final Paint pole = Paint()..color = const Color(0xFFCBD5E1)..strokeWidth = 4;
+    canvas.drawLine(Offset(w * 0.86, h * 0.1), Offset(w * 0.86, h * 0.82), pole);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(w * 0.83, h * 0.12, w * 0.06, h * 0.13), const Radius.circular(6)), Paint()..color = const Color(0xCCE0F2FE));
+    // Bed.
+    final Paint frame = Paint()..color = const Color(0xFFE2E8F0);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(w * 0.08, h * 0.66, w * 0.76, h * 0.08), const Radius.circular(8)), frame);
+    canvas.drawRect(Rect.fromLTWH(w * 0.12, h * 0.74, w * 0.02, h * 0.12), Paint()..color = const Color(0xFF64748B));
+    canvas.drawRect(Rect.fromLTWH(w * 0.78, h * 0.74, w * 0.02, h * 0.12), Paint()..color = const Color(0xFF64748B));
+    // Raised back rest + pillow.
+    final Path back = Path()..moveTo(w * 0.1, h * 0.66)..lineTo(w * 0.16, h * 0.3)..lineTo(w * 0.3, h * 0.3)..lineTo(w * 0.3, h * 0.66)..close();
+    canvas.drawPath(back, Paint()..color = const Color(0xFFF1F5F9));
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(w * 0.14, h * 0.26, w * 0.2, h * 0.24), const Radius.circular(24)), Paint()..color = Colors.white);
+    // Legs under the blanket.
+    final Rect blanket = Rect.fromLTWH(w * 0.28, h * 0.5, w * 0.56, h * 0.18);
+    canvas.drawRRect(RRect.fromRectAndRadius(blanket, const Radius.circular(22)), Paint()..shader = const LinearGradient(colors: <Color>[Color(0xFF8FB7E8), Color(0xFF6E9AD6)]).createShader(blanket));
+    // Torso in gown.
+    final double s = a.child ? 0.75 : 1;
+    final Offset head = Offset(w * 0.25, h * 0.28 + (1 - s) * h * 0.08);
+    final double r = h * 0.11 * s;
+    final Rect torso = Rect.fromCenter(center: Offset(head.dx + r * 0.6, head.dy + r * 2.3), width: r * 3.0, height: r * 2.6);
+    canvas.drawRRect(RRect.fromRectAndRadius(torso, Radius.circular(r * 0.9)), Paint()..color = a.gown);
+    for (double x = torso.left + 10; x < torso.right - 6; x += 14) {
+      for (double y = torso.top + 10; y < torso.bottom - 6; y += 14) {
+        canvas.drawCircle(Offset(x, y), 1.6, Paint()..color = Colors.white.withValues(alpha: 0.5));
+      }
+    }
+    // Skin tone follows oxygenation and perfusion.
+    Color skin = a.skin;
+    if (v.spo2 < 88) skin = Color.lerp(skin, const Color(0xFF7986CB), 0.35)!;
+    if (v.sbp < 90) skin = Color.lerp(skin, const Color(0xFFE0E0E0), 0.35)!;
+    final Paint sk = Paint()..color = skin;
+    // Neck, ears and head.
+    canvas.drawRect(Rect.fromCenter(center: head.translate(0, r * 1.05), width: r * 0.8, height: r * 0.7), sk);
+    canvas.drawOval(Rect.fromCenter(center: head.translate(-r * 0.92, r * 0.05), width: r * 0.3, height: r * 0.45), sk);
+    canvas.drawOval(Rect.fromCenter(center: head.translate(r * 0.92, r * 0.05), width: r * 0.3, height: r * 0.45), sk);
+    canvas.drawOval(Rect.fromCenter(center: head, width: r * 1.9, height: r * 2.25), sk);
+    // Hair.
+    final Color hair = a.grey ? Color.lerp(a.hair, const Color(0xFFE5E7EB), 0.7)! : a.hair;
+    final Paint hp = Paint()..color = hair;
+    switch (a.style) {
+      case HairStyle.bald:
+        canvas.drawArc(Rect.fromCenter(center: head, width: r * 1.95, height: r * 2.3), math.pi * 0.95, math.pi * 0.25, false, hp..style = PaintingStyle.stroke..strokeWidth = r * 0.18);
+        hp.style = PaintingStyle.fill;
+      case HairStyle.short:
+        canvas.drawArc(Rect.fromCenter(center: head.translate(0, -r * 0.1), width: r * 2.05, height: r * 2.2), math.pi * 1.0, math.pi, true, hp);
+      case HairStyle.long:
+        canvas.drawArc(Rect.fromCenter(center: head.translate(0, -r * 0.1), width: r * 2.2, height: r * 2.3), math.pi * 0.95, math.pi * 1.1, true, hp);
+        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(head.dx - r * 1.15, head.dy - r * 0.2, r * 0.4, r * 1.9), Radius.circular(r * 0.2)), hp);
+        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(head.dx + r * 0.75, head.dy - r * 0.2, r * 0.4, r * 1.9), Radius.circular(r * 0.2)), hp);
+      case HairStyle.bun:
+        canvas.drawArc(Rect.fromCenter(center: head.translate(0, -r * 0.1), width: r * 2.05, height: r * 2.2), math.pi * 1.0, math.pi, true, hp);
+        canvas.drawCircle(head.translate(0, -r * 1.25), r * 0.45, hp);
+      case HairStyle.curly:
+        for (int i = 0; i < 11; i++) {
+          final double t = math.pi * (0.95 + i * 0.11);
+          canvas.drawCircle(head + Offset(math.cos(t) * r * 0.95, math.sin(t) * r * 1.1), r * 0.32, hp);
+        }
+    }
+    // Face.
+    final bool drowsy = v.avpu != 'A';
+    final Paint white = Paint()..color = Colors.white;
+    final Paint iris = Paint()..color = const Color(0xFF3E2723);
+    final Paint line = Paint()
+      ..color = const Color(0xFF3E2723)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = math.max(1.5, r * 0.05)
+      ..strokeCap = StrokeCap.round;
+    for (final double sx in <double>[-0.38, 0.38]) {
+      final Offset e = head.translate(r * sx, -r * 0.1);
+      if (drowsy) {
+        canvas.drawArc(Rect.fromCenter(center: e, width: r * 0.4, height: r * 0.2), 0, math.pi, false, line);
+      } else {
+        canvas.drawOval(Rect.fromCenter(center: e, width: r * 0.42, height: r * 0.26), white);
+        canvas.drawCircle(e, r * 0.1, iris);
+      }
+      // Eyebrows: raised and pinched when in distress.
+      final double tilt = distress > 0.4 ? (sx < 0 ? 0.08 : -0.08) : 0;
+      canvas.drawLine(e.translate(-r * 0.2, -r * (0.27 + tilt)), e.translate(r * 0.2, -r * (0.27 - tilt)), line);
+    }
+    canvas.drawLine(head.translate(0, -r * 0.02), head.translate(-r * 0.08, r * 0.3), line);
+    final double curve = distress > 0.4 ? -1 : 1;
+    canvas.drawPath(
+      Path()
+        ..moveTo(head.dx - r * 0.3, head.dy + r * 0.55)
+        ..quadraticBezierTo(head.dx, head.dy + r * (0.55 + 0.18 * curve), head.dx + r * 0.3, head.dy + r * 0.55),
+      line..color = const Color(0xFF8D4A3A),
+    );
+    if (a.beard) {
+      canvas.drawArc(Rect.fromCenter(center: head.translate(0, r * 0.35), width: r * 1.6, height: r * 1.5), math.pi * 0.1, math.pi * 0.8, false, Paint()..color = hair..style = PaintingStyle.stroke..strokeWidth = r * 0.22);
+    }
+    // Sweat when shocked, febrile or in pain.
+    if (distress > 0.5 || v.temp > 38.5) {
+      final Paint drop = Paint()..color = const Color(0xFF7DD3FC);
+      canvas.drawCircle(head.translate(r * 0.75, -r * 0.55), r * 0.08, drop);
+      canvas.drawCircle(head.translate(-r * 0.7, -r * 0.4), r * 0.07, drop);
+    }
+    // Pulse-oximeter on the finger once monitored.
+    final Offset hand = Offset(torso.right + r * 0.2, torso.bottom - r * 0.4);
+    canvas.drawCircle(hand, r * 0.22, sk);
+  }
+
+  @override
+  bool shouldRepaint(RoomScenePainter old) => old.v != v || old.distress != distress;
+}

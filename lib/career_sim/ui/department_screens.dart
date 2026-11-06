@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
@@ -15,6 +14,7 @@ import '../labs/ui/lab_screens.dart';
 import 'common.dart';
 import 'job_screens.dart';
 import 'task_views.dart';
+import 'gg_kit.dart';
 
 /// Opens a department, entering it first so the dashboard follows.
 Future<void> openDepartment(BuildContext context, String deptId) async {
@@ -27,7 +27,7 @@ Future<void> openDepartment(BuildContext context, String deptId) async {
     if (ok != true) return;
   }
   if (!context.mounted) return;
-  await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => DepartmentScreen(deptId: deptId)));
+  await Navigator.of(context).push(ggRoute<void>((_) => DepartmentScreen(deptId: deptId)));
 }
 
 class DepartmentPickerScreen extends StatelessWidget {
@@ -75,9 +75,9 @@ class DepartmentScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text(d.school, style: TextStyle(color: VuV2Colors.mute)),
+          Text(d.school, style: TextStyle(color: GG.mute)),
           const SizedBox(height: 4),
-          Text(d.summary, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+          Text(d.summary, style: TextStyle(color: GG.ink, height: 1.4)),
           const SizedBox(height: 16),
           for (final DeptUnit u in d.units)
             SectionCard(
@@ -92,12 +92,12 @@ class DepartmentScreen extends StatelessWidget {
                       key: ValueKey<String>('project_${pr.id}'),
                       contentPadding: EdgeInsets.zero,
                       leading: Icon(store.projectPublished(pr.id) ? Icons.folder_special_rounded : Icons.work_outline_rounded,
-                          color: store.projectPublished(pr.id) ? VuV2Colors.success : null),
+                          color: store.projectPublished(pr.id) ? GG.green : null),
                       title: Text('Project: ${pr.title}'),
                       subtitle: Text(store.projectPublished(pr.id) ? 'In your portfolio' : 'Practical project'),
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(builder: (_) => ProjectScreen(deptId: d.id, projectId: pr.id))),
+                          ggRoute<void>((_) => ProjectScreen(deptId: d.id, projectId: pr.id))),
                     ),
                 ],
               ),
@@ -115,7 +115,7 @@ class DepartmentScreen extends StatelessWidget {
                     title: Text('Lab ${l.number}: ${l.title}'),
                     subtitle: Text(labStatus(p, l)),
                     trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => LabIntroScreen(labId: l.id))),
+                    onTap: () => Navigator.of(context).push(ggRoute<void>((_) => LabIntroScreen(labId: l.id))),
                   ),
               ]),
             ),
@@ -130,12 +130,12 @@ class DepartmentScreen extends StatelessWidget {
                       key: ValueKey<String>('cert_${c.id}'),
                       contentPadding: EdgeInsets.zero,
                       leading: Icon(p.hasCertification(c.id) ? Icons.workspace_premium_rounded : Icons.school_outlined,
-                          color: p.hasCertification(c.id) ? VuV2Colors.success : null),
+                          color: p.hasCertification(c.id) ? GG.green : null),
                       title: Text(c.title),
                       subtitle: Text(p.hasCertification(c.id) ? 'Held' : c.issuer),
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(builder: (_) => CertificationScreen(deptId: d.id, certId: c.id))),
+                          ggRoute<void>((_) => CertificationScreen(deptId: d.id, certId: c.id))),
                     ),
                 ],
               ),
@@ -152,7 +152,7 @@ class DepartmentScreen extends StatelessWidget {
                     title: Text(j.title),
                     subtitle: Text('${j.company.name} · ${j.type.label}'),
                     trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => JobDetailScreen(postingId: j.id))),
+                    onTap: () => Navigator.of(context).push(ggRoute<void>((_) => JobDetailScreen(postingId: j.id))),
                   ),
               ],
             ),
@@ -178,14 +178,14 @@ class _ModuleTile extends StatelessWidget {
     return ListTile(
       key: ValueKey<String>('module_${module.id}'),
       contentPadding: EdgeInsets.zero,
-      leading: Icon(done ? Icons.check_circle_rounded : Icons.menu_book_rounded, color: done ? VuV2Colors.success : null),
+      leading: Icon(done ? Icons.check_circle_rounded : Icons.menu_book_rounded, color: done ? GG.green : null),
       title: Text(module.title),
       subtitle: Text(done
           ? 'Completed'
           : '${profile.studiedLessons.contains(module.id) ? 'Lesson studied' : 'Lesson not studied'} · $passed/${module.practice.length} tasks passed'),
       trailing: const Icon(Icons.chevron_right_rounded),
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute<void>(builder: (_) => ModuleScreen(deptId: dept.id, moduleId: module.id))),
+          .push(ggRoute<void>((_) => ModuleScreen(deptId: dept.id, moduleId: module.id))),
     );
   }
 }
@@ -209,11 +209,11 @@ class ModuleScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          if (done) const Padding(padding: EdgeInsets.only(bottom: 8), child: StatusChip('Module completed', color: VuV2Colors.success)),
-          Text(m.summary, style: TextStyle(color: VuV2Colors.mute, height: 1.4)),
+          if (done) const Padding(padding: EdgeInsets.only(bottom: 8), child: StatusChip('Module completed', color: GG.green)),
+          Text(m.summary, style: TextStyle(color: GG.mute, height: 1.4)),
           const SizedBox(height: 4),
           Text('Skills: ${m.skills.map(d.skillLabel).join(', ')} · about ${m.minutes} min',
-              style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+              style: TextStyle(color: GG.mute, fontSize: 12)),
           const SizedBox(height: 12),
           SectionCard(
             title: '1 · Learn the concept',
@@ -222,9 +222,9 @@ class ModuleScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 for (final LessonSection s in m.lesson) ...<Widget>[
-                  Text(s.heading, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+                  Text(s.heading, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
                   const SizedBox(height: 4),
-                  Text(s.body, style: TextStyle(color: VuV2Colors.ink, height: 1.45)),
+                  Text(s.body, style: TextStyle(color: GG.ink, height: 1.45)),
                   if (s.example.isNotEmpty) ...<Widget>[
                     const SizedBox(height: 6),
                     Container(
@@ -239,7 +239,7 @@ class ModuleScreen extends StatelessWidget {
                 ],
                 if (studied)
                   const Row(children: <Widget>[
-                    Icon(Icons.check_rounded, color: VuV2Colors.success),
+                    Icon(Icons.check_rounded, color: GG.green),
                     SizedBox(width: 6),
                     Text('Lesson studied'),
                   ])
@@ -272,8 +272,7 @@ class ModuleScreen extends StatelessWidget {
                     tileKey: 'practice_${t.id}',
                     spec: t,
                     result: store.result(CareerSimStore.moduleTaskKey(m, t)),
-                    open: () => Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (_) => TaskRunnerScreen(
+                    open: () => Navigator.of(context).push(ggRoute<void>((_) => TaskRunnerScreen(
                         spec: t,
                         contextLabel: m.title,
                         lecturerContext: 'Lecture: ${m.title}\n$lecture',
@@ -308,7 +307,7 @@ class _TaskTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: Icon(
         r == null ? Icons.radio_button_unchecked : (r.passed ? Icons.check_circle_rounded : Icons.cancel_rounded),
-        color: r == null ? null : (r.passed ? VuV2Colors.success : VuV2Colors.danger),
+        color: r == null ? null : (r.passed ? GG.green : GG.red),
       ),
       title: Text(spec.title),
       subtitle: Text('${spec.kindLabel}${r == null ? '' : ' · best ${r.score}/100'}'),
@@ -337,9 +336,9 @@ class ProjectScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text(p.brief, style: TextStyle(color: VuV2Colors.ink, height: 1.45)),
+          Text(p.brief, style: TextStyle(color: GG.ink, height: 1.45)),
           const SizedBox(height: 8),
-          Text('Skills: ${p.skills.map(d.skillLabel).join(', ')}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          Text('Skills: ${p.skills.map(d.skillLabel).join(', ')}', style: TextStyle(color: GG.mute, fontSize: 12)),
           const SizedBox(height: 12),
           if (blockers.isNotEmpty)
             SectionCard(title: 'Before you start', child: BulletList(blockers, icon: Icons.lock_outline_rounded)),
@@ -357,8 +356,7 @@ class ProjectScreen extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(blockers.first)));
                         return;
                       }
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) {
+                      Navigator.of(context).push(ggRoute<void>((_) {
                           String? text;
                           return TaskRunnerScreen(
                             spec: t,
@@ -377,7 +375,7 @@ class ProjectScreen extends StatelessWidget {
             ),
           ),
           if (published)
-            const StatusChip('Published to your portfolio', color: VuV2Colors.success)
+            const StatusChip('Published to your portfolio', color: GG.green)
           else
             BusyButton(
               key: const ValueKey<String>('publish_project'),
@@ -412,7 +410,7 @@ class CertificationScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           Text('Issued by ${c.issuer}. Pass every exam task and average at least ${c.passMark}.',
-              style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+              style: TextStyle(color: GG.ink, height: 1.4)),
           const SizedBox(height: 12),
           if (blockers.isNotEmpty) SectionCard(title: 'Eligibility', child: BulletList(blockers, icon: Icons.lock_outline_rounded)),
           SectionCard(
@@ -429,8 +427,7 @@ class CertificationScreen extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(blockers.first)));
                         return;
                       }
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                        builder: (_) => TaskRunnerScreen(
+                      Navigator.of(context).push(ggRoute<void>((_) => TaskRunnerScreen(
                           spec: t,
                           contextLabel: c.title,
                           onGraded: (TaskResult r) async {
@@ -444,7 +441,7 @@ class CertificationScreen extends StatelessWidget {
             ),
           ),
           if (held)
-            const StatusChip('Certification held', color: VuV2Colors.success)
+            const StatusChip('Certification held', color: GG.green)
           else
             BusyButton(
               key: const ValueKey<String>('claim_cert'),
@@ -456,7 +453,7 @@ class CertificationScreen extends StatelessWidget {
             ),
           const SizedBox(height: 8),
           Text('Skill levels: ${d.skills.map((SkillDef s) => '${s.label} ${CareerRules.levelLabel(CareerRules.levelOf(store.profile, s.id))}').join(' · ')}',
-              style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+              style: TextStyle(color: GG.mute, fontSize: 12)),
         ],
       ),
     );

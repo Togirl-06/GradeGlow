@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../model/career_models.dart';
 import '../../model/tasks.dart';
 import '../../store/career_sim_store.dart';
@@ -10,6 +9,7 @@ import '../hospital_cases.dart';
 import '../hospital_engine.dart';
 import '../hospital_models.dart';
 import 'hospital_painters.dart';
+import '../../ui/gg_kit.dart';
 
 const String hospitalDisclaimer =
     'Educational simulation: virtual patients only. Completing it does not grant a nursing or medical licence or permission to treat real patients. '
@@ -53,21 +53,21 @@ class HospitalScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text('Mercy Valley Medical Center', style: TextStyle(color: VuV2Colors.ink, fontSize: 22, fontWeight: FontWeight.w900)),
-          Text('You are working as: ${store.clinicalRole == ClinicalRole.medicine ? 'medical student / trainee' : 'student nurse / trainee'}', style: TextStyle(color: VuV2Colors.mute)),
+          Text('Mercy Valley Medical Center', style: TextStyle(color: GG.ink, fontSize: 22, fontWeight: FontWeight.w900)),
+          Text('You are working as: ${store.clinicalRole == ClinicalRole.medicine ? 'medical student / trainee' : 'student nurse / trainee'}', style: TextStyle(color: GG.mute)),
           const SizedBox(height: 6),
-          Text(hospitalDisclaimer, key: const ValueKey<String>('hospital_disclaimer'), style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
+          Text(hospitalDisclaimer, key: const ValueKey<String>('hospital_disclaimer'), style: TextStyle(color: GG.mute, fontSize: 11.5)),
           const SizedBox(height: 12),
           Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
             FilledButton.icon(
               key: const ValueKey<String>('start_shift'),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ShiftScreen())),
+              onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const ShiftScreen())),
               icon: const Icon(Icons.schedule_rounded),
               label: Text('Nursing shift: ${wardShift.title}'),
             ),
             FilledButton.tonalIcon(
               key: const ValueKey<String>('open_triage'),
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const TriageScreen())),
+              onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => const TriageScreen())),
               icon: const Icon(Icons.how_to_reg_rounded),
               label: const Text('Reception and triage board'),
             ),
@@ -82,21 +82,21 @@ class HospitalScreen extends StatelessWidget {
                   SizedBox(
                     width: w,
                     child: Material(
-                      color: VuV2Colors.mute.withValues(alpha: 0.08),
+                      color: GG.mute.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(12),
                       child: InkWell(
                         key: ValueKey<String>('dept_${d.name}'),
                         borderRadius: BorderRadius.circular(12),
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => HospitalDeptScreen(dept: d))),
+                        onTap: () => Navigator.of(context).push(ggRoute<void>((_) => HospitalDeptScreen(dept: d))),
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                            Icon(_deptIcon(d), color: VuV2Colors.orange),
+                            Icon(_deptIcon(d), color: GG.accent),
                             const SizedBox(height: 4),
-                            Text(d.label, maxLines: 2, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 13)),
+                            Text(d.label, maxLines: 2, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 13)),
                             Text('${hospitalCases.where((PatientCase x) => x.dept == d).length} patient(s) · '
                                 '${hospitalCases.where((PatientCase x) => x.dept == d && !store.profile.hospitalPassed(x.id)).length} need care',
-                                style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
+                                style: TextStyle(color: GG.mute, fontSize: 11.5)),
                           ]),
                         ),
                       ),
@@ -123,7 +123,7 @@ class HospitalDeptScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          if (list.isEmpty) Text('No patients here right now.', style: TextStyle(color: VuV2Colors.mute)),
+          if (list.isEmpty) Text('No patients here right now.', style: TextStyle(color: GG.mute)),
           for (final PatientCase c in list)
             Card(
               child: ListTile(
@@ -135,7 +135,7 @@ class HospitalDeptScreen extends StatelessWidget {
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onTap: () async {
                   final PatientSim? s = await runCareerAction<PatientSim>(context, () => store.startHospitalCase(c.id, restart: store.profile.hospitalRuns[c.id]?.done ?? false));
-                  if (s != null && context.mounted) await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => PatientRoomScreen(caseId: c.id)));
+                  if (s != null && context.mounted) await Navigator.of(context).push(ggRoute<void>((_) => PatientRoomScreen(caseId: c.id)));
                 },
               ),
             ),
@@ -196,7 +196,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
         context: context,
         builder: (BuildContext ctx) => AlertDialog(
           key: const ValueKey<String>('safety_dialog'),
-          icon: Icon(e.critical ? Icons.report_rounded : Icons.info_outline_rounded, color: e.critical ? VuV2Colors.danger : null),
+          icon: Icon(e.critical ? Icons.report_rounded : Icons.info_outline_rounded, color: e.critical ? GG.red : null),
           title: Text(e.critical ? 'Safety stop' : 'Check your scope'),
           content: Text('${e.action}\n\n${e.explanation}'),
           actions: <Widget>[FilledButton(key: const ValueKey<String>('safety_ok'), onPressed: () => Navigator.of(ctx).pop(), child: const Text('Understood'))],
@@ -228,36 +228,103 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
           onSelected: (_) => setState(() => _tab = id),
         );
     return Scaffold(
-      appBar: AppBar(title: Text(c.name)),
+      appBar: AppBar(
+        title: const Row(children: <Widget>[
+          Icon(Icons.school_rounded, color: Colors.white),
+          SizedBox(width: 8),
+          Text('GradeGlow', style: TextStyle(fontWeight: FontWeight.w900)),
+          SizedBox(width: 12),
+          Icon(Icons.local_hospital_rounded, color: GG.red),
+          SizedBox(width: 6),
+          Text('Virtual Hospital', style: TextStyle(fontWeight: FontWeight.w700)),
+        ]),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(40),
+          child: SizedBox(
+            height: 40,
+            child: ListView(scrollDirection: Axis.horizontal, padding: const EdgeInsets.symmetric(horizontal: 8), children: <Widget>[
+              for (final HospitalDept d in HospitalDept.values)
+                TextButton(
+                  key: ValueKey<String>('room_dept_${d.name}'),
+                  onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => HospitalDeptScreen(dept: d))),
+                  child: Text(d.label.split(' ').first == 'Patient' ? 'Triage' : d.label.replaceAll(' Department', '').replaceAll(' and Imaging', '').replaceAll(' & Labor and Delivery', ''),
+                      style: TextStyle(color: d == c.dept ? Colors.white : GG.mute, fontWeight: d == c.dept ? FontWeight.w800 : FontWeight.w500, decoration: d == c.dept ? TextDecoration.underline : null)),
+                ),
+            ]),
+          ),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 32),
         children: <Widget>[
           Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: <Widget>[
-            Text('${c.age == 0 ? 'Infant' : '${c.age}${c.sex}'} · ${c.mrn} · ${c.dept.label}', style: TextStyle(color: VuV2Colors.mute)),
+            Text('${c.age == 0 ? 'Infant' : '${c.age}${c.sex}'} · ${c.mrn} · ${c.dept.label}', style: TextStyle(color: GG.mute)),
             StatusChip('Time ${s.clock(base)} (+${s.minute} min)'),
-            if (!c.child) StatusChip('NEWS2 ${s.news()}', color: s.news() >= 5 ? VuV2Colors.danger : null),
-            StatusChip(s.role == ClinicalRole.medicine ? 'Medicine' : 'Nursing', color: VuV2Colors.mute),
+            if (!c.child) StatusChip('NEWS2 ${s.news()}', color: s.news() >= 5 ? GG.red : null),
+            StatusChip(s.role == ClinicalRole.medicine ? 'Medicine' : 'Nursing', color: GG.mute),
           ]),
           const SizedBox(height: 8),
           LayoutBuilder(builder: (BuildContext context, BoxConstraints b) {
-            final Widget room = Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              SizedBox(height: 150, width: double.infinity, child: CustomPaint(key: const ValueKey<String>('patient_view'), painter: PatientPainter(c.appearance, s.v, distress: distressOf(s)))),
-              Container(
-                key: const ValueKey<String>('patient_says'),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: VuV2Colors.mute.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
-                child: Text('"${s.patientLine}"', style: TextStyle(color: VuV2Colors.ink, fontStyle: FontStyle.italic)),
+            final bool wide = b.maxWidth >= 860;
+            final Widget scene = ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: SizedBox(
+                height: wide ? 430 : 300,
+                child: Stack(children: <Widget>[
+                  Positioned.fill(child: CustomPaint(key: const ValueKey<String>('patient_view'), painter: RoomScenePainter(c.appearance, s.v, distress: distressOf(s)))),
+                  Positioned(
+                    top: 18,
+                    left: wide ? b.maxWidth * 0.2 : 120,
+                    right: 16,
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        key: const ValueKey<String>('patient_says'),
+                        constraints: const BoxConstraints(maxWidth: 340),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: const <BoxShadow>[BoxShadow(color: Color(0x44000000), blurRadius: 10)]),
+                        child: Text(s.patientLine, style: const TextStyle(color: Color(0xFF0F172A), fontSize: 15, fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ),
+                  Positioned(left: 12, bottom: 12, child: _QuickActions(sim: s, onAct: (SimAction a) => _act(store, a))),
+                ]),
+              ),
+            );
+            final Widget side = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+              _PatientInfo(sim: s),
+              const SizedBox(height: 10),
+              GGPanel(
+                padding: const EdgeInsets.all(12),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+                  const Text('Actions', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 8),
+                  for (final (String key, String label, String tabId) in const <(String, String, String)>[
+                    ('act_vitals', 'Take Vitals', 'equip'),
+                    ('act_orders', 'Order Tests', 'orders'),
+                    ('act_treat', 'Start Treatment', 'treat'),
+                    ('act_chart', 'View Chart', 'chart'),
+                  ])
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: GGButton(key: ValueKey<String>(key), label: label, color: const Color(0xFF3B5BDB), dense: true, onPressed: () => setState(() => _tab = tabId)),
+                    ),
+                ]),
               ),
             ]);
             final Widget monitor = BedsideMonitor(sim: s);
-            return b.maxWidth >= 720
-                ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[Expanded(child: room), const SizedBox(width: 12), Expanded(child: monitor)])
-                : Column(children: <Widget>[room, const SizedBox(height: 8), monitor]);
+            return wide
+                ? Column(children: <Widget>[
+                    Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[Expanded(child: scene), const SizedBox(width: 12), SizedBox(width: 280, child: side)]),
+                    const SizedBox(height: 10),
+                    monitor,
+                  ])
+                : Column(children: <Widget>[scene, const SizedBox(height: 8), side, const SizedBox(height: 8), monitor]);
           }),
           if (warning != null && warning.minute >= 0)
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: Text('⚠ ${warning.text}', key: const ValueKey<String>('room_warning'), style: TextStyle(color: VuV2Colors.danger, fontWeight: FontWeight.w700)),
+              child: Text('⚠ ${warning.text}', key: const ValueKey<String>('room_warning'), style: TextStyle(color: GG.red, fontWeight: FontWeight.w700)),
             ),
           const SizedBox(height: 8),
           Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
@@ -284,7 +351,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 3),
                     child: Text('${s.clock(base - s.minute + l.minute)} ${l.who == 'you' ? 'You' : l.who[0].toUpperCase() + l.who.substring(1)}: ${l.text}',
-                        style: TextStyle(color: l.warning ? VuV2Colors.danger : VuV2Colors.ink, fontSize: 12.5)),
+                        style: TextStyle(color: l.warning ? GG.red : GG.ink, fontSize: 12.5)),
                   ),
                 ),
             ],
@@ -310,7 +377,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
                 onPressed: () async {
                   final HospitalResult? r = await runCareerAction<HospitalResult>(context, () => store.finishHospitalCase(widget.caseId));
                   if (r != null && context.mounted) {
-                    await Navigator.of(context).pushReplacement(MaterialPageRoute<void>(builder: (_) => CaseDebriefScreen(sim: s, result: r)));
+                    await Navigator.of(context).pushReplacement(ggRoute<void>((_) => CaseDebriefScreen(sim: s, result: r)));
                   }
                 },
               ),
@@ -318,7 +385,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
           if (s.log.any((LogLine l) => l.who == 'supervisor'))
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: Text('Supervisor: ${s.log.lastWhere((LogLine l) => l.who == 'supervisor').text}', key: const ValueKey<String>('supervisor_says'), style: TextStyle(color: VuV2Colors.ink)),
+              child: Text('Supervisor: ${s.log.lastWhere((LogLine l) => l.who == 'supervisor').text}', key: const ValueKey<String>('supervisor_says'), style: TextStyle(color: GG.ink)),
             ),
         ],
       ),
@@ -333,7 +400,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
             key: ValueKey<String>(key),
             style: OutlinedButton.styleFrom(alignment: Alignment.centerLeft),
             onPressed: onTap,
-            icon: Icon(done ? Icons.check_circle_rounded : (icon ?? Icons.play_arrow_rounded), size: 18, color: done ? VuV2Colors.success : null),
+            icon: Icon(done ? Icons.check_circle_rounded : (icon ?? Icons.play_arrow_rounded), size: 18, color: done ? GG.green : null),
             label: Text(label),
           ),
         );
@@ -377,7 +444,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
         return <Widget>[for (final Exam e in exams) btn('exam_${e.id}', e.label, () => _act(store, SimAction('exam', e.id)), done: s.has('exam:${e.id}'))];
       case 'equip':
         return <Widget>[
-          Text('Equipment trolley', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+          Text('Equipment trolley', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
           const SizedBox(height: 6),
           for (final Equipment e in equipment) btn('equip_${e.id}', e.label, () => _act(store, SimAction('measure', e.id)), done: s.has('measure:${e.id}'), icon: Icons.monitor_heart_outlined),
           btn('equip_oxygen', 'Oxygen delivery', () => _act(store, const SimAction('intervene', 'oxygen')), done: s.has('do:oxygen'), icon: Icons.air_rounded),
@@ -387,6 +454,16 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
         ];
       case 'chart':
         return <Widget>[
+          Align(
+            alignment: Alignment.centerLeft,
+            child: GGButton(
+              key: const ValueKey<String>('open_records'),
+              icon: Icons.folder_shared_rounded,
+              label: 'Open patient records',
+              onPressed: () => Navigator.of(context).push(ggRoute<void>((_) => PatientRecordsScreen(caseId: widget.caseId, shift: widget.shift))),
+            ),
+          ),
+          const SizedBox(height: 8),
           SectionCard(
             title: 'Patient record',
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -394,13 +471,13 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
               Text('Arrived: ${c.arrival}'),
               Text('Presenting complaint: ${c.complaint}'),
               const SizedBox(height: 6),
-              Text('Medical history', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+              Text('Medical history', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
               BulletList(c.history),
-              Text('Medication list', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+              Text('Medication list', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
               BulletList(c.medications.isEmpty ? const <String>['None recorded'] : c.medications),
               const SizedBox(height: 4),
               if (_allergyOpen || s.has('chart:allergies'))
-                Text('ALLERGIES: ${c.allergies.isEmpty ? 'No known allergies' : c.allergies.join('; ')}', key: const ValueKey<String>('allergy_list'), style: TextStyle(color: VuV2Colors.danger, fontWeight: FontWeight.w800))
+                Text('ALLERGIES: ${c.allergies.isEmpty ? 'No known allergies' : c.allergies.join('; ')}', key: const ValueKey<String>('allergy_list'), style: TextStyle(color: GG.red, fontWeight: FontWeight.w800))
               else
                 FilledButton.tonal(
                   key: const ValueKey<String>('chart_allergies'),
@@ -419,7 +496,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
               for (final VitalsPoint p in s.chart.reversed.take(8))
                 Text('+${p.minute} min  HR ${p.v.hr.round()}  BP ${p.v.sbp.round()}/${p.v.dbp.round()}  RR ${p.v.rr.round()}  SpO₂ ${p.v.spo2.round()}%  T ${p.v.temp.toStringAsFixed(1)}',
                     style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
-              if (s.chart.isEmpty) Text('No observations recorded yet.', style: TextStyle(color: VuV2Colors.mute)),
+              if (s.chart.isEmpty) Text('No observations recorded yet.', style: TextStyle(color: GG.mute)),
             ]),
           ),
           SectionCard(
@@ -438,14 +515,14 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
                   ),
               ],
               for (final MapEntry<String, int> o in s.orders.entries)
-                if (s.minute < o.value) Text('${testDef(o.key)?.label ?? o.key}: pending (ready at +${o.value} min)', style: TextStyle(color: VuV2Colors.mute)),
+                if (s.minute < o.value) Text('${testDef(o.key)?.label ?? o.key}: pending (ready at +${o.value} min)', style: TextStyle(color: GG.mute)),
             ]),
           ),
         ];
       case 'orders':
         return <Widget>[
           Text(s.role == ClinicalRole.nursing ? 'Nurses can start tests marked "protocol". For others, escalate with a recommendation.' : 'Order only what answers a clinical question.',
-              style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+              style: TextStyle(color: GG.mute, fontSize: 12.5)),
           const SizedBox(height: 6),
           for (final TestDef t in testCatalog)
             btn('order_${t.id}', '${t.label}${t.nurse ? ' (protocol)' : ''}', () => _act(store, SimAction('order', t.id)), done: s.orders.containsKey(t.id), icon: t.imaging ? Icons.document_scanner_rounded : Icons.bloodtype_rounded),
@@ -457,7 +534,7 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
         ];
       case 'escalate':
         return <Widget>[
-          Text('Who do you call?', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+          Text('Who do you call?', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
           Wrap(spacing: 6, runSpacing: 6, children: <Widget>[
             for (int i = 0; i < escalationTargets.length; i++)
               ChoiceChip(key: ValueKey<String>('esc_target_$i'), label: Text(escalationTargets[i]), selected: _target == escalationTargets[i], onSelected: (_) => setState(() => _target = escalationTargets[i])),
@@ -477,12 +554,12 @@ class _PatientRoomScreenState extends State<PatientRoomScreen> {
             icon: const Icon(Icons.phone_in_talk_rounded),
             label: const Text('Call'),
           ),
-          if (s.has('escalated')) Text('Escalated to ${s.escalatedTo}.', style: TextStyle(color: VuV2Colors.success)),
+          if (s.has('escalated')) Text('Escalated to ${s.escalatedTo}.', style: TextStyle(color: GG.green)),
         ];
       default:
         final List<ChoiceOption> opts = s.role == ClinicalRole.medicine ? c.diagnosis : c.nursingPriority;
         return <Widget>[
-          Text(s.role == ClinicalRole.medicine ? 'Working diagnosis' : 'Nursing priority / care plan', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+          Text(s.role == ClinicalRole.medicine ? 'Working diagnosis' : 'Nursing priority / care plan', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
           for (final ChoiceOption o in opts)
             RadioListTile<String>(
               key: ValueKey<String>('dx_${o.id}'),
@@ -531,16 +608,16 @@ class CaseDebriefScreen extends StatelessWidget {
             Container(
               key: const ValueKey<String>('critical_banner'),
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: VuV2Colors.danger.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: GG.red.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
               child: Text('Critical safety issue — remediation required. A high score cannot hide this: repeat the case before progressing.',
-                  style: TextStyle(color: VuV2Colors.danger, fontWeight: FontWeight.w800)),
+                  style: TextStyle(color: GG.red, fontWeight: FontWeight.w800)),
             ),
           SectionCard(
             title: '${result.passed ? 'Passed' : 'Not passed'}: ${result.score}/100',
             subtitle: sim.c.name,
             trailing: const ValidatedBadge(label: 'Clinical rubric'),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text('What happened', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+              Text('What happened', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
               Text(sc.outcome, key: const ValueKey<String>('debrief_outcome')),
               const SizedBox(height: 8),
               for (final MapEntry<String, int> e in sc.categories.entries) LabeledBar(label: e.key[0].toUpperCase() + e.key.substring(1), value: e.value),
@@ -550,12 +627,12 @@ class CaseDebriefScreen extends StatelessWidget {
             title: 'Vital signs over the case',
             child: SizedBox(height: 100, width: double.infinity, child: CustomPaint(painter: VitalsChartPainter(sim.chart))),
           ),
-          if (sc.done.isNotEmpty) SectionCard(title: 'Appropriate actions', child: BulletList(sc.done, icon: Icons.check_circle_outline_rounded, color: VuV2Colors.success)),
+          if (sc.done.isNotEmpty) SectionCard(title: 'Appropriate actions', child: BulletList(sc.done, icon: Icons.check_circle_outline_rounded, color: GG.green)),
           if (sc.missed.isNotEmpty || sc.late.isNotEmpty)
-            SectionCard(title: 'Missed or late', child: BulletList(<String>[...sc.missed, ...sc.late], icon: Icons.error_outline_rounded, color: VuV2Colors.danger)),
+            SectionCard(title: 'Missed or late', child: BulletList(<String>[...sc.missed, ...sc.late], icon: Icons.error_outline_rounded, color: GG.red)),
           if (sc.unnecessary.isNotEmpty) SectionCard(title: 'Not needed', child: BulletList(sc.unnecessary)),
           if (sc.safety.isNotEmpty)
-            SectionCard(title: 'Safety', child: BulletList(<String>[for (final SafetyEvent e in sc.safety) '${e.critical ? 'CRITICAL' : 'Scope'} — ${e.action}: ${e.explanation}'], color: VuV2Colors.danger)),
+            SectionCard(title: 'Safety', child: BulletList(<String>[for (final SafetyEvent e in sc.safety) '${e.critical ? 'CRITICAL' : 'Scope'} — ${e.action}: ${e.explanation}'], color: GG.red)),
           if (sc.improve.isNotEmpty) SectionCard(title: 'What to improve', child: BulletList(sc.improve)),
           if (sim.c.teaching.isNotEmpty) SectionCard(title: 'Key learning points', child: BulletList(sim.c.teaching)),
           Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
@@ -564,7 +641,7 @@ class CaseDebriefScreen extends StatelessWidget {
               key: const ValueKey<String>('case_retry'),
               onPressed: () async {
                 await store.startHospitalCase(sim.c.id, restart: true, role: sim.role);
-                if (context.mounted) await Navigator.of(context).pushReplacement(MaterialPageRoute<void>(builder: (_) => PatientRoomScreen(caseId: sim.c.id)));
+                if (context.mounted) await Navigator.of(context).pushReplacement(ggRoute<void>((_) => PatientRoomScreen(caseId: sim.c.id)));
               },
               child: const Text('Repeat this case'),
             ),
@@ -604,9 +681,9 @@ class _ShiftScreenState extends State<ShiftScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text(wardShift.title, style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+          Text(wardShift.title, style: TextStyle(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w900)),
           const SizedBox(height: 4),
-          Text(hospitalDisclaimer, style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
+          Text(hospitalDisclaimer, style: TextStyle(color: GG.mute, fontSize: 11.5)),
           SectionCard(title: 'Handover from the night shift', child: Text(wardShift.brief)),
           if (res != null)
             SectionCard(
@@ -638,7 +715,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
                   subtitle: Text('${e.value.c.complaint}\n${e.value.actions.length} actions · ${e.value.log.where((LogLine l) => l.warning).isEmpty ? 'no warnings' : '⚠ ${e.value.log.lastWhere((LogLine l) => l.warning).text}'}'),
                   isThreeLine: true,
                   trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => PatientRoomScreen(caseId: e.key, shift: true))),
+                  onTap: () => Navigator.of(context).push(ggRoute<void>((_) => PatientRoomScreen(caseId: e.key, shift: true))),
                 ),
               ),
             const SizedBox(height: 8),
@@ -687,16 +764,16 @@ class _TriageScreenState extends State<TriageScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text('Six people have just arrived. Give each a triage level: 1 immediate, 2 emergent, 3 urgent, 4 less urgent, 5 non-urgent.', style: TextStyle(color: VuV2Colors.ink)),
+          Text('Six people have just arrived. Give each a triage level: 1 immediate, 2 emergent, 3 urgent, 4 less urgent, 5 non-urgent.', style: TextStyle(color: GG.ink)),
           const SizedBox(height: 8),
           for (final TriageArrival a in triageArrivals)
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                  Text('${a.name}, ${a.age}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+                  Text('${a.name}, ${a.age}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
                   Text(a.story),
-                  Text(a.vitals, style: TextStyle(color: VuV2Colors.mute)),
+                  Text(a.vitals, style: TextStyle(color: GG.mute)),
                   Wrap(spacing: 6, children: <Widget>[
                     for (int n = 1; n <= 5; n++)
                       ChoiceChip(key: ValueKey<String>('tri_${a.id}_$n'), label: Text('$n'), selected: _levels[a.id] == n, onSelected: r != null ? null : (_) => setState(() => _levels[a.id] = n)),
@@ -741,17 +818,17 @@ class HospitalWorkView extends StatelessWidget {
     final HospitalRun? run = store.profile.hospitalRuns[spec.caseId];
     final bool inProgress = run != null && !run.done;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      Text(hospitalDisclaimer, style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
+      Text(hospitalDisclaimer, style: TextStyle(color: GG.mute, fontSize: 11.5)),
       const SizedBox(height: 8),
       FilledButton.icon(
         key: const ValueKey<String>('work_open_patient'),
         onPressed: () async {
           if (shift) {
-            await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ShiftScreen()));
+            await Navigator.of(context).push(ggRoute<void>((_) => const ShiftScreen()));
             return;
           }
           final PatientSim? s = await runCareerAction<PatientSim>(context, () => store.startHospitalCase(spec.caseId, restart: !inProgress));
-          if (s != null && context.mounted) await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => PatientRoomScreen(caseId: spec.caseId)));
+          if (s != null && context.mounted) await Navigator.of(context).push(ggRoute<void>((_) => PatientRoomScreen(caseId: spec.caseId)));
         },
         icon: const Icon(Icons.local_hospital_rounded),
         label: Text(shift ? 'Go to the ward shift' : (inProgress ? 'Return to the patient' : 'Go to the patient')),
@@ -759,7 +836,7 @@ class HospitalWorkView extends StatelessWidget {
       if (done != null) ...<Widget>[
         const SizedBox(height: 8),
         Text('Result: ${done.score}/100 · ${done.passed ? 'passed' : (done.critical ? 'critical safety issue' : 'not passed')}', key: const ValueKey<String>('work_hospital_result'),
-            style: TextStyle(color: done.passed ? VuV2Colors.success : VuV2Colors.danger, fontWeight: FontWeight.w800)),
+            style: TextStyle(color: done.passed ? GG.green : GG.red, fontWeight: FontWeight.w800)),
         FilledButton.tonalIcon(
           key: const ValueKey<String>('work_attach_hospital'),
           onPressed: () => onGraded(TaskResult(
@@ -773,5 +850,259 @@ class HospitalWorkView extends StatelessWidget {
         ),
       ],
     ]);
+  }
+}
+
+
+/// "What would you like to do?" — three sensible next steps (not answers).
+class _QuickActions extends StatelessWidget {
+  const _QuickActions({required this.sim, required this.onAct});
+  final PatientSim sim;
+  final ValueChanged<SimAction> onAct;
+
+  static const List<(String, String, SimAction)> all = <(String, String, SimAction)>[
+    ('do:hand_hygiene', 'Clean your hands', SimAction('intervene', 'hand_hygiene')),
+    ('ask:intro', 'Introduce yourself', SimAction('ask', '', 'Hello, my name is Sam and I am the student looking after you today.')),
+    ('exam:chest', 'Assess her breathing', SimAction('exam', 'chest')),
+    ('measure:pulse_ox', 'Check heart rate and oxygen', SimAction('measure', 'pulse_ox')),
+    ('ask:history', 'Review medical history', SimAction('ask', '', 'Can you tell me about your medical history?')),
+    ('measure:bp', 'Take blood pressure', SimAction('measure', 'bp')),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final bool she = sim.c.sex == 'F';
+    final List<(String, String, SimAction)> next = all.where(((String, String, SimAction) x) => !sim.has(x.$1)).take(3).toList();
+    if (next.isEmpty) return const SizedBox.shrink();
+    return Container(
+      width: 270,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.94), borderRadius: BorderRadius.circular(14)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: <Widget>[
+        const Text('What would you like to do?', style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.w800)),
+        const SizedBox(height: 6),
+        for (int i = 0; i < next.length; i++)
+          InkWell(
+            key: ValueKey<String>('quick_$i'),
+            onTap: () => onAct(next[i].$3),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(children: <Widget>[
+                const Icon(Icons.radio_button_unchecked, size: 16, color: Color(0xFF4F46E5)),
+                const SizedBox(width: 8),
+                Expanded(child: Text(she ? next[i].$2 : next[i].$2.replaceAll('her ', 'his '), style: const TextStyle(color: Color(0xFF0F172A)))),
+              ]),
+            ),
+          ),
+      ]),
+    );
+  }
+}
+
+String _vitalText(PatientSim s, String k) {
+  final Vitals? v = s.monitorOn ? s.v : (s.chart.isEmpty ? null : s.chart.last.v);
+  final bool measured = s.monitorOn ||
+      (switch (k) {
+        'hr' => s.has('measure:pulse_ox'),
+        'bp' => s.has('measure:bp'),
+        'temp' => s.has('measure:thermometer'),
+        'spo2' => s.has('measure:pulse_ox'),
+        'rr' => s.has('measure:resp'),
+        _ => false,
+      });
+  if (v == null || !measured) return '--';
+  return switch (k) {
+    'hr' => '${v.hr.round()} bpm',
+    'bp' => '${v.sbp.round()}/${v.dbp.round()} mmHg',
+    'temp' => '${v.temp.toStringAsFixed(1)}°C',
+    'spo2' => '${v.spo2.round()}%',
+    _ => '${v.rr.round()}/min',
+  };
+}
+
+bool _abnormal(Vitals v, String k) => switch (k) {
+      'hr' => v.hr > 100 || v.hr < 50,
+      'bp' => v.sbp < 100 || v.sbp > 160,
+      'temp' => v.temp >= 38 || v.temp < 36,
+      'spo2' => v.spo2 < 94,
+      _ => v.rr > 20 || v.rr < 10,
+    };
+
+class _PatientInfo extends StatelessWidget {
+  const _PatientInfo({required this.sim});
+  final PatientSim sim;
+
+  @override
+  Widget build(BuildContext context) {
+    final PatientCase c = sim.c;
+    return GGPanel(
+      padding: const EdgeInsets.all(12),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+        const Text('Patient Info', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
+        const SizedBox(height: 6),
+        Text(c.name, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+        Text('Age: ${c.age == 0 ? 'infant' : c.age} | ID: ${c.mrn}', style: const TextStyle(color: GG.mute, fontSize: 12.5)),
+        Text('History: ${c.history.take(2).join(', ')}', style: const TextStyle(color: GG.mute, fontSize: 12.5)),
+        const SizedBox(height: 8),
+        for (final (String k, String label) in const <(String, String)>[('hr', 'HR'), ('bp', 'BP'), ('temp', 'Temp'), ('spo2', 'SpO₂'), ('rr', 'RR')])
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(children: <Widget>[
+              Icon(Icons.add_circle_rounded, size: 16, color: _vitalText(sim, k) != '--' && _abnormal(sim.v, k) ? GG.red : GG.mute),
+              const SizedBox(width: 6),
+              Text('$label: ', style: const TextStyle(color: GG.ink)),
+              Text(_vitalText(sim, k), key: ValueKey<String>('info_$k'), style: TextStyle(color: _vitalText(sim, k) != '--' && _abnormal(sim.v, k) ? const Color(0xFFFF6B6B) : GG.ink, fontWeight: FontWeight.w700)),
+            ]),
+          ),
+        if (!c.child) Text('NEWS2: ${sim.news()} · ${newsBand(sim.news())}', style: TextStyle(color: sim.news() >= 5 ? const Color(0xFFFF6B6B) : GG.mute, fontSize: 12)),
+      ]),
+    );
+  }
+}
+
+/// The electronic health record: overview, vitals, lab results, imaging,
+/// care plan and notes, with a sidebar like a hospital EHR.
+class PatientRecordsScreen extends StatefulWidget {
+  const PatientRecordsScreen({super.key, required this.caseId, this.shift = false});
+  final String caseId;
+  final bool shift;
+
+  @override
+  State<PatientRecordsScreen> createState() => _PatientRecordsScreenState();
+}
+
+class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
+  int _section = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    final PatientSim? s = widget.shift ? store.shiftSim(wardShift.id)?.sims[widget.caseId] : store.hospitalSim(widget.caseId);
+    if (s == null) return const Scaffold(body: Center(child: Text('No record.')));
+    final PatientCase c = s.c;
+    final Map<String, String> results = s.results;
+    Widget panel(String title, Widget child) => GGPanel(margin: const EdgeInsets.only(bottom: 12), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[Text(title, style: const TextStyle(color: GG.ink, fontSize: 16, fontWeight: FontWeight.w800)), const SizedBox(height: 8), child]));
+    final List<Widget> body = switch (_section) {
+      0 => <Widget>[
+          panel('Overview', Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Text('${c.name} · ${c.age == 0 ? 'infant' : '${c.age} years'} · ${c.sex} · MRN ${c.mrn}'),
+            Text('Department: ${c.dept.label} · Arrived ${c.arrival}'),
+            Text('Presenting complaint: ${c.complaint}'),
+            const SizedBox(height: 6),
+            Text('History: ${c.history.join('; ')}'),
+            Text('Medications: ${c.medications.isEmpty ? 'none' : c.medications.join(', ')}'),
+            Text(s.has('chart:allergies') || s.has('allergies') ? 'Allergies: ${c.allergies.isEmpty ? 'no known allergies' : c.allergies.join('; ')}' : 'Allergies: open the allergy record from the room to review.',
+                style: const TextStyle(color: Color(0xFFFF6B6B), fontWeight: FontWeight.w700)),
+          ])),
+        ],
+      1 => <Widget>[
+          panel('Vital signs', Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            SizedBox(height: 140, width: double.infinity, child: CustomPaint(painter: VitalsChartPainter(s.chart))),
+            const Text('Green HR · Red systolic BP · Blue SpO₂ · Yellow RR', style: TextStyle(color: GG.mute, fontSize: 11.5)),
+            for (final VitalsPoint p in s.chart.reversed.take(12))
+              Text('+${p.minute} min  HR ${p.v.hr.round()}  BP ${p.v.sbp.round()}/${p.v.dbp.round()}  RR ${p.v.rr.round()}  SpO₂ ${p.v.spo2.round()}%  T ${p.v.temp.toStringAsFixed(1)}', style: const TextStyle(fontFamily: 'monospace', fontSize: 12)),
+            if (s.chart.isEmpty) const Text('No observations recorded yet.', style: TextStyle(color: GG.mute)),
+          ])),
+        ],
+      2 => <Widget>[
+          LayoutBuilder(builder: (BuildContext context, BoxConstraints b) {
+            final Widget labs = panel(
+              'Lab Results',
+              Container(
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.all(10),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  if (results.keys.where((String k) => !(testDef(k)?.imaging ?? false) && k != 'ecg').isEmpty)
+                    const Text('No laboratory results yet. Order tests from the room.', style: TextStyle(color: Color(0xFF475569))),
+                  for (final MapEntry<String, String> r in results.entries)
+                    if (!(testDef(r.key)?.imaging ?? false))
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                          SizedBox(width: 130, child: Text(testDef(r.key)?.label ?? r.key, style: const TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.w700, fontSize: 12.5))),
+                          Expanded(
+                            child: Text('${r.value}${(c.tests[r.key]?.abnormal ?? false) ? ' ↑' : ''}',
+                                key: ValueKey<String>('rec_${r.key}'), style: TextStyle(color: (c.tests[r.key]?.abnormal ?? false) ? const Color(0xFFDC2626) : const Color(0xFF0F172A), fontSize: 12.5)),
+                          ),
+                        ]),
+                      ),
+                ]),
+              ),
+            );
+            final Widget ecg = panel(
+              'ECG Result',
+              s.has('measure:ecg')
+                  ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      Container(
+                        height: 90,
+                        decoration: BoxDecoration(color: const Color(0xFF0B1220), borderRadius: BorderRadius.circular(8)),
+                        child: CustomPaint(painter: WavePainter(rhythm: c.ecg, hr: s.v.hr, phase: 0), size: const Size(double.infinity, 90)),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(c.tests['ecg']?.result ?? 'Sinus rhythm, no acute changes.', style: const TextStyle(color: GG.ink, fontSize: 12.5)),
+                    ])
+                  : const Text('No ECG recorded yet.', style: TextStyle(color: GG.mute)),
+            );
+            return b.maxWidth >= 760
+                ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[Expanded(child: labs), const SizedBox(width: 12), Expanded(child: ecg)])
+                : Column(children: <Widget>[labs, ecg]);
+          }),
+          _imaging(c, results, panel),
+        ],
+      3 => <Widget>[_imaging(c, results, panel)],
+      4 => <Widget>[
+          panel('Care plan', Text(s.diagnosis == null
+              ? 'No working diagnosis or nursing priority recorded yet (Document tab in the room).'
+              : '${s.role == ClinicalRole.medicine ? 'Working diagnosis' : 'Nursing priority'}: ${(s.role == ClinicalRole.medicine ? c.diagnosis : c.nursingPriority).where((ChoiceOption o) => o.id == s.diagnosis).map((ChoiceOption o) => o.label).join()}')),
+        ],
+      _ => <Widget>[
+          panel('Notes', Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            for (final String n in c.notes) Text('• $n'),
+            Text(s.notes.isEmpty ? 'No clinical note written yet.' : s.notes),
+            if (s.sbar.isNotEmpty) ...<Widget>[const SizedBox(height: 6), Text('Escalation (SBAR) to ${s.escalatedTo}: ${s.sbar}')],
+          ])),
+        ],
+    };
+    return Scaffold(
+      appBar: AppBar(title: Text('Patient Records - ${c.name}')),
+      body: GGSidebarLayout(
+        keyPrefix: 'rec',
+        items: const <(String, IconData)>[
+          ('Overview', Icons.dashboard_rounded),
+          ('Vitals', Icons.monitor_heart_rounded),
+          ('Lab Results', Icons.science_rounded),
+          ('Imaging', Icons.document_scanner_rounded),
+          ('Care Plan', Icons.assignment_rounded),
+          ('Notes', Icons.edit_note_rounded),
+        ],
+        selected: _section,
+        onSelect: (int i) => setState(() => _section = i),
+        child: DecoratedBox(decoration: const BoxDecoration(gradient: GG.page), child: ListView(padding: const EdgeInsets.all(16), children: body)),
+      ),
+    );
+  }
+
+  Widget _imaging(PatientCase c, Map<String, String> results, Widget Function(String, Widget) panel) {
+    final List<MapEntry<String, String>> imgs = results.entries.where((MapEntry<String, String> r) => testDef(r.key)?.imaging ?? false).toList();
+    return panel(
+      'Imaging',
+      imgs.isEmpty
+          ? const Text('No imaging yet.', style: TextStyle(color: GG.mute))
+          : Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              for (final MapEntry<String, String> r in imgs) ...<Widget>[
+                Text(testDef(r.key)?.label ?? r.key, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 6),
+                Container(
+                  height: 220,
+                  width: 260,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: GG.stroke)),
+                  child: CustomPaint(painter: ImagingPainter(c.tests[r.key]?.image ?? (r.key == 'ct_head' ? 'ct_head_normal' : 'cxr_normal'))),
+                ),
+                const SizedBox(height: 4),
+                Text('Report: ${r.value}', style: const TextStyle(color: GG.ink, fontSize: 12.5)),
+                const SizedBox(height: 10),
+              ],
+            ]),
+    );
   }
 }

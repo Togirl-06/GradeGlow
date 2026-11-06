@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../content/job_market.dart';
 import '../engine/career_rules.dart';
@@ -17,6 +16,7 @@ import 'job_screens.dart';
 import 'money_find_screens.dart';
 import 'resume_screens.dart';
 import 'workplace_screen.dart';
+import 'gg_kit.dart';
 
 /// The student's employment status, as the Career Centre shows it.
 (String, String) employmentStatus(CareerSimStore store) {
@@ -55,7 +55,7 @@ class CareerStatusCard extends StatelessWidget {
       key: const ValueKey<String>('employment_status'),
       title: 'Employment status: $status',
       subtitle: 'Next: $next',
-      child: Text(PayRules.notice, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+      child: Text(PayRules.notice, style: TextStyle(color: GG.mute, fontSize: 12)),
     );
   }
 }
@@ -72,8 +72,8 @@ class OfferDetails extends StatelessWidget {
     Widget row(String a, String b) => Padding(
           padding: const EdgeInsets.only(bottom: 3),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            SizedBox(width: 170, child: Text(a, style: TextStyle(color: VuV2Colors.mute, fontSize: 13))),
-            Expanded(child: Text(b, style: TextStyle(color: VuV2Colors.ink, fontSize: 13.5, fontWeight: FontWeight.w600))),
+            SizedBox(width: 170, child: Text(a, style: TextStyle(color: GG.mute, fontSize: 13))),
+            Expanded(child: Text(b, style: TextStyle(color: GG.ink, fontSize: 13.5, fontWeight: FontWeight.w600))),
           ]),
         );
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -123,7 +123,7 @@ class _ContractScreenState extends State<ContractScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Text('Simulated employment contract', style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+          Text('Simulated employment contract', style: TextStyle(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w900)),
           const SizedBox(height: 8),
           SectionCard(title: 'Terms', child: BulletList(MarketRules.contractTerms(o, ''))),
           SectionCard(title: 'Your offer', child: OfferDetails(offer: o)),
@@ -154,7 +154,7 @@ class _ContractScreenState extends State<ContractScreen> {
                 : () async {
                     final Employment? e = await runCareerAction<Employment>(context, () => store.acceptOffer(a.id, signature: _sign.text), success: 'Welcome to ${o.employer}!');
                     if (e != null && context.mounted) {
-                      await Navigator.of(context).pushReplacement(MaterialPageRoute<void>(builder: (_) => const WorkplaceScreen()));
+                      await Navigator.of(context).pushReplacement(ggRoute<void>((_) => const WorkplaceScreen()));
                     }
                   },
           ),
@@ -183,10 +183,10 @@ class OnboardingCard extends StatelessWidget {
             key: ValueKey<String>('onb_$id'),
             tilePadding: EdgeInsets.zero,
             leading: Icon(employment.onboarding.contains(id) ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
-                color: employment.onboarding.contains(id) ? VuV2Colors.success : VuV2Colors.mute),
+                color: employment.onboarding.contains(id) ? GG.green : GG.mute),
             title: Text(title),
             children: <Widget>[
-              Align(alignment: Alignment.centerLeft, child: Text(body, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
+              Align(alignment: Alignment.centerLeft, child: Text(body, style: TextStyle(color: GG.ink, height: 1.4))),
               const SizedBox(height: 6),
               if (!employment.onboarding.contains(id))
                 Align(
@@ -218,7 +218,7 @@ class ReviewCard extends StatelessWidget {
           for (final MapEntry<String, int> s in review.scores.entries) LabeledBar(label: s.key, value: s.value),
           if (review.raisePercent > 0)
             Text('Salary: ${usdWhole(review.oldSalary)} → ${usdWhole(review.newSalary)} (virtual USD)',
-                style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700)),
+                style: TextStyle(color: GG.green, fontWeight: FontWeight.w700)),
           if (review.promotionEligible) const StatusChip('Promotion eligible'),
           BulletList(review.comments),
         ]),
@@ -241,11 +241,11 @@ class PerformanceReviewsScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
           Text('A review is written every ${CareerSimStore.reviewEvery} evaluated assignments. It scores quality, accuracy, problem-solving, communication, teamwork, reliability and deadlines from your actual work. '
-              'Raises: 70+ overall = 2%, 85+ with 75+ on deadlines = 5%.', style: TextStyle(color: VuV2Colors.mute)),
+              'Raises: 70+ overall = 2%, 85+ with 75+ on deadlines = 5%.', style: TextStyle(color: GG.mute)),
           const SizedBox(height: 12),
-          if (all.isEmpty) Text('No reviews yet.', style: TextStyle(color: VuV2Colors.mute)),
+          if (all.isEmpty) Text('No reviews yet.', style: TextStyle(color: GG.mute)),
           for (final (Employment e, PerformanceReview r) in all) ...<Widget>[
-            Text('${e.title} · ${e.employer}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+            Text('${e.title} · ${e.employer}', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
             ReviewCard(review: r),
           ],
           for (final Employment e in store.profile.employment.reversed)
@@ -297,7 +297,7 @@ class CareerProgressionScreen extends StatelessWidget {
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(
                           t.key == cur ? Icons.radio_button_checked : (t.key.index < cur.index ? Icons.check_circle_rounded : Icons.radio_button_unchecked),
-                          color: t.key.index <= cur.index ? VuV2Colors.success : VuV2Colors.mute,
+                          color: t.key.index <= cur.index ? GG.green : GG.mute,
                         ),
                         title: Text(t.value),
                         subtitle: Text(t.key.label),
@@ -311,7 +311,7 @@ class CareerProgressionScreen extends StatelessWidget {
               child: Column(children: <Widget>[
                 for (final Criterion c in next.criteria)
                   Row(children: <Widget>[
-                    Icon(c.met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: c.met ? VuV2Colors.success : VuV2Colors.mute),
+                    Icon(c.met ? Icons.check_circle_rounded : Icons.radio_button_unchecked, size: 18, color: c.met ? GG.green : GG.mute),
                     const SizedBox(width: 6),
                     Expanded(child: Text('${c.label}${c.detail.isEmpty ? '' : ' (${c.detail})'}')),
                   ]),
@@ -320,14 +320,14 @@ class CareerProgressionScreen extends StatelessWidget {
           SectionCard(
             title: 'Better positions to aim for',
             child: Column(children: <Widget>[
-              if (higher.isEmpty) Text('You are at the top of this ladder.', style: TextStyle(color: VuV2Colors.mute)),
+              if (higher.isEmpty) Text('You are at the top of this ladder.', style: TextStyle(color: GG.mute)),
               for (final JobPosting j in higher.take(8))
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(j.title),
                   subtitle: Text('${j.company.name} · ${j.levelLabel} · ${money(j.salaryMin, j.salaryPeriod)}'),
                   trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => JobDetailScreen(postingId: j.id))),
+                  onTap: () => Navigator.of(context).push(ggRoute<void>((_) => JobDetailScreen(postingId: j.id))),
                 ),
             ]),
           ),
@@ -352,11 +352,11 @@ class InterviewCenterScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Row(children: <Widget>[Expanded(child: Text('Today is day ${store.day}', style: TextStyle(color: VuV2Colors.mute))), const NextDayButton()]),
+          Row(children: <Widget>[Expanded(child: Text('Today is day ${store.day}', style: TextStyle(color: GG.mute))), const NextDayButton()]),
           SectionCard(
             title: 'Upcoming interviews',
             child: Column(children: <Widget>[
-              if (upcoming.isEmpty) Text('None. Shortlisted applications appear here.', style: TextStyle(color: VuV2Colors.mute)),
+              if (upcoming.isEmpty) Text('None. Shortlisted applications appear here.', style: TextStyle(color: GG.mute)),
               for (final JobApplication a in upcoming)
                 ListTile(
                   key: ValueKey<String>('iv_${a.id}'),
@@ -365,7 +365,7 @@ class InterviewCenterScreen extends StatelessWidget {
                   title: Text(CareerCatalog.posting(a.postingId)?.title ?? a.postingId),
                   subtitle: Text(a.status == ApplicationStatus.shortlisted ? 'Book a slot' : 'Day ${a.interviewDay}${store.interviewAvailable(a) ? ' — today' : ''}'),
                   trailing: const Icon(Icons.chevron_right_rounded),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ApplicationScreen(applicationId: a.id))),
+                  onTap: () => Navigator.of(context).push(ggRoute<void>((_) => ApplicationScreen(applicationId: a.id))),
                 ),
             ]),
           ),
@@ -381,8 +381,7 @@ class InterviewCenterScreen extends StatelessWidget {
                     final List<JobPosting> js = CareerCatalog.postingsFor(d.id);
                     final InterviewPlan? plan = js.isEmpty ? null : CareerCatalog.interviewPlan(js.first.interviewPlanId);
                     if (plan == null) return;
-                    Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (_) => InterviewScreen(plan: plan, company: js.first.company, applicationId: 'mock', day: store.day, practice: true, onFinished: store.recordPracticeInterview),
+                    Navigator.of(context).push(ggRoute<void>((_) => InterviewScreen(plan: plan, company: js.first.company, applicationId: 'mock', day: store.day, practice: true, onFinished: store.recordPracticeInterview),
                     ));
                   },
                   icon: const Icon(Icons.record_voice_over_rounded),
@@ -409,7 +408,7 @@ class JobOffersScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          if (offers.isEmpty) Text('No offers yet. Offers follow a successful interview.', style: TextStyle(color: VuV2Colors.mute)),
+          if (offers.isEmpty) Text('No offers yet. Offers follow a successful interview.', style: TextStyle(color: GG.mute)),
           for (final JobApplication a in offers)
             Card(
               child: ListTile(
@@ -417,7 +416,7 @@ class JobOffersScreen extends StatelessWidget {
                 title: Text(a.offer!.title),
                 subtitle: Text('${a.offer!.employer} · ${money(a.offer!.salary, a.offer!.salaryPeriod)} · ${a.status.label}'),
                 trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ApplicationScreen(applicationId: a.id))),
+                onTap: () => Navigator.of(context).push(ggRoute<void>((_) => ApplicationScreen(applicationId: a.id))),
               ),
             ),
         ],
@@ -434,7 +433,7 @@ class CareerSections extends StatelessWidget {
   Widget build(BuildContext context) {
     final CareerSimStore store = context.watch<CareerSimStore>();
     final CareerProfile p = store.profile;
-    void go(Widget w) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => w));
+    void go(Widget w) => Navigator.of(context).push(ggRoute<void>((_) => w));
     final List<(String, IconData, String, String, Widget)> tiles = <(String, IconData, String, String, Widget)>[
       ('open_resume', Icons.badge_rounded, 'My Professional Profile', '${(CareerRules.resumeCompleteness(p.resume) * 100).round()}% complete', const ResumeScreen()),
       ('open_resume_hub', Icons.upload_file_rounded, 'My Resume', p.resumeUploads.isEmpty ? 'Upload PDF or DOCX' : '${p.resumeUploads.length} uploaded', const ResumeHubScreen()),
@@ -455,7 +454,7 @@ class CareerSections extends StatelessWidget {
           SizedBox(
             width: w,
             child: Material(
-              color: VuV2Colors.mute.withValues(alpha: 0.08),
+              color: GG.mute.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
               child: InkWell(
                 key: ValueKey<String>(key),
@@ -464,10 +463,10 @@ class CareerSections extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                    Icon(icon, color: VuV2Colors.orange),
+                    Icon(icon, color: GG.accent),
                     const SizedBox(height: 4),
-                    Text(label, maxLines: 2, style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800, fontSize: 13)),
-                    Text(caption, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
+                    Text(label, maxLines: 2, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800, fontSize: 13)),
+                    Text(caption, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.mute, fontSize: 11.5)),
                   ]),
                 ),
               ),
