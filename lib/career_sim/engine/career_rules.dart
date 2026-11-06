@@ -123,12 +123,32 @@ abstract final class CareerRules {
 
   // ------------------------------------------------------------- readiness
 
+  /// The labs of the student's major track within a department. A department
+  /// can hold several majors (Computer Science also hosts Software Engineering,
+  /// AI, Cybersecurity and more), and a student is only expected to complete
+  /// the labs of their own track: the major in which they have passed the most
+  /// labs, or the department's first major when they have passed none.
+  static List<LabSpec> trackLabs(CareerProfile p, String deptId) {
+    final List<LabSpec> labs = LabCatalog.forDept(deptId);
+    if (labs.isEmpty) return labs;
+    final Map<String, int> passed = <String, int>{};
+    for (final LabSpec l in labs) {
+      passed.putIfAbsent(l.majorId, () => 0);
+      if (p.labPassed(l.id)) passed[l.majorId] = passed[l.majorId]! + 1;
+    }
+    String best = labs.first.majorId;
+    for (final MapEntry<String, int> e in passed.entries) {
+      if (e.value > passed[best]!) best = e.key;
+    }
+    return labs.where((LabSpec l) => l.majorId == best).toList();
+  }
+
   static ReadinessReport readiness(CareerProfile p, Department d, {JobPosting? job}) {
     final List<String> wantModules = job?.requirements.modules.isNotEmpty == true
         ? job!.requirements.modules
         : d.modules.map((TrainingModule m) => m.id).toList();
     final int doneModules = wantModules.where(p.completedModules.contains).length;
-    final List<LabSpec> labs = LabCatalog.forDept(d.id);
+    final List<LabSpec> labs = trackLabs(p, d.id);
     final int labsPassed = labs.where((LabSpec l) => p.labPassed(l.id)).length;
     final int trainingTotal = wantModules.length + labs.length;
     final double training = trainingTotal == 0 ? 1 : (doneModules + labsPassed) / trainingTotal;

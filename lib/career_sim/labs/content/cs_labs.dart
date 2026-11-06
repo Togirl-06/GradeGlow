@@ -1,6 +1,7 @@
 import '../../engine/text_rubric.dart';
 import '../../model/tasks.dart';
 import '../lab_models.dart';
+import 'gen_cs_core.dart';
 
 // Computer Science labs. Programs, tests and SQL run on the student's device
 // (web/code_runner) and are graded by the server judge's own harness.
@@ -104,6 +105,7 @@ final LabSpec csFundamentalsLab = LabSpec(
         )),
       ],
     ),
+    ...csLabFundamentalsExtra,
   ],
 );
 
@@ -146,6 +148,7 @@ final LabSpec csAlgorithmsLab = LabSpec(
         TaskStep(const CodeTaskSpec(id: 'unique_run', title: 'Longest unique run', brief: 'Use a sliding window.', problemKey: 'impl:GGO-102', skills: <String>['cs_ds', 'cs_algo'])),
       ],
     ),
+    ...csLabDsaExtra,
   ],
 );
 
@@ -168,7 +171,7 @@ final LabSpec csDatabaseLab = LabSpec(
   minutes: 60,
   database: universityDb,
   databaseTables: const <String>['students(id, name, major, year)', 'courses(code, title, credits)', 'enrollments(student_id, course_code, grade)'],
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'registry',
       title: 'University registry database',
@@ -252,6 +255,7 @@ final LabSpec csDatabaseLab = LabSpec(
         ),
       ],
     ),
+    ...csLabDatabaseExtra,
   ],
 );
 
@@ -331,6 +335,7 @@ final LabSpec csSystemsLab = LabSpec(
         )),
       ],
     ),
+    ...csLabOsExtra,
   ],
 );
 
@@ -382,6 +387,7 @@ final LabSpec csProjectLab = LabSpec(
         )),
       ],
     ),
+    ...csLabProjectExtra,
   ],
 );
 

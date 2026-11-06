@@ -16,7 +16,7 @@ class ExprParseException implements Exception {
 
 // ------------------------------------------------------------ AST
 
-sealed class Expr {
+abstract class Expr {
   const Expr();
   double eval(Map<String, double> env);
   Set<String> get variables;

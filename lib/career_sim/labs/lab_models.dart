@@ -13,7 +13,14 @@ enum LabEnvironment {
   hospitalWard,
   clinicRoom,
   accountingFirm,
-  mathsLab;
+  mathsLab,
+  lawFirm,
+  engineeringOffice,
+  scienceLab,
+  businessOffice,
+  techOffice,
+  securityOps,
+  editorialOffice;
 
   String get label => switch (this) {
         LabEnvironment.computingLab => 'Computer Science and Computing Laboratory',
@@ -21,6 +28,13 @@ enum LabEnvironment {
         LabEnvironment.clinicRoom => 'Medical Simulation and Clinical Skills Centre',
         LabEnvironment.accountingFirm => 'Professional Accounting Firm',
         LabEnvironment.mathsLab => 'Mathematics Problem-Solving Laboratory',
+        LabEnvironment.lawFirm => 'Law Firm and Mock Courtroom',
+        LabEnvironment.engineeringOffice => 'Engineering Design and Test Centre',
+        LabEnvironment.scienceLab => 'Science Laboratory',
+        LabEnvironment.businessOffice => 'Business Operations Office',
+        LabEnvironment.techOffice => 'Technology Workplace',
+        LabEnvironment.securityOps => 'Security Operations Centre',
+        LabEnvironment.editorialOffice => 'Writing and Communication Studio',
       };
 }
 
@@ -704,7 +718,11 @@ class LabSpec {
     this.database = '',
     this.databaseTables = const <String>[],
     this.addsToPortfolio = false,
+    this.reference = const <String>[],
   });
+
+  /// Workplace reference notes (policies, formulas, rules) available as a tool.
+  final List<String> reference;
 
   final String id;
   final String deptId;

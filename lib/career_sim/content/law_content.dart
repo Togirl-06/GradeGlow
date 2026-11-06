@@ -11,6 +11,10 @@ const List<SkillDef> _skills = <SkillDef>[
   SkillDef('law_contract', 'Contract law'),
   SkillDef('law_evidence', 'Evidence & advocacy'),
   SkillDef('law_writing', 'Legal writing'),
+  SkillDef('law_research', 'Legal research'),
+  SkillDef('law_reasoning', 'Legal reasoning'),
+  SkillDef('law_client', 'Client care & negotiation'),
+  SkillDef('law_advocacy', 'Courtroom advocacy'),
 ];
 
 const List<String> _grounds = <String>['Leading', 'Hearsay', 'Speculation', 'Relevance', 'Argumentative'];

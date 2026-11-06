@@ -12,7 +12,8 @@ class DiagramAssetService {
   String get cdnBase => _cdnBase ??= _readCdnBase();
 
   static String _readCdnBase() {
-    final String raw = dotenv.env[DiagramAssetRegistry.cdnEnvKey]?.trim() ?? '';
+    // .env may not be loaded (tests, or a build without one): use bundled assets.
+    final String raw = dotenv.isInitialized ? dotenv.env[DiagramAssetRegistry.cdnEnvKey]?.trim() ?? '' : '';
     if (raw.isEmpty) return '';
     return raw.endsWith('/') ? raw.substring(0, raw.length - 1) : raw;
   }

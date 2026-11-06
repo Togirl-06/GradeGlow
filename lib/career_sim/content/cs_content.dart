@@ -15,6 +15,13 @@ const List<SkillDef> _skills = <SkillDef>[
   SkillDef('cs_review', 'Code review & collaboration'),
   SkillDef('cs_db', 'Databases & SQL'),
   SkillDef('cs_os', 'Operating systems'),
+  SkillDef('cs_se', 'Software engineering practice'),
+  SkillDef('cs_ml', 'Machine learning & AI'),
+  SkillDef('cs_data', 'Data analysis'),
+  SkillDef('cs_sec', 'Security operations'),
+  SkillDef('cs_net', 'Networks & systems administration'),
+  SkillDef('cs_web', 'Web development'),
+  SkillDef('cs_mobile', 'Mobile development'),
 ];
 
 const ClassifyTaskSpec _complexity = ClassifyTaskSpec(

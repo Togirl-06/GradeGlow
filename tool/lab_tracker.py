@@ -35,17 +35,18 @@ STATUS = {
 BUILT = {}
 
 
-def built(lab_id, status, note=""):
-    return {"labId": lab_id, "status": status, "note": note}
+def built(lab_id, status, note="", keep=False):
+    """keep: leave the status as given even when generated scenarios extend the lab."""
+    return {"labId": lab_id, "status": status, "note": note, "keep": keep}
 
 
 SCHOOLS = [
     ("School of Computer Science and Technology", [
         ("computer_science", "Computer Science", [
-            ("Programming Laboratory", built("cs_lab_fundamentals", "in_progress", "Real Python/JavaScript execution and tests; 1 scenario of 15")),
-            ("Data Structures and Algorithms", built("cs_lab_dsa", "in_progress", "Trace and challenge modes; 1 scenario of 15")),
-            ("Database Engineering", built("cs_lab_database", "in_progress", "Real SQLite workbench; 1 scenario of 15")),
-            ("Computer Architecture and Operating Systems", built("cs_lab_os", "in_progress", "FCFS/SJF and paging simulators; no Priority/Round Robin or CPU model yet")),
+            ("Programming Laboratory", built("cs_lab_fundamentals", "in_progress", "Real Python/JavaScript execution and tests")),
+            ("Data Structures and Algorithms", built("cs_lab_dsa", "in_progress", "Trace and challenge modes")),
+            ("Database Engineering", built("cs_lab_database", "in_progress", "Real SQLite workbench")),
+            ("Computer Architecture and Operating Systems", built("cs_lab_os", "in_progress", "FCFS/SJF and paging simulators; Round Robin, priority and page replacement as programs")),
             ("Software Project Laboratory", built("cs_lab_project", "in_progress", "1 project brief")),
         ]),
         ("software_engineering", "Software Engineering", [
@@ -79,7 +80,7 @@ SCHOOLS = [
     ]),
     ("School of Medicine and Health Sciences", [
         ("medicine", "Medicine", [
-            ("Human Anatomy and Physiology", built("md_lab_anatomy", "in_progress", "2D diagrams, not the required 3D body")),
+            ("Human Anatomy and Physiology", built("md_lab_anatomy", "tested", "3D body model (58 structures in 8 systems, layers, rotate/zoom, tap to identify) and 2D atlas; the 3D model is a schematic built from geometric shapes, not a scan")),
             ("Medical History and Patient Interview", built("md_lab_assessment", "in_progress", "1 patient case")),
             ("Physical Examination", None), ("Diagnostic Investigation", None), ("Clinical Reasoning and Diagnosis", None),
             ("Emergency Medicine", built("md_lab_emergency", "in_progress", "1 case (anaphylaxis)")),
@@ -100,26 +101,47 @@ SCHOOLS = [
     ]),
     ("School of Law", [
         ("introduction_to_law", "Law", [
-            ("Legal Research", None), ("Case Analysis", None), ("Legal Drafting", None), ("Client Consultation", None),
-            ("Negotiation and Mediation", None), ("Courtroom Practice", None), ("Full Case Assignment", None),
+            ("Legal Research", built("law_lab_research", "tested", "Real cases only; unverified citations fail; 15 matters")),
+            ("Case Analysis", built("law_lab_analysis", "tested", "Material-fact triage, outcome, IRAC; 15 matters")),
+            ("Legal Drafting", built("law_lab_drafting", "tested", "Advice letters, memos, letters before claim, briefs, attendance notes; 15 matters")),
+            ("Client Consultation", built("law_lab_consultation", "tested", "Client interview with conduct rules; 15 matters")),
+            ("Negotiation and Mediation", built("law_lab_negotiation", "tested", "Settlement model within client authority; 15 matters")),
+            ("Courtroom Practice", built("law_lab_courtroom", "tested", "Examination-in-chief with objections; judge's questions; 15 matters")),
+            ("Full Case Assignment", built("law_lab_fullcase", "tested", "Research, skeleton argument, settlement, strategy; 15 matters")),
         ]),
     ]),
     ("School of Engineering", [
         ("mechanical_engineering", "Mechanical Engineering", [
-            ("Engineering Mechanics", None), ("Thermodynamics", None), ("Fluid Mechanics", None),
-            ("Machine Design", None), ("CAD and Technical Drawing", None), ("Failure Analysis", None),
+            ("Engineering Mechanics", built("me_lab_mechanics", "tested", "5 design problems x 3 specifications; live models; hand calculations")),
+            ("Thermodynamics", built("me_lab_thermo", "tested", "Heating, Carnot, conduction, gas, refrigeration")),
+            ("Fluid Mechanics", built("me_lab_fluids", "tested", "Continuity, hydrostatics, pumps, Reynolds, draining")),
+            ("Machine Design", built("me_lab_machine", "tested", "Shafts, springs, bolts, gears, bearings")),
+            ("CAD and Technical Drawing", built("me_lab_cad", "tested", "2D drawing sheet (outline, holes, datum dimensioning, redundancy and tolerance checks, title block) plus tolerance, scale, fit, mass and section calculations; no 3D modelling")),
+            ("Failure Analysis", built("me_lab_failure", "tested", "5 failure investigations x 3 levels")),
         ]),
         ("civil_engineering", "Civil Engineering", [
-            ("Structural Analysis", None), ("Concrete and Materials Testing", None), ("Geotechnical Engineering", None),
-            ("Surveying", None), ("Transportation and Infrastructure", None), ("Construction Project Management", None),
+            ("Structural Analysis", built("ce_lab_structures", "tested", "Beams, cantilevers, trusses, columns, load combinations")),
+            ("Concrete and Materials Testing", built("ce_lab_materials", "tested", "Mix design, tensile test, expansion, FoS, cube acceptance")),
+            ("Geotechnical Engineering", built("ce_lab_geotech", "tested", "Bearing, effective stress, settlement, slopes, retaining walls")),
+            ("Surveying", built("ce_lab_surveying", "tested", "Levelling, setting out, areas, gradients, tape corrections")),
+            ("Transportation and Infrastructure", built("ce_lab_transport", "tested", "SSD, curves, drainage, traffic flow, channels")),
+            ("Construction Project Management", built("ce_lab_construction", "tested", "Crashing, crews, pours, orders, crane lifts")),
         ]),
         ("electrical_engineering", "Electrical Engineering", [
-            ("Circuit Construction", None), ("Circuit Analysis", None), ("Electronic Systems", None),
-            ("Digital Logic", None), ("Power Systems", None), ("Fault Diagnosis", None),
+            ("Circuit Construction", built("ee_lab_construction", "tested", "Virtual bench: LED, divider, networks, RC, fuses")),
+            ("Circuit Analysis", built("ee_lab_analysis", "tested", "Max power, AC impedance, PFC, three-phase, voltage drop")),
+            ("Electronic Systems", built("ee_lab_electronics", "tested", "Op-amps, transistor switches, 555, filters, batteries")),
+            ("Digital Logic", built("ee_lab_logic", "tested", "Truth tables for every input; expressions; verification")),
+            ("Power Systems", built("ee_lab_power", "tested", "Losses, transformers, generators, PV, fault level")),
+            ("Fault Diagnosis", built("ee_lab_faults", "tested", "5 fault investigations x 3 levels")),
         ]),
         ("chemical_engineering", "Chemical Engineering", [
-            ("Chemical Process Fundamentals", None), ("Reaction Engineering", None), ("Separation Processes", None),
-            ("Process Flow Design", None), ("Process Control", None), ("Process Safety", None),
+            ("Chemical Process Fundamentals", built("che_lab_fundamentals", "tested", "Mixers, evaporators, heaters, burners, dilutions")),
+            ("Reaction Engineering", built("che_lab_reaction", "tested", "Rates, conversion, yield and reactor sizing")),
+            ("Separation Processes", built("che_lab_separation", "tested", "Distillation, filtration, extraction, separators")),
+            ("Process Flow Design", built("che_lab_flowsheet", "tested", "Flowsheet balances with recycle and purge")),
+            ("Process Control", built("che_lab_control", "tested", "Controller tuning and process response")),
+            ("Process Safety", built("che_lab_safety", "tested", "5 incident investigations x 3 levels")),
         ]),
         ("aerospace_engineering", "Aerospace Engineering", [
             ("Aerodynamics", None), ("Aircraft Design", None), ("Flight Mechanics", None),
@@ -203,22 +225,46 @@ SCHOOLS = [
 # Scenario counts of built labs (checked by test/career_sim/lab_blueprint_test.dart).
 SCENARIOS = {
     "cs_lab_fundamentals": 1, "cs_lab_dsa": 1, "cs_lab_database": 1, "cs_lab_os": 1, "cs_lab_project": 1,
-    "md_lab_anatomy": 1, "md_lab_assessment": 1, "md_lab_emergency": 1,
+    "md_lab_anatomy": 7, "md_lab_assessment": 1, "md_lab_emergency": 1,
     "nu_lab_admission": 1, "nu_lab_vitals": 1, "nu_lab_meds": 1, "nu_lab_procedures": 1, "nu_lab_emergency": 1, "nu_lab_shift": 1,
     "acc_lab_bookkeeping": 1, "acc_lab_reconciliation": 1, "acc_lab_statements": 1,
     "ma_lab_algebra": 15, "ma_lab_calculus": 15, "ma_lab_linalg": 15, "ma_lab_stats": 15, "ma_lab_de": 15, "ma_lab_applied": 15,
+    "law_lab_research": 15, "law_lab_analysis": 15, "law_lab_drafting": 15, "law_lab_consultation": 15,
+    "law_lab_negotiation": 15, "law_lab_courtroom": 15, "law_lab_fullcase": 15,
+    "me_lab_mechanics": 15, "me_lab_thermo": 15, "me_lab_fluids": 15, "me_lab_machine": 15, "me_lab_cad": 24, "me_lab_failure": 15,
+    "ce_lab_structures": 15, "ce_lab_materials": 15, "ce_lab_geotech": 15, "ce_lab_surveying": 15, "ce_lab_transport": 15, "ce_lab_construction": 15,
+    "che_lab_fundamentals": 15, "che_lab_reaction": 15, "che_lab_separation": 15, "che_lab_flowsheet": 15, "che_lab_control": 15, "che_lab_safety": 15,
+    "ee_lab_construction": 15, "ee_lab_analysis": 15, "ee_lab_electronics": 15, "ee_lab_logic": 15, "ee_lab_power": 15, "ee_lab_faults": 15,
 }
 
 
+# Labs generated by tool/labgen (validated there; tested by test/career_sim/lab_content_test.dart).
+_GEN_PATH = os.path.join(ROOT, "tool/labgen/built.json")
+GENERATED = json.load(open(_GEN_PATH)) if os.path.exists(_GEN_PATH) else {}
+
+
 def rows():
+    gen_by_title = {(v["major"], v["title"]): k for k, v in GENERATED.items()}
     for school, majors in SCHOOLS:
         for major_id, major, labs in majors:
             for i, (title, b) in enumerate(labs):
-                b = b or {}
+                gid = gen_by_title.get((major_id, title))
+                if gid and not b:
+                    b = built(gid, "tested", GENERATED[gid]["note"])
+                    SCENARIOS[gid] = GENERATED[gid]["scenarios"]
+                b = dict(b or {})
+                scenarios = SCENARIOS.get(b.get("labId", ""), 0)
+                ext = GENERATED.get(b.get("labId", ""))
+                if ext and ext.get("extends"):
+                    # Hand-built lab extended with generated scenarios (tool/labgen, extends=True).
+                    scenarios += ext["scenarios"]
+                    if not b.get("keep"):
+                        b["status"] = "tested"
+                    b["note"] = f'{b.get("note", "")}; +{ext["scenarios"]} generated scenarios'.lstrip("; ")
                 yield {
                     "school": school, "majorId": major_id, "major": major, "letter": chr(65 + i), "title": title,
                     "labId": b.get("labId", ""), "status": b.get("status", "not_started"), "note": b.get("note", ""),
-                    "scenarios": SCENARIOS.get(b.get("labId", ""), 0),
+                    "scenarios": scenarios,
                 }
 
 

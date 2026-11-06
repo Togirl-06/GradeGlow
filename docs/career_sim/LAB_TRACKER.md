@@ -6,42 +6,42 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 175, Interface completed: 0, Functionality in progress: 17, Functionality completed: 0, Tested: 6, Verified complete: 0.
+**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 0, Functionality completed: 0, Tested: 198, Verified complete: 0.
 
 ## Majors
 
 | School | Major | Labs | Status |
 |---|---|---|---|
-| School of Computer Science and Technology | Computer Science | 5 | In progress |
-| School of Computer Science and Technology | Software Engineering | 6 | Not started |
-| School of Computer Science and Technology | Artificial Intelligence | 5 | Not started |
-| School of Computer Science and Technology | Data Science | 6 | Not started |
-| School of Computer Science and Technology | Cybersecurity | 6 | Not started |
-| School of Computer Science and Technology | Information Technology | 5 | Not started |
-| School of Computer Science and Technology | Web Development | 6 | Not started |
-| School of Computer Science and Technology | Mobile Application Development | 6 | Not started |
-| School of Medicine and Health Sciences | Medicine | 7 | In progress |
-| School of Medicine and Health Sciences | Nursing | 12 | In progress |
-| School of Law | Law | 7 | Not started |
-| School of Engineering | Mechanical Engineering | 6 | Not started |
-| School of Engineering | Civil Engineering | 6 | Not started |
-| School of Engineering | Electrical Engineering | 6 | Not started |
-| School of Engineering | Chemical Engineering | 6 | Not started |
-| School of Engineering | Aerospace Engineering | 6 | Not started |
-| School of Engineering | Industrial Engineering | 6 | Not started |
-| School of Business and Economics | Business Administration | 6 | Not started |
-| School of Business and Economics | Accounting | 8 | In progress |
-| School of Business and Economics | Finance | 7 | Not started |
-| School of Business and Economics | Economics | 6 | Not started |
-| School of Business and Economics | Entrepreneurship | 8 | Not started |
-| School of Business and Economics | Marketing | 7 | Not started |
-| School of Business and Economics | Human Resources Management | 7 | Not started |
-| School of Business and Economics | International Business | 7 | Not started |
+| School of Computer Science and Technology | Computer Science | 5 | Tested |
+| School of Computer Science and Technology | Software Engineering | 6 | Tested |
+| School of Computer Science and Technology | Artificial Intelligence | 5 | Tested |
+| School of Computer Science and Technology | Data Science | 6 | Tested |
+| School of Computer Science and Technology | Cybersecurity | 6 | Tested |
+| School of Computer Science and Technology | Information Technology | 5 | Tested |
+| School of Computer Science and Technology | Web Development | 6 | Tested |
+| School of Computer Science and Technology | Mobile Application Development | 6 | Tested |
+| School of Medicine and Health Sciences | Medicine | 7 | Tested |
+| School of Medicine and Health Sciences | Nursing | 12 | Tested |
+| School of Law | Law | 7 | Tested |
+| School of Engineering | Mechanical Engineering | 6 | Tested |
+| School of Engineering | Civil Engineering | 6 | Tested |
+| School of Engineering | Electrical Engineering | 6 | Tested |
+| School of Engineering | Chemical Engineering | 6 | Tested |
+| School of Engineering | Aerospace Engineering | 6 | Tested |
+| School of Engineering | Industrial Engineering | 6 | Tested |
+| School of Business and Economics | Business Administration | 6 | Tested |
+| School of Business and Economics | Accounting | 8 | Tested |
+| School of Business and Economics | Finance | 7 | Tested |
+| School of Business and Economics | Economics | 6 | Tested |
+| School of Business and Economics | Entrepreneurship | 8 | Tested |
+| School of Business and Economics | Marketing | 7 | Tested |
+| School of Business and Economics | Human Resources Management | 7 | Tested |
+| School of Business and Economics | International Business | 7 | Tested |
 | School of Mathematics and Sciences | Mathematics | 6 | Tested |
-| School of Mathematics and Sciences | Biology | 7 | Not started |
-| School of Mathematics and Sciences | Chemistry | 8 | Not started |
-| School of Mathematics and Sciences | Physics | 7 | Not started |
-| School of English and Communication | English and Communication | 7 | Not started |
+| School of Mathematics and Sciences | Biology | 7 | Tested |
+| School of Mathematics and Sciences | Chemistry | 8 | Tested |
+| School of Mathematics and Sciences | Physics | 7 | Tested |
+| School of English and Communication | English and Communication | 7 | Tested |
 
 ## Labs
 
@@ -49,289 +49,289 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Programming Laboratory | Functionality in progress | 1 / 15 | `cs_lab_fundamentals` | Real Python/JavaScript execution and tests; 1 scenario of 15 |
-| B. Data Structures and Algorithms | Functionality in progress | 1 / 15 | `cs_lab_dsa` | Trace and challenge modes; 1 scenario of 15 |
-| C. Database Engineering | Functionality in progress | 1 / 15 | `cs_lab_database` | Real SQLite workbench; 1 scenario of 15 |
-| D. Computer Architecture and Operating Systems | Functionality in progress | 1 / 15 | `cs_lab_os` | FCFS/SJF and paging simulators; no Priority/Round Robin or CPU model yet |
-| E. Software Project Laboratory | Functionality in progress | 1 / 15 | `cs_lab_project` | 1 project brief |
+| A. Programming Laboratory | Tested | 16 / 15 | `cs_lab_fundamentals` | Real Python/JavaScript execution and tests; +15 generated scenarios |
+| B. Data Structures and Algorithms | Tested | 16 / 15 | `cs_lab_dsa` | Trace and challenge modes; +15 generated scenarios |
+| C. Database Engineering | Tested | 16 / 15 | `cs_lab_database` | Real SQLite workbench; +15 generated scenarios |
+| D. Computer Architecture and Operating Systems | Tested | 16 / 15 | `cs_lab_os` | FCFS/SJF and paging simulators; Round Robin, priority and page replacement as programs; +15 generated scenarios |
+| E. Software Project Laboratory | Tested | 16 / 15 | `cs_lab_project` | 1 project brief; +15 generated scenarios |
 
 ### Software Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Requirements Engineering | Not started | 0 / 15 |  |  |
-| B. System Design and Architecture | Not started | 0 / 15 |  |  |
-| C. Software Development | Not started | 0 / 15 |  |  |
-| D. Git and Collaboration | Not started | 0 / 15 |  |  |
-| E. Software Testing and Quality Assurance | Not started | 0 / 15 |  |  |
-| F. Software Maintenance | Not started | 0 / 15 |  |  |
+| A. Requirements Engineering | Tested | 15 / 15 | `se_lab_requirements` | Work with simulated clients to gather, classify and document requirements as user stories  |
+| B. System Design and Architecture | Tested | 15 / 15 | `se_lab_design` | Estimate capacity, choose components and justify architecture decisions for real systems. |
+| C. Software Development | Tested | 15 / 15 | `se_lab_development` | Implement features from development tickets in Python or JavaScript, run them and pass aut |
+| D. Git and Collaboration | Tested | 15 / 15 | `se_lab_git` | Branch, commit, pull request, review and resolve conflicts in a simulated team workflow. |
+| E. Software Testing and Quality Assurance | Tested | 15 / 15 | `se_lab_testing` | Investigate deliberately faulty programs, write the fix, and pass the tests; triage bugs a |
+| F. Software Maintenance | Tested | 15 / 15 | `se_lab_maintenance` | Work on an existing codebase with technical debt: fix legacy bugs, extend features safely  |
 
 ### Artificial Intelligence
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Machine Learning | Not started | 0 / 15 |  |  |
-| B. Neural Networks | Not started | 0 / 15 |  |  |
-| C. Natural Language Processing | Not started | 0 / 15 |  |  |
-| D. Generative AI Development | Not started | 0 / 15 |  |  |
-| E. AI Ethics and Model Evaluation | Not started | 0 / 15 |  |  |
+| A. Machine Learning | Tested | 15 / 15 | `ai_lab_ml` | Implement evaluation metrics, regression and nearest-neighbour models from scratch, then d |
+| B. Neural Networks | Tested | 15 / 15 | `ai_lab_nn` | Tune a neuron by hand, size networks against memory budgets, implement forward passes and  |
+| C. Natural Language Processing | Tested | 15 / 15 | `ai_lab_nlp` | Build tokenisers, word statistics and sentiment classifiers, label data to a guideline and |
+| D. Generative AI Development | Tested | 15 / 15 | `ai_lab_genai` | Budget an LLM feature, design retrieval within a context window, write and test prompts, c |
+| E. AI Ethics and Model Evaluation | Tested | 15 / 15 | `ai_lab_ethics` | Measure fairness across groups, audit a biased model, write a model card and decide whethe |
 
 ### Data Science
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Data Cleaning | Not started | 0 / 15 |  |  |
-| B. Data Analysis | Not started | 0 / 15 |  |  |
-| C. Data Visualization | Not started | 0 / 15 |  |  |
-| D. Statistical Modelling | Not started | 0 / 15 |  |  |
-| E. Predictive Modelling | Not started | 0 / 15 |  |  |
-| F. Data Science Capstone | Not started | 0 / 15 |  |  |
+| A. Data Cleaning | Tested | 15 / 15 | `ds_lab_cleaning` | Clean real-world messy data: standardise text, remove duplicates, fix dates, impute missin |
+| B. Data Analysis | Tested | 15 / 15 | `ds_lab_analysis` | Aggregate, summarise and correlate data in code; answer stakeholder questions; and catch m |
+| C. Data Visualization | Tested | 15 / 15 | `ds_lab_viz` | Choose the right chart, fix misleading and inaccessible charts, design a dashboard with st |
+| D. Statistical Modelling | Tested | 15 / 15 | `ds_lab_stats` | Run hypothesis tests and confidence intervals in code, plan an A/B test with enough power, |
+| E. Predictive Modelling | Tested | 15 / 15 | `ds_lab_predictive` | Score customers with a logistic model, choose cost-aware thresholds, build and compare for |
+| F. Data Science Capstone | Tested | 15 / 15 | `ds_lab_capstone` | A client project at Northbeam Retail: scope it, build the KPI pipeline in code, size the a |
 
 ### Cybersecurity
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Networking Fundamentals | Not started | 0 / 15 |  |  |
-| B. Security Monitoring | Not started | 0 / 15 |  |  |
-| C. Vulnerability Assessment | Not started | 0 / 15 |  |  |
-| D. Digital Forensics | Not started | 0 / 15 |  |  |
-| E. Incident Response | Not started | 0 / 15 |  |  |
-| F. Security Awareness | Not started | 0 / 15 |  |  |
+| A. Networking Fundamentals | Tested | 15 / 15 | `cy_lab_network` | Subnet networks, write and test firewall rules, size links and troubleshoot connectivity i |
+| B. Security Monitoring | Tested | 15 / 15 | `cy_lab_monitoring` | Work a SOC shift: parse authentication logs to detect attacks, triage SIEM alerts, tune no |
+| C. Vulnerability Assessment | Tested | 15 / 15 | `cy_lab_vuln` | Check software against advisories, prioritise vulnerabilities by risk, audit password poli |
+| D. Digital Forensics | Tested | 15 / 15 | `cy_lab_forensics` | Preserve evidence, verify integrity with hashes, check the chain of custody, build timelin |
+| E. Incident Response | Tested | 15 / 15 | `cy_lab_ir` | Lead incidents end to end: ransomware containment, compromised mailboxes, web-server compr |
+| F. Security Awareness | Tested | 15 / 15 | `cy_lab_awareness` | Spot phishing, handle social-engineering calls, build a phishing checker, review policy an |
 
 ### Information Technology
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. IT Help Desk | Not started | 0 / 15 |  |  |
-| B. Hardware Support | Not started | 0 / 15 |  |  |
-| C. Network Administration | Not started | 0 / 15 |  |  |
-| D. Systems Administration | Not started | 0 / 15 |  |  |
-| E. IT Service Management | Not started | 0 / 15 |  |  |
+| A. IT Help Desk | Tested | 15 / 15 | `it_lab_helpdesk` | Work the service desk: prioritise tickets, verify callers, troubleshoot remotely and write |
+| B. Hardware Support | Tested | 15 / 15 | `it_lab_hardware` | Size power supplies and UPS units, diagnose failed and overheating PCs, and repair and dis |
+| C. Network Administration | Tested | 15 / 15 | `it_lab_netadmin` | Monitor availability, plan VLANs and Wi-Fi, size access points and fix DNS faults on the c |
+| D. Systems Administration | Tested | 15 / 15 | `it_lab_sysadmin` | Automate account provisioning and audits, monitor disks and logs, plan patching and backup |
+| E. IT Service Management | Tested | 15 / 15 | `it_lab_itsm` | Run ITIL-style processes: classify work, staff the service desk, review changes, manage SL |
 
 ### Web Development
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. HTML and CSS Studio | Not started | 0 / 15 |  |  |
-| B. JavaScript Development | Not started | 0 / 15 |  |  |
-| C. Frontend Application Development | Not started | 0 / 15 |  |  |
-| D. Backend Development | Not started | 0 / 15 |  |  |
-| E. Accessibility and Responsive Testing | Not started | 0 / 15 |  |  |
-| F. Client Project | Not started | 0 / 15 |  |  |
+| A. HTML and CSS Studio | Tested | 15 / 15 | `web_lab_htmlcss` | Lay out grids and type scales, write semantic markup to a brief, review CSS and build a sp |
+| B. JavaScript Development | Tested | 15 / 15 | `web_lab_js` | Implement shopping-cart logic, form validation and event timing (debounce and throttle) in |
+| C. Frontend Application Development | Tested | 15 / 15 | `web_lab_frontend` | Implement state reducers with undo, client-side routing, pagination and filtering, and sol |
+| D. Backend Development | Tested | 15 / 15 | `web_lab_backend` | Build API handlers with validation and status codes, rate limiting and access control, des |
+| E. Accessibility and Responsive Testing | Tested | 15 / 15 | `web_lab_a11y` | Measure colour contrast, audit pages against WCAG, test with a screen-reader user, check r |
+| F. Client Project | Tested | 15 / 15 | `web_lab_client` | Deliver a website for a real-feeling client: discovery, estimate, user acceptance testing, |
 
 ### Mobile Application Development
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Mobile UI Design | Not started | 0 / 15 |  |  |
-| B. Flutter Development | Not started | 0 / 15 |  |  |
-| C. Backend Integration | Not started | 0 / 15 |  |  |
-| D. Mobile App Testing | Not started | 0 / 15 |  |  |
-| E. App Deployment | Not started | 0 / 15 |  |  |
-| F. Full App Project | Not started | 0 / 15 |  |  |
+| A. Mobile UI Design | Tested | 15 / 15 | `mob_lab_ui` | Size touch targets and lists, review designs against platform guidelines, run usability te |
+| B. Flutter Development | Tested | 15 / 15 | `mob_lab_flutter` | Reason precisely about Flutter layout (Row/Expanded, overflow) and navigation stacks, choo |
+| C. Backend Integration | Tested | 15 / 15 | `mob_lab_backend` | Parse and validate API JSON safely, implement retries with backoff and offline sync, secur |
+| D. Mobile App Testing | Tested | 15 / 15 | `mob_lab_testing` | Measure stability from crash data, plan device coverage, triage bugs, write a test plan an |
+| E. App Deployment | Tested | 15 / 15 | `mob_lab_deploy` | Get through app store review, manage signing keys, budget app size and run staged rollouts |
+| F. Full App Project | Tested | 15 / 15 | `mob_lab_project` | Build an app for a client from kick-off to sprint reviews: write the spec, plan sprints, r |
 
 ### Medicine
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Human Anatomy and Physiology | Functionality in progress | 1 / 15 | `md_lab_anatomy` | 2D diagrams, not the required 3D body |
-| B. Medical History and Patient Interview | Functionality in progress | 1 / 15 | `md_lab_assessment` | 1 patient case |
-| C. Physical Examination | Not started | 0 / 15 |  |  |
-| D. Diagnostic Investigation | Not started | 0 / 15 |  |  |
-| E. Clinical Reasoning and Diagnosis | Not started | 0 / 15 |  |  |
-| F. Emergency Medicine | Functionality in progress | 1 / 15 | `md_lab_emergency` | 1 case (anaphylaxis) |
-| G. Medical Research and Evidence | Not started | 0 / 15 |  |  |
+| A. Human Anatomy and Physiology | Tested | 22 / 15 | `md_lab_anatomy` | 3D body model (58 structures in 8 systems, layers, rotate/zoom, tap to identify) and 2D atlas; the 3D model is a schematic built from geometric shapes, not a scan; +15 generated scenarios |
+| B. Medical History and Patient Interview | Tested | 16 / 15 | `md_lab_assessment` | 1 patient case; +15 generated scenarios |
+| C. Physical Examination | Tested | 15 / 15 | `md_lab_exam` | Examine simulated patients system by system: interpret cardiovascular, respiratory, abdomi |
+| D. Diagnostic Investigation | Tested | 15 / 15 | `md_lab_diagnostics` | Interpret arterial blood gases and blood results, understand test accuracy and predictive  |
+| E. Clinical Reasoning and Diagnosis | Tested | 15 / 15 | `md_lab_reasoning` | Build differentials, calculate validated risk scores, recognise red flags and cognitive bi |
+| F. Emergency Medicine | Tested | 16 / 15 | `md_lab_emergency` | 1 case (anaphylaxis); +15 generated scenarios |
+| G. Medical Research and Evidence | Tested | 15 / 15 | `md_lab_research` | Calculate treatment effects (ARR, RRR, NNT, odds ratios), appraise trials, frame clinical  |
 
 ### Nursing
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Patient Admission | Functionality in progress | 1 / 15 | `nu_lab_admission` | 1 patient |
-| B. Vital Signs and Patient Monitoring | Functionality in progress | 1 / 15 | `nu_lab_vitals` | NEWS2 scoring; 1 scenario |
-| C. Patient Assessment | Not started | 0 / 15 |  |  |
-| D. Medication Safety | Functionality in progress | 1 / 15 | `nu_lab_meds` | MAR checks; 1 scenario |
-| E. Nursing Procedures | Functionality in progress | 1 / 15 | `nu_lab_procedures` | 1 scenario |
-| F. Patient Documentation | Not started | 0 / 15 |  |  |
-| G. Emergency Nursing | Functionality in progress | 1 / 15 | `nu_lab_emergency` | 1 scenario |
-| H. Medical-Surgical Nursing | Not started | 0 / 15 |  |  |
-| I. Paediatric Nursing | Not started | 0 / 15 |  |  |
-| J. Maternity Nursing | Not started | 0 / 15 |  |  |
-| K. Intensive Care Nursing | Not started | 0 / 15 |  |  |
-| L. Full Hospital Shift | Functionality in progress | 1 / 15 | `nu_lab_shift` | 1 shift |
+| A. Patient Admission | Tested | 16 / 15 | `nu_lab_admission` | 1 patient; +15 generated scenarios |
+| B. Vital Signs and Patient Monitoring | Tested | 16 / 15 | `nu_lab_vitals` | NEWS2 scoring; 1 scenario; +15 generated scenarios |
+| C. Patient Assessment | Tested | 15 / 15 | `nu_lab_assessment` | Assess patients systematically: score NEWS2 and choose the response, run an A–E assessment |
+| D. Medication Safety | Tested | 16 / 15 | `nu_lab_meds` | MAR checks; 1 scenario; +15 generated scenarios |
+| E. Nursing Procedures | Tested | 16 / 15 | `nu_lab_procedures` | 1 scenario; +15 generated scenarios |
+| F. Patient Documentation | Tested | 15 / 15 | `nu_lab_documentation` | Write SBAR handovers and progress notes, keep fluid balance charts, protect confidentialit |
+| G. Emergency Nursing | Tested | 16 / 15 | `nu_lab_emergency` | 1 scenario; +15 generated scenarios |
+| H. Medical-Surgical Nursing | Tested | 15 / 15 | `nu_lab_medsurg` | Run a surgical bay: calculate infusions and doses, manage post-operative care and wounds,  |
+| I. Paediatric Nursing | Tested | 15 / 15 | `nu_lab_paediatric` | Care for children and families: weight-based dose and fluid calculations, febrile child as |
+| J. Maternity Nursing | Tested | 15 / 15 | `nu_lab_maternity` | Support pregnancy, labour and the newborn: antenatal risk, labour progress, postpartum hae |
+| K. Intensive Care Nursing | Tested | 15 / 15 | `nu_lab_icu` | Care for critically ill patients: haemodynamic and neurological scores, ventilator alarms, |
+| L. Full Hospital Shift | Tested | 16 / 15 | `nu_lab_shift` | 1 shift; +15 generated scenarios |
 
 ### Law
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Legal Research | Not started | 0 / 15 |  |  |
-| B. Case Analysis | Not started | 0 / 15 |  |  |
-| C. Legal Drafting | Not started | 0 / 15 |  |  |
-| D. Client Consultation | Not started | 0 / 15 |  |  |
-| E. Negotiation and Mediation | Not started | 0 / 15 |  |  |
-| F. Courtroom Practice | Not started | 0 / 15 |  |  |
-| G. Full Case Assignment | Not started | 0 / 15 |  |  |
+| A. Legal Research | Tested | 15 / 15 | `law_lab_research` | Real cases only; unverified citations fail; 15 matters |
+| B. Case Analysis | Tested | 15 / 15 | `law_lab_analysis` | Material-fact triage, outcome, IRAC; 15 matters |
+| C. Legal Drafting | Tested | 15 / 15 | `law_lab_drafting` | Advice letters, memos, letters before claim, briefs, attendance notes; 15 matters |
+| D. Client Consultation | Tested | 15 / 15 | `law_lab_consultation` | Client interview with conduct rules; 15 matters |
+| E. Negotiation and Mediation | Tested | 15 / 15 | `law_lab_negotiation` | Settlement model within client authority; 15 matters |
+| F. Courtroom Practice | Tested | 15 / 15 | `law_lab_courtroom` | Examination-in-chief with objections; judge's questions; 15 matters |
+| G. Full Case Assignment | Tested | 15 / 15 | `law_lab_fullcase` | Research, skeleton argument, settlement, strategy; 15 matters |
 
 ### Mechanical Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Engineering Mechanics | Not started | 0 / 15 |  |  |
-| B. Thermodynamics | Not started | 0 / 15 |  |  |
-| C. Fluid Mechanics | Not started | 0 / 15 |  |  |
-| D. Machine Design | Not started | 0 / 15 |  |  |
-| E. CAD and Technical Drawing | Not started | 0 / 15 |  |  |
-| F. Failure Analysis | Not started | 0 / 15 |  |  |
+| A. Engineering Mechanics | Tested | 15 / 15 | `me_lab_mechanics` | 5 design problems x 3 specifications; live models; hand calculations |
+| B. Thermodynamics | Tested | 15 / 15 | `me_lab_thermo` | Heating, Carnot, conduction, gas, refrigeration |
+| C. Fluid Mechanics | Tested | 15 / 15 | `me_lab_fluids` | Continuity, hydrostatics, pumps, Reynolds, draining |
+| D. Machine Design | Tested | 15 / 15 | `me_lab_machine` | Shafts, springs, bolts, gears, bearings |
+| E. CAD and Technical Drawing | Tested | 24 / 15 | `me_lab_cad` | 2D drawing sheet (outline, holes, datum dimensioning, redundancy and tolerance checks, title block) plus tolerance, scale, fit, mass and section calculations; no 3D modelling |
+| F. Failure Analysis | Tested | 15 / 15 | `me_lab_failure` | 5 failure investigations x 3 levels |
 
 ### Civil Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Structural Analysis | Not started | 0 / 15 |  |  |
-| B. Concrete and Materials Testing | Not started | 0 / 15 |  |  |
-| C. Geotechnical Engineering | Not started | 0 / 15 |  |  |
-| D. Surveying | Not started | 0 / 15 |  |  |
-| E. Transportation and Infrastructure | Not started | 0 / 15 |  |  |
-| F. Construction Project Management | Not started | 0 / 15 |  |  |
+| A. Structural Analysis | Tested | 15 / 15 | `ce_lab_structures` | Beams, cantilevers, trusses, columns, load combinations |
+| B. Concrete and Materials Testing | Tested | 15 / 15 | `ce_lab_materials` | Mix design, tensile test, expansion, FoS, cube acceptance |
+| C. Geotechnical Engineering | Tested | 15 / 15 | `ce_lab_geotech` | Bearing, effective stress, settlement, slopes, retaining walls |
+| D. Surveying | Tested | 15 / 15 | `ce_lab_surveying` | Levelling, setting out, areas, gradients, tape corrections |
+| E. Transportation and Infrastructure | Tested | 15 / 15 | `ce_lab_transport` | SSD, curves, drainage, traffic flow, channels |
+| F. Construction Project Management | Tested | 15 / 15 | `ce_lab_construction` | Crashing, crews, pours, orders, crane lifts |
 
 ### Electrical Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Circuit Construction | Not started | 0 / 15 |  |  |
-| B. Circuit Analysis | Not started | 0 / 15 |  |  |
-| C. Electronic Systems | Not started | 0 / 15 |  |  |
-| D. Digital Logic | Not started | 0 / 15 |  |  |
-| E. Power Systems | Not started | 0 / 15 |  |  |
-| F. Fault Diagnosis | Not started | 0 / 15 |  |  |
+| A. Circuit Construction | Tested | 15 / 15 | `ee_lab_construction` | Virtual bench: LED, divider, networks, RC, fuses |
+| B. Circuit Analysis | Tested | 15 / 15 | `ee_lab_analysis` | Max power, AC impedance, PFC, three-phase, voltage drop |
+| C. Electronic Systems | Tested | 15 / 15 | `ee_lab_electronics` | Op-amps, transistor switches, 555, filters, batteries |
+| D. Digital Logic | Tested | 15 / 15 | `ee_lab_logic` | Truth tables for every input; expressions; verification |
+| E. Power Systems | Tested | 15 / 15 | `ee_lab_power` | Losses, transformers, generators, PV, fault level |
+| F. Fault Diagnosis | Tested | 15 / 15 | `ee_lab_faults` | 5 fault investigations x 3 levels |
 
 ### Chemical Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Chemical Process Fundamentals | Not started | 0 / 15 |  |  |
-| B. Reaction Engineering | Not started | 0 / 15 |  |  |
-| C. Separation Processes | Not started | 0 / 15 |  |  |
-| D. Process Flow Design | Not started | 0 / 15 |  |  |
-| E. Process Control | Not started | 0 / 15 |  |  |
-| F. Process Safety | Not started | 0 / 15 |  |  |
+| A. Chemical Process Fundamentals | Tested | 15 / 15 | `che_lab_fundamentals` | Mixers, evaporators, heaters, burners, dilutions |
+| B. Reaction Engineering | Tested | 15 / 15 | `che_lab_reaction` | Rates, conversion, yield and reactor sizing |
+| C. Separation Processes | Tested | 15 / 15 | `che_lab_separation` | Distillation, filtration, extraction, separators |
+| D. Process Flow Design | Tested | 15 / 15 | `che_lab_flowsheet` | Flowsheet balances with recycle and purge |
+| E. Process Control | Tested | 15 / 15 | `che_lab_control` | Controller tuning and process response |
+| F. Process Safety | Tested | 15 / 15 | `che_lab_safety` | 5 incident investigations x 3 levels |
 
 ### Aerospace Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Aerodynamics | Not started | 0 / 15 |  |  |
-| B. Aircraft Design | Not started | 0 / 15 |  |  |
-| C. Flight Mechanics | Not started | 0 / 15 |  |  |
-| D. Propulsion Systems | Not started | 0 / 15 |  |  |
-| E. Aircraft Systems | Not started | 0 / 15 |  |  |
-| F. Aerospace Design Project | Not started | 0 / 15 |  |  |
+| A. Aerodynamics | Tested | 15 / 15 | `ae_lab_aero` | Lift, drag, Reynolds number, stall speed and lift-to-drag ratio on real aircraft configura |
+| B. Aircraft Design | Tested | 15 / 15 | `ae_lab_design` | Wing loading, aspect ratio, range, centre of gravity and fuselage pressurisation for a new |
+| C. Flight Mechanics | Tested | 15 / 15 | `ae_lab_flight` | Turns, climb, glide, take-off and static stability — the performance numbers pilots fly by |
+| D. Propulsion Systems | Tested | 15 / 15 | `ae_lab_propulsion` | Jet thrust, propulsive efficiency, rocket Δv, gas-turbine cycles and mission fuel. |
+| E. Aircraft Systems | Tested | 15 / 15 | `ae_lab_systems` | Investigate in-service defects reported by flight crews and maintenance engineers. |
+| F. Aerospace Design Project | Tested | 15 / 15 | `ae_lab_project` | Concept design for a client: UAV endurance, a satellite power system, a heavy-lift drone,  |
 
 ### Industrial Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Manufacturing Systems | Not started | 0 / 15 |  |  |
-| B. Quality Engineering | Not started | 0 / 15 |  |  |
-| C. Operations Research | Not started | 0 / 15 |  |  |
-| D. Supply Chain | Not started | 0 / 15 |  |  |
-| E. Process Improvement | Not started | 0 / 15 |  |  |
-| F. Industrial Simulation Project | Not started | 0 / 15 |  |  |
+| A. Manufacturing Systems | Tested | 15 / 15 | `ie_lab_manufacturing` | Throughput, OEE, line balancing, machine capacity and lead time on a real production line. |
+| B. Quality Engineering | Tested | 15 / 15 | `ie_lab_quality` | Process capability, control charts, DPMO, acceptance sampling and rolled throughput yield. |
+| C. Operations Research | Tested | 15 / 15 | `ie_lab_or` | Order quantities, queues, product mix, transport allocation and project crashing. |
+| D. Supply Chain | Tested | 15 / 15 | `ie_lab_supply` | Safety stock, inventory turns, warehouse capacity, landed cost and fleet sizing. |
+| E. Process Improvement | Tested | 15 / 15 | `ie_lab_improvement` | Investigate performance problems on the shop floor and choose the improvement that fixes t |
+| F. Industrial Simulation Project | Tested | 15 / 15 | `ie_lab_simulation` | Run the plant: staffing, production planning, energy, automation payback and layout — and  |
 
 ### Business Administration
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Business Operations | Not started | 0 / 15 |  |  |
-| B. Strategic Management | Not started | 0 / 15 |  |  |
-| C. Human and Team Management | Not started | 0 / 15 |  |  |
-| D. Project Management | Not started | 0 / 15 |  |  |
-| E. Business Analytics | Not started | 0 / 15 |  |  |
-| F. Management Capstone | Not started | 0 / 15 |  |  |
+| A. Business Operations | Tested | 15 / 15 | `ba_lab_operations` | Run a Greenleaf store: staffing, stock, opening hours, pricing and customer service — ever |
+| B. Strategic Management | Tested | 15 / 15 | `ba_lab_strategy` | SWOT analysis, objectives, strategic options, KPIs and risk assessment for Greenleaf. |
+| C. Human and Team Management | Tested | 15 / 15 | `ba_lab_people` | Allocate staff, resolve team conflict, address performance and make leadership calls. |
+| D. Project Management | Tested | 15 / 15 | `ba_lab_projects` | Schedule tasks with dependencies, track earned value and manage project risk. |
+| E. Business Analytics | Tested | 15 / 15 | `ba_lab_analytics` | Use company data: like-for-like growth, basket metrics, customer retention, break-even and |
+| F. Management Capstone | Tested | 15 / 15 | `ba_lab_capstone` | Manage Greenleaf’s regional business through several decision cycles: price, marketing, st |
 
 ### Accounting
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Bookkeeping | Functionality in progress | 1 / 15 | `acc_lab_bookkeeping` | Journals posted to a ledger; 1 company |
-| B. Double-Entry Accounting | Not started | 0 / 15 |  |  |
-| C. General Ledger and Trial Balance | Not started | 0 / 15 |  |  |
-| D. Bank Reconciliation | Functionality in progress | 1 / 15 | `acc_lab_reconciliation` | 1 reconciliation |
-| E. Financial Statements | Functionality in progress | 1 / 15 | `acc_lab_statements` | Income statement and balance sheet; no cash flow yet |
-| F. Cost and Management Accounting | Not started | 0 / 15 |  |  |
-| G. Auditing | Not started | 0 / 15 |  |  |
-| H. Accounting Capstone | Not started | 0 / 15 |  |  |
+| A. Bookkeeping | Tested | 16 / 15 | `acc_lab_bookkeeping` | Journals posted to a ledger; 1 company; +15 generated scenarios |
+| B. Double-Entry Accounting | Tested | 15 / 15 | `acc_lab_double` | Apply debit and credit rules, check journals balance, keep the accounting equation true an |
+| C. General Ledger and Trial Balance | Tested | 15 / 15 | `acc_lab_ledger` | Post journals to the ledger, extract and fix trial balances, calculate depreciation and ma |
+| D. Bank Reconciliation | Tested | 16 / 15 | `acc_lab_reconciliation` | 1 reconciliation; +15 generated scenarios |
+| E. Financial Statements | Tested | 16 / 15 | `acc_lab_statements` | Income statement and balance sheet; no cash flow yet; +15 generated scenarios |
+| F. Cost and Management Accounting | Tested | 15 / 15 | `acc_lab_cost` | Run break-even and target-profit analysis, compute variances, price products and advise ma |
+| G. Auditing | Tested | 15 / 15 | `acc_lab_audit` | Plan an audit by risk, select samples, run analytics for anomalies and duplicates, respond |
+| H. Accounting Capstone | Tested | 15 / 15 | `acc_lab_capstone` | Close the books for a client and advise them: ratio analysis, cash-flow warnings, month-en |
 
 ### Finance
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Financial Mathematics | Not started | 0 / 15 |  |  |
-| B. Financial Statement Analysis | Not started | 0 / 15 |  |  |
-| C. Investment Analysis | Not started | 0 / 15 |  |  |
-| D. Portfolio Management | Not started | 0 / 15 |  |  |
-| E. Corporate Finance | Not started | 0 / 15 |  |  |
-| F. Risk Management | Not started | 0 / 15 |  |  |
-| G. Finance Capstone | Not started | 0 / 15 |  |  |
+| A. Financial Mathematics | Tested | 15 / 15 | `fi_lab_math` | Simple and compound interest, present value, annuities and loan schedules for real client  |
+| B. Financial Statement Analysis | Tested | 15 / 15 | `fi_lab_fsa` | Liquidity, profitability, efficiency and leverage ratios from a client company’s accounts. |
+| C. Investment Analysis | Tested | 15 / 15 | `fi_lab_investment` | Net present value, payback, CAPM required returns, dividend valuation and bond pricing. |
+| D. Portfolio Management | Tested | 15 / 15 | `fi_lab_portfolio` | Two-asset portfolios, diversification, Sharpe ratio, rebalancing and drawdown — with simul |
+| E. Corporate Finance | Tested | 15 / 15 | `fi_lab_corporate` | WACC, capital structure, lease-or-buy, working capital and dividend policy for a growing f |
+| F. Risk Management | Tested | 15 / 15 | `fi_lab_risk` | Investigate losses and near-misses: currency, interest-rate, credit, liquidity and operati |
+| G. Finance Capstone | Tested | 15 / 15 | `fi_lab_capstone` | A full investment decision for a client: project NPV, financing, sensitivity and the board |
 
 ### Economics
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Microeconomics | Not started | 0 / 15 |  |  |
-| B. Macroeconomics | Not started | 0 / 15 |  |  |
-| C. Market Structures | Not started | 0 / 15 |  |  |
-| D. Economic Data Analysis | Not started | 0 / 15 |  |  |
-| E. Public Policy | Not started | 0 / 15 |  |  |
-| F. International Economics | Not started | 0 / 15 |  |  |
+| A. Microeconomics | Tested | 15 / 15 | `ec_lab_micro` | Market equilibrium, elasticity, tax incidence, price ceilings and price floors with live s |
+| B. Macroeconomics | Tested | 15 / 15 | `ec_lab_macro` | Fiscal multipliers, interest-rate decisions, real growth, Okun’s law and public-debt dynam |
+| C. Market Structures | Tested | 15 / 15 | `ec_lab_structures` | Monopoly, perfect competition, Cournot duopoly, price discrimination and merger concentrat |
+| D. Economic Data Analysis | Tested | 15 / 15 | `ec_lab_data` | Inflation baskets, real wages, GDP per capita, labour-market rates and compound growth. |
+| E. Public Policy | Tested | 15 / 15 | `ec_lab_policy` | Carbon tax, minimum wage, congestion charging, green subsidies and tax rates — each with a |
+| F. International Economics | Tested | 15 / 15 | `ec_lab_international` | Tariffs, exchange rates, comparative advantage, purchasing power parity and the trade bala |
 
 ### Entrepreneurship
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Opportunity Identification | Not started | 0 / 15 |  |  |
-| B. Customer Discovery | Not started | 0 / 15 |  |  |
-| C. Market Validation | Not started | 0 / 15 |  |  |
-| D. Business Model Design | Not started | 0 / 15 |  |  |
-| E. Financial Planning | Not started | 0 / 15 |  |  |
-| F. Pitch Preparation | Not started | 0 / 15 |  |  |
-| G. Investor Pitch | Not started | 0 / 15 |  |  |
-| H. Startup Management | Not started | 0 / 15 |  |  |
+| A. Opportunity Identification | Tested | 15 / 15 | `en_lab_opportunity` | Turn observed problems into testable business opportunities and size them honestly. |
+| B. Customer Discovery | Tested | 15 / 15 | `en_lab_discovery` | Interview simulated customers without leading them, and judge whether the problem is real. |
+| C. Market Validation | Tested | 15 / 15 | `en_lab_validation` | Landing-page tests, pre-orders, competitor pricing and pilots that prove demand before bui |
+| D. Business Model Design | Tested | 15 / 15 | `en_lab_canvas` | Build business model canvases: sort the components, test the logic and fix weak blocks. |
+| E. Financial Planning | Tested | 15 / 15 | `en_lab_finance` | Startup costs, pricing, break-even, burn rate and runway for a new venture. |
+| F. Pitch Preparation | Tested | 15 / 15 | `en_lab_pitchprep` | Structure a pitch deck, check every claim and write the investment ask. |
+| G. Investor Pitch | Tested | 15 / 15 | `en_lab_pitch` | Face simulated investors who question your model, numbers, market and risks — and decide w |
+| H. Startup Management | Tested | 15 / 15 | `en_lab_startup` | Run the venture through realistic challenges: hiring, cash crunches, pivots and growth dec |
 
 ### Marketing
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Market Research | Not started | 0 / 15 |  |  |
-| B. Brand Strategy | Not started | 0 / 15 |  |  |
-| C. Content Marketing | Not started | 0 / 15 |  |  |
-| D. Digital Advertising | Not started | 0 / 15 |  |  |
-| E. Social Media Marketing | Not started | 0 / 15 |  |  |
-| F. Analytics and Optimization | Not started | 0 / 15 |  |  |
-| G. Client Campaign Project | Not started | 0 / 15 |  |  |
+| A. Market Research | Tested | 15 / 15 | `mk_lab_research` | Size the market, plan the survey, test prices and review research instruments for a drinks |
+| B. Brand Strategy | Tested | 15 / 15 | `mk_lab_brand` | Position brands, choose target audiences and write messaging that is distinctive and hones |
+| C. Content Marketing | Tested | 15 / 15 | `mk_lab_content` | Plan content calendars, sign off posts against brand and advertising rules, and brief crea |
+| D. Digital Advertising | Tested | 15 / 15 | `mk_lab_ads` | Build paid campaigns: budget, bids, targeting and creative choices that hit acquisition ta |
+| E. Social Media Marketing | Tested | 15 / 15 | `mk_lab_social` | Engagement analysis, community management, posting strategy and crisis response. |
+| F. Analytics and Optimization | Tested | 15 / 15 | `mk_lab_analytics` | Calculate and interpret CTR, conversion rate, CPC, CPA and ROAS, then optimise the campaig |
+| G. Client Campaign Project | Tested | 15 / 15 | `mk_lab_campaign` | Run a client campaign end to end: brief, budget, media plan, launch checks and results rep |
 
 ### Human Resources Management
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Recruitment | Not started | 0 / 15 |  |  |
-| B. Interview Management | Not started | 0 / 15 |  |  |
-| C. Employee Onboarding | Not started | 0 / 15 |  |  |
-| D. Performance Management | Not started | 0 / 15 |  |  |
-| E. Employee Relations | Not started | 0 / 15 |  |  |
-| F. Workforce Planning | Not started | 0 / 15 |  |  |
-| G. HR Capstone | Not started | 0 / 15 |  |  |
+| A. Recruitment | Tested | 15 / 15 | `hr_lab_recruitment` | Write fair criteria, screen real-looking applications consistently and justify every short |
+| B. Interview Management | Tested | 15 / 15 | `hr_lab_interviews` | Plan structured interviews, conduct them with simulated candidates and score evidence fair |
+| C. Employee Onboarding | Tested | 15 / 15 | `hr_lab_onboarding` | Check pre-employment documents, plan first weeks and measure how quickly new starters beco |
+| D. Performance Management | Tested | 15 / 15 | `hr_lab_performance` | Review evidence, write fair appraisals, distribute merit budgets and support improvement p |
+| E. Employee Relations | Tested | 15 / 15 | `hr_lab_relations` | Handle grievances, disciplinary matters, absence and conflict with fair, documented proces |
+| F. Workforce Planning | Tested | 15 / 15 | `hr_lab_workforce` | Turnover, headcount forecasting, recruitment budgets, overtime versus hiring and skills ga |
+| G. HR Capstone | Tested | 15 / 15 | `hr_lab_capstone` | Run recruitment and onboarding for a new depot: plan, select, check, induct and report. |
 
 ### International Business
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Global Market Research | Not started | 0 / 15 |  |  |
-| B. International Trade | Not started | 0 / 15 |  |  |
-| C. International Business Strategy | Not started | 0 / 15 |  |  |
-| D. Global Supply Chain | Not started | 0 / 15 |  |  |
-| E. International Negotiations | Not started | 0 / 15 |  |  |
-| F. Cross-Cultural Management | Not started | 0 / 15 |  |  |
-| G. International Business Capstone | Not started | 0 / 15 |  |  |
+| A. Global Market Research | Tested | 15 / 15 | `ib_lab_research` | Score international markets on size, growth, risk and ease of entry; forecast demand in lo |
+| B. International Trade | Tested | 15 / 15 | `ib_lab_trade` | Landed costs, Incoterms, tariffs, documentation and trade compliance for real shipments. |
+| C. International Business Strategy | Tested | 15 / 15 | `ib_lab_strategy` | Choose entry modes, partners and localisation for Atlas Global Trading’s expansion. |
+| D. Global Supply Chain | Tested | 15 / 15 | `ib_lab_supply` | Ship goods internationally: modes, lead times, safety stock for long supply lines, delays  |
+| E. International Negotiations | Tested | 15 / 15 | `ib_lab_negotiation` | Negotiate prices, terms and partnerships with simulated international partners. |
+| F. Cross-Cultural Management | Tested | 15 / 15 | `ib_lab_culture` | Lead international teams: communication, meetings, feedback and conflict across contexts — |
+| G. International Business Capstone | Tested | 15 / 15 | `ib_lab_capstone` | Prepare Atlas Global Trading’s full international expansion proposal. |
 
 ### Mathematics
 
@@ -348,47 +348,47 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Cell Biology | Not started | 0 / 15 |  |  |
-| B. Human Biology | Not started | 0 / 15 |  |  |
-| C. Genetics | Not started | 0 / 15 |  |  |
-| D. Microbiology | Not started | 0 / 15 |  |  |
-| E. Ecology | Not started | 0 / 15 |  |  |
-| F. Microscopy | Not started | 0 / 15 |  |  |
-| G. Biology Research Project | Not started | 0 / 15 |  |  |
+| A. Cell Biology | Tested | 15 / 15 | `bi_lab_cell` | Surface area to volume, osmosis, counting mitotic cells, enzyme kinetics and preparing cel |
+| B. Human Biology | Tested | 15 / 15 | `bi_lab_human` | Cardiac output, ventilation, oxygen delivery and uptake, and blood flow in exercise physio |
+| C. Genetics | Tested | 15 / 15 | `bi_lab_genetics` | Hardy–Weinberg, family risk, gene mapping, PCR amplification and gel electrophoresis. |
+| D. Microbiology | Tested | 15 / 15 | `bi_lab_micro` | Growth curves, plate counts, antibiotic exposure, sterilisation and disinfectant preparati |
+| E. Ecology | Tested | 15 / 15 | `bi_lab_ecology` | Mark–recapture surveys, sustainable harvests, energy flow, biodiversity and carbon sequest |
+| F. Microscopy | Tested | 15 / 15 | `bi_lab_microscopy` | Choose objectives, resolution, graticule calibration, scale bars and counting dilutions at |
+| G. Biology Research Project | Tested | 15 / 15 | `bi_lab_research` | Investigate unexpected results in the research group and decide what really happened. |
 
 ### Chemistry
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Atomic Structure | Not started | 0 / 15 |  |  |
-| B. Molecular Modelling | Not started | 0 / 15 |  |  |
-| C. Chemical Equations | Not started | 0 / 15 |  |  |
-| D. Stoichiometry | Not started | 0 / 15 |  |  |
-| E. Acids and Bases | Not started | 0 / 15 |  |  |
-| F. Titration | Not started | 0 / 15 |  |  |
-| G. Analytical Chemistry | Not started | 0 / 15 |  |  |
-| H. Chemistry Capstone | Not started | 0 / 15 |  |  |
+| A. Atomic Structure | Tested | 15 / 15 | `ch_lab_atomic` | Build atoms and ions, read isotope abundances from mass spectra and count particles with t |
+| B. Molecular Modelling | Tested | 15 / 15 | `ch_lab_molecular` | Build molecular formulas from atoms and check them against mass-spectrum and structural ev |
+| C. Chemical Equations | Tested | 15 / 15 | `ch_lab_equations` | Balance real reactions by setting coefficients; every element is checked, then smallest wh |
+| D. Stoichiometry | Tested | 15 / 15 | `ch_lab_stoichiometry` | Limiting reactants, yields, solution preparation, gas volumes and concentrated-reagent cal |
+| E. Acids and Bases | Tested | 15 / 15 | `ch_lab_acids` | pH of strong and weak acids, buffers, neutralising spills and choosing indicators. |
+| F. Titration | Tested | 15 / 15 | `ch_lab_titration` | A working burette: add titrant in 0.01 mL steps, watch the pH, stop at the end point and c |
+| G. Analytical Chemistry | Tested | 15 / 15 | `ch_lab_analytical` | Spectrophotometry, dilution for calibration, gravimetric analysis, detection limits and ch |
+| H. Chemistry Capstone | Tested | 15 / 15 | `ch_lab_capstone` | Client briefs that combine synthesis, titration, buffers, spectroscopy and safe handling i |
 
 ### Physics
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Mechanics | Not started | 0 / 15 |  |  |
-| B. Electricity | Not started | 0 / 15 |  |  |
-| C. Magnetism | Not started | 0 / 15 |  |  |
-| D. Waves and Optics | Not started | 0 / 15 |  |  |
-| E. Thermodynamics | Not started | 0 / 15 |  |  |
-| F. Modern Physics | Not started | 0 / 15 |  |  |
-| G. Experimental Physics | Not started | 0 / 15 |  |  |
+| A. Mechanics | Tested | 15 / 15 | `ph_lab_mechanics` | Projectiles, forces with friction, collisions, circular motion and energy on real test rig |
+| B. Electricity | Tested | 15 / 15 | `ph_lab_electricity` | Current limiting, parallel networks, internal resistance, resistivity and RC timing on the |
+| C. Magnetism | Tested | 15 / 15 | `ph_lab_magnetism` | Motor force, solenoid fields, transformers, generators and charged particles in magnetic f |
+| D. Waves and Optics | Tested | 15 / 15 | `ph_lab_waves` | Wavelength, refraction, lenses, diffraction gratings and standing waves on strings. |
+| E. Thermodynamics | Tested | 15 / 15 | `ph_lab_thermo` | Heating water, gas laws, insulation, heat engines and melting ice. |
+| F. Modern Physics | Tested | 15 / 15 | `ph_lab_modern` | Photoelectric effect, radioactive decay, atomic spectra, time dilation and electron wavele |
+| G. Experimental Physics | Tested | 15 / 15 | `ph_lab_experimental` | Design experiments with acceptable uncertainty: pendulums, density, resonance tubes, sprin |
 
 ### English and Communication
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Grammar and Language | Not started | 0 / 15 |  |  |
-| B. Reading Comprehension | Not started | 0 / 15 |  |  |
-| C. Academic Writing | Not started | 0 / 15 |  |  |
-| D. Professional Writing | Not started | 0 / 15 |  |  |
-| E. Public Speaking | Not started | 0 / 15 |  |  |
-| F. Editing and Proofreading | Not started | 0 / 15 |  |  |
-| G. Professional Communication | Not started | 0 / 15 |  |  |
+| A. Grammar and Language | Tested | 15 / 15 | `eg_lab_grammar` | Check real copy for agreement, punctuation, tense, word choice and sentence structure. |
+| B. Reading Comprehension | Tested | 15 / 15 | `eg_lab_reading` | Read briefing passages for main ideas, inference, tone and argument before advising collea |
+| C. Academic Writing | Tested | 15 / 15 | `eg_lab_academic` | Write academic paragraphs with a thesis, evidence, analysis and referencing — marked again |
+| D. Professional Writing | Tested | 15 / 15 | `eg_lab_professional` | Write emails, letters, reports, memos, proposals and meeting summaries for real workplace  |
+| E. Public Speaking | Tested | 15 / 15 | `eg_lab_speaking` | Plan and time talks, structure messages for an audience, and rehearse with feedback on org |
+| F. Editing and Proofreading | Tested | 15 / 15 | `eg_lab_editing` | Proof documents with errors of spelling, punctuation, grammar and fact, and decide what mu |
+| G. Professional Communication | Tested | 15 / 15 | `eg_lab_communication` | Job interviews, client calls, team meetings, conflict and presentations — saying the right |

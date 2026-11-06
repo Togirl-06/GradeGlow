@@ -4,6 +4,7 @@ import 'package:ai_study_buddy/career_sim/content/nursing_content.dart';
 import 'package:ai_study_buddy/career_sim/engine/career_rules.dart';
 import 'package:ai_study_buddy/career_sim/engine/interview_engine.dart';
 import 'package:ai_study_buddy/career_sim/engine/text_rubric.dart';
+import 'package:ai_study_buddy/career_sim/labs/lab_models.dart';
 import 'package:ai_study_buddy/career_sim/model/career_models.dart';
 import 'package:ai_study_buddy/career_sim/model/content_models.dart';
 import 'package:ai_study_buddy/career_sim/model/tasks.dart';
@@ -145,6 +146,15 @@ void main() {
         'developed skills in Python and data structures, and I am able to write clear pull request descriptions and '
         'regression tests. I am interested in the Payments Platform squad because reliable software matters to the people who '
         'depend on it. Thank you for considering my application, and I look forward to the opportunity to discuss it.';
+
+    test('readiness counts the labs of the student\'s own major track', () {
+      final CareerProfile p = CareerProfile(deptId: 'cs');
+      expect(CareerRules.trackLabs(p, 'cs').every((LabSpec l) => l.majorId == 'computer_science'), isTrue);
+      p.labCompletions.add(const LabCompletion(labId: 'se_lab_git', scenarioId: 'sgc_feature_1', score: 90, passed: true, day: 3));
+      final List<LabSpec> track = CareerRules.trackLabs(p, 'cs');
+      expect(track.map((LabSpec l) => l.majorId).toSet(), <String>{'software_engineering'});
+      expect(track.length, 6);
+    });
 
     test('readiness only counts graded evidence', () {
       final CareerProfile empty = CareerProfile(deptId: 'cs');

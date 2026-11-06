@@ -13,6 +13,7 @@ import '../lab_catalog.dart';
 import '../lab_grading.dart';
 import '../lab_models.dart';
 import '../lab_blueprint.g.dart';
+import '../workplace.dart';
 import '../math/math_views.dart';
 import 'lab_tools.dart';
 import 'step_views.dart';
@@ -23,6 +24,13 @@ IconData environmentIcon(LabEnvironment e) => switch (e) {
       LabEnvironment.clinicRoom => Icons.medical_services_rounded,
       LabEnvironment.accountingFirm => Icons.account_balance_rounded,
       LabEnvironment.mathsLab => Icons.functions_rounded,
+      LabEnvironment.lawFirm => Icons.gavel_rounded,
+      LabEnvironment.engineeringOffice => Icons.precision_manufacturing_rounded,
+      LabEnvironment.scienceLab => Icons.biotech_rounded,
+      LabEnvironment.businessOffice => Icons.business_center_rounded,
+      LabEnvironment.techOffice => Icons.developer_board_rounded,
+      LabEnvironment.securityOps => Icons.security_rounded,
+      LabEnvironment.editorialOffice => Icons.edit_note_rounded,
     };
 
 String labStatus(CareerProfile p, LabSpec lab) {
@@ -314,7 +322,16 @@ class EnvironmentTools extends StatelessWidget {
           tools.add(const ExpansionTile(key: ValueKey<String>('tool_atlas'), tilePadding: EdgeInsets.zero, leading: Icon(Icons.accessibility_new_rounded), title: Text('Anatomy atlas'), children: <Widget>[AnatomyAtlas()]));
         }
       case LabEnvironment.mathsLab:
+      case LabEnvironment.engineeringOffice:
+      case LabEnvironment.scienceLab:
         tools.addAll(mathsTools(lab));
+      case LabEnvironment.businessOffice:
+      case LabEnvironment.techOffice:
+      case LabEnvironment.securityOps:
+      case LabEnvironment.lawFirm:
+      case LabEnvironment.editorialOffice:
+        tools.add(const ExpansionTile(key: ValueKey<String>('tool_calculator'), tilePadding: EdgeInsets.zero, leading: Icon(Icons.calculate_rounded), title: Text('Calculator'), children: <Widget>[CalculatorTool()]));
+        tools.add(ExpansionTile(key: const ValueKey<String>('tool_notes'), tilePadding: EdgeInsets.zero, leading: const Icon(Icons.draw_rounded), title: const Text('Scratch pad (saved)'), children: <Widget>[Whiteboard(lab: lab)]));
       case LabEnvironment.accountingFirm:
         tools.add(const ExpansionTile(
           key: ValueKey<String>('tool_policies'),
@@ -330,6 +347,15 @@ class EnvironmentTools extends StatelessWidget {
           ],
         ));
     }
+    if (lab.reference.isNotEmpty) {
+      tools.add(ExpansionTile(
+        key: const ValueKey<String>('tool_reference'),
+        tilePadding: EdgeInsets.zero,
+        leading: const Icon(Icons.menu_book_rounded),
+        title: const Text('Workplace reference'),
+        children: <Widget>[BulletList(lab.reference)],
+      ));
+    }
     if (tools.isEmpty) return Text('No tools in this environment.', style: TextStyle(color: VuV2Colors.mute));
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: tools);
   }
@@ -340,7 +366,7 @@ class LabSessionScreen extends StatelessWidget {
   const LabSessionScreen({super.key, required this.labId});
   final String labId;
 
-  static const List<String> _phaseLabels = <String>['Environment', 'Briefing', 'Work', 'Evaluation', 'Complete'];
+  static const List<String> _phaseLabels = <String>['Clock in', 'Inbox', 'Work queue', 'Review', 'Logged'];
 
   @override
   Widget build(BuildContext context) {
@@ -380,6 +406,29 @@ class LabSessionScreen extends StatelessWidget {
   }
 }
 
+class _ShiftCard extends StatelessWidget {
+  const _ShiftCard({required this.lab, required this.scenario});
+  final LabSpec lab;
+  final LabScenario scenario;
+
+  @override
+  Widget build(BuildContext context) {
+    final Workplace w = workplaceFor(lab);
+    return SectionCard(
+      key: const ValueKey<String>('shift_card'),
+      title: 'Your shift at ${w.employer}',
+      subtitle: '${w.kind} · ${w.location}',
+      child: BulletList(<String>[
+        'Role: ${w.role}',
+        'Supervisor: ${w.supervisor.name}, ${w.supervisor.role}',
+        'Assignment: ${scenario.title} (${scenario.level.label})',
+        'Expected time: about ${lab.minutes} minutes · ${scenario.steps.length} ticket${scenario.steps.length == 1 ? '' : 's'} in your queue',
+        'Your supervisor reviews every submission and signs off the shift at the end.',
+      ], icon: Icons.badge_rounded),
+    );
+  }
+}
+
 class _EnvironmentPhase extends StatelessWidget {
   const _EnvironmentPhase({required this.lab, required this.scenario});
   final LabSpec lab;
@@ -394,6 +443,7 @@ class _EnvironmentPhase extends StatelessWidget {
         Text(lab.environment.label, style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
         Text(scenario.title, style: TextStyle(color: VuV2Colors.mute)),
         const SizedBox(height: 10),
+        _ShiftCard(lab: lab, scenario: scenario),
         if (scenario.people.isNotEmpty)
           SectionCard(
             title: 'People here',
@@ -410,8 +460,8 @@ class _EnvironmentPhase extends StatelessWidget {
         SectionCard(title: 'Equipment and records', subtitle: 'These tools work — open them now or at any point during the work.', child: EnvironmentTools(lab: lab)),
         BusyButton(
           key: const ValueKey<String>('to_briefing'),
-          label: 'Read the assignment briefing',
-          icon: Icons.assignment_rounded,
+          label: 'Clock in and open your inbox',
+          icon: Icons.login_rounded,
           onPressed: () => runCareerAction<void>(context, () => store.setLabPhase(lab, LabPhase.briefing)),
         ),
       ],
@@ -428,9 +478,22 @@ class _BriefingPhase extends StatelessWidget {
   Widget build(BuildContext context) {
     final CareerSimStore store = careerStore(context);
     final Briefing b = scenario.briefing;
+    final Workplace w = workplaceFor(lab);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        SectionCard(
+          key: const ValueKey<String>('inbox_email'),
+          title: 'Inbox · 1 new message',
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Text('From: ${w.supervisor.name} (${w.supervisor.role}, ${w.employer})', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+            Text('To: you (${w.role})', style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+            Text('Subject: ${scenario.title} — ${scenario.level.label.toLowerCase()} assignment', style: TextStyle(color: VuV2Colors.ink)),
+            const Divider(),
+            Text('Hi — please pick this up today. Everything you need is below and in the ${lab.environment.label.toLowerCase()}. '
+                'Work through the queue; I will review each item when you submit.', style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+          ]),
+        ),
         SectionCard(title: 'What needs to be done', child: Text(b.what, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
         SectionCard(title: 'Why it matters', child: Text(b.why, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
         SectionCard(title: 'Information available', child: BulletList(b.information)),
@@ -441,7 +504,7 @@ class _BriefingPhase extends StatelessWidget {
         SectionCard(title: 'Tasks', child: BulletList(<String>[for (final LabStep s in scenario.steps) '${s.title} (${s.kind})'])),
         BusyButton(
           key: const ValueKey<String>('begin_work'),
-          label: 'Begin the work',
+          label: 'Accept and open the work queue',
           icon: Icons.play_arrow_rounded,
           onPressed: () => runCareerAction<void>(context, () => store.setLabPhase(lab, LabPhase.work)),
         ),
@@ -467,6 +530,8 @@ class _WorkPhase extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        Text('Work queue · ticket ${i + 1} of ${scenario.steps.length}: ${step.title}', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w800)),
+        const SizedBox(height: 4),
         Wrap(spacing: 4, runSpacing: 4, children: <Widget>[
           for (int k = 0; k < scenario.steps.length; k++)
             ChoiceChip(
@@ -546,9 +611,16 @@ class _EvaluationPhase extends StatelessWidget {
     final List<LabStep> good = scenario.steps.where((LabStep s) => run.results[s.id]?.passed ?? false).toList();
     final List<LabStep> bad = scenario.steps.where((LabStep s) => !(run.results[s.id]?.passed ?? false)).toList();
     final Set<String> skills = <String>{for (final LabStep s in good) ...(s.skills.isEmpty ? lab.skills : s.skills)};
+    final Workplace w = workplaceFor(lab);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        SectionCard(
+          key: const ValueKey<String>('supervisor_review'),
+          title: 'Supervisor review · ${performanceRating(score, passed)}',
+          subtitle: '${w.supervisor.name}, ${w.supervisor.role} · ${w.employer}',
+          child: Text(supervisorReview(lab, scenario, run.results, score, passed), style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+        ),
         SectionCard(
           title: 'Final result: $score/100 · ${passed ? 'Passed' : 'Not passed'}',
           subtitle: '${good.length} of ${scenario.steps.length} tasks passed. A lab is passed when every task meets its pass mark.',
@@ -620,6 +692,7 @@ class _CompletePhase extends StatelessWidget {
             'Lab result and every task attempt',
             if (passed) 'Skill progress for ${lab.skills.length} skill(s)',
             if (passed && lab.addsToPortfolio) 'Project added to your portfolio',
+            'Work experience log: ${shiftHours(lab)} h as ${workplaceFor(lab).role} at ${workplaceFor(lab).employer}',
             'Practical experience counted in your career readiness',
             if (!passed) 'Retake the lab to pass every task — your best result is kept.',
           ], icon: Icons.check_rounded),

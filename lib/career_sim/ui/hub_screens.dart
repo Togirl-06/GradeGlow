@@ -6,6 +6,7 @@ import '../content/catalog.dart';
 import '../engine/career_rules.dart';
 import '../labs/lab_catalog.dart';
 import '../labs/lab_models.dart';
+import '../labs/workplace.dart';
 import '../labs/ui/lab_screens.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
@@ -155,6 +156,23 @@ class PortfolioScreen extends StatelessWidget {
                         title: Text(CareerCatalog.certification(c.id)?.title ?? c.id),
                         subtitle: Text('${CareerCatalog.certification(c.id)?.issuer ?? ''} · score ${c.score} · day ${c.day}'),
                       ),
+                  ]),
+          ),
+          SectionCard(
+            key: const ValueKey<String>('work_log'),
+            title: 'Work experience log',
+            subtitle: 'Shifts completed and signed off by a supervisor in the practical labs.',
+            child: passedLabs.isEmpty
+                ? Text('No signed-off shifts yet.', style: TextStyle(color: VuV2Colors.mute))
+                : Column(children: <Widget>[
+                    for (final LabCompletion c in passedLabs)
+                      if (LabCatalog.lab(c.labId) case final LabSpec l)
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.work_history_rounded),
+                          title: Text('${workplaceFor(l).role} · ${workplaceFor(l).employer}'),
+                          subtitle: Text('${l.title} · ${performanceRating(c.score, c.passed)} · ${p.labCompletions.where((LabCompletion x) => x.labId == l.id && x.passed).length * shiftHours(l)} h'),
+                        ),
                   ]),
           ),
           SectionCard(
