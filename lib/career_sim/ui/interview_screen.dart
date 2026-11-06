@@ -105,8 +105,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
     } catch (_) {
       return;
     }
-    if (v == null || !mounted || i >= _lines.length || _lines[i].text != scripted) return;
-    setState(() => _lines[i] = _Line(true, v));
+    final String? spoken = v;
+    if (spoken == null || !mounted || i >= _lines.length || _lines[i].text != scripted) return;
+    setState(() => _lines[i] = _Line(true, spoken));
   }
 
   void _afterAnswer(String shown) {
@@ -147,8 +148,10 @@ class _InterviewScreenState extends State<InterviewScreen> {
     } catch (_) {
       return;
     }
-    if (topic == null || !mounted || i >= _lines.length || _lines[i].text != fallback) return;
-    setState(() => _lines[i] = _Line(true, _replyFor(topic)));
+    final String? found = topic;
+    if (found == null || !mounted || i >= _lines.length || _lines[i].text != fallback) return;
+    final String reply = _replyFor(found);
+    setState(() => _lines[i] = _Line(true, reply));
   }
 
   void _submitOpen() {
