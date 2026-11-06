@@ -323,6 +323,9 @@ void main() {
       ('nav_workplace', 'Workplace'),
       ('nav_portfolio', 'My Portfolio'),
       ('nav_progress', 'Progress'),
+      ('nav_money', 'My Earnings'),
+      ('dash_all_jobs', 'Job Board'),
+      ('dash_search', 'Find'),
     ]) {
       await tap(t, k(key));
       expect(find.widgetWithText(AppBar, title), findsOneWidget, reason: key);

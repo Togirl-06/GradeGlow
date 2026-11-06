@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../vu_v2/design/vu_v2_theme.dart';
 import '../../ai/career_ai.dart';
 import '../../content/catalog.dart';
+import '../../engine/pay_rules.dart';
 import '../../model/career_models.dart';
 import '../../model/content_models.dart';
 import '../../store/career_sim_store.dart';
@@ -56,28 +57,59 @@ class PracticalLabsScreen extends StatefulWidget {
 
 class _PracticalLabsScreenState extends State<PracticalLabsScreen> {
   bool _mine = true;
+  final TextEditingController _q = TextEditingController();
+
+  @override
+  void dispose() {
+    _q.dispose();
+    super.dispose();
+  }
+
+  bool _matches(BlueprintLab b, List<String> words) {
+    final LabSpec? l = b.built ? LabCatalog.lab(b.labId) : null;
+    final String text = '${b.title} ${b.major} ${b.school} ${l?.title ?? ''} ${l?.summary ?? ''} ${l?.environment.label ?? ''}'.toLowerCase();
+    return words.every(text.contains);
+  }
 
   @override
   Widget build(BuildContext context) {
     final CareerSimStore store = context.watch<CareerSimStore>();
     final Department? dept = CareerCatalog.department(store.profile.deptId);
     final Set<String> deptMajors = <String>{...?dept?.majors};
-    final bool mine = _mine && blueprintLabs.any((BlueprintLab b) => deptMajors.contains(b.majorId));
+    final String myMajor = store.profile.majorId;
+    final List<String> words = _q.text.toLowerCase().split(RegExp(r'\s+')).where((String w) => w.isNotEmpty).toList();
+    final bool searching = words.isNotEmpty;
+    final bool mine = !searching && _mine && blueprintLabs.any((BlueprintLab b) => deptMajors.contains(b.majorId));
     final Map<String, List<BlueprintLab>> byMajor = <String, List<BlueprintLab>>{};
     for (final BlueprintLab b in blueprintLabs) {
       if (mine && !deptMajors.contains(b.majorId)) continue;
+      if (searching && !_matches(b, words)) continue;
       byMajor.putIfAbsent(b.majorId, () => <BlueprintLab>[]).add(b);
     }
-    // Majors with working labs first.
+    // The student's own major first, then majors with working labs.
+    int rank(MapEntry<String, List<BlueprintLab>> e) => (e.key == myMajor ? 1000 : 0) + e.value.where((BlueprintLab l) => l.built).length;
     final List<MapEntry<String, List<BlueprintLab>>> majors = byMajor.entries.toList()
-      ..sort((MapEntry<String, List<BlueprintLab>> a, MapEntry<String, List<BlueprintLab>> b) =>
-          b.value.where((BlueprintLab l) => l.built).length.compareTo(a.value.where((BlueprintLab l) => l.built).length));
+      ..sort((MapEntry<String, List<BlueprintLab>> a, MapEntry<String, List<BlueprintLab>> b) => rank(b).compareTo(rank(a)));
     return Scaffold(
       appBar: AppBar(title: const Text('Practical Labs')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
-          Wrap(spacing: 8, children: <Widget>[
+          TextField(
+            key: const ValueKey<String>('labs_search'),
+            controller: _q,
+            onChanged: (_) => setState(() {}),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search_rounded),
+              hintText: 'Search labs (e.g. SQL, wound care, CAD)',
+              border: const OutlineInputBorder(),
+              isDense: true,
+              suffixIcon: _q.text.isEmpty ? null : IconButton(icon: const Icon(Icons.clear_rounded), onPressed: () => setState(_q.clear)),
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (searching && majors.isEmpty) Padding(padding: const EdgeInsets.all(12), child: Text('No labs match "${_q.text.trim()}".', style: TextStyle(color: VuV2Colors.mute))),
+          if (!searching) Wrap(spacing: 8, children: <Widget>[
             ChoiceChip(key: const ValueKey<String>('labs_mine'), label: const Text('My field'), selected: _mine, onSelected: (_) => setState(() => _mine = true)),
             ChoiceChip(key: const ValueKey<String>('labs_all'), label: const Text('All majors'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
           ]),
@@ -88,8 +120,8 @@ class _PracticalLabsScreenState extends State<PracticalLabsScreen> {
             Card(
               margin: const EdgeInsets.only(top: 10),
               child: ExpansionTile(
-                key: ValueKey<String>('major_${e.key}'),
-                initiallyExpanded: e.value.any((BlueprintLab l) => l.built) && (mine || majors.indexOf(e) < 2),
+                key: ValueKey<String>('major_${e.key}${searching ? '_found' : ''}'),
+                initiallyExpanded: searching || (e.value.any((BlueprintLab l) => l.built) && (mine || e.key == myMajor || majors.indexOf(e) < 2)),
                 title: Text(e.value.first.major, style: const TextStyle(fontWeight: FontWeight.w800)),
                 subtitle: Text('${e.value.first.school} · ${e.value.where((BlueprintLab l) => l.built).length}/${e.value.length} labs open'),
                 childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -673,6 +705,8 @@ class _CompletePhase extends StatelessWidget {
     final CareerSimStore store = careerStore(context);
     final bool passed = store.profile.labCompletions.any((LabCompletion c) => c.labId == lab.id && c.passed && c.day == run.completedDay && c.score == run.score);
     final LabScenario? nextScenario = store.nextLabScenario(lab);
+    final List<MoneyEntry> ledger = store.profile.ledger;
+    final MoneyEntry? paid = ledger.isNotEmpty && ledger.last.kind == 'lab' && ledger.last.day == run.completedDay && ledger.last.text.contains(lab.title) ? ledger.last : null;
     LabSpec? next;
     for (final LabSpec l in LabCatalog.forMajor(lab.majorId)) {
       if (!store.profile.labPassed(l.id) && l.id != lab.id) {
@@ -685,6 +719,12 @@ class _CompletePhase extends StatelessWidget {
       children: <Widget>[
         Icon(passed ? Icons.verified_rounded : Icons.flag_rounded, size: 48, color: passed ? VuV2Colors.success : VuV2Colors.orange),
         Text(passed ? 'Lab passed — ${run.score}/100' : 'Lab completed — ${run.score}/100', textAlign: TextAlign.center, style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+        if (paid != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text('+${pounds(paid.amount)} simulated pay earned', key: const ValueKey<String>('lab_pay'), textAlign: TextAlign.center,
+                style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w800)),
+          ),
         const SizedBox(height: 8),
         SectionCard(
           title: 'Saved to your record',

@@ -843,6 +843,25 @@ class CareerEvent {
 }
 
 /// Everything the simulator saves for one student.
+/// One line in the simulated pay ledger (not real money).
+class MoneyEntry {
+  const MoneyEntry({required this.day, required this.amount, required this.text, this.kind = 'pay'});
+
+  factory MoneyEntry.fromJson(Map<String, dynamic> j) =>
+      MoneyEntry(day: _int(j['day']), amount: _int(j['amount']), text: _str(j['text']), kind: _str(j['kind'], 'pay'));
+
+  final int day;
+
+  /// Whole pounds; positive is money in.
+  final int amount;
+  final String text;
+
+  /// 'lab', 'salary', 'bonus' or 'pay'.
+  final String kind;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'day': day, 'amount': amount, 'text': text, 'kind': kind};
+}
+
 class CareerProfile {
   CareerProfile({
     this.version = 1,
@@ -865,8 +884,10 @@ class CareerProfile {
     Map<String, String>? writings,
     Map<String, LabRun>? labRuns,
     List<LabCompletion>? labCompletions,
+    List<MoneyEntry>? ledger,
     this.updatedAtMs = 0,
-  })  : writings = writings ?? <String, String>{},
+  })  : ledger = ledger ?? <MoneyEntry>[],
+        writings = writings ?? <String, String>{},
         labRuns = labRuns ?? <String, LabRun>{},
         labCompletions = labCompletions ?? <LabCompletion>[],
         taskResults = taskResults ?? <String, TaskResult>{},
@@ -907,6 +928,7 @@ class CareerProfile {
         writings: _map(j['writings']).map((String k, dynamic v) => MapEntry<String, String>(k, '$v')),
         labRuns: _map(j['labRuns']).map((String k, dynamic v) => MapEntry<String, LabRun>(k, LabRun.fromJson(_map(v)))),
         labCompletions: _mapList(j['labCompletions']).map(LabCompletion.fromJson).toList(),
+        ledger: _mapList(j['ledger']).map(MoneyEntry.fromJson).toList(),
         updatedAtMs: _int(j['updatedAtMs']),
       );
 
@@ -940,7 +962,16 @@ class CareerProfile {
   /// The current (or last) run of each practical lab, saved after every step.
   final Map<String, LabRun> labRuns;
   final List<LabCompletion> labCompletions;
+
+  /// Simulated earnings from labs and jobs.
+  final List<MoneyEntry> ledger;
   int updatedAtMs;
+
+  /// Current simulated balance in whole pounds.
+  int get balance => ledger.fold<int>(0, (int a, MoneyEntry e) => a + e.amount);
+
+  /// Money earned in the last [days] simulated days.
+  int earnedInLast(int days) => ledger.where((MoneyEntry e) => e.amount > 0 && e.day > day - days).fold<int>(0, (int a, MoneyEntry e) => a + e.amount);
 
   LabCompletion? bestLab(String labId) {
     LabCompletion? best;
@@ -1004,6 +1035,7 @@ class CareerProfile {
         'writings': writings,
         'labRuns': labRuns.map((String k, LabRun v) => MapEntry<String, dynamic>(k, v.toJson())),
         'labCompletions': labCompletions.map((LabCompletion c) => c.toJson()).toList(),
+        'ledger': ledger.map((MoneyEntry e) => e.toJson()).toList(),
         'updatedAtMs': updatedAtMs,
       };
 }

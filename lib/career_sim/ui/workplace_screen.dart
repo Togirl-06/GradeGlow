@@ -5,6 +5,7 @@ import '../../vu_v2/design/vu_v2_theme.dart';
 import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
+import '../engine/pay_rules.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../store/career_sim_store.dart';
@@ -287,6 +288,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           padding: const EdgeInsets.all(16),
           children: <Widget>[
             EvaluationCard(evaluation: ev),
+            for (final MoneyEntry m in store.profile.ledger.reversed.take(2).where((MoneyEntry m) => m.day == store.day && m.kind != 'lab'))
+              Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Text('+${pounds(m.amount)} · ${m.text} (simulated pay)', key: ValueKey<String>('pay_${m.kind}'), style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700)),
+              ),
             const SizedBox(height: 12),
             FilledButton(key: const ValueKey<String>('back_to_work'), onPressed: () => Navigator.of(context).pop(), child: const Text('Back to the workplace')),
           ],

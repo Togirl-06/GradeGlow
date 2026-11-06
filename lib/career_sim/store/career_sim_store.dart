@@ -7,6 +7,7 @@ import '../../services/lab_runner/lab_runner.dart';
 import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
+import '../engine/pay_rules.dart';
 import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
@@ -125,6 +126,12 @@ class CareerSimStore extends ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  /// Adds simulated pay to the ledger (in-game money only).
+  void _pay(int amount, String text, String kind) {
+    if (amount <= 0) return;
+    profile.ledger.add(MoneyEntry(day: profile.day, amount: amount, text: text, kind: kind));
   }
 
   void _log(String text, [String kind = 'info']) {
@@ -355,7 +362,9 @@ class CareerSimStore extends ChangeNotifier {
     r.phase = LabPhase.complete;
     final LabCompletion c = LabCompletion(labId: lab.id, scenarioId: sc.id, score: score, passed: passed, day: profile.day);
     final bool firstPass = passed && !profile.labPassed(lab.id);
+    final bool firstScenarioPass = passed && !profile.labScenarioPassed(lab.id, sc.id);
     profile.labCompletions.add(c);
+    if (firstScenarioPass) _pay(PayRules.labPay(sc.level, score), 'Lab work: ${lab.title} (${sc.level.name})', 'lab');
     if (firstPass) {
       _award(lab.skills, CareerRules.projectPoints);
       if (lab.addsToPortfolio && !profile.portfolio.any((PortfolioItem i) => i.id == lab.id)) {
@@ -759,6 +768,9 @@ class CareerSimStore extends ChangeNotifier {
           : (d?.skills.take(2).map((SkillDef x) => x.id).toList() ?? <String>[]);
       _award(skills, CareerRules.assignmentPoints);
     }
+    final (int pay, int bonus) = PayRules.assignmentPay(e, ev);
+    _pay(pay, 'Week\'s pay: ${e.title} at ${e.employer}', 'salary');
+    if (bonus > 0) _pay(bonus, 'Performance bonus: ${s.title}', 'bonus');
     _log('Supervisor evaluation: ${s.title} — ${ev.rating} (${ev.overall}).', 'work');
     await _commit();
     return ev;
@@ -780,6 +792,7 @@ class CareerSimStore extends ChangeNotifier {
       e.title = title;
       e.salary = salary;
       if (to.index > profile.stage.index) profile.stage = to;
+      _pay(PayRules.promotionBonus(salary, e.salaryPeriod), 'Promotion bonus: $title', 'bonus');
       _log('Promoted to $title.', 'milestone');
       await _commit();
     } else if (review.to != null) {
