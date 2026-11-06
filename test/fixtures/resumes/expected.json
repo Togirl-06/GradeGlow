@@ -1,0 +1,112 @@
+{
+ "cs": {
+  "name": "Jordan Rivera",
+  "email": "jordan.rivera@example.com",
+  "phone": "(555) 201-7788",
+  "sections": [
+   "Summary",
+   "Education",
+   "Experience",
+   "Projects",
+   "Skills",
+   "Certifications",
+   "Achievements"
+  ]
+ },
+ "nursing": {
+  "name": "Amara Okafor",
+  "email": "amara.okafor@example.org",
+  "phone": "555-310-4421",
+  "sections": [
+   "Profile",
+   "Education",
+   "Clinical Experience",
+   "Skills",
+   "Certifications",
+   "Awards"
+  ]
+ },
+ "business": {
+  "name": "Daniel Chen",
+  "email": "daniel.chen@example.net",
+  "phone": "+1 555 482 9001",
+  "sections": [
+   "Objective",
+   "Education",
+   "Work Experience",
+   "Technical Skills",
+   "Projects"
+  ]
+ },
+ "law": {
+  "name": "Sofia Martinez",
+  "email": "sofia.martinez@example.com",
+  "phone": "(555) 640-2210",
+  "sections": [
+   "Summary",
+   "Education",
+   "Legal Experience",
+   "Skills",
+   "Achievements"
+  ]
+ },
+ "engineering": {
+  "name": "Ethan Brooks",
+  "email": "ethan.brooks@example.org",
+  "phone": "555-702-3381",
+  "sections": [
+   "Summary",
+   "Education",
+   "Experience",
+   "Projects",
+   "Skills"
+  ]
+ },
+ "medicine": {
+  "name": "Priya Shah",
+  "email": "priya.shah@example.net",
+  "phone": "555-118-4407",
+  "sections": [
+   "Summary",
+   "Education",
+   "Clinical Experience",
+   "Research",
+   "Skills",
+   "Certifications"
+  ]
+ },
+ "science": {
+  "name": "Grace Kim",
+  "email": "grace.kim@example.com",
+  "phone": "555-233-9012",
+  "sections": [
+   "Summary",
+   "Education",
+   "Research Experience",
+   "Skills"
+  ]
+ },
+ "maths": {
+  "name": "Noah Williams",
+  "email": "noah.williams@example.org",
+  "phone": "555-889-1200",
+  "sections": [
+   "Summary",
+   "Education",
+   "Experience",
+   "Projects",
+   "Skills"
+  ]
+ },
+ "communication": {
+  "name": "Olivia Turner",
+  "email": "olivia.turner@example.com",
+  "phone": "555-402-7765",
+  "sections": [
+   "Summary",
+   "Education",
+   "Experience",
+   "Skills"
+  ]
+ }
+}

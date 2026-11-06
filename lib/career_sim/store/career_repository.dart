@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Where the simulator profile is stored. Local storage always; Firestore
@@ -11,6 +13,12 @@ abstract class CareerRepository {
   Future<void> saveLocal(String? uid, Map<String, dynamic> json);
   Future<Map<String, dynamic>?> loadRemote(String uid);
   Future<void> saveRemote(String uid, Map<String, dynamic> json);
+
+  /// Stores an uploaded resume file privately for [uid] and returns its path
+  /// (`users/{uid}/resumes/...`). Returns '' when there is no signed-in user.
+  Future<String> saveResumeFile(String? uid, String name, Uint8List bytes, String contentType);
+
+  Future<void> deleteResumeFile(String path);
 }
 
 class DefaultCareerRepository implements CareerRepository {
@@ -66,6 +74,20 @@ class DefaultCareerRepository implements CareerRepository {
       'schema': 1,
     });
   }
+
+  @override
+  Future<String> saveResumeFile(String? uid, String name, Uint8List bytes, String contentType) async {
+    if (!_firebaseReady || uid == null || uid.isEmpty) return '';
+    final String path = 'users/$uid/resumes/$name';
+    await FirebaseStorage.instance.ref(path).putData(bytes, SettableMetadata(contentType: contentType));
+    return path;
+  }
+
+  @override
+  Future<void> deleteResumeFile(String path) async {
+    if (!_firebaseReady || path.isEmpty) return;
+    await FirebaseStorage.instance.ref(path).delete();
+  }
 }
 
 /// In-memory repository for tests.
@@ -96,5 +118,20 @@ class MemoryCareerRepository implements CareerRepository {
   Future<void> saveRemote(String uid, Map<String, dynamic> json) async {
     if (failRemote) throw StateError('offline');
     remote[uid] = jsonEncode(json);
+  }
+
+  /// Stored resume files by path.
+  final Map<String, Uint8List> files = <String, Uint8List>{};
+
+  @override
+  Future<String> saveResumeFile(String? uid, String name, Uint8List bytes, String contentType) async {
+    final String path = 'users/${uid ?? 'local'}/resumes/$name';
+    files[path] = bytes;
+    return path;
+  }
+
+  @override
+  Future<void> deleteResumeFile(String path) async {
+    files.remove(path);
   }
 }

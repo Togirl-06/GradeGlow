@@ -130,7 +130,7 @@ class CareerSimDashboard extends StatelessWidget {
                 child: ActionChip(
                   key: const ValueKey<String>('dash_wallet'),
                   avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
-                  label: Text(pounds(p.balance), style: const TextStyle(fontWeight: FontWeight.w800)),
+                  label: Text(usd(p.balanceCents), style: const TextStyle(fontWeight: FontWeight.w800)),
                   onPressed: () => _push(context, const MoneyScreen()),
                 ),
               ),
@@ -197,7 +197,7 @@ class CareerSimDashboard extends StatelessWidget {
             ]),
             _Group(title: 'Work and earn', tiles: <_Tile>[
               _Tile('nav_workplace', Icons.apartment_rounded, 'My Workplace', job == null ? 'Not employed yet' : '${job.title} · ${job.employer}', () => _push(context, const WorkplaceScreen())),
-              _Tile('nav_money', Icons.account_balance_wallet_rounded, 'My Earnings', '${pounds(p.balance)} · simulated', () => _push(context, const MoneyScreen())),
+              _Tile('nav_money', Icons.account_balance_wallet_rounded, 'My Earnings', '${usd(p.balanceCents)} · virtual USD', () => _push(context, const MoneyScreen())),
               _Tile('nav_portfolio', Icons.folder_special_rounded, 'My Portfolio', '${p.portfolio.length} item${p.portfolio.length == 1 ? '' : 's'}', () => _push(context, const PortfolioScreen())),
               _Tile('nav_progress', Icons.insights_rounded, 'Progress', 'Skills and readiness', () => _push(context, const ProgressScreen())),
             ]),

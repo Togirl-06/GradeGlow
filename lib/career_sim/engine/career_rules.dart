@@ -436,8 +436,10 @@ abstract final class CareerRules {
           Criterion('$need certification(s) in ${d.title}', deptCerts >= need, detail: '$deptCerts'),
         ];
       case CareerStage.lead:
+        final WorkplaceDef? w = CareerCatalog.workplace(e.workplaceId);
         final bool led = e.evaluated.any((AssignmentRecord a) =>
-            a.assignmentId.contains('lead') && a.evaluation!.overall >= 75);
+            (a.assignmentId.contains('lead') || (w != null && (CareerCatalog.assignment(w, a.assignmentId)?.leadership ?? false))) &&
+            a.evaluation!.overall >= 75);
         c = <Criterion>[
           Criterion('8 evaluated assignments', done >= 8, detail: '$done'),
           Criterion('Performance ≥ 85', perf >= 85, detail: '$perf'),

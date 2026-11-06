@@ -34,61 +34,73 @@ Future<void> pumpHome(WidgetTester t, CareerSimStore s, Widget home) async {
 }
 
 void main() {
-  test('pay rules', () {
-    expect(PayRules.labPay(LabDifficulty.foundation, 100), 60);
-    expect(PayRules.labPay(LabDifficulty.advanced, 50), 90);
-    expect(PayRules.weeklyPay(52000, 'year'), 1000);
-    expect(PayRules.weeklyPay(20, 'hour'), 750);
-    expect(PayRules.weeklyPay(4000, 'month'), 923);
-    expect(pounds(1234567), '£1,234,567');
-    expect(pounds(60), '£60');
+  test('pay rules (virtual USD)', () {
+    expect(PayRules.stipend(LabDifficulty.foundation, 100), 7500);
+    expect(PayRules.stipend(LabDifficulty.advanced, 50), 11250);
+    expect(PayRules.weeklyGrossCents(52000, 'year'), 100000);
+    expect(PayRules.weeklyGrossCents(20, 'hour', hoursPerWeek: 40), 80000);
+    // The spec's example: $62,000 a year paid monthly = $5,166.67 gross, $516.67 deductions, $4,650.00 net.
+    final int gross = PayRules.periodGrossCents(62000, 'year', 'monthly');
+    expect(usd(gross), r'$5,166.67');
+    expect(usd(PayRules.deductionsCents(gross)), r'$516.67');
+    expect(usd(gross - PayRules.deductionsCents(gross)), r'$4,650.00');
+    expect(PayRules.periodGrossCents(62000, 'year', 'biweekly'), 238462);
+    expect(PayRules.annual(18, 'hour', hoursPerWeek: 36), 33696);
+    expect(usdWhole(1234567), r'$1,234,567');
   });
 
-  test('passing a lab scenario pays once; a retake earns nothing more', () async {
+  test('passing a lab scenario pays a training stipend once', () async {
     final CareerSimStore s = newStore();
     await s.ensureLoaded(majorId: 'nursing');
     final LabSpec lab = LabCatalog.forMajor('nursing').first;
     final LabScenario sc = lab.scenarios.first;
     await passScenario(s, lab, sc);
-    expect(s.profile.balance, PayRules.labPay(sc.level, 100));
+    expect(s.profile.balanceCents, PayRules.stipend(sc.level, 100));
     expect(s.profile.ledger.single.kind, 'lab');
     await passScenario(s, lab, sc);
     expect(s.profile.ledger.length, 1, reason: 'no double pay for the same scenario');
     final CareerProfile back = CareerProfile.fromJson(s.profile.toJson());
-    expect(back.balance, s.profile.balance, reason: 'the ledger is saved');
-    expect(CareerProfile.fromJson(<String, dynamic>{}).balance, 0, reason: 'old profiles without a ledger still load');
+    expect(back.balanceCents, s.profile.balanceCents, reason: 'the ledger is saved');
+    expect(CareerProfile.fromJson(<String, dynamic>{}).balanceCents, 0, reason: 'old profiles without a ledger still load');
   });
 
-  test('each evaluated assignment pays a week, strong work earns a bonus', () async {
+  test('approved work weeks are paid per pay period, exactly once', () async {
     final CareerSimStore s = newStore();
     await s.ensureLoaded(majorId: 'computer_science');
     final JobPosting j = CareerCatalog.posting('cs_intern_northwind')!;
     s.profile.employment.add(Employment(
       id: 'e1', postingId: j.id, deptId: 'cs', workplaceId: 'cs_northwind', employer: j.company.name,
-      title: 'Software Engineering Intern', stage: CareerStage.intern, salary: 4000, salaryPeriod: 'month', startDay: 1,
+      title: 'Software Engineering Intern', stage: CareerStage.intern, salary: 52000, salaryPeriod: 'year', startDay: 1, payFrequency: 'biweekly',
     ));
     s.profile.stage = CareerStage.intern;
+    const String note = 'I implemented the change, verified it with tests, and the next step is to monitor it in production with the team.';
     await s.requestAssignment();
-    final SupervisorEvaluation ev = await s.submitAssignment(const TaskResult(taskId: 't', score: 100, passed: true),
-        'I implemented the change, verified it with tests, and the next step is to monitor it in production.');
-    final int week = PayRules.weeklyPay(4000, 'month');
-    expect(s.profile.ledger.first.amount, week);
-    expect(s.profile.ledger.first.kind, 'salary');
-    expect(s.profile.balance, week + (ev.overall >= PayRules.bonusThreshold ? (week * 0.1).round() : 0));
+    await s.submitAssignment(const TaskResult(taskId: 't', score: 100, passed: true), note);
+    expect(s.profile.paychecks, isEmpty, reason: 'biweekly: one approved week is not a full period');
+    await s.requestAssignment();
+    await s.submitAssignment(const TaskResult(taskId: 't', score: 100, passed: true), note);
+    expect(s.profile.paychecks.length, 1);
+    final Paycheck c = s.profile.paychecks.single;
+    expect(c.grossCents, 200000);
+    expect(c.deductionCents, 20000);
+    expect(c.netCents, 180000);
+    expect(c.hours, 80);
+    expect(s.profile.balanceCents, 180000);
+    expect(s.profile.ledger.single.paycheckId, c.id);
   });
 
-  testWidgets('wallet on the dashboard opens My Earnings, labelled as simulated', (WidgetTester t) async {
+  testWidgets('wallet on the dashboard opens My Earnings, labelled as virtual', (WidgetTester t) async {
     final CareerSimStore s = newStore();
     await s.ensureLoaded(majorId: 'nursing');
     final LabSpec lab = LabCatalog.forMajor('nursing').first;
     await passScenario(s, lab, lab.scenarios.first);
     await pumpHome(t, s, const CareerSimDashboard(studentName: 'Ada', majorLabel: 'Nursing'));
-    expect(find.text('£60'), findsOneWidget);
+    expect(find.text(r'$75.00'), findsOneWidget);
     await tap(t, k('dash_wallet'));
     expect(find.widgetWithText(AppBar, 'My Earnings'), findsOneWidget);
-    expect(find.text('£60'), findsOneWidget);
-    expect(find.textContaining('not real money'), findsOneWidget);
-    expect(find.textContaining('Lab work: ${lab.title}'), findsOneWidget);
+    expect(find.text(r'$75.00'), findsOneWidget);
+    expect(find.textContaining('not actual employment or cash payments'), findsOneWidget);
+    expect(find.textContaining('Training stipend: ${lab.title}'), findsOneWidget);
     expect(t.takeException(), isNull);
   });
 

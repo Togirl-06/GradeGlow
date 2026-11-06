@@ -225,6 +225,10 @@ class Resume {
     this.skills = const <String>[],
     this.projectIds = const <String>[],
     this.updatedDay = 0,
+    this.phone = '',
+    this.projects = const <ResumeEntry>[],
+    this.certifications = const <String>[],
+    this.achievements = const <String>[],
   });
 
   factory Resume.fromJson(Map<String, dynamic> j) => Resume(
@@ -237,6 +241,10 @@ class Resume {
         skills: _strList(j['skills']),
         projectIds: _strList(j['projectIds']),
         updatedDay: _int(j['updatedDay']),
+        phone: _str(j['phone']),
+        projects: _mapList(j['projects']).map(ResumeEntry.fromJson).toList(),
+        certifications: _strList(j['certifications']),
+        achievements: _strList(j['achievements']),
       );
 
   final String fullName;
@@ -248,6 +256,12 @@ class Resume {
   final List<String> skills;
   final List<String> projectIds;
   final int updatedDay;
+  final String phone;
+
+  /// Projects written on the resume (portfolio projects are [projectIds]).
+  final List<ResumeEntry> projects;
+  final List<String> certifications;
+  final List<String> achievements;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'fullName': fullName,
@@ -259,7 +273,24 @@ class Resume {
         'skills': skills,
         'projectIds': projectIds,
         'updatedDay': updatedDay,
+        'phone': phone,
+        'projects': projects.map((ResumeEntry e) => e.toJson()).toList(),
+        'certifications': certifications,
+        'achievements': achievements,
       };
+
+  /// Plain text of the resume, as an employer would read it.
+  String get asText => <String>[
+        fullName,
+        headline,
+        summary,
+        for (final ResumeEntry e in education) '${e.heading} ${e.detail}',
+        for (final ResumeEntry e in experience) '${e.heading} ${e.detail}',
+        for (final ResumeEntry e in projects) '${e.heading} ${e.detail}',
+        skills.join(', '),
+        ...certifications,
+        ...achievements,
+      ].where((String s) => s.trim().isNotEmpty).join('\n');
 }
 
 class CoverLetter {
@@ -466,6 +497,12 @@ class JobOffer {
     required this.startDay,
     required this.respondByDay,
     required this.stage,
+    this.department = '',
+    this.employmentType = '',
+    this.hoursPerWeek = 40,
+    this.payFrequency = 'biweekly',
+    this.benefits = const <String>[],
+    this.expectations = const <String>[],
   });
 
   factory JobOffer.fromJson(Map<String, dynamic> j) => JobOffer(
@@ -477,6 +514,38 @@ class JobOffer {
         startDay: _int(j['startDay']),
         respondByDay: _int(j['respondByDay']),
         stage: CareerStage.parse(j['stage']),
+        department: _str(j['department']),
+        employmentType: _str(j['employmentType']),
+        hoursPerWeek: _int(j['hoursPerWeek'], 40),
+        payFrequency: _str(j['payFrequency'], 'biweekly'),
+        benefits: _strList(j['benefits']),
+        expectations: _strList(j['expectations']),
+      );
+
+  final String department;
+  final String employmentType;
+  final int hoursPerWeek;
+
+  /// weekly, biweekly or monthly.
+  final String payFrequency;
+  final List<String> benefits;
+  final List<String> expectations;
+
+  JobOffer withSalary(int s) => JobOffer(
+        title: title,
+        employer: employer,
+        salary: s,
+        salaryPeriod: salaryPeriod,
+        responsibilities: responsibilities,
+        startDay: startDay,
+        respondByDay: respondByDay,
+        stage: stage,
+        department: department,
+        employmentType: employmentType,
+        hoursPerWeek: hoursPerWeek,
+        payFrequency: payFrequency,
+        benefits: benefits,
+        expectations: expectations,
       );
 
   final String title;
@@ -497,6 +566,12 @@ class JobOffer {
         'startDay': startDay,
         'respondByDay': respondByDay,
         'stage': stage.name,
+        'department': department,
+        'employmentType': employmentType,
+        'hoursPerWeek': hoursPerWeek,
+        'payFrequency': payFrequency,
+        'benefits': benefits,
+        'expectations': expectations,
       };
 }
 
@@ -534,7 +609,11 @@ class JobApplication {
     this.decision,
     this.offer,
     List<StatusChange>? history,
-  }) : history = history ?? <StatusChange>[];
+    this.resumeId = '',
+    Map<String, String>? answers,
+    this.negotiation,
+  })  : history = history ?? <StatusChange>[],
+        answers = answers ?? <String, String>{};
 
   factory JobApplication.fromJson(Map<String, dynamic> j) => JobApplication(
         id: _str(j['id']),
@@ -554,7 +633,17 @@ class JobApplication {
         decision: j['decision'] is Map ? HiringDecision.fromJson(_map(j['decision'])) : null,
         offer: j['offer'] is Map ? JobOffer.fromJson(_map(j['offer'])) : null,
         history: _mapList(j['history']).map(StatusChange.fromJson).toList(),
+        resumeId: _str(j['resumeId']),
+        answers: <String, String>{for (final MapEntry<String, dynamic> e in _map(j['answers']).entries) e.key: _str(e.value)},
+        negotiation: j['negotiation'] is Map ? OfferNegotiation.fromJson(_map(j['negotiation'])) : null,
       );
+
+  /// Uploaded resume sent with the application; empty = the built resume.
+  String resumeId;
+
+  /// Employer application question id → answer.
+  final Map<String, String> answers;
+  OfferNegotiation? negotiation;
 
   final String id;
   final String postingId;
@@ -593,6 +682,9 @@ class JobApplication {
         if (decision != null) 'decision': decision!.toJson(),
         if (offer != null) 'offer': offer!.toJson(),
         'history': history.map((StatusChange s) => s.toJson()).toList(),
+        'resumeId': resumeId,
+        'answers': answers,
+        if (negotiation != null) 'negotiation': negotiation!.toJson(),
       };
 }
 
@@ -728,8 +820,16 @@ class Employment {
     List<AssignmentRecord>? assignments,
     List<PromotionRecord>? promotions,
     this.finalReview,
+    this.payFrequency = 'biweekly',
+    this.hoursPerWeek = 40,
+    this.contract,
+    Set<String>? onboarding,
+    List<PerformanceReview>? reviews,
+    this.unpaidWeeks = 0,
   })  : assignments = assignments ?? <AssignmentRecord>[],
-        promotions = promotions ?? <PromotionRecord>[];
+        promotions = promotions ?? <PromotionRecord>[],
+        onboarding = onboarding ?? <String>{},
+        reviews = reviews ?? <PerformanceReview>[];
 
   factory Employment.fromJson(Map<String, dynamic> j) => Employment(
         id: _str(j['id']),
@@ -747,7 +847,25 @@ class Employment {
         assignments: _mapList(j['assignments']).map(AssignmentRecord.fromJson).toList(),
         promotions: _mapList(j['promotions']).map(PromotionRecord.fromJson).toList(),
         finalReview: j['finalReview'] as String?,
+        payFrequency: _str(j['payFrequency'], 'biweekly'),
+        hoursPerWeek: _int(j['hoursPerWeek'], 40),
+        contract: j['contract'] is Map ? EmploymentContract.fromJson(_map(j['contract'])) : null,
+        onboarding: _strList(j['onboarding']).toSet(),
+        reviews: _mapList(j['reviews']).map(PerformanceReview.fromJson).toList(),
+        unpaidWeeks: _int(j['unpaidWeeks']),
       );
+
+  /// weekly, biweekly or monthly.
+  final String payFrequency;
+  final int hoursPerWeek;
+  EmploymentContract? contract;
+
+  /// Completed onboarding checklist item ids.
+  final Set<String> onboarding;
+  final List<PerformanceReview> reviews;
+
+  /// Approved work weeks not yet paid.
+  int unpaidWeeks;
 
   final String id;
   final String postingId;
@@ -812,6 +930,12 @@ class Employment {
         'assignments': assignments.map((AssignmentRecord a) => a.toJson()).toList(),
         'promotions': promotions.map((PromotionRecord p) => p.toJson()).toList(),
         if (finalReview != null) 'finalReview': finalReview,
+        'payFrequency': payFrequency,
+        'hoursPerWeek': hoursPerWeek,
+        if (contract != null) 'contract': contract!.toJson(),
+        'onboarding': onboarding.toList(),
+        'reviews': reviews.map((PerformanceReview r) => r.toJson()).toList(),
+        'unpaidWeeks': unpaidWeeks,
       };
 }
 
@@ -842,25 +966,346 @@ class CareerEvent {
   Map<String, dynamic> toJson() => <String, dynamic>{'day': day, 'text': text, 'kind': kind};
 }
 
-/// Everything the simulator saves for one student.
-/// One line in the simulated pay ledger (not real money).
+/// One line in the virtual earnings ledger (virtual USD, not real money).
 class MoneyEntry {
-  const MoneyEntry({required this.day, required this.amount, required this.text, this.kind = 'pay'});
+  const MoneyEntry({required this.day, required this.cents, required this.text, this.kind = 'pay', this.paycheckId = ''});
 
-  factory MoneyEntry.fromJson(Map<String, dynamic> j) =>
-      MoneyEntry(day: _int(j['day']), amount: _int(j['amount']), text: _str(j['text']), kind: _str(j['kind'], 'pay'));
+  factory MoneyEntry.fromJson(Map<String, dynamic> j) => MoneyEntry(
+        day: _int(j['day']),
+        cents: _int(j['cents']),
+        text: _str(j['text']),
+        kind: _str(j['kind'], 'pay'),
+        paycheckId: _str(j['paycheckId']),
+      );
 
   final int day;
 
-  /// Whole pounds; positive is money in.
-  final int amount;
+  /// Virtual US cents (net); positive is money in.
+  final int cents;
   final String text;
 
-  /// 'lab', 'salary', 'bonus' or 'pay'.
+  /// 'lab' (training stipend), 'salary' (net paycheck) or 'bonus'.
   final String kind;
+  final String paycheckId;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{'day': day, 'amount': amount, 'text': text, 'kind': kind};
+  Map<String, dynamic> toJson() => <String, dynamic>{'day': day, 'cents': cents, 'text': text, 'kind': kind, if (paycheckId.isNotEmpty) 'paycheckId': paycheckId};
 }
+
+/// A processed virtual paycheck. Its id is unique per employment and pay
+/// period, so the same period can never be paid twice.
+class Paycheck {
+  const Paycheck({
+    required this.id,
+    required this.employmentId,
+    required this.employer,
+    required this.title,
+    required this.period,
+    required this.weeks,
+    required this.hours,
+    required this.grossCents,
+    required this.deductionCents,
+    required this.day,
+    required this.frequency,
+  });
+
+  factory Paycheck.fromJson(Map<String, dynamic> j) => Paycheck(
+        id: _str(j['id']),
+        employmentId: _str(j['employmentId']),
+        employer: _str(j['employer']),
+        title: _str(j['title']),
+        period: _int(j['period']),
+        weeks: _int(j['weeks']),
+        hours: _int(j['hours']),
+        grossCents: _int(j['gross']),
+        deductionCents: _int(j['deductions']),
+        day: _int(j['day']),
+        frequency: _str(j['frequency'], 'biweekly'),
+      );
+
+  final String id;
+  final String employmentId;
+  final String employer;
+  final String title;
+
+  /// 1-based pay period of this employment.
+  final int period;
+  final int weeks;
+  final int hours;
+  final int grossCents;
+  final int deductionCents;
+  final int day;
+  final String frequency;
+
+  int get netCents => grossCents - deductionCents;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'employmentId': employmentId,
+        'employer': employer,
+        'title': title,
+        'period': period,
+        'weeks': weeks,
+        'hours': hours,
+        'gross': grossCents,
+        'deductions': deductionCents,
+        'day': day,
+        'frequency': frequency,
+      };
+}
+
+/// End-of-cycle performance review.
+class PerformanceReview {
+  const PerformanceReview({
+    required this.cycle,
+    required this.day,
+    required this.scores,
+    required this.overall,
+    required this.outcome,
+    required this.raisePercent,
+    required this.oldSalary,
+    required this.newSalary,
+    required this.comments,
+    this.promotionEligible = false,
+  });
+
+  factory PerformanceReview.fromJson(Map<String, dynamic> j) => PerformanceReview(
+        cycle: _int(j['cycle']),
+        day: _int(j['day']),
+        scores: <String, int>{for (final MapEntry<String, dynamic> e in _map(j['scores']).entries) e.key: _int(e.value)},
+        overall: _int(j['overall']),
+        outcome: _str(j['outcome']),
+        raisePercent: _int(j['raisePercent']),
+        oldSalary: _int(j['oldSalary']),
+        newSalary: _int(j['newSalary']),
+        comments: _strList(j['comments']),
+        promotionEligible: j['promotionEligible'] == true,
+      );
+
+  final int cycle;
+  final int day;
+  final Map<String, int> scores;
+  final int overall;
+
+  /// Excellent performance, Meets expectations, Needs improvement or Performance warning.
+  final String outcome;
+  final int raisePercent;
+  final int oldSalary;
+  final int newSalary;
+  final List<String> comments;
+  final bool promotionEligible;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'cycle': cycle,
+        'day': day,
+        'scores': scores,
+        'overall': overall,
+        'outcome': outcome,
+        'raisePercent': raisePercent,
+        'oldSalary': oldSalary,
+        'newSalary': newSalary,
+        'comments': comments,
+        'promotionEligible': promotionEligible,
+      };
+}
+
+/// The signed (simulated) employment contract.
+class EmploymentContract {
+  const EmploymentContract({required this.signedName, required this.signedDay, required this.terms});
+
+  factory EmploymentContract.fromJson(Map<String, dynamic> j) =>
+      EmploymentContract(signedName: _str(j['signedName']), signedDay: _int(j['signedDay']), terms: _strList(j['terms']));
+
+  final String signedName;
+  final int signedDay;
+  final List<String> terms;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'signedName': signedName, 'signedDay': signedDay, 'terms': terms};
+}
+
+/// A salary negotiation on an offer.
+class OfferNegotiation {
+  const OfferNegotiation({required this.message, required this.score, required this.accepted, required this.reply, required this.day});
+
+  factory OfferNegotiation.fromJson(Map<String, dynamic> j) => OfferNegotiation(
+        message: _str(j['message']),
+        score: _int(j['score']),
+        accepted: j['accepted'] == true,
+        reply: _str(j['reply']),
+        day: _int(j['day']),
+      );
+
+  final String message;
+  final int score;
+  final bool accepted;
+  final String reply;
+  final int day;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'message': message, 'score': score, 'accepted': accepted, 'reply': reply, 'day': day};
+}
+
+/// Profile fields read from an uploaded resume. Every value comes from the
+/// file's text; nothing is added. The student can correct them.
+class ParsedResume {
+  const ParsedResume({
+    this.name = '',
+    this.email = '',
+    this.phone = '',
+    this.headline = '',
+    this.summary = '',
+    this.education = const <String>[],
+    this.experience = const <String>[],
+    this.skills = const <String>[],
+    this.projects = const <String>[],
+    this.certifications = const <String>[],
+    this.achievements = const <String>[],
+    this.links = const <String>[],
+  });
+
+  factory ParsedResume.fromJson(Map<String, dynamic> j) => ParsedResume(
+        name: _str(j['name']),
+        email: _str(j['email']),
+        phone: _str(j['phone']),
+        headline: _str(j['headline']),
+        summary: _str(j['summary']),
+        education: _strList(j['education']),
+        experience: _strList(j['experience']),
+        skills: _strList(j['skills']),
+        projects: _strList(j['projects']),
+        certifications: _strList(j['certifications']),
+        achievements: _strList(j['achievements']),
+        links: _strList(j['links']),
+      );
+
+  final String name;
+  final String email;
+  final String phone;
+  final String headline;
+  final String summary;
+
+  /// One entry per line: "heading — detail" for education, experience, projects.
+  final List<String> education;
+  final List<String> experience;
+  final List<String> skills;
+  final List<String> projects;
+  final List<String> certifications;
+  final List<String> achievements;
+  final List<String> links;
+
+  ParsedResume copyWith({
+    String? name,
+    String? email,
+    String? phone,
+    String? headline,
+    String? summary,
+    List<String>? education,
+    List<String>? experience,
+    List<String>? skills,
+    List<String>? projects,
+    List<String>? certifications,
+    List<String>? achievements,
+  }) =>
+      ParsedResume(
+        name: name ?? this.name,
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        headline: headline ?? this.headline,
+        summary: summary ?? this.summary,
+        education: education ?? this.education,
+        experience: experience ?? this.experience,
+        skills: skills ?? this.skills,
+        projects: projects ?? this.projects,
+        certifications: certifications ?? this.certifications,
+        achievements: achievements ?? this.achievements,
+        links: links,
+      );
+
+  /// The text an employer reads, rebuilt from the (possibly corrected) fields.
+  String get asText => <String>[
+        name,
+        headline,
+        summary,
+        ...education,
+        ...experience,
+        ...projects,
+        skills.join(', '),
+        ...certifications,
+        ...achievements,
+      ].where((String s) => s.trim().isNotEmpty).join('\n');
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'headline': headline,
+        'summary': summary,
+        'education': education,
+        'experience': experience,
+        'skills': skills,
+        'projects': projects,
+        'certifications': certifications,
+        'achievements': achievements,
+        'links': links,
+      };
+}
+
+/// A resume file the student uploaded (PDF or DOCX).
+class ResumeUpload {
+  ResumeUpload({
+    required this.id,
+    required this.fileName,
+    required this.format,
+    required this.sizeBytes,
+    required this.uploadedDay,
+    required this.text,
+    required this.parsed,
+    this.storagePath = '',
+    this.reviewed = false,
+  });
+
+  factory ResumeUpload.fromJson(Map<String, dynamic> j) => ResumeUpload(
+        id: _str(j['id']),
+        fileName: _str(j['fileName']),
+        format: _str(j['format']),
+        sizeBytes: _int(j['sizeBytes']),
+        uploadedDay: _int(j['uploadedDay']),
+        text: _str(j['text']),
+        parsed: ParsedResume.fromJson(_map(j['parsed'])),
+        storagePath: _str(j['storagePath']),
+        reviewed: j['reviewed'] == true,
+      );
+
+  final String id;
+  final String fileName;
+
+  /// 'pdf' or 'docx'.
+  final String format;
+  final int sizeBytes;
+  final int uploadedDay;
+
+  /// Extracted text (capped) used for evaluation.
+  final String text;
+  ParsedResume parsed;
+
+  /// Firebase Storage path; empty when the file was not stored (offline/tests).
+  final String storagePath;
+
+  /// The student has checked and confirmed the extracted fields.
+  bool reviewed;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'fileName': fileName,
+        'format': format,
+        'sizeBytes': sizeBytes,
+        'uploadedDay': uploadedDay,
+        'text': text,
+        'parsed': parsed.toJson(),
+        'storagePath': storagePath,
+        'reviewed': reviewed,
+      };
+}
+
+/// Everything the simulator saves for one student.
 
 class CareerProfile {
   CareerProfile({
@@ -885,8 +1330,13 @@ class CareerProfile {
     Map<String, LabRun>? labRuns,
     List<LabCompletion>? labCompletions,
     List<MoneyEntry>? ledger,
+    List<Paycheck>? paychecks,
+    List<ResumeUpload>? resumeUploads,
+    this.defaultResumeId = '',
     this.updatedAtMs = 0,
   })  : ledger = ledger ?? <MoneyEntry>[],
+        paychecks = paychecks ?? <Paycheck>[],
+        resumeUploads = resumeUploads ?? <ResumeUpload>[],
         writings = writings ?? <String, String>{},
         labRuns = labRuns ?? <String, LabRun>{},
         labCompletions = labCompletions ?? <LabCompletion>[],
@@ -929,6 +1379,9 @@ class CareerProfile {
         labRuns: _map(j['labRuns']).map((String k, dynamic v) => MapEntry<String, LabRun>(k, LabRun.fromJson(_map(v)))),
         labCompletions: _mapList(j['labCompletions']).map(LabCompletion.fromJson).toList(),
         ledger: _mapList(j['ledger']).map(MoneyEntry.fromJson).toList(),
+        paychecks: _mapList(j['paychecks']).map(Paycheck.fromJson).toList(),
+        resumeUploads: _mapList(j['resumeUploads']).map(ResumeUpload.fromJson).toList(),
+        defaultResumeId: _str(j['defaultResumeId']),
         updatedAtMs: _int(j['updatedAtMs']),
       );
 
@@ -963,15 +1416,31 @@ class CareerProfile {
   final Map<String, LabRun> labRuns;
   final List<LabCompletion> labCompletions;
 
-  /// Simulated earnings from labs and jobs.
+  /// Virtual earnings (net, in US cents) from paychecks and training stipends.
   final List<MoneyEntry> ledger;
+
+  /// Every processed virtual paycheck.
+  final List<Paycheck> paychecks;
+
+  /// Uploaded resume files (at most three are kept).
+  final List<ResumeUpload> resumeUploads;
+
+  /// The upload used by default when applying; empty = the built resume.
+  String defaultResumeId;
   int updatedAtMs;
 
-  /// Current simulated balance in whole pounds.
-  int get balance => ledger.fold<int>(0, (int a, MoneyEntry e) => a + e.amount);
+  /// Current virtual balance in US cents.
+  int get balanceCents => ledger.fold<int>(0, (int a, MoneyEntry e) => a + e.cents);
 
-  /// Money earned in the last [days] simulated days.
-  int earnedInLast(int days) => ledger.where((MoneyEntry e) => e.amount > 0 && e.day > day - days).fold<int>(0, (int a, MoneyEntry e) => a + e.amount);
+  /// Virtual money earned in the last [days] simulated days, in cents.
+  int earnedInLast(int days) => ledger.where((MoneyEntry e) => e.cents > 0 && e.day > day - days).fold<int>(0, (int a, MoneyEntry e) => a + e.cents);
+
+  ResumeUpload? resumeUpload(String id) {
+    for (final ResumeUpload u in resumeUploads) {
+      if (u.id == id) return u;
+    }
+    return null;
+  }
 
   LabCompletion? bestLab(String labId) {
     LabCompletion? best;
@@ -1036,6 +1505,9 @@ class CareerProfile {
         'labRuns': labRuns.map((String k, LabRun v) => MapEntry<String, dynamic>(k, v.toJson())),
         'labCompletions': labCompletions.map((LabCompletion c) => c.toJson()).toList(),
         'ledger': ledger.map((MoneyEntry e) => e.toJson()).toList(),
+        'paychecks': paychecks.map((Paycheck e) => e.toJson()).toList(),
+        'resumeUploads': resumeUploads.map((ResumeUpload e) => e.toJson()).toList(),
+        'defaultResumeId': defaultResumeId,
         'updatedAtMs': updatedAtMs,
       };
 }

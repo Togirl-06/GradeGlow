@@ -255,7 +255,7 @@ class BulletList extends StatelessWidget {
 String money(int amount, String period) {
   if (amount == 0) return 'Unpaid placement';
   final String s = amount.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (Match m) => '${m[1]},');
-  return '£$s / ${period == 'year' ? 'year' : period}';
+  return '\$$s / ${period == 'hour' ? 'hour' : period} (virtual USD)';
 }
 
 /// AI help that is clearly separated from grading.

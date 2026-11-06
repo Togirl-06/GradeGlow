@@ -34,6 +34,29 @@ abstract class TaskSpec {
 }
 
 // ---------------------------------------------------------------------------
+// Workstation task: a practical lab scenario done as part of a job.
+
+/// A workplace task carried out in the field's practical lab (the IDE, ward,
+/// ledger, drawing office …) and graded by that lab's own checks.
+class LabTaskSpec extends TaskSpec {
+  const LabTaskSpec({
+    required super.id,
+    required super.title,
+    required super.brief,
+    required this.labId,
+    required this.scenarioId,
+    super.skills,
+    super.passMark,
+  });
+
+  final String labId;
+  final String scenarioId;
+
+  @override
+  String get kindLabel => 'Workstation task';
+}
+
+// ---------------------------------------------------------------------------
 // Code (graded only by the server code judge)
 
 class CodeTaskSpec extends TaskSpec {

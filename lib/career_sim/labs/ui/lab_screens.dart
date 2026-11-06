@@ -722,7 +722,7 @@ class _CompletePhase extends StatelessWidget {
         if (paid != null)
           Padding(
             padding: const EdgeInsets.only(top: 6),
-            child: Text('+${pounds(paid.amount)} simulated pay earned', key: const ValueKey<String>('lab_pay'), textAlign: TextAlign.center,
+            child: Text('+${usd(paid.cents)} training stipend (virtual USD)', key: const ValueKey<String>('lab_pay'), textAlign: TextAlign.center,
                 style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w800)),
           ),
         const SizedBox(height: 8),

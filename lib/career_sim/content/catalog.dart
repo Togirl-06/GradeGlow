@@ -7,6 +7,7 @@ import 'business_content.dart';
 import 'comm_content.dart';
 import 'cs_content.dart';
 import 'engineering_content.dart';
+import 'job_market.dart';
 import 'law_content.dart';
 import 'medicine_content.dart';
 import 'nursing_content.dart';
@@ -36,6 +37,7 @@ abstract final class CareerCatalog {
     ...mathPostings,
     ...commPostings,
     ...sciencePostings,
+    ...marketPostings,
   ];
 
   static const List<InterviewPlan> interviewPlans = <InterviewPlan>[
@@ -60,6 +62,7 @@ abstract final class CareerCatalog {
     ...mathWorkplaces,
     ...commWorkplaces,
     ...scienceWorkplaces,
+    ...marketWorkplaces,
   ];
 
   static Department? department(String id) {
