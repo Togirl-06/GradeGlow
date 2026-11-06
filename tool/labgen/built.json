@@ -197,6 +197,54 @@
   "scenarios": 15,
   "title": "Market Structures"
  },
+ "en_lab_canvas": {
+  "major": "entrepreneurship",
+  "note": "Build business model canvases: sort the components, test the logic and fix weak blocks.",
+  "scenarios": 15,
+  "title": "Business Model Design"
+ },
+ "en_lab_discovery": {
+  "major": "entrepreneurship",
+  "note": "Interview simulated customers without leading them, and judge whether the problem is real.",
+  "scenarios": 15,
+  "title": "Customer Discovery"
+ },
+ "en_lab_finance": {
+  "major": "entrepreneurship",
+  "note": "Startup costs, pricing, break-even, burn rate and runway for a new venture.",
+  "scenarios": 15,
+  "title": "Financial Planning"
+ },
+ "en_lab_opportunity": {
+  "major": "entrepreneurship",
+  "note": "Turn observed problems into testable business opportunities and size them honestly.",
+  "scenarios": 15,
+  "title": "Opportunity Identification"
+ },
+ "en_lab_pitch": {
+  "major": "entrepreneurship",
+  "note": "Face simulated investors who question your model, numbers, market and risks \u2014 and decide w",
+  "scenarios": 15,
+  "title": "Investor Pitch"
+ },
+ "en_lab_pitchprep": {
+  "major": "entrepreneurship",
+  "note": "Structure a pitch deck, check every claim and write the investment ask.",
+  "scenarios": 15,
+  "title": "Pitch Preparation"
+ },
+ "en_lab_startup": {
+  "major": "entrepreneurship",
+  "note": "Run the venture through realistic challenges: hiring, cash crunches, pivots and growth dec",
+  "scenarios": 15,
+  "title": "Startup Management"
+ },
+ "en_lab_validation": {
+  "major": "entrepreneurship",
+  "note": "Landing-page tests, pre-orders, competitor pricing and pilots that prove demand before bui",
+  "scenarios": 15,
+  "title": "Market Validation"
+ },
  "fi_lab_capstone": {
   "major": "finance",
   "note": "A full investment decision for a client: project NPV, financing, sensitivity and the board",

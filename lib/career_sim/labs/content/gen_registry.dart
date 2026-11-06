@@ -5,6 +5,7 @@ import 'gen_biology.dart';
 import 'gen_bizadmin.dart';
 import 'gen_chemistry.dart';
 import 'gen_economics.dart';
+import 'gen_entrepreneurship.dart';
 import 'gen_finance.dart';
 import 'gen_hr.dart';
 import 'gen_industrial.dart';
@@ -19,6 +20,7 @@ final List<LabSpec> generatedLabs = <LabSpec>[
   ...businessAdministrationGenLabs,
   ...chemistryGenLabs,
   ...economicsGenLabs,
+  ...entrepreneurshipGenLabs,
   ...financeGenLabs,
   ...humanResourceManagementGenLabs,
   ...industrialEngineeringGenLabs,
@@ -32,6 +34,7 @@ const Map<String, String> generatedMajorLabels = <String, String>{
   'business_administration': 'Business Administration',
   'chemistry': 'Chemistry',
   'economics': 'Economics',
+  'entrepreneurship': 'Entrepreneurship',
   'finance': 'Finance',
   'human_resource_management': 'Human Resources Management',
   'industrial_engineering': 'Industrial Engineering',

@@ -106,7 +106,7 @@ class R:  # rubric item
 
 
 class Sec:
-    def __init__(self, id, heading, rubric, model, guidance='', min_words=25):
+    def __init__(self, id, heading, rubric, model, guidance='', min_words=20):
         self.id, self.heading, self.rubric, self.model, self.guidance, self.min_words = id, heading, rubric, model, guidance, min_words
 
 

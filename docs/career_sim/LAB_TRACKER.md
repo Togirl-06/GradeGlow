@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 77, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 103, Verified complete: 0.
+**198 labs.** Not started: 69, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 111, Verified complete: 0.
 
 ## Majors
 
@@ -33,7 +33,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Business and Economics | Accounting | 8 | In progress |
 | School of Business and Economics | Finance | 7 | Tested |
 | School of Business and Economics | Economics | 6 | Tested |
-| School of Business and Economics | Entrepreneurship | 8 | Not started |
+| School of Business and Economics | Entrepreneurship | 8 | Tested |
 | School of Business and Economics | Marketing | 7 | Tested |
 | School of Business and Economics | Human Resources Management | 7 | Tested |
 | School of Business and Economics | International Business | 7 | Not started |
@@ -288,14 +288,14 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Opportunity Identification | Not started | 0 / 15 |  |  |
-| B. Customer Discovery | Not started | 0 / 15 |  |  |
-| C. Market Validation | Not started | 0 / 15 |  |  |
-| D. Business Model Design | Not started | 0 / 15 |  |  |
-| E. Financial Planning | Not started | 0 / 15 |  |  |
-| F. Pitch Preparation | Not started | 0 / 15 |  |  |
-| G. Investor Pitch | Not started | 0 / 15 |  |  |
-| H. Startup Management | Not started | 0 / 15 |  |  |
+| A. Opportunity Identification | Tested | 15 / 15 | `en_lab_opportunity` | Turn observed problems into testable business opportunities and size them honestly. |
+| B. Customer Discovery | Tested | 15 / 15 | `en_lab_discovery` | Interview simulated customers without leading them, and judge whether the problem is real. |
+| C. Market Validation | Tested | 15 / 15 | `en_lab_validation` | Landing-page tests, pre-orders, competitor pricing and pilots that prove demand before bui |
+| D. Business Model Design | Tested | 15 / 15 | `en_lab_canvas` | Build business model canvases: sort the components, test the logic and fix weak blocks. |
+| E. Financial Planning | Tested | 15 / 15 | `en_lab_finance` | Startup costs, pricing, break-even, burn rate and runway for a new venture. |
+| F. Pitch Preparation | Tested | 15 / 15 | `en_lab_pitchprep` | Structure a pitch deck, check every claim and write the investment ask. |
+| G. Investor Pitch | Tested | 15 / 15 | `en_lab_pitch` | Face simulated investors who question your model, numbers, market and risks — and decide w |
+| H. Startup Management | Tested | 15 / 15 | `en_lab_startup` | Run the venture through realistic challenges: hiring, cash crunches, pivots and growth dec |
 
 ### Marketing
 
