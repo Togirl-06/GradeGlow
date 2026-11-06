@@ -116,7 +116,7 @@ SCHOOLS = [
             ("Thermodynamics", built("me_lab_thermo", "tested", "Heating, Carnot, conduction, gas, refrigeration")),
             ("Fluid Mechanics", built("me_lab_fluids", "tested", "Continuity, hydrostatics, pumps, Reynolds, draining")),
             ("Machine Design", built("me_lab_machine", "tested", "Shafts, springs, bolts, gears, bearings")),
-            ("CAD and Technical Drawing", built("me_lab_cad", "in_progress", "Tolerances, scales, fits, mass and section properties; no drawing/3D modelling tool yet")),
+            ("CAD and Technical Drawing", built("me_lab_cad", "tested", "2D drawing sheet (outline, holes, datum dimensioning, redundancy and tolerance checks, title block) plus tolerance, scale, fit, mass and section calculations; no 3D modelling")),
             ("Failure Analysis", built("me_lab_failure", "tested", "5 failure investigations x 3 levels")),
         ]),
         ("civil_engineering", "Civil Engineering", [
@@ -231,7 +231,7 @@ SCENARIOS = {
     "ma_lab_algebra": 15, "ma_lab_calculus": 15, "ma_lab_linalg": 15, "ma_lab_stats": 15, "ma_lab_de": 15, "ma_lab_applied": 15,
     "law_lab_research": 15, "law_lab_analysis": 15, "law_lab_drafting": 15, "law_lab_consultation": 15,
     "law_lab_negotiation": 15, "law_lab_courtroom": 15, "law_lab_fullcase": 15,
-    "me_lab_mechanics": 15, "me_lab_thermo": 15, "me_lab_fluids": 15, "me_lab_machine": 15, "me_lab_cad": 15, "me_lab_failure": 15,
+    "me_lab_mechanics": 15, "me_lab_thermo": 15, "me_lab_fluids": 15, "me_lab_machine": 15, "me_lab_cad": 24, "me_lab_failure": 15,
     "ce_lab_structures": 15, "ce_lab_materials": 15, "ce_lab_geotech": 15, "ce_lab_surveying": 15, "ce_lab_transport": 15, "ce_lab_construction": 15,
     "che_lab_fundamentals": 15, "che_lab_reaction": 15, "che_lab_separation": 15, "che_lab_flowsheet": 15, "che_lab_control": 15, "che_lab_safety": 15,
     "ee_lab_construction": 15, "ee_lab_analysis": 15, "ee_lab_electronics": 15, "ee_lab_logic": 15, "ee_lab_power": 15, "ee_lab_faults": 15,

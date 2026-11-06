@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 2, Functionality completed: 0, Tested: 196, Verified complete: 0.
+**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 1, Functionality completed: 0, Tested: 197, Verified complete: 0.
 
 ## Majors
 
@@ -23,7 +23,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
 | School of Medicine and Health Sciences | Nursing | 12 | Tested |
 | School of Law | Law | 7 | Tested |
-| School of Engineering | Mechanical Engineering | 6 | In progress |
+| School of Engineering | Mechanical Engineering | 6 | Tested |
 | School of Engineering | Civil Engineering | 6 | Tested |
 | School of Engineering | Electrical Engineering | 6 | Tested |
 | School of Engineering | Chemical Engineering | 6 | Tested |
@@ -179,7 +179,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | B. Thermodynamics | Tested | 15 / 15 | `me_lab_thermo` | Heating, Carnot, conduction, gas, refrigeration |
 | C. Fluid Mechanics | Tested | 15 / 15 | `me_lab_fluids` | Continuity, hydrostatics, pumps, Reynolds, draining |
 | D. Machine Design | Tested | 15 / 15 | `me_lab_machine` | Shafts, springs, bolts, gears, bearings |
-| E. CAD and Technical Drawing | Functionality in progress | 15 / 15 | `me_lab_cad` | Tolerances, scales, fits, mass and section properties; no drawing/3D modelling tool yet |
+| E. CAD and Technical Drawing | Tested | 24 / 15 | `me_lab_cad` | 2D drawing sheet (outline, holes, datum dimensioning, redundancy and tolerance checks, title block) plus tolerance, scale, fit, mass and section calculations; no 3D modelling |
 | F. Failure Analysis | Tested | 15 / 15 | `me_lab_failure` | 5 failure investigations x 3 levels |
 
 ### Civil Engineering

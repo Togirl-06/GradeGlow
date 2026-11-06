@@ -5,6 +5,7 @@ library;
 import '../lab_models.dart';
 import '../math/math_steps.dart';
 import '../work/work_steps.dart';
+import '../work/drawing_step.dart';
 import 'design_kit.dart';
 
 const LabPerson _ian = LabPerson('Ian Fraser CEng', 'Principal Engineer', 'Show me the hand calculation first, then the design. Every number must trace back to a formula.');
@@ -467,7 +468,7 @@ final LabSpec mechCadLab = designLab(
   objectives: const <String>['Specify tolerances and fits', 'Choose scales', 'Compute mass and section properties'],
   skills: const <String>['en_mech'],
   reference: const <String>['Worst-case stack: T = Σt. Statistical stack: T = √Σt². Steel density 7.85 g/cm³.', 'Rectangle section modulus Z = b h² / 6.'],
-  scenarios: fromProblems('mc', const <DesignProblem>[
+  scenarios: _byLevel(<LabScenario>[..._cadDrawings, ...fromProblems('mc', const <DesignProblem>[
     DesignProblem(
       key: 'stack',
       title: 'Tolerance stack-up',
@@ -566,7 +567,7 @@ final LabSpec mechCadLab = designLab(
       models: <Map<String, double>>[<String, double>{'b': 30, 'h': 130}, <String, double>{'b': 30, 'h': 130}, <String, double>{'b': 30, 'h': 142}],
       interpret: ChoiceQuestion('deep', 'For the same area, which shape resists bending best?', <String>['Deep and narrow', 'Square', 'Wide and shallow'], 0),
     ),
-  ], person: _ian),
+  ], person: _ian)]),
 );
 
 // ---------------------------------------------------------------- F. Failure analysis
@@ -683,3 +684,46 @@ final LabSpec mechFailureLab = designLab(
 );
 
 final List<LabSpec> mechanicalLabs = <LabSpec>[mechMechanicsLab, mechThermoLab, mechFluidsLab, mechMachineDesignLab, mechCadLab, mechFailureLab];
+
+
+// ---------------------------------------------------------------- E. CAD drawings
+
+List<LabScenario> _byLevel(List<LabScenario> all) => <LabScenario>[
+      for (final LabDifficulty d in LabDifficulty.values) ...all.where((LabScenario s) => s.level == d),
+    ];
+
+/// Parts drawn on the CAD sheet: geometry, then full dimensioning, then a
+/// toleranced production release.
+final List<LabScenario> _cadDrawings = <LabScenario>[
+  for (final DrawingPart p in const <DrawingPart>[
+    DrawingPart(
+      key: 'bracket',
+      title: 'Bracket plate',
+      client: 'Fraser Fabrication',
+      width: 120,
+      height: 80,
+      holes: <HoleSpec>[HoleSpec(20, 20, 10), HoleSpec(100, 20, 10), HoleSpec(20, 60, 10), HoleSpec(100, 60, 10)],
+      tols: <String?>['H7', 'H7', 'H7', 'H7'],
+      countNote: true,
+    ),
+    DrawingPart(
+      key: 'motorplate',
+      title: 'Motor mounting plate',
+      client: 'Northline Conveyors',
+      width: 160,
+      height: 100,
+      holes: <HoleSpec>[HoleSpec(80, 50, 32), HoleSpec(30, 50, 6.6), HoleSpec(130, 50, 6.6)],
+      tols: <String?>['H7', null, null],
+    ),
+    DrawingPart(
+      key: 'sensorbar',
+      title: 'Sensor mounting bar',
+      client: 'Calder Robotics',
+      width: 300,
+      height: 60,
+      holes: <HoleSpec>[HoleSpec(25, 30, 8), HoleSpec(150, 30, 8), HoleSpec(275, 30, 8)],
+      tols: <String?>['±0.05', '±0.05', '±0.05'],
+    ),
+  ])
+    ...drawingScenarios('mcd', p, levels: const <LabDifficulty>[LabDifficulty.foundation, LabDifficulty.intermediate, LabDifficulty.advanced], person: _ian, skills: const <String>['en_mech']),
+];
