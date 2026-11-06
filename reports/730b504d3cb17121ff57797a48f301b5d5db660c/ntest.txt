@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: career simulator bug-fix starters fail the hidden tests; reference fixes pass
+ok 1 - career simulator bug-fix starters fail the hidden tests; reference fixes pass
+  ---
+  duration_ms: 333.476735
+  type: 'test'
+  ...
+# Subtest: parses LeetCode-style inputs
+ok 2 - parses LeetCode-style inputs
+  ---
+  duration_ms: 2.456273
+  type: 'test'
+  ...
+# Subtest: python: correct solution is Accepted on hidden tests
+ok 3 - python: correct solution is Accepted on hidden tests
+  ---
+  duration_ms: 26.63548
+  type: 'test'
+  ...
+# Subtest: javascript: correct solution is Accepted
+ok 4 - javascript: correct solution is Accepted
+  ---
+  duration_ms: 21.664343
+  type: 'test'
+  ...
+# Subtest: starter code or padding is never Accepted (the old fake judge accepted long code)
+ok 5 - starter code or padding is never Accepted (the old fake judge accepted long code)
+  ---
+  duration_ms: 59.998482
+  type: 'test'
+  ...
+# Subtest: wrong answer on a hidden case reveals that one case only
+ok 6 - wrong answer on a hidden case reveals that one case only
+  ---
+  duration_ms: 30.740686
+  type: 'test'
+  ...
+# Subtest: runtime error, syntax error and missing function are reported
+ok 7 - runtime error, syntax error and missing function are reported
+  ---
+  duration_ms: 173.179466
+  type: 'test'
+  ...
+# Subtest: infinite loop is Time Limit Exceeded
+ok 8 - infinite loop is Time Limit Exceeded
+  ---
+  duration_ms: 6010.058596
+  type: 'test'
+  ...
+# Subtest: linked list, tree, in-place and any-order problems
+ok 9 - linked list, tree, in-place and any-order problems
+  ---
+  duration_ms: 121.858858
+  type: 'test'
+  ...
+# Subtest: student prints do not break grading
+ok 10 - student prints do not break grading
+  ---
+  duration_ms: 20.060697
+  type: 'test'
+  ...
+# Subtest: unsupported languages and unparseable problems are labeled, not faked
+ok 11 - unsupported languages and unparseable problems are labeled, not faked
+  ---
+  duration_ms: 0.417424
+  type: 'test'
+  ...
+# Subtest: runner outage is reported as such
+ok 12 - runner outage is reported as such
+  ---
+  duration_ms: 0.422211
+  type: 'test'
+  ...
+# Subtest: piston adapter sends limits and maps the response
+ok 13 - piston adapter sends limits and maps the response
+  ---
+  duration_ms: 0.253876
+  type: 'test'
+  ...
+# Subtest: records: points only on first Accepted, attempts always count
+ok 14 - records: points only on first Accepted, attempts always count
+  ---
+  duration_ms: 0.162808
+  type: 'test'
+  ...
+# Subtest: every problem the app lists can be graded by the server
+ok 15 - every problem the app lists can be graded by the server
+  ---
+  duration_ms: 5.132151
+  type: 'test'
+  ...
+# Subtest: GradeGlow-original problems: both references pass, starters fail
+ok 16 - GradeGlow-original problems: both references pass, starters fail
+  ---
+  duration_ms: 1403.48339
+  type: 'test'
+  ...
+# Subtest: lab answer keys match reference solutions
+ok 17 - lab answer keys match reference solutions
+  ---
+  duration_ms: 3094.610874
+  type: 'test'
+  ...
+# Subtest: bundled judge is up to date with functions/code_judge
+ok 18 - bundled judge is up to date with functions/code_judge
+  ---
+  duration_ms: 4.309505
+  type: 'test'
+  ...
+# Subtest: Python runs in Pyodide and is graded with the server's rules
+ok 19 - Python runs in Pyodide and is graded with the server's rules
+  ---
+  duration_ms: 1517.067666
+  type: 'test'
+  ...
+# Subtest: JavaScript runs and is graded
+ok 20 - JavaScript runs and is graded
+  ---
+  duration_ms: 2.386748
+  type: 'test'
+  ...
+# Subtest: bug-fix starters fail in the app runner exactly as on the server
+ok 21 - bug-fix starters fail in the app runner exactly as on the server
+  ---
+  duration_ms: 40.687654
+  type: 'test'
+  ...
+# Subtest: programs print output and read stdin
+ok 22 - programs print output and read stdin
+  ---
+  duration_ms: 4.08483
+  type: 'test'
+  ...
+# Subtest: SQL runs against a fresh SQLite database each time
+ok 23 - SQL runs against a fresh SQLite database each time
+  ---
+  duration_ms: 29.580119
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7923.366462
