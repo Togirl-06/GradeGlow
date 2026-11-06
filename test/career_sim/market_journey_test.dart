@@ -11,6 +11,8 @@ import 'package:ai_study_buddy/career_sim/engine/interview_engine.dart';
 import 'package:ai_study_buddy/career_sim/engine/market_rules.dart';
 import 'package:ai_study_buddy/career_sim/engine/pay_rules.dart';
 import 'package:ai_study_buddy/career_sim/engine/text_rubric.dart';
+import 'package:ai_study_buddy/career_sim/hospital/hospital_cases.dart';
+import 'package:ai_study_buddy/career_sim/hospital/hospital_engine.dart';
 import 'package:ai_study_buddy/career_sim/labs/lab_catalog.dart';
 import 'package:ai_study_buddy/career_sim/labs/lab_models.dart';
 import 'package:ai_study_buddy/career_sim/model/career_models.dart';
@@ -26,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
+import 'hospital_solver.dart';
 import 'labs_flow_test.dart' show FakeLabRunner, k;
 
 Uint8List fixture(String name) => File('test/fixtures/resumes/$name').readAsBytesSync();
@@ -105,7 +108,7 @@ void main() {
 
       // Practical evidence: pass one lab this role works in.
       final WorkplaceDef w = CareerCatalog.workplace(job.workplaceId)!;
-      final LabTaskSpec firstTask = w.assignments.first.task as LabTaskSpec;
+      final LabTaskSpec firstTask = w.assignments.map((AssignmentSpec x) => x.task).whereType<LabTaskSpec>().first;
       final LabSpec firstLab = LabCatalog.lab(firstTask.labId)!;
       await passLab(s, firstLab, firstLab.scenario(firstTask.scenarioId)!);
 
@@ -178,12 +181,30 @@ void main() {
       for (int i = 0; i < 4; i++) {
         final AssignmentRecord r = await s.requestAssignment();
         final AssignmentSpec spec = s.specOf(e, r)!;
-        final LabTaskSpec t = spec.task as LabTaskSpec;
-        final LabSpec lab = LabCatalog.lab(t.labId)!;
-        await passLab(s, lab, lab.scenario(t.scenarioId)!, forWork: true);
-        final LabCompletion done = s.profile.labCompletions.last;
-        expect(done.scenarioId, t.scenarioId);
-        final SupervisorEvaluation ev = await s.submitAssignment(TaskResult(taskId: t.id, score: done.score, passed: done.passed), handoff);
+        final TaskResult result;
+        if (spec.task case final HospitalTaskSpec h) {
+          // Nursing and medicine work happens in the virtual hospital.
+          final HospitalResult hr;
+          if (h.caseId == wardShift.id) {
+            await s.startShift(restart: true);
+            await solveShift(() => s.shiftSim(wardShift.id)!, s.shiftAct);
+            hr = await s.finishShift(goodHandover);
+          } else {
+            await s.startHospitalCase(h.caseId, restart: true);
+            await solveCase(() => s.hospitalSim(h.caseId)!, (SimAction a) => s.hospitalAct(h.caseId, a));
+            hr = await s.finishHospitalCase(h.caseId);
+          }
+          expect(hr.passed, isTrue, reason: '${h.caseId}: ${hr.score} ${hr.notes}');
+          result = TaskResult(taskId: h.id, score: hr.score, passed: hr.passed);
+        } else {
+          final LabTaskSpec t = spec.task as LabTaskSpec;
+          final LabSpec lab = LabCatalog.lab(t.labId)!;
+          await passLab(s, lab, lab.scenario(t.scenarioId)!, forWork: true);
+          final LabCompletion done = s.profile.labCompletions.last;
+          expect(done.scenarioId, t.scenarioId);
+          result = TaskResult(taskId: t.id, score: done.score, passed: done.passed);
+        }
+        final SupervisorEvaluation ev = await s.submitAssignment(result, handoff);
         expect(ev.overall, greaterThanOrEqualTo(85), reason: ev.comments.join(' | '));
         await s.advanceDay();
       }

@@ -6,7 +6,11 @@
 /// All employers are fictional and every salary is illustrative virtual USD.
 library;
 
+import 'dart:math' as math;
+
 import '../engine/text_rubric.dart';
+import '../hospital/hospital_cases.dart';
+import '../hospital/hospital_models.dart';
 import '../labs/lab_catalog.dart';
 import '../labs/lab_models.dart';
 import '../model/career_models.dart';
@@ -83,7 +87,11 @@ class RoleFamily {
     required this.interview,
     this.payFrequency = 'biweekly',
     this.note = '',
+    this.hospital = const <String>[],
   });
+
+  /// Virtual-hospital cases (or the ward shift) assigned as work.
+  final List<String> hospital;
 
   final String id;
   final String deptId;
@@ -298,6 +306,7 @@ final List<RoleFamily> roleFamilies = <RoleFamily>[
   RoleFamily(
     id: 'nursing', deptId: 'nursing', company: 'mercy', team: 'Medical-Surgical Unit', supervisor: 'Joy Mensah, RN', supervisorRole: 'Nurse Unit Manager',
     labs: <String>['nu_lab_vitals', 'nu_lab_assessment', 'nu_lab_meds', 'nu_lab_documentation', 'nu_lab_medsurg', 'nu_lab_procedures', 'nu_lab_emergency', 'nu_lab_shift'],
+    hospital: <String>['ward_postop', 'shift_ward_am', 'ed_asthma', 'ward_diabetes', 'medsurg_delirium', 'peds_bronchiolitis', 'onc_neutropenic', 'maternity_pph', 'icu_sepsis'],
     titles: _ladder('Nursing Assistant Trainee', 'Nursing Graduate Trainee', 'Staff Nurse (simulation)', 'Senior Staff Nurse (simulation)', 'Charge Nurse (simulation)', 'Nurse Unit Manager (simulation)'),
     note: _clinicalNote,
     questions: <ApplicationQuestion>[
@@ -329,6 +338,7 @@ final List<RoleFamily> roleFamilies = <RoleFamily>[
   RoleFamily(
     id: 'medtrainee', deptId: 'medicine', company: 'mercy', team: 'Internal Medicine', supervisor: 'Dr Farah Siddiqui', supervisorRole: 'Attending Physician',
     labs: <String>['md_lab_assessment', 'md_lab_exam', 'md_lab_diagnostics', 'md_lab_reasoning', 'md_lab_emergency', 'md_lab_anatomy'],
+    hospital: <String>['ed_chest_pain', 'cardio_af', 'medsurg_delirium', 'neuro_stroke', 'lab_potassium', 'icu_sepsis', 'radiology_contrast'],
     titles: _ladder('Clinical Observer', 'Medical Graduate Trainee (simulation)', 'Resident Physician (simulation)', 'Senior Resident (simulation)', 'Chief Resident (simulation)', 'Attending Physician (simulation)'),
     note: _clinicalNote,
     payFrequency: 'monthly',
@@ -375,6 +385,7 @@ final List<RoleFamily> roleFamilies = <RoleFamily>[
   RoleFamily(
     id: 'medlab', deptId: 'medicine', company: 'cedar', team: 'Diagnostics Laboratory', supervisor: 'Marcus Webb', supervisorRole: 'Laboratory Supervisor',
     labs: <String>['md_lab_diagnostics', 'bi_lab_micro', 'ch_lab_analytical', 'bi_lab_microscopy'],
+    hospital: <String>['lab_potassium'],
     titles: _ladder('Laboratory Intern', 'Medical Laboratory Assistant', 'Medical Laboratory Technician', 'Medical Laboratory Scientist', 'Senior Laboratory Scientist', 'Laboratory Manager'),
     note: _clinicalNote,
     payFrequency: 'weekly',
@@ -395,6 +406,7 @@ final List<RoleFamily> roleFamilies = <RoleFamily>[
   RoleFamily(
     id: 'healthadmin', deptId: 'medicine', company: 'mercy', team: 'Patient Services Administration', supervisor: 'Angela Ruiz', supervisorRole: 'Practice Manager',
     labs: <String>['ba_lab_operations', 'nu_lab_documentation', 'ba_lab_people', 'ba_lab_projects'],
+    hospital: <String>['pharmacy_allergy'],
     titles: _ladder('Healthcare Admin Intern', 'Healthcare Administration Assistant', 'Healthcare Administrator', 'Healthcare Operations Coordinator', 'Senior Healthcare Administrator', 'Practice Manager'),
     questions: <ApplicationQuestion>[_motivation('healthadmin')],
     interview: <InterviewQuestion>[
@@ -1193,6 +1205,28 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
     // Two tasks per level from each lab, so the work grows harder over time.
     perLab.add(<LabScenario>[for (final LabDifficulty d in LabDifficulty.values) ...l.atLevel(d).take(2)]);
   }
+  final List<AssignmentSpec> hospitalWork = <AssignmentSpec>[
+    for (final String id in f.hospital)
+      if (id == wardShift.id)
+        AssignmentSpec(
+          id: 'mk_${f.id}_h_$id',
+          title: wardShift.title,
+          ticket: wardShift.brief,
+          acceptance: const <String>['Care for all three patients safely', 'No critical safety errors', 'Give a handover at the end of the shift'],
+          task: HospitalTaskSpec(id: 'mk_${f.id}_h_$id', title: wardShift.title, brief: wardShift.brief, caseId: id),
+          deadlineDays: 2,
+        )
+      else if (hospitalCase(id) case final PatientCase c)
+        AssignmentSpec(
+          id: 'mk_${f.id}_h_$id${c.level == CaseLevel.advanced ? '_lead' : ''}',
+          title: '${c.dept.short}: ${c.name} — ${c.complaint}',
+          ticket: 'You are assigned ${c.name}, ${c.age == 0 ? 'an infant' : '${c.age} years old'}, in the ${c.dept.label}: ${c.complaint.toLowerCase()}. Assess, act within your scope, escalate and document.',
+          acceptance: const <String>['Score 70 or more on the clinical rubric', 'No critical safety errors', 'Documentation complete'],
+          task: HospitalTaskSpec(id: 'mk_${f.id}_h_$id', title: '${c.name}: ${c.complaint}', brief: c.complaint, caseId: id),
+          deadlineDays: c.level == CaseLevel.advanced ? 3 : 2,
+          leadership: c.level == CaseLevel.advanced,
+        ),
+  ];
   final List<AssignmentSpec> out = <AssignmentSpec>[];
   // Round-robin across labs so consecutive days bring different kinds of work.
   for (int round = 0; round < 6; round++) {
@@ -1227,7 +1261,14 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
       ));
     }
   }
-  return out;
+  if (hospitalWork.isEmpty) return out;
+  // Alternate hospital placements with workstation tasks.
+  final List<AssignmentSpec> mixed = <AssignmentSpec>[];
+  for (int i = 0; i < math.max(hospitalWork.length, out.length); i++) {
+    if (i < hospitalWork.length) mixed.add(hospitalWork[i]);
+    if (i < out.length) mixed.add(out[i]);
+  }
+  return mixed;
 }
 
 final List<WorkplaceDef> marketWorkplaces = <WorkplaceDef>[

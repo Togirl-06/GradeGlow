@@ -56,6 +56,24 @@ class LabTaskSpec extends TaskSpec {
   String get kindLabel => 'Workstation task';
 }
 
+/// A workplace task in the virtual hospital: a patient case or a full shift.
+class HospitalTaskSpec extends TaskSpec {
+  const HospitalTaskSpec({
+    required super.id,
+    required super.title,
+    required super.brief,
+    required this.caseId,
+    super.skills,
+    super.passMark,
+  });
+
+  /// Patient case id, or a shift id.
+  final String caseId;
+
+  @override
+  String get kindLabel => 'Hospital placement';
+}
+
 // ---------------------------------------------------------------------------
 // Code (graded only by the server code judge)
 

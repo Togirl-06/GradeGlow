@@ -11,6 +11,9 @@ import '../engine/career_rules.dart';
 import '../engine/market_rules.dart';
 import '../engine/pay_rules.dart';
 import '../engine/text_rubric.dart';
+import '../hospital/hospital_cases.dart';
+import '../hospital/hospital_engine.dart';
+import '../hospital/hospital_models.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../labs/lab_catalog.dart';
@@ -402,6 +405,172 @@ class CareerSimStore extends ChangeNotifier {
         for (final String id in lab.prerequisites)
           if (!profile.labPassed(id)) LabCatalog.lab(id)?.title ?? id,
       ];
+
+  // ------------------------------------------------------------ hospital
+
+  final Map<String, PatientSim> _sims = <String, PatientSim>{};
+  ShiftSim? _shift;
+
+  static ClinicalRole roleNamed(String r) => r == 'medicine' ? ClinicalRole.medicine : ClinicalRole.nursing;
+
+  /// The student's clinical role, from their job or department.
+  ClinicalRole get clinicalRole => (profile.currentJob?.deptId ?? profile.deptId) == 'medicine' ? ClinicalRole.medicine : ClinicalRole.nursing;
+
+  /// The live patient for a case run, rebuilt from the saved actions.
+  PatientSim? hospitalSim(String caseId) {
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    final PatientCase? c = hospitalCase(caseId);
+    if (r == null || c == null || r.kind != 'case') return null;
+    final PatientSim? cached = _sims[caseId];
+    if (cached != null && cached.actions.length == r.actions.length) return cached;
+    return _sims[caseId] = PatientSim.replay(c, roleNamed(r.role), r.actions.map(SimAction.fromJson).toList());
+  }
+
+  Future<PatientSim> startHospitalCase(String caseId, {ClinicalRole? role, bool restart = false}) async {
+    final PatientCase? c = hospitalCase(caseId);
+    if (c == null) throw CareerActionException('Patient case not found.');
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    if (r != null && !r.done && !restart) return hospitalSim(caseId)!;
+    final ClinicalRole ro = role ?? (c.roles.contains(clinicalRole) ? clinicalRole : c.roles.first);
+    profile.hospitalRuns[caseId] = HospitalRun(id: caseId, kind: 'case', role: ro.name, startedDay: profile.day);
+    _sims.remove(caseId);
+    _log('Started a patient case: ${c.name}, ${c.dept.label}.', 'lab');
+    await _commit();
+    return hospitalSim(caseId)!;
+  }
+
+  /// One action at the bedside; saved immediately so the case can be resumed.
+  Future<PatientSim> hospitalAct(String caseId, SimAction a) async {
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    if (r == null || r.done) throw CareerActionException('Start this patient case first.');
+    final PatientSim s = hospitalSim(caseId)!;
+    s.apply(a);
+    r.actions.add(a.toJson());
+    await _commit();
+    return s;
+  }
+
+  void _awardClinical(ClinicalRole role) {
+    final Department? d = CareerCatalog.department(role == ClinicalRole.medicine ? 'medicine' : 'nursing');
+    if (d != null) _award(d.skills.take(2).map((SkillDef x) => x.id), CareerRules.projectPoints);
+  }
+
+  Future<HospitalResult> finishHospitalCase(String caseId) async {
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    final PatientSim? s = hospitalSim(caseId);
+    if (r == null || s == null || r.done) throw CareerActionException('This case is not in progress.');
+    if (!s.has('document')) throw CareerActionException('Document your care before you finish.');
+    final CaseScore sc = s.score();
+    s.finished = true;
+    r.done = true;
+    final HospitalResult res = HospitalResult(
+      id: caseId,
+      kind: 'case',
+      role: r.role,
+      day: profile.day,
+      score: sc.overall,
+      passed: sc.passed,
+      critical: sc.critical,
+      categories: sc.categories,
+      outcome: sc.outcome,
+      notes: <String>[...sc.missed.map((String m) => 'Missed: $m'), ...sc.late.map((String m) => 'Late: $m'), ...sc.safety.map((SafetyEvent e) => 'Safety: ${e.explanation}')],
+    );
+    profile.hospitalResults.add(res);
+    if (res.passed) _awardClinical(s.role);
+    _log('Patient case ${s.c.name}: ${res.score}/100${res.critical ? ' — critical safety issue, remediation required' : res.passed ? ' — passed' : ''}.', res.passed ? 'milestone' : 'lab');
+    await _commit();
+    return res;
+  }
+
+  ShiftSim? shiftSim(String shiftId) {
+    final HospitalRun? r = profile.hospitalRuns[shiftId];
+    if (r == null || r.kind != 'shift' || shiftId != wardShift.id) return null;
+    final ShiftSim? cached = _shift;
+    if (cached != null && cached.actions.length == r.actions.length) return cached;
+    return _shift = ShiftSim.replay(wardShift, <String, PatientCase>{for (final String id in wardShift.caseIds) id: hospitalCase(id)!}, roleNamed(r.role),
+        <(String, SimAction)>[for (final Map<String, dynamic> j in r.actions) (j['c'] as String? ?? '', SimAction.fromJson(j))]);
+  }
+
+  Future<ShiftSim> startShift({bool restart = false}) async {
+    final HospitalRun? r = profile.hospitalRuns[wardShift.id];
+    if (r != null && !r.done && !restart) return shiftSim(wardShift.id)!;
+    profile.hospitalRuns[wardShift.id] = HospitalRun(id: wardShift.id, kind: 'shift', role: 'nursing', startedDay: profile.day);
+    _shift = null;
+    _log('Started the ${wardShift.title}.', 'lab');
+    await _commit();
+    return shiftSim(wardShift.id)!;
+  }
+
+  Future<ShiftSim> shiftAct(String caseId, SimAction a) async {
+    final HospitalRun? r = profile.hospitalRuns[wardShift.id];
+    if (r == null || r.done) throw CareerActionException('Start the shift first.');
+    final ShiftSim s = shiftSim(wardShift.id)!;
+    s.apply(caseId, a);
+    r.actions.add(<String, dynamic>{'c': caseId, ...a.toJson()});
+    await _commit();
+    return s;
+  }
+
+  Future<HospitalResult> finishShift(String handover) async {
+    final HospitalRun? r = profile.hospitalRuns[wardShift.id];
+    if (r == null || r.done) throw CareerActionException('The shift is not in progress.');
+    if (TextRubric.words(handover).length < 40) throw CareerActionException('Write a handover for the next shift (at least 40 words).');
+    await shiftAct(wardShift.caseIds.first, SimAction('handover', '', handover));
+    final ShiftSim s = shiftSim(wardShift.id)!;
+    final (int overall, bool passed, Map<String, CaseScore> each, int hand) = s.score();
+    r.done = true;
+    final HospitalResult res = HospitalResult(
+      id: wardShift.id,
+      kind: 'shift',
+      role: 'nursing',
+      day: profile.day,
+      score: overall,
+      passed: passed,
+      critical: each.values.any((CaseScore x) => x.critical),
+      categories: <String, int>{for (final MapEntry<String, CaseScore> e in each.entries) hospitalCase(e.key)!.name: e.value.overall, 'Handover': hand},
+      outcome: each.entries.map((MapEntry<String, CaseScore> e) => '${hospitalCase(e.key)!.name}: ${e.value.outcome}').join('\n'),
+      notes: <String>[
+        for (final MapEntry<String, CaseScore> e in each.entries) ...<String>[
+          ...e.value.missed.map((String m) => '${hospitalCase(e.key)!.name} — missed: $m'),
+          ...e.value.late.map((String m) => '${hospitalCase(e.key)!.name} — late: $m'),
+          ...e.value.safety.map((SafetyEvent x) => '${hospitalCase(e.key)!.name} — safety: ${x.explanation}'),
+        ],
+      ],
+    );
+    profile.hospitalResults.add(res);
+    if (passed) _awardClinical(ClinicalRole.nursing);
+    _log('Completed the ${wardShift.title}: $overall/100.', passed ? 'milestone' : 'lab');
+    await _commit();
+    return res;
+  }
+
+  Future<HospitalResult> submitTriage(Map<String, int> levels) async {
+    if (levels.length < triageArrivals.length) throw CareerActionException('Assign a triage level to every arrival.');
+    final (int score, bool critical, List<String> notes) = scoreTriage(levels);
+    final HospitalResult res = HospitalResult(
+      id: 'triage',
+      kind: 'triage',
+      role: clinicalRole.name,
+      day: profile.day,
+      score: score,
+      passed: score >= 70 && !critical,
+      critical: critical,
+      notes: notes,
+      outcome: critical ? 'A critically ill patient waited too long.' : 'Every arrival was seen in a safe order.',
+    );
+    profile.hospitalRuns['triage'] = HospitalRun(id: 'triage', kind: 'triage', role: clinicalRole.name, startedDay: profile.day, actions: <Map<String, dynamic>>[levels], done: true);
+    profile.hospitalResults.add(res);
+    _log('Triage board: $score/100.', 'lab');
+    await _commit();
+    return res;
+  }
+
+  HospitalResult? latestHospitalResult(String id, {int sinceDay = 0}) {
+    for (final HospitalResult r in profile.hospitalResults.reversed) {
+      if (r.id == id && r.day >= sinceDay) return r;
+    }
+    return null;
+  }
 
   // ------------------------------------------------------------ stage
 

@@ -9,6 +9,7 @@ import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
+import '../hospital/ui/hospital_screens.dart';
 import '../model/tasks.dart';
 import 'common.dart';
 import 'diagrams.dart';
@@ -51,6 +52,8 @@ class TaskView extends StatelessWidget {
       body = _CourtView(spec: s, onGraded: onGraded, allowRetry: allowRetry);
     } else if (s is LabTaskSpec) {
       body = LabWorkView(spec: s, onGraded: onGraded);
+    } else if (s is HospitalTaskSpec) {
+      body = HospitalWorkView(spec: s, onGraded: onGraded);
     } else {
       body = const Text('Unsupported task type.');
     }

@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/pay_rules.dart';
+import '../hospital/hospital_cases.dart';
+import '../hospital/hospital_models.dart';
+import '../hospital/ui/hospital_screens.dart';
 import '../labs/lab_catalog.dart';
 import '../labs/lab_models.dart';
 import '../labs/ui/lab_screens.dart';
@@ -165,6 +168,9 @@ List<FindResult> findIndex(CareerSimStore store) {
     FindResult('portfolio', 'Screen', 'My Portfolio', 'Projects and passed labs', Icons.folder_special_rounded, () => const PortfolioScreen()),
     FindResult('progress', 'Screen', 'Progress', 'Skills and career readiness', Icons.insights_rounded, () => const ProgressScreen()),
     FindResult('schools', 'Screen', 'Schools and departments', 'Choose or change department', Icons.account_balance_rounded, () => const DepartmentPickerScreen()),
+    FindResult('hospital', 'Screen', 'Virtual Hospital', 'Patients, nursing shift, triage, departments', Icons.local_hospital_rounded, () => const HospitalScreen()),
+    for (final PatientCase c in hospitalCases)
+      FindResult(c.id, 'Patient', '${c.name}: ${c.complaint}', '${c.dept.label} · virtual hospital', Icons.personal_injury_rounded, () => HospitalDeptScreen(dept: c.dept)),
     for (final LabSpec l in LabCatalog.all)
       FindResult(l.id, 'Lab', l.title, '${LabCatalog.majorLabels[l.majorId] ?? l.majorId} · ${l.environment.label} · ${labStatus(p, l)}', environmentIcon(l.environment),
           () => LabIntroScreen(labId: l.id), '${l.summary} ${l.objectives.join(' ')}'),

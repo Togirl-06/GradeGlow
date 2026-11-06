@@ -17,6 +17,7 @@ import 'common.dart';
 import 'department_screens.dart';
 import 'job_screens.dart';
 import 'money_find_screens.dart';
+import '../hospital/ui/hospital_screens.dart';
 import 'workplace_screen.dart';
 
 /// The next thing the student should do, derived from their record.
@@ -189,6 +190,8 @@ class CareerSimDashboard extends StatelessWidget {
                   () => _push(context, d == null ? const DepartmentPickerScreen() : DepartmentScreen(deptId: d.id))),
               _Tile('nav_labs', Icons.science_rounded, 'Practical Labs', 'Hands-on work · paid', () => _push(context, const PracticalLabsScreen())),
               _Tile('nav_assessments', Icons.fact_check_rounded, 'Assessments', 'Tests and certificates', () => _push(context, const AssessmentsScreen())),
+              if (const <String>{'nursing', 'medicine'}.contains(p.deptId) || const <String>{'nursing', 'medicine'}.contains(p.currentJob?.deptId))
+                _Tile('nav_hospital', Icons.local_hospital_rounded, 'Virtual Hospital', 'Patients, shifts, triage', () => _push(context, const HospitalScreen())),
             ]),
             _Group(title: 'Get hired', tiles: <_Tile>[
               _Tile('nav_career', Icons.business_center_rounded, 'Career Centre', 'Resume and cover letter', () => _push(context, const CareerCentreScreen())),

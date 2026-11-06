@@ -1305,8 +1305,91 @@ class ResumeUpload {
       };
 }
 
-/// Everything the simulator saves for one student.
+/// A virtual-hospital case, shift or triage board in progress or finished.
+/// Only the student's actions are saved; the deterministic engine replays them.
+class HospitalRun {
+  HospitalRun({required this.id, required this.kind, required this.role, required this.startedDay, List<Map<String, dynamic>>? actions, this.done = false})
+      : actions = actions ?? <Map<String, dynamic>>[];
 
+  factory HospitalRun.fromJson(Map<String, dynamic> j) => HospitalRun(
+        id: _str(j['id']),
+        kind: _str(j['kind'], 'case'),
+        role: _str(j['role'], 'nursing'),
+        startedDay: _int(j['startedDay']),
+        actions: _mapList(j['actions']),
+        done: j['done'] == true,
+      );
+
+  /// Case id, shift id or 'triage'.
+  final String id;
+
+  /// case, shift or triage.
+  final String kind;
+
+  /// nursing or medicine.
+  final String role;
+  final int startedDay;
+  final List<Map<String, dynamic>> actions;
+  bool done;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{'id': id, 'kind': kind, 'role': role, 'startedDay': startedDay, 'actions': actions, 'done': done};
+}
+
+class HospitalResult {
+  const HospitalResult({
+    required this.id,
+    required this.kind,
+    required this.role,
+    required this.day,
+    required this.score,
+    required this.passed,
+    required this.critical,
+    this.categories = const <String, int>{},
+    this.outcome = '',
+    this.notes = const <String>[],
+  });
+
+  factory HospitalResult.fromJson(Map<String, dynamic> j) => HospitalResult(
+        id: _str(j['id']),
+        kind: _str(j['kind'], 'case'),
+        role: _str(j['role'], 'nursing'),
+        day: _int(j['day']),
+        score: _int(j['score']),
+        passed: j['passed'] == true,
+        critical: j['critical'] == true,
+        categories: <String, int>{for (final MapEntry<String, dynamic> e in _map(j['categories']).entries) e.key: _int(e.value)},
+        outcome: _str(j['outcome']),
+        notes: _strList(j['notes']),
+      );
+
+  final String id;
+  final String kind;
+  final String role;
+  final int day;
+  final int score;
+  final bool passed;
+
+  /// A critical safety error or missed critical action: remediation required.
+  final bool critical;
+  final Map<String, int> categories;
+  final String outcome;
+  final List<String> notes;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id': id,
+        'kind': kind,
+        'role': role,
+        'day': day,
+        'score': score,
+        'passed': passed,
+        'critical': critical,
+        'categories': categories,
+        'outcome': outcome,
+        'notes': notes,
+      };
+}
+
+/// Everything the simulator saves for one student.
 class CareerProfile {
   CareerProfile({
     this.version = 1,
@@ -1333,8 +1416,12 @@ class CareerProfile {
     List<Paycheck>? paychecks,
     List<ResumeUpload>? resumeUploads,
     this.defaultResumeId = '',
+    Map<String, HospitalRun>? hospitalRuns,
+    List<HospitalResult>? hospitalResults,
     this.updatedAtMs = 0,
   })  : ledger = ledger ?? <MoneyEntry>[],
+        hospitalRuns = hospitalRuns ?? <String, HospitalRun>{},
+        hospitalResults = hospitalResults ?? <HospitalResult>[],
         paychecks = paychecks ?? <Paycheck>[],
         resumeUploads = resumeUploads ?? <ResumeUpload>[],
         writings = writings ?? <String, String>{},
@@ -1382,6 +1469,11 @@ class CareerProfile {
         paychecks: _mapList(j['paychecks']).map(Paycheck.fromJson).toList(),
         resumeUploads: _mapList(j['resumeUploads']).map(ResumeUpload.fromJson).toList(),
         defaultResumeId: _str(j['defaultResumeId']),
+        hospitalRuns: <String, HospitalRun>{
+          for (final MapEntry<String, dynamic> e in _map(j['hospitalRuns']).entries)
+            if (e.value is Map) e.key: HospitalRun.fromJson(_map(e.value)),
+        },
+        hospitalResults: _mapList(j['hospitalResults']).map(HospitalResult.fromJson).toList(),
         updatedAtMs: _int(j['updatedAtMs']),
       );
 
@@ -1427,6 +1519,12 @@ class CareerProfile {
 
   /// The upload used by default when applying; empty = the built resume.
   String defaultResumeId;
+
+  /// Virtual hospital runs (by case, shift or 'triage') and results.
+  final Map<String, HospitalRun> hospitalRuns;
+  final List<HospitalResult> hospitalResults;
+
+  bool hospitalPassed(String id) => hospitalResults.any((HospitalResult r) => r.id == id && r.passed);
   int updatedAtMs;
 
   /// Current virtual balance in US cents.
@@ -1508,6 +1606,8 @@ class CareerProfile {
         'paychecks': paychecks.map((Paycheck e) => e.toJson()).toList(),
         'resumeUploads': resumeUploads.map((ResumeUpload e) => e.toJson()).toList(),
         'defaultResumeId': defaultResumeId,
+        'hospitalRuns': <String, dynamic>{for (final MapEntry<String, HospitalRun> e in hospitalRuns.entries) e.key: e.value.toJson()},
+        'hospitalResults': hospitalResults.map((HospitalResult r) => r.toJson()).toList(),
         'updatedAtMs': updatedAtMs,
       };
 }
