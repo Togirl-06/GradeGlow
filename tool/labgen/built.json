@@ -203,6 +203,48 @@
   "scenarios": 15,
   "title": "Risk Management"
  },
+ "hr_lab_capstone": {
+  "major": "human_resource_management",
+  "note": "Run recruitment and onboarding for a new depot: plan, select, check, induct and report.",
+  "scenarios": 15,
+  "title": "HR Capstone"
+ },
+ "hr_lab_interviews": {
+  "major": "human_resource_management",
+  "note": "Plan structured interviews, conduct them with simulated candidates and score evidence fair",
+  "scenarios": 15,
+  "title": "Interview Management"
+ },
+ "hr_lab_onboarding": {
+  "major": "human_resource_management",
+  "note": "Check pre-employment documents, plan first weeks and measure how quickly new starters beco",
+  "scenarios": 15,
+  "title": "Employee Onboarding"
+ },
+ "hr_lab_performance": {
+  "major": "human_resource_management",
+  "note": "Review evidence, write fair appraisals, distribute merit budgets and support improvement p",
+  "scenarios": 15,
+  "title": "Performance Management"
+ },
+ "hr_lab_recruitment": {
+  "major": "human_resource_management",
+  "note": "Write fair criteria, screen real-looking applications consistently and justify every short",
+  "scenarios": 15,
+  "title": "Recruitment"
+ },
+ "hr_lab_relations": {
+  "major": "human_resource_management",
+  "note": "Handle grievances, disciplinary matters, absence and conflict with fair, documented proces",
+  "scenarios": 15,
+  "title": "Employee Relations"
+ },
+ "hr_lab_workforce": {
+  "major": "human_resource_management",
+  "note": "Turnover, headcount forecasting, recruitment budgets, overtime versus hiring and skills ga",
+  "scenarios": 15,
+  "title": "Workforce Planning"
+ },
  "ie_lab_improvement": {
   "major": "industrial_engineering",
   "note": "Investigate performance problems on the shop floor and choose the improvement that fixes t",

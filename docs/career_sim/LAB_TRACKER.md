@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 90, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 90, Verified complete: 0.
+**198 labs.** Not started: 83, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 97, Verified complete: 0.
 
 ## Majors
 
@@ -35,7 +35,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Business and Economics | Economics | 6 | Tested |
 | School of Business and Economics | Entrepreneurship | 8 | Not started |
 | School of Business and Economics | Marketing | 7 | Tested |
-| School of Business and Economics | Human Resources Management | 7 | Not started |
+| School of Business and Economics | Human Resources Management | 7 | Tested |
 | School of Business and Economics | International Business | 7 | Not started |
 | School of Mathematics and Sciences | Mathematics | 6 | Tested |
 | School of Mathematics and Sciences | Biology | 7 | Tested |
@@ -313,13 +313,13 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Recruitment | Not started | 0 / 15 |  |  |
-| B. Interview Management | Not started | 0 / 15 |  |  |
-| C. Employee Onboarding | Not started | 0 / 15 |  |  |
-| D. Performance Management | Not started | 0 / 15 |  |  |
-| E. Employee Relations | Not started | 0 / 15 |  |  |
-| F. Workforce Planning | Not started | 0 / 15 |  |  |
-| G. HR Capstone | Not started | 0 / 15 |  |  |
+| A. Recruitment | Tested | 15 / 15 | `hr_lab_recruitment` | Write fair criteria, screen real-looking applications consistently and justify every short |
+| B. Interview Management | Tested | 15 / 15 | `hr_lab_interviews` | Plan structured interviews, conduct them with simulated candidates and score evidence fair |
+| C. Employee Onboarding | Tested | 15 / 15 | `hr_lab_onboarding` | Check pre-employment documents, plan first weeks and measure how quickly new starters beco |
+| D. Performance Management | Tested | 15 / 15 | `hr_lab_performance` | Review evidence, write fair appraisals, distribute merit budgets and support improvement p |
+| E. Employee Relations | Tested | 15 / 15 | `hr_lab_relations` | Handle grievances, disciplinary matters, absence and conflict with fair, documented proces |
+| F. Workforce Planning | Tested | 15 / 15 | `hr_lab_workforce` | Turnover, headcount forecasting, recruitment budgets, overtime versus hiring and skills ga |
+| G. HR Capstone | Tested | 15 / 15 | `hr_lab_capstone` | Run recruitment and onboarding for a new depot: plan, select, check, induct and report. |
 
 ### International Business
 
