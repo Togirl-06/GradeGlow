@@ -99,7 +99,12 @@ class _InterviewScreenState extends State<InterviewScreen> {
   Future<void> _voice(int i, String scripted, String heard) async {
     final CareerAi? ai = _ai;
     if (ai == null || scripted.isEmpty) return;
-    final String? v = await ai.voice(character: 'the interviewer, ${widget.plan.interviewer}, in a job interview', scripted: scripted, heard: heard);
+    String? v;
+    try {
+      v = await ai.voice(character: 'the interviewer, ${widget.plan.interviewer}, in a job interview', scripted: scripted, heard: heard);
+    } catch (_) {
+      return;
+    }
     if (v == null || !mounted || i >= _lines.length || _lines[i].text != scripted) return;
     setState(() => _lines[i] = _Line(true, v));
   }
@@ -136,7 +141,12 @@ class _InterviewScreenState extends State<InterviewScreen> {
   Future<void> _understand(int i, String question, String fallback) async {
     final CareerAi? ai = _ai;
     if (ai == null) return;
-    final String? topic = await ai.classify(text: question, options: _topicOptions, context: 'A job candidate asked the interviewer a question.');
+    String? topic;
+    try {
+      topic = await ai.classify(text: question, options: _topicOptions, context: 'A job candidate asked the interviewer a question.');
+    } catch (_) {
+      return;
+    }
     if (topic == null || !mounted || i >= _lines.length || _lines[i].text != fallback) return;
     setState(() => _lines[i] = _Line(true, _replyFor(topic)));
   }

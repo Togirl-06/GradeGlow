@@ -554,11 +554,16 @@ class CareerSimStore extends ChangeNotifier {
   Future<SimAction> _understand(PatientSim s, SimAction a) async {
     final CareerAi? x = ai;
     if (x == null || a.kind != 'ask' || a.id.isNotEmpty || a.text.trim().isEmpty || s.topicsOf(a.text).isNotEmpty) return a;
-    final String? t = await x.classify(
-      text: a.text,
-      options: <String, String>{for (final Topic t in s.allTopics) t.id: t.label},
-      context: 'A student nurse or doctor is speaking to a patient in hospital.',
-    );
+    String? t;
+    try {
+      t = await x.classify(
+        text: a.text,
+        options: <String, String>{for (final Topic t in s.allTopics) t.id: t.label},
+        context: 'A student nurse or doctor is speaking to a patient in hospital.',
+      );
+    } catch (_) {
+      t = null; // AI unavailable: the rules answer on their own.
+    }
     return t == null ? a : SimAction('ask', t, a.text);
   }
 
@@ -570,7 +575,7 @@ class CareerSimStore extends ChangeNotifier {
       if (v == null) return;
       _voiced[line] = v;
       notifyListeners();
-    }));
+    }).catchError((Object _) {}));
   }
 
   Future<PatientSim> hospitalAct(String caseId, SimAction a) async {
