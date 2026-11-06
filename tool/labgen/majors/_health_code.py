@@ -210,7 +210,7 @@ ec, nc, et, nt = map(int, sys.stdin.read().split())
 cer, eer = ec / nc, et / nt
 arr = cer - eer
 print(f"RRR: {arr / cer * 100:.1f}%")
-print(f"NNT: {math.ceil(1 / arr)}" if arr > 0 else "No benefit: NNT not applicable")
+print(f"NNT: {math.ceil(round(1 / arr, 9))}" if arr > 0 else "No benefit: NNT not applicable")
 '''
 M['ev3'] = '''import sys, math
 a, b, c, d = map(int, sys.stdin.read().split())
@@ -220,7 +220,7 @@ lo, hi = math.exp(math.log(o) - 1.96 * se), math.exp(math.log(o) + 1.96 * se)
 sig = "significant" if lo > 1 or hi < 1 else "not significant"
 print(f"OR {o:.2f} (95% CI {lo:.2f} to {hi:.2f}) - {sig}")
 '''
-M['ev2_bug'] = M['ev2'].replace('math.ceil(1 / arr)', 'round(1 / arr)')
+M['ev2_bug'] = M['ev2'].replace('math.ceil(round(1 / arr, 9))', 'round(1 / arr)')
 M['fb3'] = '''import sys
 bal = 0
 for l in sys.stdin.read().strip().split("\\n"):

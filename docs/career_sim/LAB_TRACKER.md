@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 9, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 171, Verified complete: 0.
+**198 labs.** Not started: 5, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 175, Verified complete: 0.
 
 ## Majors
 
@@ -136,11 +136,11 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 |---|---|---|---|---|
 | A. Human Anatomy and Physiology | Functionality in progress | 1 / 15 | `md_lab_anatomy` | 2D diagrams, not the required 3D body |
 | B. Medical History and Patient Interview | Functionality in progress | 1 / 15 | `md_lab_assessment` | 1 patient case |
-| C. Physical Examination | Not started | 0 / 15 |  |  |
-| D. Diagnostic Investigation | Not started | 0 / 15 |  |  |
-| E. Clinical Reasoning and Diagnosis | Not started | 0 / 15 |  |  |
+| C. Physical Examination | Tested | 15 / 15 | `md_lab_exam` | Examine simulated patients system by system: interpret cardiovascular, respiratory, abdomi |
+| D. Diagnostic Investigation | Tested | 15 / 15 | `md_lab_diagnostics` | Interpret arterial blood gases and blood results, understand test accuracy and predictive  |
+| E. Clinical Reasoning and Diagnosis | Tested | 15 / 15 | `md_lab_reasoning` | Build differentials, calculate validated risk scores, recognise red flags and cognitive bi |
 | F. Emergency Medicine | Functionality in progress | 1 / 15 | `md_lab_emergency` | 1 case (anaphylaxis) |
-| G. Medical Research and Evidence | Not started | 0 / 15 |  |  |
+| G. Medical Research and Evidence | Tested | 15 / 15 | `md_lab_research` | Calculate treatment effects (ARR, RRR, NNT, odds ratios), appraise trials, frame clinical  |
 
 ### Nursing
 

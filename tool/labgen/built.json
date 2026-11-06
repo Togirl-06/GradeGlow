@@ -581,6 +581,30 @@
   "scenarios": 15,
   "title": "Systems Administration"
  },
+ "md_lab_diagnostics": {
+  "major": "medicine",
+  "note": "Interpret arterial blood gases and blood results, understand test accuracy and predictive ",
+  "scenarios": 15,
+  "title": "Diagnostic Investigation"
+ },
+ "md_lab_exam": {
+  "major": "medicine",
+  "note": "Examine simulated patients system by system: interpret cardiovascular, respiratory, abdomi",
+  "scenarios": 15,
+  "title": "Physical Examination"
+ },
+ "md_lab_reasoning": {
+  "major": "medicine",
+  "note": "Build differentials, calculate validated risk scores, recognise red flags and cognitive bi",
+  "scenarios": 15,
+  "title": "Clinical Reasoning and Diagnosis"
+ },
+ "md_lab_research": {
+  "major": "medicine",
+  "note": "Calculate treatment effects (ARR, RRR, NNT, odds ratios), appraise trials, frame clinical ",
+  "scenarios": 15,
+  "title": "Medical Research and Evidence"
+ },
  "mk_lab_ads": {
   "major": "marketing",
   "note": "Build paid campaigns: budget, bids, targeting and creative choices that hit acquisition ta",
