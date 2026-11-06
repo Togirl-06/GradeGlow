@@ -49,7 +49,10 @@ void main() {
           NumericStep() => 'numeric:${st.questions.map((MathQuestion q) => '${q.prompt}${q is NumberQuestion ? '=${q.answer}' : ''}').join('/')}',
           SimulationStep() => 'sim:${st.inputs.map((SimInput i) => i.name).join()}:${st.constraints.map((SimConstraint c) => '${c.output}${c.op}${c.value}').join(',')}',
           DrawingStep() => 'draw:${st.title}:${st.spec.requireDimensions}:${st.spec.holes.map((HoleSpec h) => h.tol).join(',')}',
-          _ => '${st.runtimeType}:${st.title}:${st.instructions}',
+          DialogueStep() => 'talk:${st.person}:${st.opening}',
+          DocumentStep() => 'doc:${st.docType}:${st.model.values.join('/')}',
+          SequenceStep() => 'seq:${st.correctOrder.join('/')}',
+          _ => '${st.runtimeType}:${st.id.replaceFirst(RegExp(r'_[123]_[a-z]+$'), '')}:${st.title}:${st.instructions}',
         };
     final List<String> dup = <String>[];
     for (final LabSpec l in LabCatalog.all) {
