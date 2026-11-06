@@ -1,15 +1,59 @@
 {
-  "sql": {
-    "cs_students": "SELECT name FROM students WHERE major = 'Computer Science' ORDER BY year, name;",
-    "course_counts": "SELECT course_code, COUNT(*) FROM enrollments GROUP BY course_code;",
-    "averages": "SELECT s.name, AVG(e.grade) FROM students s JOIN enrollments e ON e.student_id = s.id WHERE s.major = 'Computer Science' AND e.grade IS NOT NULL GROUP BY s.id;",
-    "enrol": "INSERT INTO enrollments (student_id, course_code, grade) VALUES (4, 'CS201', NULL);",
-    "grade": "UPDATE enrollments SET grade = 90 WHERE student_id = 1 AND course_code = 'CS210';",
-    "advisors": "CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT NOT NULL, student_id INTEGER REFERENCES students(id));",
-    "no_enrolments": "SELECT s.name FROM students s LEFT JOIN enrollments e ON e.student_id = s.id WHERE e.course_code IS NULL;"
-  },
-  "programs": {
-    "average": "a, b, c = map(int, input().split())\navg = (a + b + c) / 3\nprint(f'{avg:.1f}')\nprint('PASS' if avg >= 50 else 'FAIL')\n",
-    "fizzbuzz": "n = int(input())\nfor i in range(1, n + 1):\n    print('FizzBuzz' if i % 15 == 0 else 'Fizz' if i % 3 == 0 else 'Buzz' if i % 5 == 0 else i)\n"
-  }
+ "_generated": [
+  "smk_csv_1_code",
+  "smk_csv_2_code",
+  "smk_csv_3_code",
+  "smk_shipping_1_code",
+  "smk_shipping_2_code",
+  "smk_shipping_3_code",
+  "stk_dates_1_code",
+  "stk_dates_2_code",
+  "stk_dates_3_code",
+  "stk_grades_1_code",
+  "stk_grades_2_code",
+  "stk_grades_3_code",
+  "svk_booking_1_code",
+  "svk_booking_2_code",
+  "svk_booking_3_code",
+  "svk_invoice_1_code",
+  "svk_invoice_2_code",
+  "svk_invoice_3_code",
+  "svk_tasks_1_code",
+  "svk_tasks_2_code",
+  "svk_tasks_3_code"
+ ],
+ "programs": {
+  "average": "a, b, c = map(int, input().split())\navg = (a + b + c) / 3\nprint(f'{avg:.1f}')\nprint('PASS' if avg >= 50 else 'FAIL')\n",
+  "fizzbuzz": "n = int(input())\nfor i in range(1, n + 1):\n    print('FizzBuzz' if i % 15 == 0 else 'Fizz' if i % 3 == 0 else 'Buzz' if i % 5 == 0 else i)\n",
+  "smk_csv_1_code": "import sys\nlines = sys.stdin.read().strip().split(\"\\n\")\nfor l in lines[1:]:\n    print(l.split(\",\")[1])\n",
+  "smk_csv_2_code": "import sys\ndef parse(line):\n    out, cur, q = [], \"\", False\n    for ch in line:\n        if ch == '\"':\n            q = not q\n        elif ch == \",\" and not q:\n            out.append(cur); cur = \"\"\n        else:\n            cur += ch\n    out.append(cur)\n    return out\nlines = sys.stdin.read().strip().split(\"\\n\")\nfor l in lines[1:]:\n    print(parse(l)[1])\n",
+  "smk_csv_3_code": "import sys\ndef parse(line):\n    out, cur, q, i = [], \"\", False, 0\n    while i < len(line):\n        ch = line[i]\n        if ch == '\"':\n            if q and i + 1 < len(line) and line[i + 1] == '\"':\n                cur += '\"'; i += 1\n            else:\n                q = not q\n        elif ch == \",\" and not q:\n            out.append(cur); cur = \"\"\n        else:\n            cur += ch\n        i += 1\n    out.append(cur)\n    return out\nlines = sys.stdin.read().strip().split(\"\\n\")\nhead = parse(lines[0])\nidx = head.index(\"name\")\nfor l in lines[1:]:\n    print(parse(l)[idx])\n",
+  "smk_shipping_1_code": "import sys\nBASE = {\"A\": 3, \"B\": 5}\nzone, kg = sys.stdin.read().split()\nkg = float(kg)\nprint(f\"{BASE[zone] + max(0, kg - 2):.2f}\")\n",
+  "smk_shipping_2_code": "import sys\nBASE = {\"A\": 3, \"B\": 5, \"C\": 8}\nzone, kg = sys.stdin.read().split()\nkg = float(kg)\nif zone not in BASE:\n    print(\"UNKNOWN ZONE\")\nelse:\n    print(f\"{BASE[zone] + max(0, kg - 2):.2f}\")\n",
+  "smk_shipping_3_code": "import sys\nBASE = {\"A\": 3, \"B\": 5, \"C\": 8}\nzone, kg = sys.stdin.read().split()\nkg = float(kg)\nif zone not in BASE:\n    print(\"UNKNOWN ZONE\")\nelif kg > 30:\n    print(\"TOO HEAVY\")\nelse:\n    extra = max(0, kg - 2) + (5 if kg > 20 else 0)\n    print(f\"{BASE[zone] + extra:.2f}\")\n",
+  "stk_dates_1_code": "import sys\ny = int(sys.stdin.read().strip())\nprint(\"YES\" if (y % 4 == 0 and y % 100 != 0) or y % 400 == 0 else \"NO\")\n",
+  "stk_dates_2_code": "import sys\ny, m = map(int, sys.stdin.read().split())\nleap = (y % 4 == 0 and y % 100 != 0) or y % 400 == 0\nd = [31, 29 if leap else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]\nprint(d[m - 1])\n",
+  "stk_dates_3_code": "import sys\ns = sys.stdin.read().strip()\ntry:\n    y, m, d = map(int, s.split(\"-\"))\n    leap = (y % 4 == 0 and y % 100 != 0) or y % 400 == 0\n    days = [31, 29 if leap else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]\n    ok = len(s) == 10 and 1 <= m <= 12 and 1 <= d <= days[m - 1]\nexcept (ValueError, IndexError):\n    ok = False\nprint(\"VALID\" if ok else \"INVALID\")\n",
+  "stk_grades_1_code": "import sys\nm = int(sys.stdin.read().strip())\nprint(\"A\" if m >= 70 else \"B\" if m >= 60 else \"C\" if m >= 50 else \"F\")\n",
+  "stk_grades_2_code": "import sys\nt = sys.stdin.read().strip()\ntry:\n    m = int(t)\n    ok = 0 <= m <= 100\nexcept ValueError:\n    ok = False\nif not ok:\n    print(\"INVALID\")\nelse:\n    print(\"A\" if m >= 70 else \"B\" if m >= 60 else \"C\" if m >= 50 else \"F\")\n",
+  "stk_grades_3_code": "import sys\ncounts = {\"A\": 0, \"B\": 0, \"C\": 0, \"F\": 0, \"INVALID\": 0}\nfor t in sys.stdin.read().strip().split(\"\\n\"):\n    t = t.strip()\n    try:\n        m = int(t)\n        ok = 0 <= m <= 100\n    except ValueError:\n        ok = False\n    g = \"INVALID\" if not ok else (\"A\" if m >= 70 else \"B\" if m >= 60 else \"C\" if m >= 50 else \"F\")\n    counts[g] += 1\n    print(g)\nprint(\" \".join(f\"{k}:{v}\" for k, v in counts.items()))\n",
+  "svk_booking_1_code": "import sys\nlines = sys.stdin.read().strip().split(\"\\n\")\nn = int(lines[0])\nb = [tuple(map(int, l.split())) for l in lines[1:1 + n]]\nclash = any(b[i][0] < b[j][1] and b[j][0] < b[i][1] for i in range(n) for j in range(i))\nprint(\"CONFLICT\" if clash else \"OK\")\n",
+  "svk_booking_2_code": "import sys\nlines = sys.stdin.read().strip().split(\"\\n\")\nn = int(lines[0])\nb = [tuple(map(int, l.split())) for l in lines[1:1 + n]]\nfor i in range(n):\n    if any(b[i][0] < b[j][1] and b[j][0] < b[i][1] for j in range(i)):\n        print(i + 1)\n        break\nelse:\n    print(\"OK\")\n",
+  "svk_booking_3_code": "import sys\nlines = sys.stdin.read().strip().split(\"\\n\")\nn = int(lines[0])\nacc = []\nfor l in lines[1:1 + n]:\n    r, s, e = l.split()\n    s, e = int(s), int(e)\n    if any(r == r2 and s < e2 and s2 < e for r2, s2, e2 in acc):\n        print(\"REJECTED\")\n    else:\n        acc.append((r, s, e))\n        print(\"ACCEPTED\")\n",
+  "svk_invoice_1_code": "import sys\ntotal = 0\nfor l in sys.stdin.read().strip().split(\"\\n\"):\n    if l.strip() == \"END\":\n        break\n    item, q, p = l.split()\n    total += int(q) * float(p)\nprint(f\"{total:.2f}\")\n",
+  "svk_invoice_2_code": "import sys\nsub = 0\nfor l in sys.stdin.read().strip().split(\"\\n\"):\n    if l.strip() == \"END\":\n        break\n    item, q, p = l.split()\n    sub += int(q) * float(p)\nvat = sub * 0.2\nprint(f\"Subtotal: {sub:.2f}\")\nprint(f\"VAT: {vat:.2f}\")\nprint(f\"Total: {sub + vat:.2f}\")\n",
+  "svk_invoice_3_code": "import sys\nsub, rate, msgs = 0, 0, []\nfor l in sys.stdin.read().strip().split(\"\\n\"):\n    l = l.strip()\n    if l == \"END\":\n        break\n    parts = l.split()\n    if parts[0] == \"CODE\":\n        if parts[1] == \"SAVE10\":\n            rate = 0.1\n        else:\n            msgs.append(f\"Invalid code: {parts[1]}\")\n        continue\n    item, q, p = parts\n    sub += int(q) * float(p)\ndisc = sub * rate\nvat = (sub - disc) * 0.2\nfor m in msgs:\n    print(m)\nprint(f\"Subtotal: {sub:.2f}\")\nprint(f\"Discount: {disc:.2f}\")\nprint(f\"VAT: {vat:.2f}\")\nprint(f\"Total: {sub - disc + vat:.2f}\")\n",
+  "svk_tasks_1_code": "import sys\nlines = sys.stdin.read().strip().split(\"\\n\")\nn = int(lines[0])\ntasks = []\nfor l in lines[1:1 + n]:\n    t, p = l.rsplit(\",\", 1)\n    tasks.append((int(p), t.strip()))\nfor p, t in sorted(tasks):\n    print(f\"[{p}] {t}\")\n",
+  "svk_tasks_2_code": "import sys\nlines = sys.stdin.read().strip().split(\"\\n\")\nn = int(lines[0])\ntodo, done = [], 0\nfor l in lines[1:1 + n]:\n    t, p, s = [x.strip() for x in l.split(\",\")]\n    if s == \"done\":\n        done += 1\n    else:\n        todo.append((int(p), t))\nfor p, t in sorted(todo):\n    print(f\"[{p}] {t}\")\nprint(f\"Done: {done}\")\n",
+  "svk_tasks_3_code": "import sys\ntasks = {}\nfor l in sys.stdin.read().strip().split(\"\\n\"):\n    l = l.strip()\n    if l.startswith(\"add \"):\n        t, p = l[4:].rsplit(\",\", 1)\n        tasks[t.strip()] = int(p)\n    elif l.startswith(\"done \"):\n        t = l[5:].strip()\n        if t in tasks:\n            del tasks[t]\n        else:\n            print(f\"ERROR unknown task: {t}\")\n    elif l == \"list\":\n        for t, p in sorted(tasks.items(), key=lambda kv: (kv[1], kv[0])):\n            print(f\"[{p}] {t}\")\n        print(\"---\")\n"
+ },
+ "sql": {
+  "advisors": "CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT NOT NULL, student_id INTEGER REFERENCES students(id));",
+  "averages": "SELECT s.name, AVG(e.grade) FROM students s JOIN enrollments e ON e.student_id = s.id WHERE s.major = 'Computer Science' AND e.grade IS NOT NULL GROUP BY s.id;",
+  "course_counts": "SELECT course_code, COUNT(*) FROM enrollments GROUP BY course_code;",
+  "cs_students": "SELECT name FROM students WHERE major = 'Computer Science' ORDER BY year, name;",
+  "enrol": "INSERT INTO enrollments (student_id, course_code, grade) VALUES (4, 'CS201', NULL);",
+  "grade": "UPDATE enrollments SET grade = 90 WHERE student_id = 1 AND course_code = 'CS210';",
+  "no_enrolments": "SELECT s.name FROM students s LEFT JOIN enrollments e ON e.student_id = s.id WHERE e.course_code IS NULL;"
+ }
 }

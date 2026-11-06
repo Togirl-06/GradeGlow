@@ -579,6 +579,26 @@ def build(majors):
         f.write('\n'.join(reg))
     with open(os.path.join(ROOT, 'tool/labgen/built.json'), 'w') as f:
         json.dump(built, f, indent=1, sort_keys=True)
+    # Reference programs for functions/test/lab_keys.test.js, which re-runs every
+    # program step's cases in the app's own Pyodide runtime.
+    fx = os.path.join(ROOT, 'functions/test/fixtures/career_lab_refs.json')
+    with open(fx) as f:
+        refs = json.load(f)
+    gen_ids = set(refs.pop('_generated', []))
+    progs = {k: v for k, v in refs['programs'].items() if k not in gen_ids}
+    new_ids = []
+    for _, m in majors:
+        for lab in m.labs:
+            for c in lab.code:
+                for n, v in enumerate(c.variants):
+                    pid = f'{lab.prefix}k_{c.key}_{n + 1}_code'
+                    progs[pid] = v[2]
+                    new_ids.append(pid)
+    refs['programs'] = progs
+    refs['_generated'] = sorted(new_ids)
+    with open(fx, 'w') as f:
+        json.dump(refs, f, indent=1, sort_keys=True)
+        f.write('\n')
     return built
 
 
