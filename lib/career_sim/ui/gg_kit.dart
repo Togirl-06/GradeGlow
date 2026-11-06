@@ -40,6 +40,8 @@ ThemeData ggTheme(ThemeData base) {
     surfaceContainerHighest: GG.panel2,
   );
   final OutlinedBorder r10 = RoundedRectangleBorder(borderRadius: BorderRadius.circular(10));
+  // Styles derive from the app's text theme so they keep its font family.
+  final TextTheme tt = base.textTheme;
   return base.copyWith(
     brightness: Brightness.dark,
     colorScheme: cs,
@@ -47,22 +49,22 @@ ThemeData ggTheme(ThemeData base) {
     canvasColor: GG.bg,
     cardColor: GG.panel,
     dividerColor: GG.stroke,
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: GG.bg2,
       foregroundColor: GG.ink,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: TextStyle(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w800),
+      titleTextStyle: (tt.titleLarge ?? const TextStyle()).copyWith(color: GG.ink, fontSize: 20, fontWeight: FontWeight.w800),
     ),
     cardTheme: CardThemeData(color: GG.panel, elevation: 0, margin: const EdgeInsets.only(bottom: 10), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: GG.stroke))),
-    filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(backgroundColor: GG.violet, foregroundColor: Colors.white, shape: r10, padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14), textStyle: const TextStyle(fontWeight: FontWeight.w700))),
+    filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(backgroundColor: GG.violet, foregroundColor: Colors.white, shape: r10, padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14), textStyle: (tt.labelLarge ?? const TextStyle()).copyWith(fontWeight: FontWeight.w700))),
     elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: GG.violet, foregroundColor: Colors.white, shape: r10)),
     outlinedButtonTheme: OutlinedButtonThemeData(style: OutlinedButton.styleFrom(foregroundColor: GG.ink, side: const BorderSide(color: GG.stroke), shape: r10, padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12))),
     textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFFA996FF))),
     chipTheme: base.chipTheme.copyWith(
       backgroundColor: GG.panel2,
       selectedColor: GG.violet,
-      labelStyle: const TextStyle(color: GG.ink, fontWeight: FontWeight.w600),
+      labelStyle: (tt.labelLarge ?? const TextStyle()).copyWith(color: GG.ink, fontWeight: FontWeight.w600),
       side: const BorderSide(color: GG.stroke),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       checkmarkColor: Colors.white,
@@ -79,7 +81,7 @@ ThemeData ggTheme(ThemeData base) {
     listTileTheme: const ListTileThemeData(textColor: GG.ink, iconColor: GG.mute),
     expansionTileTheme: const ExpansionTileThemeData(textColor: GG.ink, collapsedTextColor: GG.ink, iconColor: GG.mute, collapsedIconColor: GG.mute),
     dialogTheme: const DialogThemeData(backgroundColor: GG.panel),
-    snackBarTheme: const SnackBarThemeData(backgroundColor: GG.panel2, contentTextStyle: TextStyle(color: GG.ink)),
+    snackBarTheme: SnackBarThemeData(backgroundColor: GG.panel2, contentTextStyle: (tt.bodyMedium ?? const TextStyle()).copyWith(color: GG.ink)),
     progressIndicatorTheme: const ProgressIndicatorThemeData(color: GG.violet),
     textTheme: base.textTheme.apply(bodyColor: GG.ink, displayColor: GG.ink),
     iconTheme: const IconThemeData(color: GG.ink),
