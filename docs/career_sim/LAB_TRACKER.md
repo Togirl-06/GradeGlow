@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 150, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 30, Verified complete: 0.
+**198 labs.** Not started: 144, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 36, Verified complete: 0.
 
 ## Majors
 
@@ -26,7 +26,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Engineering | Mechanical Engineering | 6 | In progress |
 | School of Engineering | Civil Engineering | 6 | Tested |
 | School of Engineering | Electrical Engineering | 6 | Tested |
-| School of Engineering | Chemical Engineering | 6 | Not started |
+| School of Engineering | Chemical Engineering | 6 | Tested |
 | School of Engineering | Aerospace Engineering | 6 | Not started |
 | School of Engineering | Industrial Engineering | 6 | Not started |
 | School of Business and Economics | Business Administration | 6 | Not started |
@@ -208,12 +208,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Chemical Process Fundamentals | Not started | 0 / 15 |  |  |
-| B. Reaction Engineering | Not started | 0 / 15 |  |  |
-| C. Separation Processes | Not started | 0 / 15 |  |  |
-| D. Process Flow Design | Not started | 0 / 15 |  |  |
-| E. Process Control | Not started | 0 / 15 |  |  |
-| F. Process Safety | Not started | 0 / 15 |  |  |
+| A. Chemical Process Fundamentals | Tested | 15 / 15 | `che_lab_fundamentals` | Mixers, evaporators, heaters, burners, dilutions |
+| B. Reaction Engineering | Tested | 15 / 15 | `che_lab_reaction` | Rates, conversion, yield and reactor sizing |
+| C. Separation Processes | Tested | 15 / 15 | `che_lab_separation` | Distillation, filtration, extraction, separators |
+| D. Process Flow Design | Tested | 15 / 15 | `che_lab_flowsheet` | Flowsheet balances with recycle and purge |
+| E. Process Control | Tested | 15 / 15 | `che_lab_control` | Controller tuning and process response |
+| F. Process Safety | Tested | 15 / 15 | `che_lab_safety` | 5 incident investigations x 3 levels |
 
 ### Aerospace Engineering
 

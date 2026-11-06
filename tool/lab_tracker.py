@@ -135,8 +135,12 @@ SCHOOLS = [
             ("Fault Diagnosis", built("ee_lab_faults", "tested", "5 fault investigations x 3 levels")),
         ]),
         ("chemical_engineering", "Chemical Engineering", [
-            ("Chemical Process Fundamentals", None), ("Reaction Engineering", None), ("Separation Processes", None),
-            ("Process Flow Design", None), ("Process Control", None), ("Process Safety", None),
+            ("Chemical Process Fundamentals", built("che_lab_fundamentals", "tested", "Mixers, evaporators, heaters, burners, dilutions")),
+            ("Reaction Engineering", built("che_lab_reaction", "tested", "Rates, conversion, yield and reactor sizing")),
+            ("Separation Processes", built("che_lab_separation", "tested", "Distillation, filtration, extraction, separators")),
+            ("Process Flow Design", built("che_lab_flowsheet", "tested", "Flowsheet balances with recycle and purge")),
+            ("Process Control", built("che_lab_control", "tested", "Controller tuning and process response")),
+            ("Process Safety", built("che_lab_safety", "tested", "5 incident investigations x 3 levels")),
         ]),
         ("aerospace_engineering", "Aerospace Engineering", [
             ("Aerodynamics", None), ("Aircraft Design", None), ("Flight Mechanics", None),
@@ -228,6 +232,7 @@ SCENARIOS = {
     "law_lab_negotiation": 15, "law_lab_courtroom": 15, "law_lab_fullcase": 15,
     "me_lab_mechanics": 15, "me_lab_thermo": 15, "me_lab_fluids": 15, "me_lab_machine": 15, "me_lab_cad": 15, "me_lab_failure": 15,
     "ce_lab_structures": 15, "ce_lab_materials": 15, "ce_lab_geotech": 15, "ce_lab_surveying": 15, "ce_lab_transport": 15, "ce_lab_construction": 15,
+    "che_lab_fundamentals": 15, "che_lab_reaction": 15, "che_lab_separation": 15, "che_lab_flowsheet": 15, "che_lab_control": 15, "che_lab_safety": 15,
     "ee_lab_construction": 15, "ee_lab_analysis": 15, "ee_lab_electronics": 15, "ee_lab_logic": 15, "ee_lab_power": 15, "ee_lab_faults": 15,
 }
 
