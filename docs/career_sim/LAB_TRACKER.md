@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 62, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 118, Verified complete: 0.
+**198 labs.** Not started: 55, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 125, Verified complete: 0.
 
 ## Majors
 
@@ -41,7 +41,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Mathematics and Sciences | Biology | 7 | Tested |
 | School of Mathematics and Sciences | Chemistry | 8 | Tested |
 | School of Mathematics and Sciences | Physics | 7 | Tested |
-| School of English and Communication | English and Communication | 7 | Not started |
+| School of English and Communication | English and Communication | 7 | Tested |
 
 ## Labs
 
@@ -385,10 +385,10 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Grammar and Language | Not started | 0 / 15 |  |  |
-| B. Reading Comprehension | Not started | 0 / 15 |  |  |
-| C. Academic Writing | Not started | 0 / 15 |  |  |
-| D. Professional Writing | Not started | 0 / 15 |  |  |
-| E. Public Speaking | Not started | 0 / 15 |  |  |
-| F. Editing and Proofreading | Not started | 0 / 15 |  |  |
-| G. Professional Communication | Not started | 0 / 15 |  |  |
+| A. Grammar and Language | Tested | 15 / 15 | `eg_lab_grammar` | Check real copy for agreement, punctuation, tense, word choice and sentence structure. |
+| B. Reading Comprehension | Tested | 15 / 15 | `eg_lab_reading` | Read briefing passages for main ideas, inference, tone and argument before advising collea |
+| C. Academic Writing | Tested | 15 / 15 | `eg_lab_academic` | Write academic paragraphs with a thesis, evidence, analysis and referencing — marked again |
+| D. Professional Writing | Tested | 15 / 15 | `eg_lab_professional` | Write emails, letters, reports, memos, proposals and meeting summaries for real workplace  |
+| E. Public Speaking | Tested | 15 / 15 | `eg_lab_speaking` | Plan and time talks, structure messages for an audience, and rehearse with feedback on org |
+| F. Editing and Proofreading | Tested | 15 / 15 | `eg_lab_editing` | Proof documents with errors of spelling, punctuation, grammar and fact, and decide what mu |
+| G. Professional Communication | Tested | 15 / 15 | `eg_lab_communication` | Job interviews, client calls, team meetings, conflict and presentations — saying the right |

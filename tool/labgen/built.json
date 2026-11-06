@@ -197,6 +197,48 @@
   "scenarios": 15,
   "title": "Market Structures"
  },
+ "eg_lab_academic": {
+  "major": "english",
+  "note": "Write academic paragraphs with a thesis, evidence, analysis and referencing \u2014 marked again",
+  "scenarios": 15,
+  "title": "Academic Writing"
+ },
+ "eg_lab_communication": {
+  "major": "english",
+  "note": "Job interviews, client calls, team meetings, conflict and presentations \u2014 saying the right",
+  "scenarios": 15,
+  "title": "Professional Communication"
+ },
+ "eg_lab_editing": {
+  "major": "english",
+  "note": "Proof documents with errors of spelling, punctuation, grammar and fact, and decide what mu",
+  "scenarios": 15,
+  "title": "Editing and Proofreading"
+ },
+ "eg_lab_grammar": {
+  "major": "english",
+  "note": "Check real copy for agreement, punctuation, tense, word choice and sentence structure.",
+  "scenarios": 15,
+  "title": "Grammar and Language"
+ },
+ "eg_lab_professional": {
+  "major": "english",
+  "note": "Write emails, letters, reports, memos, proposals and meeting summaries for real workplace ",
+  "scenarios": 15,
+  "title": "Professional Writing"
+ },
+ "eg_lab_reading": {
+  "major": "english",
+  "note": "Read briefing passages for main ideas, inference, tone and argument before advising collea",
+  "scenarios": 15,
+  "title": "Reading Comprehension"
+ },
+ "eg_lab_speaking": {
+  "major": "english",
+  "note": "Plan and time talks, structure messages for an audience, and rehearse with feedback on org",
+  "scenarios": 15,
+  "title": "Public Speaking"
+ },
  "en_lab_canvas": {
   "major": "entrepreneurship",
   "note": "Build business model canvases: sort the components, test the logic and fix weak blocks.",
