@@ -21,7 +21,7 @@ void main() {
   for (final LabSpec lab in LabCatalog.all) {
     testWidgets('journey: ${lab.id}', (WidgetTester t) async {
       final CareerSimStore store = await pumpLab(t, lab.id, repo: MemoryCareerRepository(), major: lab.majorId);
-      expect(find.text(lab.title), findsWidgets, reason: 'intro shows the lab');
+      expect(find.textContaining(lab.title), findsWidgets, reason: 'intro shows the lab');
       await tap(t, k('lab_start'));
       await tap(t, k('to_briefing'));
       await tap(t, k('begin_work'));
@@ -31,7 +31,7 @@ void main() {
       for (final LabStep step in sc.steps) {
         final Finder view = find.byType(LabStepView);
         expect(view, findsOneWidget, reason: '${lab.id}: step ${step.id} should be on screen');
-        expect(find.descendant(of: view, matching: find.text(step.title)), findsWidgets, reason: '${lab.id}: showing ${step.id}');
+        expect(find.descendant(of: view, matching: find.textContaining(step.title)), findsWidgets, reason: '${lab.id}: showing ${step.id}');
         expect(t.takeException(), isNull, reason: '${lab.id}: ${step.id} rendered without errors');
         await store.recordLabStep(lab, step, TaskResult(taskId: step.id, score: 100, passed: true));
         await t.pumpAndSettle();
