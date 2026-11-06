@@ -329,6 +329,48 @@
   "scenarios": 15,
   "title": "Workforce Planning"
  },
+ "ib_lab_capstone": {
+  "major": "international_business",
+  "note": "Prepare Atlas Global Trading\u2019s full international expansion proposal.",
+  "scenarios": 15,
+  "title": "International Business Capstone"
+ },
+ "ib_lab_culture": {
+  "major": "international_business",
+  "note": "Lead international teams: communication, meetings, feedback and conflict across contexts \u2014",
+  "scenarios": 15,
+  "title": "Cross-Cultural Management"
+ },
+ "ib_lab_negotiation": {
+  "major": "international_business",
+  "note": "Negotiate prices, terms and partnerships with simulated international partners.",
+  "scenarios": 15,
+  "title": "International Negotiations"
+ },
+ "ib_lab_research": {
+  "major": "international_business",
+  "note": "Score international markets on size, growth, risk and ease of entry; forecast demand in lo",
+  "scenarios": 15,
+  "title": "Global Market Research"
+ },
+ "ib_lab_strategy": {
+  "major": "international_business",
+  "note": "Choose entry modes, partners and localisation for Atlas Global Trading\u2019s expansion.",
+  "scenarios": 15,
+  "title": "International Business Strategy"
+ },
+ "ib_lab_supply": {
+  "major": "international_business",
+  "note": "Ship goods internationally: modes, lead times, safety stock for long supply lines, delays ",
+  "scenarios": 15,
+  "title": "Global Supply Chain"
+ },
+ "ib_lab_trade": {
+  "major": "international_business",
+  "note": "Landed costs, Incoterms, tariffs, documentation and trade compliance for real shipments.",
+  "scenarios": 15,
+  "title": "International Trade"
+ },
  "ie_lab_improvement": {
   "major": "industrial_engineering",
   "note": "Investigate performance problems on the shop floor and choose the improvement that fixes t",

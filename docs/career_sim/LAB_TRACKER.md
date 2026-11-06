@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 69, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 111, Verified complete: 0.
+**198 labs.** Not started: 62, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 118, Verified complete: 0.
 
 ## Majors
 
@@ -36,7 +36,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Business and Economics | Entrepreneurship | 8 | Tested |
 | School of Business and Economics | Marketing | 7 | Tested |
 | School of Business and Economics | Human Resources Management | 7 | Tested |
-| School of Business and Economics | International Business | 7 | Not started |
+| School of Business and Economics | International Business | 7 | Tested |
 | School of Mathematics and Sciences | Mathematics | 6 | Tested |
 | School of Mathematics and Sciences | Biology | 7 | Tested |
 | School of Mathematics and Sciences | Chemistry | 8 | Tested |
@@ -325,13 +325,13 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Global Market Research | Not started | 0 / 15 |  |  |
-| B. International Trade | Not started | 0 / 15 |  |  |
-| C. International Business Strategy | Not started | 0 / 15 |  |  |
-| D. Global Supply Chain | Not started | 0 / 15 |  |  |
-| E. International Negotiations | Not started | 0 / 15 |  |  |
-| F. Cross-Cultural Management | Not started | 0 / 15 |  |  |
-| G. International Business Capstone | Not started | 0 / 15 |  |  |
+| A. Global Market Research | Tested | 15 / 15 | `ib_lab_research` | Score international markets on size, growth, risk and ease of entry; forecast demand in lo |
+| B. International Trade | Tested | 15 / 15 | `ib_lab_trade` | Landed costs, Incoterms, tariffs, documentation and trade compliance for real shipments. |
+| C. International Business Strategy | Tested | 15 / 15 | `ib_lab_strategy` | Choose entry modes, partners and localisation for Atlas Global Trading’s expansion. |
+| D. Global Supply Chain | Tested | 15 / 15 | `ib_lab_supply` | Ship goods internationally: modes, lead times, safety stock for long supply lines, delays  |
+| E. International Negotiations | Tested | 15 / 15 | `ib_lab_negotiation` | Negotiate prices, terms and partnerships with simulated international partners. |
+| F. Cross-Cultural Management | Tested | 15 / 15 | `ib_lab_culture` | Lead international teams: communication, meetings, feedback and conflict across contexts — |
+| G. International Business Capstone | Tested | 15 / 15 | `ib_lab_capstone` | Prepare Atlas Global Trading’s full international expansion proposal. |
 
 ### Mathematics
 
