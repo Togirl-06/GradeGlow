@@ -88,9 +88,43 @@ class Investigation {
 const List<LabDifficulty> levels3 = <LabDifficulty>[LabDifficulty.foundation, LabDifficulty.intermediate, LabDifficulty.advanced];
 const List<String> _levelSpec = <String>['Specification A', 'Specification B (tighter)', 'Specification C (client sign-off)'];
 
-double _eval(DesignProblem p, String name) {
+double _eval(DesignProblem p, String name, [Map<String, double>? at]) {
   final SimulationStep tmp = SimulationStep(id: '_', title: '', instructions: '', inputs: p.inputs, outputs: p.outputs, constraints: const <SimConstraint>[]);
-  return tmp.evaluate(p.given)[name]!;
+  try {
+    return tmp.evaluate(at ?? p.given)[name] ?? double.nan;
+  } on Object {
+    return double.nan;
+  }
+}
+
+double _snap(SimInput i, double v) {
+  final double k = ((v - i.min) / i.step).roundToDouble();
+  final double s = (i.min + k * i.step).clamp(i.min, i.max).toDouble();
+  return double.parse(s.toStringAsFixed(10));
+}
+
+bool _sameCase(Map<String, double> a, Map<String, double> b) => a.length == b.length && a.keys.every((String k) => (a[k]! - (b[k] ?? double.nan)).abs() < 1e-9);
+
+bool _usableCase(DesignProblem p, Map<String, double> c) => p.ask.every((String a) {
+      final double v = _eval(p, a, c);
+      return v.isFinite && v.abs() > 1e-6 && v.abs() * 0.01 < 1000;
+    });
+
+/// The worked case for the hand calculation at each level. Level 1 uses the
+/// problem's own case; levels 2 and 3 use different points in the design
+/// space, so the student calculates afresh rather than repeating numbers.
+Map<String, double> workedCase(DesignProblem p, int level) {
+  if (level == 0) return p.given;
+  final Map<String, double> before = workedCase(p, level - 1);
+  final List<double> fractions = level == 1 ? const <double>[0.75, 0.4, 0.6] : const <double>[0.3, 0.85, 0.15];
+  final List<Map<String, double>> candidates = <Map<String, double>>[
+    for (final double f in fractions) <String, double>{for (final SimInput i in p.inputs) i.name: _snap(i, i.min + f * (i.max - i.min))},
+    <String, double>{for (final SimInput i in p.inputs) i.name: i.initial ?? i.min},
+  ];
+  for (final Map<String, double> c in candidates) {
+    if (!_sameCase(c, p.given) && !_sameCase(c, before) && _usableCase(p, c)) return c;
+  }
+  return p.given;
 }
 
 String _fmt(double v) {
@@ -119,7 +153,7 @@ List<LabScenario> designScenarios(String prefix, DesignProblem p, {LabPerson? pe
             why: 'Designs that miss their specification fail in service or cost the client money.',
             information: <String>[
               ...p.formulas,
-              'Worked case for checking: ${p.inputs.map((SimInput i) => '${i.label} = ${_fmt(p.given[i.name]!)}${i.unit.isEmpty ? '' : ' ${i.unit}'}').join(', ')}.',
+              'Worked case for checking: ${p.inputs.map((SimInput i) => '${i.label} = ${_fmt(workedCase(p, l)[i.name]!)}${i.unit.isEmpty ? '' : ' ${i.unit}'}').join(', ')}.',
             ],
             tools: const <String>['Live design model', 'Scientific calculator and grapher', 'Whiteboard'],
             expected: 'A hand calculation that matches the model, and a design that meets every line of the specification.',
@@ -131,7 +165,7 @@ List<LabScenario> designScenarios(String prefix, DesignProblem p, {LabPerson? pe
               instructions: 'Calculate for the worked case before using the model (answers within 1%).',
               questions: <MathQuestion>[
                 for (final String a in p.ask)
-                  NumberQuestion('c_$a', p.outputs.firstWhere((SimOutput o) => o.name == a).label, _eval(p, a),
+                  NumberQuestion('c_$a', p.outputs.firstWhere((SimOutput o) => o.name == a).label, _eval(p, a, workedCase(p, l)),
                       tolerance: 0.01, relative: true, unit: p.outputs.firstWhere((SimOutput o) => o.name == a).unit),
               ],
             ),
