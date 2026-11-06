@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:ai_study_buddy/career_sim/store/career_sim_store.dart';
+import 'package:ai_study_buddy/career_sim/ui/gg_kit.dart';
 import 'package:ai_study_buddy/vu_v2/design/vu_v2_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -57,11 +58,12 @@ Future<void> pumpShot(WidgetTester t, CareerSimStore s, Widget home, {Size size 
   final ThemeData theme = raw.copyWith(
     textTheme: raw.textTheme.apply(fontFamily: 'ShotSans'),
     primaryTextTheme: raw.primaryTextTheme.apply(fontFamily: 'ShotSans'),
+    appBarTheme: raw.appBarTheme.copyWith(titleTextStyle: raw.appBarTheme.titleTextStyle?.copyWith(fontFamily: 'ShotSans')),
   );
   VuV2Colors.syncTo(theme);
   await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(
     value: s,
-    child: RepaintBoundary(key: _boundary, child: MaterialApp(debugShowCheckedModeBanner: false, theme: theme, home: home)),
+    child: RepaintBoundary(key: _boundary, child: MaterialApp(debugShowCheckedModeBanner: false, theme: theme, home: GGTheme(child: home))),
   ));
   await settle(t);
 }
