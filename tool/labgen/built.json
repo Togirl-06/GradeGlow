@@ -1,4 +1,34 @@
 {
+ "acc_lab_audit": {
+  "major": "accounting",
+  "note": "Plan an audit by risk, select samples, run analytics for anomalies and duplicates, respond",
+  "scenarios": 15,
+  "title": "Auditing"
+ },
+ "acc_lab_capstone": {
+  "major": "accounting",
+  "note": "Close the books for a client and advise them: ratio analysis, cash-flow warnings, month-en",
+  "scenarios": 15,
+  "title": "Accounting Capstone"
+ },
+ "acc_lab_cost": {
+  "major": "accounting",
+  "note": "Run break-even and target-profit analysis, compute variances, price products and advise ma",
+  "scenarios": 15,
+  "title": "Cost and Management Accounting"
+ },
+ "acc_lab_double": {
+  "major": "accounting",
+  "note": "Apply debit and credit rules, check journals balance, keep the accounting equation true an",
+  "scenarios": 15,
+  "title": "Double-Entry Accounting"
+ },
+ "acc_lab_ledger": {
+  "major": "accounting",
+  "note": "Post journals to the ledger, extract and fix trial balances, calculate depreciation and ma",
+  "scenarios": 15,
+  "title": "General Ledger and Trial Balance"
+ },
  "ae_lab_aero": {
   "major": "aerospace_engineering",
   "note": "Lift, drag, Reynolds number, stall speed and lift-to-drag ratio on real aircraft configura",

@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 5, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 175, Verified complete: 0.
+**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 180, Verified complete: 0.
 
 ## Majors
 
@@ -253,13 +253,13 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
 | A. Bookkeeping | Functionality in progress | 1 / 15 | `acc_lab_bookkeeping` | Journals posted to a ledger; 1 company |
-| B. Double-Entry Accounting | Not started | 0 / 15 |  |  |
-| C. General Ledger and Trial Balance | Not started | 0 / 15 |  |  |
+| B. Double-Entry Accounting | Tested | 15 / 15 | `acc_lab_double` | Apply debit and credit rules, check journals balance, keep the accounting equation true an |
+| C. General Ledger and Trial Balance | Tested | 15 / 15 | `acc_lab_ledger` | Post journals to the ledger, extract and fix trial balances, calculate depreciation and ma |
 | D. Bank Reconciliation | Functionality in progress | 1 / 15 | `acc_lab_reconciliation` | 1 reconciliation |
 | E. Financial Statements | Functionality in progress | 1 / 15 | `acc_lab_statements` | Income statement and balance sheet; no cash flow yet |
-| F. Cost and Management Accounting | Not started | 0 / 15 |  |  |
-| G. Auditing | Not started | 0 / 15 |  |  |
-| H. Accounting Capstone | Not started | 0 / 15 |  |  |
+| F. Cost and Management Accounting | Tested | 15 / 15 | `acc_lab_cost` | Run break-even and target-profit analysis, compute variances, price products and advise ma |
+| G. Auditing | Tested | 15 / 15 | `acc_lab_audit` | Plan an audit by risk, select samples, run analytics for anomalies and duplicates, respond |
+| H. Accounting Capstone | Tested | 15 / 15 | `acc_lab_capstone` | Close the books for a client and advise them: ratio analysis, cash-flow warnings, month-en |
 
 ### Finance
 
