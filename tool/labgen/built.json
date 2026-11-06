@@ -191,6 +191,42 @@
   "scenarios": 15,
   "title": "Titration"
  },
+ "cy_lab_awareness": {
+  "major": "cybersecurity",
+  "note": "Spot phishing, handle social-engineering calls, build a phishing checker, review policy an",
+  "scenarios": 15,
+  "title": "Security Awareness"
+ },
+ "cy_lab_forensics": {
+  "major": "cybersecurity",
+  "note": "Preserve evidence, verify integrity with hashes, check the chain of custody, build timelin",
+  "scenarios": 15,
+  "title": "Digital Forensics"
+ },
+ "cy_lab_ir": {
+  "major": "cybersecurity",
+  "note": "Lead incidents end to end: ransomware containment, compromised mailboxes, web-server compr",
+  "scenarios": 15,
+  "title": "Incident Response"
+ },
+ "cy_lab_monitoring": {
+  "major": "cybersecurity",
+  "note": "Work a SOC shift: parse authentication logs to detect attacks, triage SIEM alerts, tune no",
+  "scenarios": 15,
+  "title": "Security Monitoring"
+ },
+ "cy_lab_network": {
+  "major": "cybersecurity",
+  "note": "Subnet networks, write and test firewall rules, size links and troubleshoot connectivity i",
+  "scenarios": 15,
+  "title": "Networking Fundamentals"
+ },
+ "cy_lab_vuln": {
+  "major": "cybersecurity",
+  "note": "Check software against advisories, prioritise vulnerabilities by risk, audit password poli",
+  "scenarios": 15,
+  "title": "Vulnerability Assessment"
+ },
  "ds_lab_analysis": {
   "major": "data_science",
   "note": "Aggregate, summarise and correlate data in code; answer stakeholder questions; and catch m",
