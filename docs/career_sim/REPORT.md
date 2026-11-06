@@ -141,7 +141,7 @@ teaching material, not clinical guidance.
   covered by screen, task and rule tests, plus the generic internship → return
   offer test.
 * No 3D: anatomy and cell labelling are 2D diagrams. Phones were not run on a device.
-* **No lab has been run end to end by a person** (status "Verified complete" is 0 of 198). Widget tests drive each step type, but not every one of the ~3,000 scenarios through the UI.
+* **No lab has been run end to end by a person** (status "Verified complete" is 0 of 198). Widget tests drive each step type, but not every one of the roughly 2,500 scenarios through the UI.
 * Workplaces reuse their assignment list once it has been completed.
 
 ## Before merging
