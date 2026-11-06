@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 21, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 159, Verified complete: 0.
+**198 labs.** Not started: 15, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 165, Verified complete: 0.
 
 ## Majors
 
@@ -19,7 +19,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Cybersecurity | 6 | Tested |
 | School of Computer Science and Technology | Information Technology | 5 | Tested |
 | School of Computer Science and Technology | Web Development | 6 | Tested |
-| School of Computer Science and Technology | Mobile Application Development | 6 | Not started |
+| School of Computer Science and Technology | Mobile Application Development | 6 | Tested |
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
 | School of Medicine and Health Sciences | Nursing | 12 | In progress |
 | School of Law | Law | 7 | Tested |
@@ -123,12 +123,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Mobile UI Design | Not started | 0 / 15 |  |  |
-| B. Flutter Development | Not started | 0 / 15 |  |  |
-| C. Backend Integration | Not started | 0 / 15 |  |  |
-| D. Mobile App Testing | Not started | 0 / 15 |  |  |
-| E. App Deployment | Not started | 0 / 15 |  |  |
-| F. Full App Project | Not started | 0 / 15 |  |  |
+| A. Mobile UI Design | Tested | 15 / 15 | `mob_lab_ui` | Size touch targets and lists, review designs against platform guidelines, run usability te |
+| B. Flutter Development | Tested | 15 / 15 | `mob_lab_flutter` | Reason precisely about Flutter layout (Row/Expanded, overflow) and navigation stacks, choo |
+| C. Backend Integration | Tested | 15 / 15 | `mob_lab_backend` | Parse and validate API JSON safely, implement retries with backoff and offline sync, secur |
+| D. Mobile App Testing | Tested | 15 / 15 | `mob_lab_testing` | Measure stability from crash data, plan device coverage, triage bugs, write a test plan an |
+| E. App Deployment | Tested | 15 / 15 | `mob_lab_deploy` | Get through app store review, manage signing keys, budget app size and run staged rollouts |
+| F. Full App Project | Tested | 15 / 15 | `mob_lab_project` | Build an app for a client from kick-off to sprint reviews: write the spec, plan sprints, r |
 
 ### Medicine
 

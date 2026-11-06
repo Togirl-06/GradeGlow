@@ -623,6 +623,42 @@
   "scenarios": 15,
   "title": "Social Media Marketing"
  },
+ "mob_lab_backend": {
+  "major": "mobile_app_development",
+  "note": "Parse and validate API JSON safely, implement retries with backoff and offline sync, secur",
+  "scenarios": 15,
+  "title": "Backend Integration"
+ },
+ "mob_lab_deploy": {
+  "major": "mobile_app_development",
+  "note": "Get through app store review, manage signing keys, budget app size and run staged rollouts",
+  "scenarios": 15,
+  "title": "App Deployment"
+ },
+ "mob_lab_flutter": {
+  "major": "mobile_app_development",
+  "note": "Reason precisely about Flutter layout (Row/Expanded, overflow) and navigation stacks, choo",
+  "scenarios": 15,
+  "title": "Flutter Development"
+ },
+ "mob_lab_project": {
+  "major": "mobile_app_development",
+  "note": "Build an app for a client from kick-off to sprint reviews: write the spec, plan sprints, r",
+  "scenarios": 15,
+  "title": "Full App Project"
+ },
+ "mob_lab_testing": {
+  "major": "mobile_app_development",
+  "note": "Measure stability from crash data, plan device coverage, triage bugs, write a test plan an",
+  "scenarios": 15,
+  "title": "Mobile App Testing"
+ },
+ "mob_lab_ui": {
+  "major": "mobile_app_development",
+  "note": "Size touch targets and lists, review designs against platform guidelines, run usability te",
+  "scenarios": 15,
+  "title": "Mobile UI Design"
+ },
  "ph_lab_electricity": {
   "major": "physics",
   "note": "Current limiting, parallel networks, internal resistance, resistivity and RC timing on the",

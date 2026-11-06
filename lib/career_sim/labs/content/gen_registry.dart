@@ -16,6 +16,7 @@ import 'gen_industrial.dart';
 import 'gen_infotech.dart';
 import 'gen_intlbusiness.dart';
 import 'gen_marketing.dart';
+import 'gen_mobile.dart';
 import 'gen_physics.dart';
 import 'gen_software_eng.dart';
 import 'gen_webdev.dart';
@@ -39,6 +40,7 @@ final List<LabSpec> generatedLabs = <LabSpec>[
   ...informationTechnologyGenLabs,
   ...internationalBusinessGenLabs,
   ...marketingGenLabs,
+  ...mobileAppDevelopmentGenLabs,
   ...physicsGenLabs,
   ...softwareEngineeringGenLabs,
   ...webDevelopmentGenLabs,
@@ -61,6 +63,7 @@ const Map<String, String> generatedMajorLabels = <String, String>{
   'information_technology': 'Information Technology',
   'international_business': 'International Business',
   'marketing': 'Marketing',
+  'mobile_app_development': 'Mobile App Development',
   'physics': 'Physics',
   'software_engineering': 'Software Engineering',
   'web_development': 'Web Development',
