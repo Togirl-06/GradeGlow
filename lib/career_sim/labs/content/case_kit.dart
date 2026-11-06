@@ -196,3 +196,61 @@ List<LabScenario> codeScenarios(String prefix, CodeProblem p, {LabPerson? person
 
 List<LabScenario> fromCode(String prefix, List<CodeProblem> ps, {LabPerson? person}) =>
     <LabScenario>[for (final CodeProblem p in ps) ...codeScenarios(prefix, p, person: person)];
+
+// ------------------------------------------------------------ SQL problems
+
+/// One level of a SQL problem: the task and the rows a correct answer gives.
+class SqlVariant {
+  const SqlVariant(this.instructions, this.expected, {this.check, this.ordered = false, this.starter = ''});
+  final String instructions;
+  final List<List<Object?>> expected;
+
+  /// Query run after the student's statements (for INSERT/UPDATE/CREATE tasks).
+  final String? check;
+  final bool ordered;
+
+  /// Starting SQL (e.g. a broken query to repair).
+  final String starter;
+}
+
+/// A database task at three levels, run against the lab's SQLite database.
+class SqlProblem {
+  const SqlProblem({required this.key, required this.title, required this.brief, required this.variants, this.skills = const <String>[]});
+  final String key;
+  final String title;
+  final String brief;
+  final List<SqlVariant> variants;
+  final List<String> skills;
+}
+
+List<LabScenario> sqlScenarios(String prefix, SqlProblem p, {LabPerson? person}) => <LabScenario>[
+      for (int l = 0; l < 3; l++)
+        LabScenario(
+          id: '${prefix}_${p.key}_${l + 1}',
+          title: '${p.title}${<String>['', ' — extended', ' — production-ready'][l]}',
+          level: levels3[l],
+          people: <LabPerson>[if (person != null) person],
+          briefing: Briefing(
+            what: '${p.brief} ${p.variants[l].instructions}',
+            why: 'Correct, efficient queries are what the business relies on for its decisions.',
+            information: const <String>['Run queries against the lab database as often as you like.', 'Results are compared row by row with the correct answer.'],
+            tools: const <String>['SQL editor', 'Database schema browser', 'Query results grid'],
+            expected: 'A query (or change) that produces exactly the required rows.',
+          ),
+          steps: <LabStep>[
+            SqlStep(
+              id: '${prefix}_${p.key}_${l + 1}_sql',
+              title: p.title,
+              instructions: p.variants[l].instructions,
+              expected: p.variants[l].expected,
+              check: p.variants[l].check,
+              ordered: p.variants[l].ordered,
+              starter: p.variants[l].starter,
+              skills: p.skills,
+            ),
+          ],
+        ),
+    ];
+
+List<LabScenario> fromSql(String prefix, List<SqlProblem> ps, {LabPerson? person}) =>
+    <LabScenario>[for (final SqlProblem p in ps) ...sqlScenarios(prefix, p, person: person)];

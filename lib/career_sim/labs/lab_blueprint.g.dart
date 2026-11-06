@@ -28,11 +28,11 @@ const Map<String, String> blueprintStatusLabels = <String, String>{
 };
 
 const List<BlueprintLab> blueprintLabs = <BlueprintLab>[
-  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'A', 'Programming Laboratory', 'cs_lab_fundamentals', 'in_progress', 1, 'Real Python/JavaScript execution and tests; 1 scenario of 15'),
-  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'B', 'Data Structures and Algorithms', 'cs_lab_dsa', 'in_progress', 1, 'Trace and challenge modes; 1 scenario of 15'),
-  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'C', 'Database Engineering', 'cs_lab_database', 'in_progress', 1, 'Real SQLite workbench; 1 scenario of 15'),
-  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'D', 'Computer Architecture and Operating Systems', 'cs_lab_os', 'in_progress', 1, 'FCFS/SJF and paging simulators; no Priority/Round Robin or CPU model yet'),
-  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'E', 'Software Project Laboratory', 'cs_lab_project', 'in_progress', 1, '1 project brief'),
+  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'A', 'Programming Laboratory', 'cs_lab_fundamentals', 'tested', 16, 'Real Python/JavaScript execution and tests; +15 generated scenarios'),
+  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'B', 'Data Structures and Algorithms', 'cs_lab_dsa', 'tested', 16, 'Trace and challenge modes; +15 generated scenarios'),
+  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'C', 'Database Engineering', 'cs_lab_database', 'tested', 16, 'Real SQLite workbench; +15 generated scenarios'),
+  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'D', 'Computer Architecture and Operating Systems', 'cs_lab_os', 'tested', 16, 'FCFS/SJF and paging simulators; Round Robin, priority and page replacement as programs; +15 generated scenarios'),
+  BlueprintLab('School of Computer Science and Technology', 'computer_science', 'Computer Science', 'E', 'Software Project Laboratory', 'cs_lab_project', 'tested', 16, '1 project brief; +15 generated scenarios'),
   BlueprintLab('School of Computer Science and Technology', 'software_engineering', 'Software Engineering', 'A', 'Requirements Engineering', 'se_lab_requirements', 'tested', 15, 'Work with simulated clients to gather, classify and document requirements as user stories '),
   BlueprintLab('School of Computer Science and Technology', 'software_engineering', 'Software Engineering', 'B', 'System Design and Architecture', 'se_lab_design', 'tested', 15, 'Estimate capacity, choose components and justify architecture decisions for real systems.'),
   BlueprintLab('School of Computer Science and Technology', 'software_engineering', 'Software Engineering', 'C', 'Software Development', 'se_lab_development', 'tested', 15, 'Implement features from development tickets in Python or JavaScript, run them and pass aut'),

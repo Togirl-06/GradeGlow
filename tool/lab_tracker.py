@@ -35,17 +35,18 @@ STATUS = {
 BUILT = {}
 
 
-def built(lab_id, status, note=""):
-    return {"labId": lab_id, "status": status, "note": note}
+def built(lab_id, status, note="", keep=False):
+    """keep: leave the status as given even when generated scenarios extend the lab."""
+    return {"labId": lab_id, "status": status, "note": note, "keep": keep}
 
 
 SCHOOLS = [
     ("School of Computer Science and Technology", [
         ("computer_science", "Computer Science", [
-            ("Programming Laboratory", built("cs_lab_fundamentals", "in_progress", "Real Python/JavaScript execution and tests; 1 scenario of 15")),
-            ("Data Structures and Algorithms", built("cs_lab_dsa", "in_progress", "Trace and challenge modes; 1 scenario of 15")),
-            ("Database Engineering", built("cs_lab_database", "in_progress", "Real SQLite workbench; 1 scenario of 15")),
-            ("Computer Architecture and Operating Systems", built("cs_lab_os", "in_progress", "FCFS/SJF and paging simulators; no Priority/Round Robin or CPU model yet")),
+            ("Programming Laboratory", built("cs_lab_fundamentals", "in_progress", "Real Python/JavaScript execution and tests")),
+            ("Data Structures and Algorithms", built("cs_lab_dsa", "in_progress", "Trace and challenge modes")),
+            ("Database Engineering", built("cs_lab_database", "in_progress", "Real SQLite workbench")),
+            ("Computer Architecture and Operating Systems", built("cs_lab_os", "in_progress", "FCFS/SJF and paging simulators; Round Robin, priority and page replacement as programs")),
             ("Software Project Laboratory", built("cs_lab_project", "in_progress", "1 project brief")),
         ]),
         ("software_engineering", "Software Engineering", [
@@ -79,7 +80,7 @@ SCHOOLS = [
     ]),
     ("School of Medicine and Health Sciences", [
         ("medicine", "Medicine", [
-            ("Human Anatomy and Physiology", built("md_lab_anatomy", "in_progress", "2D diagrams, not the required 3D body")),
+            ("Human Anatomy and Physiology", built("md_lab_anatomy", "in_progress", "2D diagrams, not the required 3D body", keep=True)),
             ("Medical History and Patient Interview", built("md_lab_assessment", "in_progress", "1 patient case")),
             ("Physical Examination", None), ("Diagnostic Investigation", None), ("Clinical Reasoning and Diagnosis", None),
             ("Emergency Medicine", built("md_lab_emergency", "in_progress", "1 case (anaphylaxis)")),
@@ -251,11 +252,19 @@ def rows():
                 if gid and not b:
                     b = built(gid, "tested", GENERATED[gid]["note"])
                     SCENARIOS[gid] = GENERATED[gid]["scenarios"]
-                b = b or {}
+                b = dict(b or {})
+                scenarios = SCENARIOS.get(b.get("labId", ""), 0)
+                ext = GENERATED.get(b.get("labId", ""))
+                if ext and ext.get("extends"):
+                    # Hand-built lab extended with generated scenarios (tool/labgen, extends=True).
+                    scenarios += ext["scenarios"]
+                    if not b.get("keep"):
+                        b["status"] = "tested"
+                    b["note"] = f'{b.get("note", "")}; +{ext["scenarios"]} generated scenarios'.lstrip("; ")
                 yield {
                     "school": school, "majorId": major_id, "major": major, "letter": chr(65 + i), "title": title,
                     "labId": b.get("labId", ""), "status": b.get("status", "not_started"), "note": b.get("note", ""),
-                    "scenarios": SCENARIOS.get(b.get("labId", ""), 0),
+                    "scenarios": scenarios,
                 }
 
 

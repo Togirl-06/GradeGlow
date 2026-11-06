@@ -1,863 +1,1042 @@
 {
  "acc_lab_audit": {
+  "extends": false,
   "major": "accounting",
   "note": "Plan an audit by risk, select samples, run analytics for anomalies and duplicates, respond",
   "scenarios": 15,
   "title": "Auditing"
  },
  "acc_lab_capstone": {
+  "extends": false,
   "major": "accounting",
   "note": "Close the books for a client and advise them: ratio analysis, cash-flow warnings, month-en",
   "scenarios": 15,
   "title": "Accounting Capstone"
  },
  "acc_lab_cost": {
+  "extends": false,
   "major": "accounting",
   "note": "Run break-even and target-profit analysis, compute variances, price products and advise ma",
   "scenarios": 15,
   "title": "Cost and Management Accounting"
  },
  "acc_lab_double": {
+  "extends": false,
   "major": "accounting",
   "note": "Apply debit and credit rules, check journals balance, keep the accounting equation true an",
   "scenarios": 15,
   "title": "Double-Entry Accounting"
  },
  "acc_lab_ledger": {
+  "extends": false,
   "major": "accounting",
   "note": "Post journals to the ledger, extract and fix trial balances, calculate depreciation and ma",
   "scenarios": 15,
   "title": "General Ledger and Trial Balance"
  },
  "ae_lab_aero": {
+  "extends": false,
   "major": "aerospace_engineering",
   "note": "Lift, drag, Reynolds number, stall speed and lift-to-drag ratio on real aircraft configura",
   "scenarios": 15,
   "title": "Aerodynamics"
  },
  "ae_lab_design": {
+  "extends": false,
   "major": "aerospace_engineering",
   "note": "Wing loading, aspect ratio, range, centre of gravity and fuselage pressurisation for a new",
   "scenarios": 15,
   "title": "Aircraft Design"
  },
  "ae_lab_flight": {
+  "extends": false,
   "major": "aerospace_engineering",
   "note": "Turns, climb, glide, take-off and static stability \u2014 the performance numbers pilots fly by",
   "scenarios": 15,
   "title": "Flight Mechanics"
  },
  "ae_lab_project": {
+  "extends": false,
   "major": "aerospace_engineering",
   "note": "Concept design for a client: UAV endurance, a satellite power system, a heavy-lift drone, ",
   "scenarios": 15,
   "title": "Aerospace Design Project"
  },
  "ae_lab_propulsion": {
+  "extends": false,
   "major": "aerospace_engineering",
   "note": "Jet thrust, propulsive efficiency, rocket \u0394v, gas-turbine cycles and mission fuel.",
   "scenarios": 15,
   "title": "Propulsion Systems"
  },
  "ae_lab_systems": {
+  "extends": false,
   "major": "aerospace_engineering",
   "note": "Investigate in-service defects reported by flight crews and maintenance engineers.",
   "scenarios": 15,
   "title": "Aircraft Systems"
  },
  "ai_lab_ethics": {
+  "extends": false,
   "major": "artificial_intelligence",
   "note": "Measure fairness across groups, audit a biased model, write a model card and decide whethe",
   "scenarios": 15,
   "title": "AI Ethics and Model Evaluation"
  },
  "ai_lab_genai": {
+  "extends": false,
   "major": "artificial_intelligence",
   "note": "Budget an LLM feature, design retrieval within a context window, write and test prompts, c",
   "scenarios": 15,
   "title": "Generative AI Development"
  },
  "ai_lab_ml": {
+  "extends": false,
   "major": "artificial_intelligence",
   "note": "Implement evaluation metrics, regression and nearest-neighbour models from scratch, then d",
   "scenarios": 15,
   "title": "Machine Learning"
  },
  "ai_lab_nlp": {
+  "extends": false,
   "major": "artificial_intelligence",
   "note": "Build tokenisers, word statistics and sentiment classifiers, label data to a guideline and",
   "scenarios": 15,
   "title": "Natural Language Processing"
  },
  "ai_lab_nn": {
+  "extends": false,
   "major": "artificial_intelligence",
   "note": "Tune a neuron by hand, size networks against memory budgets, implement forward passes and ",
   "scenarios": 15,
   "title": "Neural Networks"
  },
  "ba_lab_analytics": {
+  "extends": false,
   "major": "business_administration",
   "note": "Use company data: like-for-like growth, basket metrics, customer retention, break-even and",
   "scenarios": 15,
   "title": "Business Analytics"
  },
  "ba_lab_capstone": {
+  "extends": false,
   "major": "business_administration",
   "note": "Manage Greenleaf\u2019s regional business through several decision cycles: price, marketing, st",
   "scenarios": 15,
   "title": "Management Capstone"
  },
  "ba_lab_operations": {
+  "extends": false,
   "major": "business_administration",
   "note": "Run a Greenleaf store: staffing, stock, opening hours, pricing and customer service \u2014 ever",
   "scenarios": 15,
   "title": "Business Operations"
  },
  "ba_lab_people": {
+  "extends": false,
   "major": "business_administration",
   "note": "Allocate staff, resolve team conflict, address performance and make leadership calls.",
   "scenarios": 15,
   "title": "Human and Team Management"
  },
  "ba_lab_projects": {
+  "extends": false,
   "major": "business_administration",
   "note": "Schedule tasks with dependencies, track earned value and manage project risk.",
   "scenarios": 15,
   "title": "Project Management"
  },
  "ba_lab_strategy": {
+  "extends": false,
   "major": "business_administration",
   "note": "SWOT analysis, objectives, strategic options, KPIs and risk assessment for Greenleaf.",
   "scenarios": 15,
   "title": "Strategic Management"
  },
  "bi_lab_cell": {
+  "extends": false,
   "major": "biology",
   "note": "Surface area to volume, osmosis, counting mitotic cells, enzyme kinetics and preparing cel",
   "scenarios": 15,
   "title": "Cell Biology"
  },
  "bi_lab_ecology": {
+  "extends": false,
   "major": "biology",
   "note": "Mark\u2013recapture surveys, sustainable harvests, energy flow, biodiversity and carbon sequest",
   "scenarios": 15,
   "title": "Ecology"
  },
  "bi_lab_genetics": {
+  "extends": false,
   "major": "biology",
   "note": "Hardy\u2013Weinberg, family risk, gene mapping, PCR amplification and gel electrophoresis.",
   "scenarios": 15,
   "title": "Genetics"
  },
  "bi_lab_human": {
+  "extends": false,
   "major": "biology",
   "note": "Cardiac output, ventilation, oxygen delivery and uptake, and blood flow in exercise physio",
   "scenarios": 15,
   "title": "Human Biology"
  },
  "bi_lab_micro": {
+  "extends": false,
   "major": "biology",
   "note": "Growth curves, plate counts, antibiotic exposure, sterilisation and disinfectant preparati",
   "scenarios": 15,
   "title": "Microbiology"
  },
  "bi_lab_microscopy": {
+  "extends": false,
   "major": "biology",
   "note": "Choose objectives, resolution, graticule calibration, scale bars and counting dilutions at",
   "scenarios": 15,
   "title": "Microscopy"
  },
  "bi_lab_research": {
+  "extends": false,
   "major": "biology",
   "note": "Investigate unexpected results in the research group and decide what really happened.",
   "scenarios": 15,
   "title": "Biology Research Project"
  },
  "ch_lab_acids": {
+  "extends": false,
   "major": "chemistry",
   "note": "pH of strong and weak acids, buffers, neutralising spills and choosing indicators.",
   "scenarios": 15,
   "title": "Acids and Bases"
  },
  "ch_lab_analytical": {
+  "extends": false,
   "major": "chemistry",
   "note": "Spectrophotometry, dilution for calibration, gravimetric analysis, detection limits and ch",
   "scenarios": 15,
   "title": "Analytical Chemistry"
  },
  "ch_lab_atomic": {
+  "extends": false,
   "major": "chemistry",
   "note": "Build atoms and ions, read isotope abundances from mass spectra and count particles with t",
   "scenarios": 15,
   "title": "Atomic Structure"
  },
  "ch_lab_capstone": {
+  "extends": false,
   "major": "chemistry",
   "note": "Client briefs that combine synthesis, titration, buffers, spectroscopy and safe handling i",
   "scenarios": 15,
   "title": "Chemistry Capstone"
  },
  "ch_lab_equations": {
+  "extends": false,
   "major": "chemistry",
   "note": "Balance real reactions by setting coefficients; every element is checked, then smallest wh",
   "scenarios": 15,
   "title": "Chemical Equations"
  },
  "ch_lab_molecular": {
+  "extends": false,
   "major": "chemistry",
   "note": "Build molecular formulas from atoms and check them against mass-spectrum and structural ev",
   "scenarios": 15,
   "title": "Molecular Modelling"
  },
  "ch_lab_stoichiometry": {
+  "extends": false,
   "major": "chemistry",
   "note": "Limiting reactants, yields, solution preparation, gas volumes and concentrated-reagent cal",
   "scenarios": 15,
   "title": "Stoichiometry"
  },
  "ch_lab_titration": {
+  "extends": false,
   "major": "chemistry",
   "note": "A working burette: add titrant in 0.01 mL steps, watch the pH, stop at the end point and c",
   "scenarios": 15,
   "title": "Titration"
  },
+ "cs_lab_database": {
+  "extends": true,
+  "major": "computer_science",
+  "note": "",
+  "scenarios": 15,
+  "title": "Database Engineering"
+ },
+ "cs_lab_dsa": {
+  "extends": true,
+  "major": "computer_science",
+  "note": "",
+  "scenarios": 15,
+  "title": "Data Structures and Algorithms"
+ },
+ "cs_lab_fundamentals": {
+  "extends": true,
+  "major": "computer_science",
+  "note": "",
+  "scenarios": 15,
+  "title": "Programming Laboratory"
+ },
+ "cs_lab_os": {
+  "extends": true,
+  "major": "computer_science",
+  "note": "",
+  "scenarios": 15,
+  "title": "Computer Architecture and Operating Systems"
+ },
+ "cs_lab_project": {
+  "extends": true,
+  "major": "computer_science",
+  "note": "",
+  "scenarios": 15,
+  "title": "Software Project Laboratory"
+ },
  "cy_lab_awareness": {
+  "extends": false,
   "major": "cybersecurity",
   "note": "Spot phishing, handle social-engineering calls, build a phishing checker, review policy an",
   "scenarios": 15,
   "title": "Security Awareness"
  },
  "cy_lab_forensics": {
+  "extends": false,
   "major": "cybersecurity",
   "note": "Preserve evidence, verify integrity with hashes, check the chain of custody, build timelin",
   "scenarios": 15,
   "title": "Digital Forensics"
  },
  "cy_lab_ir": {
+  "extends": false,
   "major": "cybersecurity",
   "note": "Lead incidents end to end: ransomware containment, compromised mailboxes, web-server compr",
   "scenarios": 15,
   "title": "Incident Response"
  },
  "cy_lab_monitoring": {
+  "extends": false,
   "major": "cybersecurity",
   "note": "Work a SOC shift: parse authentication logs to detect attacks, triage SIEM alerts, tune no",
   "scenarios": 15,
   "title": "Security Monitoring"
  },
  "cy_lab_network": {
+  "extends": false,
   "major": "cybersecurity",
   "note": "Subnet networks, write and test firewall rules, size links and troubleshoot connectivity i",
   "scenarios": 15,
   "title": "Networking Fundamentals"
  },
  "cy_lab_vuln": {
+  "extends": false,
   "major": "cybersecurity",
   "note": "Check software against advisories, prioritise vulnerabilities by risk, audit password poli",
   "scenarios": 15,
   "title": "Vulnerability Assessment"
  },
  "ds_lab_analysis": {
+  "extends": false,
   "major": "data_science",
   "note": "Aggregate, summarise and correlate data in code; answer stakeholder questions; and catch m",
   "scenarios": 15,
   "title": "Data Analysis"
  },
  "ds_lab_capstone": {
+  "extends": false,
   "major": "data_science",
   "note": "A client project at Northbeam Retail: scope it, build the KPI pipeline in code, size the a",
   "scenarios": 15,
   "title": "Data Science Capstone"
  },
  "ds_lab_cleaning": {
+  "extends": false,
   "major": "data_science",
   "note": "Clean real-world messy data: standardise text, remove duplicates, fix dates, impute missin",
   "scenarios": 15,
   "title": "Data Cleaning"
  },
  "ds_lab_predictive": {
+  "extends": false,
   "major": "data_science",
   "note": "Score customers with a logistic model, choose cost-aware thresholds, build and compare for",
   "scenarios": 15,
   "title": "Predictive Modelling"
  },
  "ds_lab_stats": {
+  "extends": false,
   "major": "data_science",
   "note": "Run hypothesis tests and confidence intervals in code, plan an A/B test with enough power,",
   "scenarios": 15,
   "title": "Statistical Modelling"
  },
  "ds_lab_viz": {
+  "extends": false,
   "major": "data_science",
   "note": "Choose the right chart, fix misleading and inaccessible charts, design a dashboard with st",
   "scenarios": 15,
   "title": "Data Visualization"
  },
  "ec_lab_data": {
+  "extends": false,
   "major": "economics",
   "note": "Inflation baskets, real wages, GDP per capita, labour-market rates and compound growth.",
   "scenarios": 15,
   "title": "Economic Data Analysis"
  },
  "ec_lab_international": {
+  "extends": false,
   "major": "economics",
   "note": "Tariffs, exchange rates, comparative advantage, purchasing power parity and the trade bala",
   "scenarios": 15,
   "title": "International Economics"
  },
  "ec_lab_macro": {
+  "extends": false,
   "major": "economics",
   "note": "Fiscal multipliers, interest-rate decisions, real growth, Okun\u2019s law and public-debt dynam",
   "scenarios": 15,
   "title": "Macroeconomics"
  },
  "ec_lab_micro": {
+  "extends": false,
   "major": "economics",
   "note": "Market equilibrium, elasticity, tax incidence, price ceilings and price floors with live s",
   "scenarios": 15,
   "title": "Microeconomics"
  },
  "ec_lab_policy": {
+  "extends": false,
   "major": "economics",
   "note": "Carbon tax, minimum wage, congestion charging, green subsidies and tax rates \u2014 each with a",
   "scenarios": 15,
   "title": "Public Policy"
  },
  "ec_lab_structures": {
+  "extends": false,
   "major": "economics",
   "note": "Monopoly, perfect competition, Cournot duopoly, price discrimination and merger concentrat",
   "scenarios": 15,
   "title": "Market Structures"
  },
  "eg_lab_academic": {
+  "extends": false,
   "major": "english",
   "note": "Write academic paragraphs with a thesis, evidence, analysis and referencing \u2014 marked again",
   "scenarios": 15,
   "title": "Academic Writing"
  },
  "eg_lab_communication": {
+  "extends": false,
   "major": "english",
   "note": "Job interviews, client calls, team meetings, conflict and presentations \u2014 saying the right",
   "scenarios": 15,
   "title": "Professional Communication"
  },
  "eg_lab_editing": {
+  "extends": false,
   "major": "english",
   "note": "Proof documents with errors of spelling, punctuation, grammar and fact, and decide what mu",
   "scenarios": 15,
   "title": "Editing and Proofreading"
  },
  "eg_lab_grammar": {
+  "extends": false,
   "major": "english",
   "note": "Check real copy for agreement, punctuation, tense, word choice and sentence structure.",
   "scenarios": 15,
   "title": "Grammar and Language"
  },
  "eg_lab_professional": {
+  "extends": false,
   "major": "english",
   "note": "Write emails, letters, reports, memos, proposals and meeting summaries for real workplace ",
   "scenarios": 15,
   "title": "Professional Writing"
  },
  "eg_lab_reading": {
+  "extends": false,
   "major": "english",
   "note": "Read briefing passages for main ideas, inference, tone and argument before advising collea",
   "scenarios": 15,
   "title": "Reading Comprehension"
  },
  "eg_lab_speaking": {
+  "extends": false,
   "major": "english",
   "note": "Plan and time talks, structure messages for an audience, and rehearse with feedback on org",
   "scenarios": 15,
   "title": "Public Speaking"
  },
  "en_lab_canvas": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Build business model canvases: sort the components, test the logic and fix weak blocks.",
   "scenarios": 15,
   "title": "Business Model Design"
  },
  "en_lab_discovery": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Interview simulated customers without leading them, and judge whether the problem is real.",
   "scenarios": 15,
   "title": "Customer Discovery"
  },
  "en_lab_finance": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Startup costs, pricing, break-even, burn rate and runway for a new venture.",
   "scenarios": 15,
   "title": "Financial Planning"
  },
  "en_lab_opportunity": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Turn observed problems into testable business opportunities and size them honestly.",
   "scenarios": 15,
   "title": "Opportunity Identification"
  },
  "en_lab_pitch": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Face simulated investors who question your model, numbers, market and risks \u2014 and decide w",
   "scenarios": 15,
   "title": "Investor Pitch"
  },
  "en_lab_pitchprep": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Structure a pitch deck, check every claim and write the investment ask.",
   "scenarios": 15,
   "title": "Pitch Preparation"
  },
  "en_lab_startup": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Run the venture through realistic challenges: hiring, cash crunches, pivots and growth dec",
   "scenarios": 15,
   "title": "Startup Management"
  },
  "en_lab_validation": {
+  "extends": false,
   "major": "entrepreneurship",
   "note": "Landing-page tests, pre-orders, competitor pricing and pilots that prove demand before bui",
   "scenarios": 15,
   "title": "Market Validation"
  },
  "fi_lab_capstone": {
+  "extends": false,
   "major": "finance",
   "note": "A full investment decision for a client: project NPV, financing, sensitivity and the board",
   "scenarios": 15,
   "title": "Finance Capstone"
  },
  "fi_lab_corporate": {
+  "extends": false,
   "major": "finance",
   "note": "WACC, capital structure, lease-or-buy, working capital and dividend policy for a growing f",
   "scenarios": 15,
   "title": "Corporate Finance"
  },
  "fi_lab_fsa": {
+  "extends": false,
   "major": "finance",
   "note": "Liquidity, profitability, efficiency and leverage ratios from a client company\u2019s accounts.",
   "scenarios": 15,
   "title": "Financial Statement Analysis"
  },
  "fi_lab_investment": {
+  "extends": false,
   "major": "finance",
   "note": "Net present value, payback, CAPM required returns, dividend valuation and bond pricing.",
   "scenarios": 15,
   "title": "Investment Analysis"
  },
  "fi_lab_math": {
+  "extends": false,
   "major": "finance",
   "note": "Simple and compound interest, present value, annuities and loan schedules for real client ",
   "scenarios": 15,
   "title": "Financial Mathematics"
  },
  "fi_lab_portfolio": {
+  "extends": false,
   "major": "finance",
   "note": "Two-asset portfolios, diversification, Sharpe ratio, rebalancing and drawdown \u2014 with simul",
   "scenarios": 15,
   "title": "Portfolio Management"
  },
  "fi_lab_risk": {
+  "extends": false,
   "major": "finance",
   "note": "Investigate losses and near-misses: currency, interest-rate, credit, liquidity and operati",
   "scenarios": 15,
   "title": "Risk Management"
  },
  "hr_lab_capstone": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Run recruitment and onboarding for a new depot: plan, select, check, induct and report.",
   "scenarios": 15,
   "title": "HR Capstone"
  },
  "hr_lab_interviews": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Plan structured interviews, conduct them with simulated candidates and score evidence fair",
   "scenarios": 15,
   "title": "Interview Management"
  },
  "hr_lab_onboarding": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Check pre-employment documents, plan first weeks and measure how quickly new starters beco",
   "scenarios": 15,
   "title": "Employee Onboarding"
  },
  "hr_lab_performance": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Review evidence, write fair appraisals, distribute merit budgets and support improvement p",
   "scenarios": 15,
   "title": "Performance Management"
  },
  "hr_lab_recruitment": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Write fair criteria, screen real-looking applications consistently and justify every short",
   "scenarios": 15,
   "title": "Recruitment"
  },
  "hr_lab_relations": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Handle grievances, disciplinary matters, absence and conflict with fair, documented proces",
   "scenarios": 15,
   "title": "Employee Relations"
  },
  "hr_lab_workforce": {
+  "extends": false,
   "major": "human_resource_management",
   "note": "Turnover, headcount forecasting, recruitment budgets, overtime versus hiring and skills ga",
   "scenarios": 15,
   "title": "Workforce Planning"
  },
  "ib_lab_capstone": {
+  "extends": false,
   "major": "international_business",
   "note": "Prepare Atlas Global Trading\u2019s full international expansion proposal.",
   "scenarios": 15,
   "title": "International Business Capstone"
  },
  "ib_lab_culture": {
+  "extends": false,
   "major": "international_business",
   "note": "Lead international teams: communication, meetings, feedback and conflict across contexts \u2014",
   "scenarios": 15,
   "title": "Cross-Cultural Management"
  },
  "ib_lab_negotiation": {
+  "extends": false,
   "major": "international_business",
   "note": "Negotiate prices, terms and partnerships with simulated international partners.",
   "scenarios": 15,
   "title": "International Negotiations"
  },
  "ib_lab_research": {
+  "extends": false,
   "major": "international_business",
   "note": "Score international markets on size, growth, risk and ease of entry; forecast demand in lo",
   "scenarios": 15,
   "title": "Global Market Research"
  },
  "ib_lab_strategy": {
+  "extends": false,
   "major": "international_business",
   "note": "Choose entry modes, partners and localisation for Atlas Global Trading\u2019s expansion.",
   "scenarios": 15,
   "title": "International Business Strategy"
  },
  "ib_lab_supply": {
+  "extends": false,
   "major": "international_business",
   "note": "Ship goods internationally: modes, lead times, safety stock for long supply lines, delays ",
   "scenarios": 15,
   "title": "Global Supply Chain"
  },
  "ib_lab_trade": {
+  "extends": false,
   "major": "international_business",
   "note": "Landed costs, Incoterms, tariffs, documentation and trade compliance for real shipments.",
   "scenarios": 15,
   "title": "International Trade"
  },
  "ie_lab_improvement": {
+  "extends": false,
   "major": "industrial_engineering",
   "note": "Investigate performance problems on the shop floor and choose the improvement that fixes t",
   "scenarios": 15,
   "title": "Process Improvement"
  },
  "ie_lab_manufacturing": {
+  "extends": false,
   "major": "industrial_engineering",
   "note": "Throughput, OEE, line balancing, machine capacity and lead time on a real production line.",
   "scenarios": 15,
   "title": "Manufacturing Systems"
  },
  "ie_lab_or": {
+  "extends": false,
   "major": "industrial_engineering",
   "note": "Order quantities, queues, product mix, transport allocation and project crashing.",
   "scenarios": 15,
   "title": "Operations Research"
  },
  "ie_lab_quality": {
+  "extends": false,
   "major": "industrial_engineering",
   "note": "Process capability, control charts, DPMO, acceptance sampling and rolled throughput yield.",
   "scenarios": 15,
   "title": "Quality Engineering"
  },
  "ie_lab_simulation": {
+  "extends": false,
   "major": "industrial_engineering",
   "note": "Run the plant: staffing, production planning, energy, automation payback and layout \u2014 and ",
   "scenarios": 15,
   "title": "Industrial Simulation Project"
  },
  "ie_lab_supply": {
+  "extends": false,
   "major": "industrial_engineering",
   "note": "Safety stock, inventory turns, warehouse capacity, landed cost and fleet sizing.",
   "scenarios": 15,
   "title": "Supply Chain"
  },
  "it_lab_hardware": {
+  "extends": false,
   "major": "information_technology",
   "note": "Size power supplies and UPS units, diagnose failed and overheating PCs, and repair and dis",
   "scenarios": 15,
   "title": "Hardware Support"
  },
  "it_lab_helpdesk": {
+  "extends": false,
   "major": "information_technology",
   "note": "Work the service desk: prioritise tickets, verify callers, troubleshoot remotely and write",
   "scenarios": 15,
   "title": "IT Help Desk"
  },
  "it_lab_itsm": {
+  "extends": false,
   "major": "information_technology",
   "note": "Run ITIL-style processes: classify work, staff the service desk, review changes, manage SL",
   "scenarios": 15,
   "title": "IT Service Management"
  },
  "it_lab_netadmin": {
+  "extends": false,
   "major": "information_technology",
   "note": "Monitor availability, plan VLANs and Wi-Fi, size access points and fix DNS faults on the c",
   "scenarios": 15,
   "title": "Network Administration"
  },
  "it_lab_sysadmin": {
+  "extends": false,
   "major": "information_technology",
   "note": "Automate account provisioning and audits, monitor disks and logs, plan patching and backup",
   "scenarios": 15,
   "title": "Systems Administration"
  },
  "md_lab_diagnostics": {
+  "extends": false,
   "major": "medicine",
   "note": "Interpret arterial blood gases and blood results, understand test accuracy and predictive ",
   "scenarios": 15,
   "title": "Diagnostic Investigation"
  },
  "md_lab_exam": {
+  "extends": false,
   "major": "medicine",
   "note": "Examine simulated patients system by system: interpret cardiovascular, respiratory, abdomi",
   "scenarios": 15,
   "title": "Physical Examination"
  },
  "md_lab_reasoning": {
+  "extends": false,
   "major": "medicine",
   "note": "Build differentials, calculate validated risk scores, recognise red flags and cognitive bi",
   "scenarios": 15,
   "title": "Clinical Reasoning and Diagnosis"
  },
  "md_lab_research": {
+  "extends": false,
   "major": "medicine",
   "note": "Calculate treatment effects (ARR, RRR, NNT, odds ratios), appraise trials, frame clinical ",
   "scenarios": 15,
   "title": "Medical Research and Evidence"
  },
  "mk_lab_ads": {
+  "extends": false,
   "major": "marketing",
   "note": "Build paid campaigns: budget, bids, targeting and creative choices that hit acquisition ta",
   "scenarios": 15,
   "title": "Digital Advertising"
  },
  "mk_lab_analytics": {
+  "extends": false,
   "major": "marketing",
   "note": "Calculate and interpret CTR, conversion rate, CPC, CPA and ROAS, then optimise the campaig",
   "scenarios": 15,
   "title": "Analytics and Optimization"
  },
  "mk_lab_brand": {
+  "extends": false,
   "major": "marketing",
   "note": "Position brands, choose target audiences and write messaging that is distinctive and hones",
   "scenarios": 15,
   "title": "Brand Strategy"
  },
  "mk_lab_campaign": {
+  "extends": false,
   "major": "marketing",
   "note": "Run a client campaign end to end: brief, budget, media plan, launch checks and results rep",
   "scenarios": 15,
   "title": "Client Campaign Project"
  },
  "mk_lab_content": {
+  "extends": false,
   "major": "marketing",
   "note": "Plan content calendars, sign off posts against brand and advertising rules, and brief crea",
   "scenarios": 15,
   "title": "Content Marketing"
  },
  "mk_lab_research": {
+  "extends": false,
   "major": "marketing",
   "note": "Size the market, plan the survey, test prices and review research instruments for a drinks",
   "scenarios": 15,
   "title": "Market Research"
  },
  "mk_lab_social": {
+  "extends": false,
   "major": "marketing",
   "note": "Engagement analysis, community management, posting strategy and crisis response.",
   "scenarios": 15,
   "title": "Social Media Marketing"
  },
  "mob_lab_backend": {
+  "extends": false,
   "major": "mobile_app_development",
   "note": "Parse and validate API JSON safely, implement retries with backoff and offline sync, secur",
   "scenarios": 15,
   "title": "Backend Integration"
  },
  "mob_lab_deploy": {
+  "extends": false,
   "major": "mobile_app_development",
   "note": "Get through app store review, manage signing keys, budget app size and run staged rollouts",
   "scenarios": 15,
   "title": "App Deployment"
  },
  "mob_lab_flutter": {
+  "extends": false,
   "major": "mobile_app_development",
   "note": "Reason precisely about Flutter layout (Row/Expanded, overflow) and navigation stacks, choo",
   "scenarios": 15,
   "title": "Flutter Development"
  },
  "mob_lab_project": {
+  "extends": false,
   "major": "mobile_app_development",
   "note": "Build an app for a client from kick-off to sprint reviews: write the spec, plan sprints, r",
   "scenarios": 15,
   "title": "Full App Project"
  },
  "mob_lab_testing": {
+  "extends": false,
   "major": "mobile_app_development",
   "note": "Measure stability from crash data, plan device coverage, triage bugs, write a test plan an",
   "scenarios": 15,
   "title": "Mobile App Testing"
  },
  "mob_lab_ui": {
+  "extends": false,
   "major": "mobile_app_development",
   "note": "Size touch targets and lists, review designs against platform guidelines, run usability te",
   "scenarios": 15,
   "title": "Mobile UI Design"
  },
  "nu_lab_assessment": {
+  "extends": false,
   "major": "nursing",
   "note": "Assess patients systematically: score NEWS2 and choose the response, run an A\u2013E assessment",
   "scenarios": 15,
   "title": "Patient Assessment"
  },
  "nu_lab_documentation": {
+  "extends": false,
   "major": "nursing",
   "note": "Write SBAR handovers and progress notes, keep fluid balance charts, protect confidentialit",
   "scenarios": 15,
   "title": "Patient Documentation"
  },
  "nu_lab_icu": {
+  "extends": false,
   "major": "nursing",
   "note": "Care for critically ill patients: haemodynamic and neurological scores, ventilator alarms,",
   "scenarios": 15,
   "title": "Intensive Care Nursing"
  },
  "nu_lab_maternity": {
+  "extends": false,
   "major": "nursing",
   "note": "Support pregnancy, labour and the newborn: antenatal risk, labour progress, postpartum hae",
   "scenarios": 15,
   "title": "Maternity Nursing"
  },
  "nu_lab_medsurg": {
+  "extends": false,
   "major": "nursing",
   "note": "Run a surgical bay: calculate infusions and doses, manage post-operative care and wounds, ",
   "scenarios": 15,
   "title": "Medical-Surgical Nursing"
  },
  "nu_lab_paediatric": {
+  "extends": false,
   "major": "nursing",
   "note": "Care for children and families: weight-based dose and fluid calculations, febrile child as",
   "scenarios": 15,
   "title": "Paediatric Nursing"
  },
  "ph_lab_electricity": {
+  "extends": false,
   "major": "physics",
   "note": "Current limiting, parallel networks, internal resistance, resistivity and RC timing on the",
   "scenarios": 15,
   "title": "Electricity"
  },
  "ph_lab_experimental": {
+  "extends": false,
   "major": "physics",
   "note": "Design experiments with acceptable uncertainty: pendulums, density, resonance tubes, sprin",
   "scenarios": 15,
   "title": "Experimental Physics"
  },
  "ph_lab_magnetism": {
+  "extends": false,
   "major": "physics",
   "note": "Motor force, solenoid fields, transformers, generators and charged particles in magnetic f",
   "scenarios": 15,
   "title": "Magnetism"
  },
  "ph_lab_mechanics": {
+  "extends": false,
   "major": "physics",
   "note": "Projectiles, forces with friction, collisions, circular motion and energy on real test rig",
   "scenarios": 15,
   "title": "Mechanics"
  },
  "ph_lab_modern": {
+  "extends": false,
   "major": "physics",
   "note": "Photoelectric effect, radioactive decay, atomic spectra, time dilation and electron wavele",
   "scenarios": 15,
   "title": "Modern Physics"
  },
  "ph_lab_thermo": {
+  "extends": false,
   "major": "physics",
   "note": "Heating water, gas laws, insulation, heat engines and melting ice.",
   "scenarios": 15,
   "title": "Thermodynamics"
  },
  "ph_lab_waves": {
+  "extends": false,
   "major": "physics",
   "note": "Wavelength, refraction, lenses, diffraction gratings and standing waves on strings.",
   "scenarios": 15,
   "title": "Waves and Optics"
  },
  "se_lab_design": {
+  "extends": false,
   "major": "software_engineering",
   "note": "Estimate capacity, choose components and justify architecture decisions for real systems.",
   "scenarios": 15,
   "title": "System Design and Architecture"
  },
  "se_lab_development": {
+  "extends": false,
   "major": "software_engineering",
   "note": "Implement features from development tickets in Python or JavaScript, run them and pass aut",
   "scenarios": 15,
   "title": "Software Development"
  },
  "se_lab_git": {
+  "extends": false,
   "major": "software_engineering",
   "note": "Branch, commit, pull request, review and resolve conflicts in a simulated team workflow.",
   "scenarios": 15,
   "title": "Git and Collaboration"
  },
  "se_lab_maintenance": {
+  "extends": false,
   "major": "software_engineering",
   "note": "Work on an existing codebase with technical debt: fix legacy bugs, extend features safely ",
   "scenarios": 15,
   "title": "Software Maintenance"
  },
  "se_lab_requirements": {
+  "extends": false,
   "major": "software_engineering",
   "note": "Work with simulated clients to gather, classify and document requirements as user stories ",
   "scenarios": 15,
   "title": "Requirements Engineering"
  },
  "se_lab_testing": {
+  "extends": false,
   "major": "software_engineering",
   "note": "Investigate deliberately faulty programs, write the fix, and pass the tests; triage bugs a",
   "scenarios": 15,
   "title": "Software Testing and Quality Assurance"
  },
  "web_lab_a11y": {
+  "extends": false,
   "major": "web_development",
   "note": "Measure colour contrast, audit pages against WCAG, test with a screen-reader user, check r",
   "scenarios": 15,
   "title": "Accessibility and Responsive Testing"
  },
  "web_lab_backend": {
+  "extends": false,
   "major": "web_development",
   "note": "Build API handlers with validation and status codes, rate limiting and access control, des",
   "scenarios": 15,
   "title": "Backend Development"
  },
  "web_lab_client": {
+  "extends": false,
   "major": "web_development",
   "note": "Deliver a website for a real-feeling client: discovery, estimate, user acceptance testing,",
   "scenarios": 15,
   "title": "Client Project"
  },
  "web_lab_frontend": {
+  "extends": false,
   "major": "web_development",
   "note": "Implement state reducers with undo, client-side routing, pagination and filtering, and sol",
   "scenarios": 15,
   "title": "Frontend Application Development"
  },
  "web_lab_htmlcss": {
+  "extends": false,
   "major": "web_development",
   "note": "Lay out grids and type scales, write semantic markup to a brief, review CSS and build a sp",
   "scenarios": 15,
   "title": "HTML and CSS Studio"
  },
  "web_lab_js": {
+  "extends": false,
   "major": "web_development",
   "note": "Implement shopping-cart logic, form validation and event timing (debounce and throttle) in",
   "scenarios": 15,

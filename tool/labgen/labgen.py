@@ -129,10 +129,20 @@ def V3(instructions, cases, py, js=None, starter_py=None, starter_js=None):
     return (instructions, cases, py, js, starter_py, starter_js)
 
 
+class Sql:
+    """A SQL problem at three levels: variants = [SqlV(...)]; run against `database` (SQLite)."""
+    def __init__(self, key, title, brief, variants, skills=()):
+        self.key, self.title, self.brief, self.variants, self.skills = key, title, brief, variants, list(skills)
+
+
+def SqlV(instructions, ref, check=None, ordered=False, starter=''):
+    return {'instructions': instructions, 'ref': ref, 'check': check, 'ordered': ordered, 'starter': starter}
+
+
 class Lab:
     def __init__(self, id, number, title, env, summary, objectives, skills, prefix, problems=(), investigations=(), cases=(),
-                 reference=(), minutes=30, difficulty='intermediate', portfolio=False, tools=(), code=()):
-        self.code = list(code)
+                 reference=(), minutes=30, difficulty='intermediate', portfolio=False, tools=(), code=(), sql=(), database='', extends=False):
+        self.code, self.sql, self.database, self.extends = list(code), list(sql), database, extends
         self.id, self.number, self.title, self.env, self.summary = id, number, title, env, summary
         self.objectives, self.skills, self.prefix = objectives, skills, prefix
         self.problems, self.investigations, self.cases = list(problems), list(investigations), list(cases)
@@ -262,7 +272,9 @@ def _run(cmd, src, stdin):
         f.write(src)
         path = f.name
     try:
-        r = subprocess.run([cmd, path], input=stdin, capture_output=True, text=True, timeout=10)
+        r = subprocess.run([cmd, path], input=stdin, capture_output=True, text=True, timeout=5)
+    except subprocess.TimeoutExpired:
+        return '', 'time limit exceeded', 124
     finally:
         os.unlink(path)
     return r.stdout, r.stderr, r.returncode
@@ -290,6 +302,58 @@ def validate_code(c, where):
                 continue
             if all(_run(lang, src, stdin)[0].strip() == _norm(expected) for stdin, expected in cases):
                 raise ContentError(f'{where} v{n + 1} {lang}: the starter already passes every test')
+
+
+def _sql_rows(db, statements, check):
+    import sqlite3
+    con = sqlite3.connect(':memory:')
+    try:
+        con.executescript(db)
+        cur = con.cursor()
+        last = None
+        for st in [x for x in _split_sql(statements) if x.strip()]:
+            cur.execute(st)
+            if cur.description:
+                last = [list(r) for r in cur.fetchall()]
+        con.commit()
+        if check:
+            cur.execute(check)
+            last = [list(r) for r in cur.fetchall()]
+        return last
+    finally:
+        con.close()
+
+
+def _split_sql(s):
+    return [x for x in s.split(';')]
+
+
+def _cell(v):
+    if isinstance(v, (int, float)) and not isinstance(v, bool):
+        return str(int(v)) if float(v) == round(float(v)) else f'{float(v):.4f}'
+    return 'NULL' if v is None else str(v)
+
+
+def validate_sql(c, where, db):
+    if len(c.variants) != 3:
+        raise ContentError(f'{where}: three variants needed')
+    if not db:
+        raise ContentError(f'{where}: lab has no database')
+    for n, v in enumerate(c.variants):
+        rows = _sql_rows(db, v['ref'], v['check'])
+        if rows is None:
+            raise ContentError(f'{where} v{n + 1}: reference returns no rows')
+        if not rows:
+            raise ContentError(f'{where} v{n + 1}: reference returns an empty result (too weak a test)')
+        v['expected'] = rows
+        if v['starter']:
+            try:
+                srows = _sql_rows(db, v['starter'], v['check'])
+            except Exception:
+                srows = None
+            key = (lambda r: sorted('|'.join(_cell(x) for x in row) for row in r))
+            if srows is not None and key(srows) == key(rows):
+                raise ContentError(f'{where} v{n + 1}: the starter already gives the right answer')
 
 
 def words(t):
@@ -461,7 +525,6 @@ def emit_major(m, fname):
     names = []
     for lab in m.labs:
         var = camel(lab.id) + 'Spec'
-        names.append(var)
         parts = []
         if lab.problems:
             parts.append(f"...fromProblems({ds(lab.prefix + 'p')}, <DesignProblem>[\n" + ',\n'.join(e_design(p) for p in lab.problems) + ",\n  ], person: _lead)")
@@ -477,9 +540,24 @@ def emit_major(m, fname):
                     vs.append(f"CodeVariant({ds(instr)}, <ProgramCase>[{pcs}]{extra})")
                 items.append(f"    CodeProblem(key: {ds(c.key)}, title: {ds(c.title)}, brief: {ds(c.brief)}, skills: {dlist([ds(k) for k in c.skills], 'String')}, variants: <CodeVariant>[\n      " + ',\n      '.join(vs) + ",\n    ])")
             parts.append(f"...fromCode({ds(lab.prefix + 'k')}, <CodeProblem>[\n" + ',\n'.join(items) + ",\n  ], person: _lead)")
+        if lab.sql:
+            items = []
+            for c in lab.sql:
+                vs = []
+                for v in c.variants:
+                    rows = ', '.join('<Object?>[' + ', '.join(dn(x) if isinstance(x, (int, float)) else ('null' if x is None else ds(str(x))) for x in r) + ']' for r in v['expected'])
+                    extra = (f", check: {ds(v['check'])}" if v['check'] else '') + (', ordered: true' if v['ordered'] else '') + (f", starter: {ds(v['starter'])}" if v['starter'] else '')
+                    vs.append(f"SqlVariant({ds(v['instructions'])}, <List<Object?>>[{rows}]{extra})")
+                items.append(f"    SqlProblem(key: {ds(c.key)}, title: {ds(c.title)}, brief: {ds(c.brief)}, skills: {dlist([ds(k) for k in c.skills], 'String')}, variants: <SqlVariant>[\n      " + ',\n      '.join(vs) + ",\n    ])")
+            parts.append(f"...fromSql({ds(lab.prefix + 'q')}, <SqlProblem>[\n" + ',\n'.join(items) + ",\n  ], person: _lead)")
         if lab.cases:
             tools = f", tools: {dlist([ds(t) for t in lab.tools], 'String')}" if lab.tools else ''
             parts.append(f"...fromCases({ds(lab.prefix + 'c')}, <CaseFile>[\n" + ',\n'.join(e_case(c) for c in lab.cases) + f",\n  ], person: _lead{tools})")
+        if lab.extends:
+            lines.append(f"/// Extra scenarios for the hand-built lab {lab.id}.")
+            lines.append(f"final List<LabScenario> {camel(lab.id)}Extra = byLevel(<LabScenario>[\n  " + ',\n  '.join(parts) + ",\n]);\n")
+            continue
+        names.append(var)
         lines.append(f"""final LabSpec {var} = designLab(
   id: {ds(lab.id)},
   deptId: {ds(m.dept)},
@@ -544,7 +622,8 @@ def build(majors):
             if bad:
                 raise ContentError(f'{where}: skills {bad} are not defined by department {m.dept} ({sorted(allowed)})')
             n = 0
-            for fn, items in ((validate_design, lab.problems), (validate_investigation, lab.investigations), (validate_case, lab.cases), (validate_code, lab.code)):
+            for fn, items in ((validate_design, lab.problems), (validate_investigation, lab.investigations), (validate_case, lab.cases), (validate_code, lab.code),
+                              (lambda x, w: validate_sql(x, w, lab.database), lab.sql)):
                 for x in items:
                     try:
                         fn(x, f'{where}/{x.key}')
@@ -553,12 +632,12 @@ def build(majors):
                     n += 3
             if n != 15:
                 raise ContentError(f'{where}: {n} scenarios (need 15 = five problems, investigations or cases)')
-            keys = [x.key for x in lab.problems + lab.investigations + lab.cases + lab.code]
+            keys = [x.key for x in lab.problems + lab.investigations + lab.cases + lab.code + lab.sql]
             if len(set(keys)) != len(keys):
                 raise ContentError(f'{where}: duplicate keys')
             if lab.id not in m.blueprint_titles:
                 raise ContentError(f'{where}: missing blueprint title')
-            built[lab.id] = {'major': m.major, 'title': m.blueprint_titles[lab.id], 'scenarios': n, 'note': lab.summary[:90]}
+            built[lab.id] = {'major': m.major, 'title': m.blueprint_titles[lab.id], 'scenarios': n, 'note': lab.summary[:90], 'extends': lab.extends}
         if ERRORS:
             continue
         dart, list_name = emit_major(m, fname)
@@ -586,12 +665,25 @@ def build(majors):
         refs = json.load(f)
     gen_ids = set(refs.pop('_generated', []))
     progs = {k: v for k, v in refs['programs'].items() if k not in gen_ids}
+    sqls = {k: v for k, v in refs['sql'].items() if k not in gen_ids}
     new_ids = []
+    for _, m in majors:
+        for lab in m.labs:
+            for c in lab.sql:
+                for n, v in enumerate(c.variants):
+                    sid = f'{lab.prefix}q_{c.key}_{n + 1}_sql'
+                    if sid in sqls:
+                        raise ContentError(f'{lab.id}: SQL step id {sid} is used twice (change the lab prefix)')
+                    sqls[sid] = v['ref']
+                    new_ids.append(sid)
+    refs['sql'] = sqls
     for _, m in majors:
         for lab in m.labs:
             for c in lab.code:
                 for n, v in enumerate(c.variants):
                     pid = f'{lab.prefix}k_{c.key}_{n + 1}_code'
+                    if pid in progs:
+                        raise ContentError(f'{lab.id}: program step id {pid} is used twice (change the lab prefix)')
                     progs[pid] = v[2]
                     new_ids.append(pid)
     refs['programs'] = progs

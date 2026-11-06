@@ -6,13 +6,13 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 180, Verified complete: 0.
+**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 13, Functionality completed: 0, Tested: 185, Verified complete: 0.
 
 ## Majors
 
 | School | Major | Labs | Status |
 |---|---|---|---|
-| School of Computer Science and Technology | Computer Science | 5 | In progress |
+| School of Computer Science and Technology | Computer Science | 5 | Tested |
 | School of Computer Science and Technology | Software Engineering | 6 | Tested |
 | School of Computer Science and Technology | Artificial Intelligence | 5 | Tested |
 | School of Computer Science and Technology | Data Science | 6 | Tested |
@@ -49,11 +49,11 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Programming Laboratory | Functionality in progress | 1 / 15 | `cs_lab_fundamentals` | Real Python/JavaScript execution and tests; 1 scenario of 15 |
-| B. Data Structures and Algorithms | Functionality in progress | 1 / 15 | `cs_lab_dsa` | Trace and challenge modes; 1 scenario of 15 |
-| C. Database Engineering | Functionality in progress | 1 / 15 | `cs_lab_database` | Real SQLite workbench; 1 scenario of 15 |
-| D. Computer Architecture and Operating Systems | Functionality in progress | 1 / 15 | `cs_lab_os` | FCFS/SJF and paging simulators; no Priority/Round Robin or CPU model yet |
-| E. Software Project Laboratory | Functionality in progress | 1 / 15 | `cs_lab_project` | 1 project brief |
+| A. Programming Laboratory | Tested | 16 / 15 | `cs_lab_fundamentals` | Real Python/JavaScript execution and tests; +15 generated scenarios |
+| B. Data Structures and Algorithms | Tested | 16 / 15 | `cs_lab_dsa` | Trace and challenge modes; +15 generated scenarios |
+| C. Database Engineering | Tested | 16 / 15 | `cs_lab_database` | Real SQLite workbench; +15 generated scenarios |
+| D. Computer Architecture and Operating Systems | Tested | 16 / 15 | `cs_lab_os` | FCFS/SJF and paging simulators; Round Robin, priority and page replacement as programs; +15 generated scenarios |
+| E. Software Project Laboratory | Tested | 16 / 15 | `cs_lab_project` | 1 project brief; +15 generated scenarios |
 
 ### Software Engineering
 
