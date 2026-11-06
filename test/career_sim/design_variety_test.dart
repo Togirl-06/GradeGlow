@@ -45,9 +45,9 @@ void main() {
 
   test('no scenario repeats another scenario of the same task step for step', () {
     String sig(LabStep st) => switch (st) {
-          TriageStep() => 'triage:${st.items.map((TriageItem i) => i.body).join('/')}',
+          TriageStep() => 'triage:${st.items.map((TriageItem i) => '${i.body}=${i.answers}').join('/')}',
           NumericStep() => 'numeric:${st.questions.map((MathQuestion q) => '${q.prompt}${q is NumberQuestion ? '=${q.answer}' : ''}').join('/')}',
-          SimulationStep() => 'sim:${st.inputs.map((SimInput i) => i.name).join()}:${st.constraints.map((SimConstraint c) => '${c.output}${c.op}${c.value}').join(',')}',
+          SimulationStep() => 'sim:${st.instructions}:${st.inputs.map((SimInput i) => i.name).join()}:${st.constraints.map((SimConstraint c) => '${c.output}${c.op}${c.value}').join(',')}',
           DrawingStep() => 'draw:${st.title}:${st.spec.requireDimensions}:${st.spec.holes.map((HoleSpec h) => h.tol).join(',')}',
           DialogueStep() => 'talk:${st.person}:${st.opening}',
           DocumentStep() => 'doc:${st.docType}:${st.model.values.join('/')}',
