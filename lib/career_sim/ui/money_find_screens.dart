@@ -109,13 +109,16 @@ class _Rate extends StatelessWidget {
 
 /// One search result.
 class FindResult {
-  const FindResult(this.id, this.kind, this.title, this.detail, this.icon, this.open);
+  const FindResult(this.id, this.kind, this.title, this.detail, this.icon, this.open, [this.keywords = '']);
   final String id;
   final String kind;
   final String title;
   final String detail;
   final IconData icon;
   final Widget Function() open;
+
+  /// Extra searchable text (not shown).
+  final String keywords;
 }
 
 /// Everything the student can open, for search.
@@ -134,7 +137,7 @@ List<FindResult> findIndex(CareerSimStore store) {
     FindResult('schools', 'Screen', 'Schools and departments', 'Choose or change department', Icons.account_balance_rounded, () => const DepartmentPickerScreen()),
     for (final LabSpec l in LabCatalog.all)
       FindResult(l.id, 'Lab', l.title, '${LabCatalog.majorLabels[l.majorId] ?? l.majorId} · ${l.environment.label} · ${labStatus(p, l)}', environmentIcon(l.environment),
-          () => LabIntroScreen(labId: l.id)),
+          () => LabIntroScreen(labId: l.id), '${l.summary} ${l.objectives.join(' ')}'),
     for (final Department d in CareerCatalog.departments)
       for (final TrainingModule m in d.modules)
         FindResult(m.id, 'Module', m.title, 'Training module · ${d.title}', Icons.menu_book_rounded, () => ModuleScreen(deptId: d.id, moduleId: m.id)),
@@ -153,7 +156,7 @@ List<FindResult> search(CareerSimStore store, String query) {
   final List<(int, FindResult)> hits = <(int, FindResult)>[];
   for (final FindResult r in findIndex(store)) {
     final String title = r.title.toLowerCase();
-    final String all = '$title ${r.detail.toLowerCase()} ${r.kind.toLowerCase()}';
+    final String all = '$title ${r.detail.toLowerCase()} ${r.kind.toLowerCase()} ${r.keywords.toLowerCase()}';
     if (!words.every(all.contains)) continue;
     int score = words.where(title.contains).length * 10;
     if (title.startsWith(words.first)) score += 5;
