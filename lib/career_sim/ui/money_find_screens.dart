@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/pay_rules.dart';
+import '../hospital/hospital_cases.dart';
+import '../hospital/hospital_models.dart';
+import '../hospital/ui/hospital_screens.dart';
 import '../labs/lab_catalog.dart';
 import '../labs/lab_models.dart';
 import '../labs/ui/lab_screens.dart';
@@ -17,72 +20,102 @@ import 'hub_screens.dart';
 import 'job_screens.dart';
 import 'workplace_screen.dart';
 
-const String simulatedPayNote = 'Simulated pay — this is in-game money, not real money.';
+const String simulatedPayNote = PayRules.notice;
 
-/// The student's simulated earnings: balance, how it was earned and how to earn more.
+/// Virtual employee wallet: balance, paychecks (gross, deductions, net),
+/// next payday and payment history. All figures are virtual USD.
 class MoneyScreen extends StatelessWidget {
   const MoneyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final CareerProfile p = context.watch<CareerSimStore>().profile;
+    final CareerSimStore store = context.watch<CareerSimStore>();
+    final CareerProfile p = store.profile;
     final Employment? job = p.currentJob;
-    final int fromLabs = p.ledger.where((MoneyEntry e) => e.kind == 'lab').fold<int>(0, (int a, MoneyEntry e) => a + e.amount);
-    final int fromWork = p.balance - fromLabs;
+    final int total = p.ledger.where((MoneyEntry e) => e.cents > 0).fold<int>(0, (int a, MoneyEntry e) => a + e.cents);
+    final int gross = p.paychecks.fold<int>(0, (int a, Paycheck c) => a + c.grossCents);
+    final int deductions = p.paychecks.fold<int>(0, (int a, Paycheck c) => a + c.deductionCents);
+    final int stipends = p.ledger.where((MoneyEntry e) => e.kind == 'lab').fold<int>(0, (int a, MoneyEntry e) => a + e.cents);
+    final Paycheck? last = p.paychecks.isEmpty ? null : p.paychecks.last;
     return Scaffold(
       appBar: AppBar(title: const Text('My Earnings')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
+          Container(
+            key: const ValueKey<String>('money_notice'),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: VuV2Colors.mute.withValues(alpha: 0.10), borderRadius: BorderRadius.circular(12)),
+            child: Text(simulatedPayNote, style: TextStyle(color: VuV2Colors.ink, fontSize: 12.5, height: 1.35)),
+          ),
+          const SizedBox(height: 12),
           SectionCard(
-            title: 'Balance',
-            subtitle: simulatedPayNote,
+            title: 'Virtual balance',
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text(pounds(p.balance), key: const ValueKey<String>('money_balance'), style: TextStyle(color: VuV2Colors.ink, fontSize: 34, fontWeight: FontWeight.w900)),
+              Text(usd(p.balanceCents), key: const ValueKey<String>('money_balance'), style: TextStyle(color: VuV2Colors.ink, fontSize: 34, fontWeight: FontWeight.w900)),
               const SizedBox(height: 4),
-              Text('Labs ${pounds(fromLabs)} · Jobs ${pounds(fromWork)} · last 7 days ${pounds(p.earnedInLast(7))}', style: TextStyle(color: VuV2Colors.mute)),
+              Text('Total earned ${usd(total)} · gross pay ${usd(gross)} · simulated deductions ${usd(deductions)} · training stipends ${usd(stipends)}',
+                  style: TextStyle(color: VuV2Colors.mute)),
             ]),
           ),
+          if (last != null)
+            SectionCard(
+              title: 'My virtual paycheck',
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                _Rate('Company', '${last.employer} (simulated employer)'),
+                _Rate('Position', last.title),
+                _Rate('Pay period', '${last.period} · ${PayRules.frequencyLabel(last.frequency).toLowerCase()} · ${last.hours} approved hours'),
+                _Rate('Gross pay', usd(last.grossCents)),
+                _Rate('Simulated deductions (${(PayRules.deductionRate * 100).round()}%)', '−${usd(last.deductionCents)}'),
+                _Rate('Net virtual payment', usd(last.netCents)),
+                const _Rate('Payment status', 'Paid (virtual)'),
+              ]),
+            ),
           SectionCard(
-            title: 'How to earn',
+            title: job == null ? 'How to earn' : 'Next payday',
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              for (final LabDifficulty l in LabDifficulty.values)
-                _Rate('Pass a ${l.label.toLowerCase()} lab scenario', 'up to ${pounds(PayRules.labRates[l]!)}'),
-              _Rate('Each evaluated assignment at work',
-                  job == null ? 'one week\'s pay' : pounds(PayRules.weeklyPay(job.salary, job.salaryPeriod))),
-              const _Rate('Supervisor score of ${PayRules.bonusThreshold}+', '+10% bonus'),
-              const _Rate('Promotion', 'two weeks\' pay'),
-              const SizedBox(height: 6),
-              Text('Lab pay is scaled by your score and paid once per scenario.', style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+              if (job != null) ...<Widget>[
+                _Rate('Salary', money(job.salary, job.salaryPeriod)),
+                _Rate('Pay frequency', PayRules.frequencyLabel(job.payFrequency)),
+                _Rate('Gross per paycheck', usd(PayRules.periodGrossCents(job.salary, job.salaryPeriod, job.payFrequency, hoursPerWeek: job.hoursPerWeek))),
+                _Rate('Next paycheck', 'after ${store.weeksToPayday(job)} more approved work week(s)'),
+                const SizedBox(height: 6),
+                Text('Each evaluated assignment is one approved work week (${job.hoursPerWeek} h). Raises come from performance reviews every four assignments and from promotions.',
+                    style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+              ] else ...<Widget>[
+                Text('Get hired to earn a virtual salary. Until then, the first pass of each lab scenario pays a training stipend:', style: TextStyle(color: VuV2Colors.ink)),
+                const SizedBox(height: 6),
+                for (final LabDifficulty l in LabDifficulty.values) _Rate('${l.label} scenario', 'up to ${usd(PayRules.stipendCents[l]!)}'),
+              ],
               const SizedBox(height: 8),
               Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
-                FilledButton.tonalIcon(
-                  key: const ValueKey<String>('money_labs'),
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const PracticalLabsScreen())),
-                  icon: const Icon(Icons.science_rounded),
-                  label: const Text('Find paid lab work'),
-                ),
                 FilledButton.tonalIcon(
                   key: const ValueKey<String>('money_jobs'),
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => job == null ? const JobBoardScreen() : const WorkplaceScreen())),
                   icon: const Icon(Icons.work_rounded),
                   label: Text(job == null ? 'Find a job' : 'Go to work'),
                 ),
+                FilledButton.tonalIcon(
+                  key: const ValueKey<String>('money_labs'),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const PracticalLabsScreen())),
+                  icon: const Icon(Icons.science_rounded),
+                  label: const Text('Practise in labs'),
+                ),
               ]),
             ]),
           ),
           SectionCard(
-            title: 'Pay history',
+            title: 'Payment history',
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
-              if (p.ledger.isEmpty) Text('Nothing yet — pass a lab to get your first pay.', style: TextStyle(color: VuV2Colors.mute)),
-              for (final MoneyEntry e in p.ledger.reversed.take(50))
+              if (p.ledger.isEmpty) Text('No payments yet.', style: TextStyle(color: VuV2Colors.mute)),
+              for (final MoneyEntry e in p.ledger.reversed.take(60))
                 ListTile(
                   dense: true,
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(switch (e.kind) { 'lab' => Icons.science_rounded, 'bonus' => Icons.star_rounded, _ => Icons.payments_rounded }),
+                  leading: Icon(e.kind == 'lab' ? Icons.school_rounded : Icons.payments_rounded),
                   title: Text(e.text),
-                  subtitle: Text('Day ${e.day}'),
-                  trailing: Text('+${pounds(e.amount)}', style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w800)),
+                  subtitle: Text('Day ${e.day}${e.paycheckId.isEmpty ? '' : ' · net after simulated deductions'}'),
+                  trailing: Text('+${usd(e.cents)}', style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w800)),
                 ),
             ]),
           ),
@@ -135,6 +168,9 @@ List<FindResult> findIndex(CareerSimStore store) {
     FindResult('portfolio', 'Screen', 'My Portfolio', 'Projects and passed labs', Icons.folder_special_rounded, () => const PortfolioScreen()),
     FindResult('progress', 'Screen', 'Progress', 'Skills and career readiness', Icons.insights_rounded, () => const ProgressScreen()),
     FindResult('schools', 'Screen', 'Schools and departments', 'Choose or change department', Icons.account_balance_rounded, () => const DepartmentPickerScreen()),
+    FindResult('hospital', 'Screen', 'Virtual Hospital', 'Patients, nursing shift, triage, departments', Icons.local_hospital_rounded, () => const HospitalScreen()),
+    for (final PatientCase c in hospitalCases)
+      FindResult(c.id, 'Patient', '${c.name}: ${c.complaint}', '${c.dept.label} · virtual hospital', Icons.personal_injury_rounded, () => HospitalDeptScreen(dept: c.dept)),
     for (final LabSpec l in LabCatalog.all)
       FindResult(l.id, 'Lab', l.title, '${LabCatalog.majorLabels[l.majorId] ?? l.majorId} · ${l.environment.label} · ${labStatus(p, l)}', environmentIcon(l.environment),
           () => LabIntroScreen(labId: l.id), '${l.summary} ${l.objectives.join(' ')}'),

@@ -17,6 +17,7 @@ import 'common.dart';
 import 'department_screens.dart';
 import 'job_screens.dart';
 import 'money_find_screens.dart';
+import '../hospital/ui/hospital_screens.dart';
 import 'workplace_screen.dart';
 
 /// The next thing the student should do, derived from their record.
@@ -130,7 +131,7 @@ class CareerSimDashboard extends StatelessWidget {
                 child: ActionChip(
                   key: const ValueKey<String>('dash_wallet'),
                   avatar: const Icon(Icons.account_balance_wallet_rounded, size: 18),
-                  label: Text(pounds(p.balance), style: const TextStyle(fontWeight: FontWeight.w800)),
+                  label: Text(usd(p.balanceCents), style: const TextStyle(fontWeight: FontWeight.w800)),
                   onPressed: () => _push(context, const MoneyScreen()),
                 ),
               ),
@@ -189,6 +190,8 @@ class CareerSimDashboard extends StatelessWidget {
                   () => _push(context, d == null ? const DepartmentPickerScreen() : DepartmentScreen(deptId: d.id))),
               _Tile('nav_labs', Icons.science_rounded, 'Practical Labs', 'Hands-on work · paid', () => _push(context, const PracticalLabsScreen())),
               _Tile('nav_assessments', Icons.fact_check_rounded, 'Assessments', 'Tests and certificates', () => _push(context, const AssessmentsScreen())),
+              if (const <String>{'nursing', 'medicine'}.contains(p.deptId) || const <String>{'nursing', 'medicine'}.contains(p.currentJob?.deptId))
+                _Tile('nav_hospital', Icons.local_hospital_rounded, 'Virtual Hospital', 'Patients, shifts, triage', () => _push(context, const HospitalScreen())),
             ]),
             _Group(title: 'Get hired', tiles: <_Tile>[
               _Tile('nav_career', Icons.business_center_rounded, 'Career Centre', 'Resume and cover letter', () => _push(context, const CareerCentreScreen())),
@@ -197,7 +200,7 @@ class CareerSimDashboard extends StatelessWidget {
             ]),
             _Group(title: 'Work and earn', tiles: <_Tile>[
               _Tile('nav_workplace', Icons.apartment_rounded, 'My Workplace', job == null ? 'Not employed yet' : '${job.title} · ${job.employer}', () => _push(context, const WorkplaceScreen())),
-              _Tile('nav_money', Icons.account_balance_wallet_rounded, 'My Earnings', '${pounds(p.balance)} · simulated', () => _push(context, const MoneyScreen())),
+              _Tile('nav_money', Icons.account_balance_wallet_rounded, 'My Earnings', '${usd(p.balanceCents)} · virtual USD', () => _push(context, const MoneyScreen())),
               _Tile('nav_portfolio', Icons.folder_special_rounded, 'My Portfolio', '${p.portfolio.length} item${p.portfolio.length == 1 ? '' : 's'}', () => _push(context, const PortfolioScreen())),
               _Tile('nav_progress', Icons.insights_rounded, 'Progress', 'Skills and readiness', () => _push(context, const ProgressScreen())),
             ]),

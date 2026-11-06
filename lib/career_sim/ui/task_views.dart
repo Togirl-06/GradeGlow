@@ -9,9 +9,11 @@ import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
+import '../hospital/ui/hospital_screens.dart';
 import '../model/tasks.dart';
 import 'common.dart';
 import 'diagrams.dart';
+import 'lab_work_view.dart';
 
 /// Presents any task and grades it with its rule. [onGraded] persists the result.
 class TaskView extends StatelessWidget {
@@ -48,6 +50,10 @@ class TaskView extends StatelessWidget {
       body = _LabelView(spec: s, onGraded: onGraded, allowRetry: allowRetry);
     } else if (s is CourtroomTaskSpec) {
       body = _CourtView(spec: s, onGraded: onGraded, allowRetry: allowRetry);
+    } else if (s is LabTaskSpec) {
+      body = LabWorkView(spec: s, onGraded: onGraded);
+    } else if (s is HospitalTaskSpec) {
+      body = HospitalWorkView(spec: s, onGraded: onGraded);
     } else {
       body = const Text('Unsupported task type.');
     }
@@ -564,7 +570,7 @@ class _WorkupViewState extends State<_WorkupView> with _Graded<_WorkupView> {
 // ------------------------------------------------------------------ numeric
 
 double? parseNumber(String raw) {
-  final String t = raw.trim().replaceAll(',', '').replaceAll('£', '').replaceAll('%', '');
+  final String t = raw.trim().replaceAll(',', '').replaceAll('£', '').replaceAll(r'$', '').replaceAll('%', '');
   if (t.isEmpty) return null;
   return double.tryParse(t);
 }

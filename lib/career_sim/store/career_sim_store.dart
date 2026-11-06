@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 
@@ -7,14 +8,19 @@ import '../../services/lab_runner/lab_runner.dart';
 import '../ai/career_ai.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
+import '../engine/market_rules.dart';
 import '../engine/pay_rules.dart';
 import '../engine/text_rubric.dart';
+import '../hospital/hospital_cases.dart';
+import '../hospital/hospital_engine.dart';
+import '../hospital/hospital_models.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../labs/lab_catalog.dart';
 import '../labs/lab_grading.dart';
 import '../labs/lab_models.dart';
 import '../model/tasks.dart';
+import '../resume/resume_parser.dart';
 import 'career_repository.dart';
 
 /// A request the rules refused. The message is shown to the student.
@@ -129,9 +135,9 @@ class CareerSimStore extends ChangeNotifier {
   }
 
   /// Adds simulated pay to the ledger (in-game money only).
-  void _pay(int amount, String text, String kind) {
-    if (amount <= 0) return;
-    profile.ledger.add(MoneyEntry(day: profile.day, amount: amount, text: text, kind: kind));
+  void _pay(int cents, String text, String kind, {String paycheckId = ''}) {
+    if (cents <= 0) return;
+    profile.ledger.add(MoneyEntry(day: profile.day, cents: cents, text: text, kind: kind, paycheckId: paycheckId));
   }
 
   void _log(String text, [String kind = 'info']) {
@@ -284,13 +290,15 @@ class CareerSimStore extends ChangeNotifier {
   LabRun? labRun(String labId) => profile.labRuns[labId];
 
   /// Starts a lab, or continues the unfinished run unless [restart].
-  Future<LabRun> startLab(LabSpec lab, {String? scenarioId, bool restart = false}) async {
+  /// Starts a lab run. [forWork] opens a scenario assigned at work, which
+  /// does not need the level below to be unlocked first.
+  Future<LabRun> startLab(LabSpec lab, {String? scenarioId, bool restart = false, bool forWork = false}) async {
     final LabRun? existing = profile.labRuns[lab.id];
     if (existing != null && !existing.done && !restart) return existing;
     final String sid = scenarioId ?? (nextLabScenario(lab) ?? lab.scenarios.first).id;
     final LabScenario? sc = lab.scenario(sid);
     if (sc == null) throw CareerActionException('Scenario not found.');
-    if (!labScenarioUnlocked(lab, sc)) {
+    if (!forWork && !labScenarioUnlocked(lab, sc)) {
       throw CareerActionException('${sc.level.label} scenarios unlock after you pass ${LabGrader.unlockAfter} at the level below.');
     }
     final LabRun run = LabRun(labId: lab.id, scenarioId: sid, startedDay: profile.day);
@@ -364,7 +372,9 @@ class CareerSimStore extends ChangeNotifier {
     final bool firstPass = passed && !profile.labPassed(lab.id);
     final bool firstScenarioPass = passed && !profile.labScenarioPassed(lab.id, sc.id);
     profile.labCompletions.add(c);
-    if (firstScenarioPass) _pay(PayRules.labPay(sc.level, score), 'Lab work: ${lab.title} (${sc.level.name})', 'lab');
+    if (firstScenarioPass && profile.currentJob == null) {
+      _pay(PayRules.stipend(sc.level, score), 'Training stipend: ${lab.title} (${sc.level.label.toLowerCase()})', 'lab');
+    }
     if (firstPass) {
       _award(lab.skills, CareerRules.projectPoints);
       if (lab.addsToPortfolio && !profile.portfolio.any((PortfolioItem i) => i.id == lab.id)) {
@@ -396,6 +406,172 @@ class CareerSimStore extends ChangeNotifier {
           if (!profile.labPassed(id)) LabCatalog.lab(id)?.title ?? id,
       ];
 
+  // ------------------------------------------------------------ hospital
+
+  final Map<String, PatientSim> _sims = <String, PatientSim>{};
+  ShiftSim? _shift;
+
+  static ClinicalRole roleNamed(String r) => r == 'medicine' ? ClinicalRole.medicine : ClinicalRole.nursing;
+
+  /// The student's clinical role, from their job or department.
+  ClinicalRole get clinicalRole => (profile.currentJob?.deptId ?? profile.deptId) == 'medicine' ? ClinicalRole.medicine : ClinicalRole.nursing;
+
+  /// The live patient for a case run, rebuilt from the saved actions.
+  PatientSim? hospitalSim(String caseId) {
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    final PatientCase? c = hospitalCase(caseId);
+    if (r == null || c == null || r.kind != 'case') return null;
+    final PatientSim? cached = _sims[caseId];
+    if (cached != null && cached.actions.length == r.actions.length) return cached;
+    return _sims[caseId] = PatientSim.replay(c, roleNamed(r.role), r.actions.map(SimAction.fromJson).toList());
+  }
+
+  Future<PatientSim> startHospitalCase(String caseId, {ClinicalRole? role, bool restart = false}) async {
+    final PatientCase? c = hospitalCase(caseId);
+    if (c == null) throw CareerActionException('Patient case not found.');
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    if (r != null && !r.done && !restart) return hospitalSim(caseId)!;
+    final ClinicalRole ro = role ?? (c.roles.contains(clinicalRole) ? clinicalRole : c.roles.first);
+    profile.hospitalRuns[caseId] = HospitalRun(id: caseId, kind: 'case', role: ro.name, startedDay: profile.day);
+    _sims.remove(caseId);
+    _log('Started a patient case: ${c.name}, ${c.dept.label}.', 'lab');
+    await _commit();
+    return hospitalSim(caseId)!;
+  }
+
+  /// One action at the bedside; saved immediately so the case can be resumed.
+  Future<PatientSim> hospitalAct(String caseId, SimAction a) async {
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    if (r == null || r.done) throw CareerActionException('Start this patient case first.');
+    final PatientSim s = hospitalSim(caseId)!;
+    s.apply(a);
+    r.actions.add(a.toJson());
+    await _commit();
+    return s;
+  }
+
+  void _awardClinical(ClinicalRole role) {
+    final Department? d = CareerCatalog.department(role == ClinicalRole.medicine ? 'medicine' : 'nursing');
+    if (d != null) _award(d.skills.take(2).map((SkillDef x) => x.id), CareerRules.projectPoints);
+  }
+
+  Future<HospitalResult> finishHospitalCase(String caseId) async {
+    final HospitalRun? r = profile.hospitalRuns[caseId];
+    final PatientSim? s = hospitalSim(caseId);
+    if (r == null || s == null || r.done) throw CareerActionException('This case is not in progress.');
+    if (!s.has('document')) throw CareerActionException('Document your care before you finish.');
+    final CaseScore sc = s.score();
+    s.finished = true;
+    r.done = true;
+    final HospitalResult res = HospitalResult(
+      id: caseId,
+      kind: 'case',
+      role: r.role,
+      day: profile.day,
+      score: sc.overall,
+      passed: sc.passed,
+      critical: sc.critical,
+      categories: sc.categories,
+      outcome: sc.outcome,
+      notes: <String>[...sc.missed.map((String m) => 'Missed: $m'), ...sc.late.map((String m) => 'Late: $m'), ...sc.safety.map((SafetyEvent e) => 'Safety: ${e.explanation}')],
+    );
+    profile.hospitalResults.add(res);
+    if (res.passed) _awardClinical(s.role);
+    _log('Patient case ${s.c.name}: ${res.score}/100${res.critical ? ' — critical safety issue, remediation required' : res.passed ? ' — passed' : ''}.', res.passed ? 'milestone' : 'lab');
+    await _commit();
+    return res;
+  }
+
+  ShiftSim? shiftSim(String shiftId) {
+    final HospitalRun? r = profile.hospitalRuns[shiftId];
+    if (r == null || r.kind != 'shift' || shiftId != wardShift.id) return null;
+    final ShiftSim? cached = _shift;
+    if (cached != null && cached.actions.length == r.actions.length) return cached;
+    return _shift = ShiftSim.replay(wardShift, <String, PatientCase>{for (final String id in wardShift.caseIds) id: hospitalCase(id)!}, roleNamed(r.role),
+        <(String, SimAction)>[for (final Map<String, dynamic> j in r.actions) (j['c'] as String? ?? '', SimAction.fromJson(j))]);
+  }
+
+  Future<ShiftSim> startShift({bool restart = false}) async {
+    final HospitalRun? r = profile.hospitalRuns[wardShift.id];
+    if (r != null && !r.done && !restart) return shiftSim(wardShift.id)!;
+    profile.hospitalRuns[wardShift.id] = HospitalRun(id: wardShift.id, kind: 'shift', role: 'nursing', startedDay: profile.day);
+    _shift = null;
+    _log('Started the ${wardShift.title}.', 'lab');
+    await _commit();
+    return shiftSim(wardShift.id)!;
+  }
+
+  Future<ShiftSim> shiftAct(String caseId, SimAction a) async {
+    final HospitalRun? r = profile.hospitalRuns[wardShift.id];
+    if (r == null || r.done) throw CareerActionException('Start the shift first.');
+    final ShiftSim s = shiftSim(wardShift.id)!;
+    s.apply(caseId, a);
+    r.actions.add(<String, dynamic>{'c': caseId, ...a.toJson()});
+    await _commit();
+    return s;
+  }
+
+  Future<HospitalResult> finishShift(String handover) async {
+    final HospitalRun? r = profile.hospitalRuns[wardShift.id];
+    if (r == null || r.done) throw CareerActionException('The shift is not in progress.');
+    if (TextRubric.words(handover).length < 40) throw CareerActionException('Write a handover for the next shift (at least 40 words).');
+    await shiftAct(wardShift.caseIds.first, SimAction('handover', '', handover));
+    final ShiftSim s = shiftSim(wardShift.id)!;
+    final (int overall, bool passed, Map<String, CaseScore> each, int hand) = s.score();
+    r.done = true;
+    final HospitalResult res = HospitalResult(
+      id: wardShift.id,
+      kind: 'shift',
+      role: 'nursing',
+      day: profile.day,
+      score: overall,
+      passed: passed,
+      critical: each.values.any((CaseScore x) => x.critical),
+      categories: <String, int>{for (final MapEntry<String, CaseScore> e in each.entries) hospitalCase(e.key)!.name: e.value.overall, 'Handover': hand},
+      outcome: each.entries.map((MapEntry<String, CaseScore> e) => '${hospitalCase(e.key)!.name}: ${e.value.outcome}').join('\n'),
+      notes: <String>[
+        for (final MapEntry<String, CaseScore> e in each.entries) ...<String>[
+          ...e.value.missed.map((String m) => '${hospitalCase(e.key)!.name} — missed: $m'),
+          ...e.value.late.map((String m) => '${hospitalCase(e.key)!.name} — late: $m'),
+          ...e.value.safety.map((SafetyEvent x) => '${hospitalCase(e.key)!.name} — safety: ${x.explanation}'),
+        ],
+      ],
+    );
+    profile.hospitalResults.add(res);
+    if (passed) _awardClinical(ClinicalRole.nursing);
+    _log('Completed the ${wardShift.title}: $overall/100.', passed ? 'milestone' : 'lab');
+    await _commit();
+    return res;
+  }
+
+  Future<HospitalResult> submitTriage(Map<String, int> levels) async {
+    if (levels.length < triageArrivals.length) throw CareerActionException('Assign a triage level to every arrival.');
+    final (int score, bool critical, List<String> notes) = scoreTriage(levels);
+    final HospitalResult res = HospitalResult(
+      id: 'triage',
+      kind: 'triage',
+      role: clinicalRole.name,
+      day: profile.day,
+      score: score,
+      passed: score >= 70 && !critical,
+      critical: critical,
+      notes: notes,
+      outcome: critical ? 'A critically ill patient waited too long.' : 'Every arrival was seen in a safe order.',
+    );
+    profile.hospitalRuns['triage'] = HospitalRun(id: 'triage', kind: 'triage', role: clinicalRole.name, startedDay: profile.day, actions: <Map<String, dynamic>>[levels], done: true);
+    profile.hospitalResults.add(res);
+    _log('Triage board: $score/100.', 'lab');
+    await _commit();
+    return res;
+  }
+
+  HospitalResult? latestHospitalResult(String id, {int sinceDay = 0}) {
+    for (final HospitalResult r in profile.hospitalResults.reversed) {
+      if (r.id == id && r.day >= sinceDay) return r;
+    }
+    return null;
+  }
+
   // ------------------------------------------------------------ stage
 
   Future<List<Criterion>> requestTraineeStatus() async {
@@ -412,6 +588,91 @@ class CareerSimStore extends ChangeNotifier {
   }
 
   // ------------------------------------------------------------ materials
+
+  // ------------------------------------------------------------ resume files
+
+  static const int maxResumeBytes = 5 * 1024 * 1024;
+  static const int maxResumeUploads = 3;
+
+  /// Reads an uploaded PDF/DOCX resume, extracts its text and profile fields,
+  /// and stores the file privately. [replaceId] replaces an earlier upload.
+  Future<ResumeUpload> uploadResume(String fileName, Uint8List bytes, {String? replaceId}) async {
+    if (bytes.isEmpty) throw CareerActionException('The file is empty.');
+    if (bytes.length > maxResumeBytes) throw CareerActionException('The file is larger than 5 MB. Export a smaller PDF or .docx.');
+    final String text;
+    try {
+      text = extractResumeText(fileName, bytes);
+    } on FormatException catch (e) {
+      throw CareerActionException(e.message);
+    } catch (_) {
+      throw CareerActionException('This file could not be read. Export your resume again as PDF or .docx and retry.');
+    }
+    if (replaceId == null && profile.resumeUploads.length >= maxResumeUploads) {
+      throw CareerActionException('You can keep $maxResumeUploads resumes. Delete or replace one first.');
+    }
+    final String format = text.isNotEmpty && bytes[0] == 0x25 ? 'pdf' : 'docx';
+    final String id = replaceId ?? _id('cv');
+    String path = '';
+    try {
+      path = await _repo.saveResumeFile(_uid, '$id.$format', bytes,
+          format == 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    } catch (_) {
+      syncWarning = 'Your resume was read, but the file could not be stored in the cloud. It will still work for applications.';
+    }
+    final ResumeUpload u = ResumeUpload(
+      id: id,
+      fileName: fileName,
+      format: format,
+      sizeBytes: bytes.length,
+      uploadedDay: profile.day,
+      text: text.length > 20000 ? text.substring(0, 20000) : text,
+      parsed: parseResume(text),
+      storagePath: path,
+    );
+    final int at = profile.resumeUploads.indexWhere((ResumeUpload x) => x.id == id);
+    if (at >= 0) {
+      profile.resumeUploads[at] = u;
+    } else {
+      profile.resumeUploads.add(u);
+    }
+    if (profile.defaultResumeId.isEmpty) profile.defaultResumeId = id;
+    _log('Uploaded resume "$fileName".');
+    await _commit();
+    return u;
+  }
+
+  /// Saves the student's corrections to an upload's fields and, when
+  /// [useForProfile] is set, copies them into the professional profile.
+  Future<void> confirmResume(String id, ParsedResume fields, {bool useForProfile = true}) async {
+    final ResumeUpload? u = profile.resumeUpload(id);
+    if (u == null) throw CareerActionException('Resume not found.');
+    if (fields.name.trim().isEmpty) throw CareerActionException('Add your name.');
+    if (fields.email.trim().isNotEmpty && !emailPattern.hasMatch(fields.email)) throw CareerActionException('Check the email address.');
+    u.parsed = fields;
+    u.reviewed = true;
+    if (useForProfile) profile.resume = resumeFromParsed(fields, profile.resume, profile.day);
+    profile.defaultResumeId = id;
+    await _commit();
+  }
+
+  Future<void> deleteResume(String id) async {
+    final ResumeUpload? u = profile.resumeUpload(id);
+    if (u == null) throw CareerActionException('Resume not found.');
+    if (profile.applications.any((JobApplication a) => a.resumeId == id && a.status == ApplicationStatus.draft)) {
+      for (final JobApplication a in profile.applications.where((JobApplication a) => a.resumeId == id && a.status == ApplicationStatus.draft)) {
+        a.resumeId = '';
+      }
+    }
+    try {
+      await _repo.deleteResumeFile(u.storagePath);
+    } catch (_) {
+      // The record is removed either way; a stray file is only visible to its owner.
+    }
+    profile.resumeUploads.remove(u);
+    if (profile.defaultResumeId == id) profile.defaultResumeId = profile.resumeUploads.isEmpty ? '' : profile.resumeUploads.first.id;
+    _log('Deleted resume "${u.fileName}".');
+    await _commit();
+  }
 
   Future<void> saveResume(Resume r) async {
     final String email = r.email.trim();
@@ -434,6 +695,10 @@ class CareerSimStore extends ChangeNotifier {
       skills: r.skills.map((String s) => s.trim()).where((String s) => s.isNotEmpty).toSet().toList(),
       projectIds: r.projectIds,
       updatedDay: profile.day,
+      phone: r.phone.trim(),
+      projects: r.projects,
+      certifications: r.certifications,
+      achievements: r.achievements,
     );
     _log('Updated resume.');
     await _commit();
@@ -509,6 +774,7 @@ class CareerSimStore extends ChangeNotifier {
       createdDay: profile.day,
       coverLetter: coverLetterFor(postingId)?.body ?? coverLetterFor('')?.body ?? '',
       portfolioIds: profile.portfolio.where((PortfolioItem i) => i.deptId == p.deptId).map((PortfolioItem i) => i.id).toList(),
+      resumeId: profile.defaultResumeId,
     );
     a.history.add(StatusChange(status: ApplicationStatus.draft, day: profile.day));
     profile.applications.add(a);
@@ -517,14 +783,20 @@ class CareerSimStore extends ChangeNotifier {
     return a;
   }
 
-  Future<void> saveDraft(String appId, {required String coverLetter, required List<String> portfolioIds}) async {
+  Future<void> saveDraft(String appId,
+      {required String coverLetter, required List<String> portfolioIds, String? resumeId, Map<String, String>? answers}) async {
     final JobApplication a = _app(appId);
     if (a.status != ApplicationStatus.draft) throw CareerActionException('Only drafts can be edited.');
     for (final String id in portfolioIds) {
       if (!profile.portfolio.any((PortfolioItem i) => i.id == id)) throw CareerActionException('Unknown portfolio item.');
     }
+    if (resumeId != null && resumeId.isNotEmpty && profile.resumeUpload(resumeId) == null) throw CareerActionException('Unknown resume.');
     a.coverLetter = coverLetter;
     a.portfolioIds = List<String>.from(portfolioIds);
+    if (resumeId != null) a.resumeId = resumeId;
+    if (answers != null) a.answers
+      ..clear()
+      ..addAll(answers);
     await _commit();
   }
 
@@ -538,6 +810,12 @@ class CareerSimStore extends ChangeNotifier {
     }
     if (TextRubric.words(a.coverLetter).length < 80) {
       throw CareerActionException('Write a cover letter of at least 80 words for this role.');
+    }
+    if (a.resumeId.isNotEmpty && profile.resumeUpload(a.resumeId) == null) throw CareerActionException('The selected resume was deleted. Choose another.');
+    for (final ApplicationQuestion q in p.questions) {
+      if (TextRubric.words(a.answers[q.id] ?? '').length < 20) {
+        throw CareerActionException('Answer the employer\'s question "${q.prompt}" (at least 20 words).');
+      }
     }
     a.submittedDay = profile.day;
     a.move(ApplicationStatus.submitted, profile.day);
@@ -573,7 +851,7 @@ class CareerSimStore extends ChangeNotifier {
           }
         case ApplicationStatus.underReview:
           if (d >= sub + 2) {
-            final ScreeningReport r = CareerRules.screen(profile, dept, p, a, d);
+            final ScreeningReport r = p.keywords.isNotEmpty ? MarketRules.screen(profile, p, a, d) : CareerRules.screen(profile, dept, p, a, d);
             a.screening = r;
             if (r.shortlisted) {
               a.move(ApplicationStatus.shortlisted, d, 'Screening score ${r.score}');
@@ -617,16 +895,7 @@ class CareerSimStore extends ChangeNotifier {
     switch (h.outcome) {
       case HiringOutcome.offer:
         final WorkplaceDef? w = CareerCatalog.workplace(p.workplaceId);
-        a.offer = JobOffer(
-          title: w?.titleFor(p.stageOnHire, p.title) ?? p.title,
-          employer: p.company.name,
-          salary: CareerRules.offerSalary(p, h.overall),
-          salaryPeriod: p.salaryPeriod,
-          responsibilities: p.responsibilities,
-          startDay: d + 1,
-          respondByDay: d + 3,
-          stage: p.stageOnHire,
-        );
+        a.offer = MarketRules.offer(p, p.keywords.isNotEmpty ? p.title : (w?.titleFor(p.stageOnHire, p.title) ?? p.title), CareerRules.offerSalary(p, h.overall), d);
         a.move(ApplicationStatus.offerReceived, d, 'Overall ${h.overall}');
         news.add('Offer received from ${p.company.name}!');
       case HiringOutcome.furtherAssessment:
@@ -646,6 +915,32 @@ class CareerSimStore extends ChangeNotifier {
     a.move(ApplicationStatus.interviewScheduled, profile.day, 'Interview on day $slotDay');
     _log('Interview booked with ${_posting(a).company.name} for day $slotDay.');
     await _commit();
+  }
+
+  /// The interview this application gets (role questions and a question on
+  /// the candidate's own resume come first for marketplace roles).
+  InterviewPlan? interviewPlanFor(JobApplication a) {
+    final JobPosting? p = CareerCatalog.posting(a.postingId);
+    if (p == null) return null;
+    final InterviewPlan? base = CareerCatalog.interviewPlan(p.interviewPlanId);
+    if (base == null) return null;
+    return p.keywords.isEmpty ? base : MarketRules.interviewPlan(profile, a, p, base);
+  }
+
+  /// One salary negotiation per offer.
+  Future<OfferNegotiation> negotiateOffer(String appId, String message) async {
+    final JobApplication a = _app(appId);
+    final JobPosting p = _posting(a);
+    if (a.status != ApplicationStatus.offerReceived || a.offer == null) throw CareerActionException('There is no open offer.');
+    if (a.negotiation != null) throw CareerActionException('You have already negotiated this offer.');
+    if (TextRubric.words(message).length < 30) throw CareerActionException('Write at least 30 words explaining your request.');
+    final (OfferNegotiation n, int salary) = MarketRules.negotiate(p, a, message, profile.day);
+    a.negotiation = n;
+    if (salary != a.offer!.salary) a.offer = a.offer!.withSalary(salary);
+    a.history.add(StatusChange(status: a.status, day: profile.day, note: n.accepted ? 'Negotiated a higher offer' : 'Negotiation: offer unchanged'));
+    _log('Negotiated with ${p.company.name}: ${n.accepted ? 'offer increased' : 'offer unchanged'}.');
+    await _commit();
+    return n;
   }
 
   bool interviewAvailable(JobApplication a) =>
@@ -676,13 +971,20 @@ class CareerSimStore extends ChangeNotifier {
     await _commit();
   }
 
-  Future<Employment> acceptOffer(String appId) async {
+  /// Accepts an offer by signing the (simulated) contract with [signature].
+  Future<Employment> acceptOffer(String appId, {String? signature}) async {
     final JobApplication a = _app(appId);
     final JobPosting p = _posting(a);
     final JobOffer? o = a.offer;
     if (a.status != ApplicationStatus.offerReceived || o == null) throw CareerActionException('There is no open offer.');
     if (profile.day > o.respondByDay) throw CareerActionException('This offer has expired.');
     if (profile.currentJob != null) throw CareerActionException('Resign from your current role before accepting.');
+    final String name = profile.resume.fullName.trim();
+    final String signed = (signature ?? (name.isEmpty ? 'Accepted in writing' : name)).trim();
+    if (signature != null) {
+      if (signed.split(RegExp(r'\s+')).length < 2) throw CareerActionException('Type your full name to sign the contract.');
+      if (name.isNotEmpty && signed.toLowerCase() != name.toLowerCase()) throw CareerActionException('Sign with the name on your profile: $name.');
+    }
     final Employment e = Employment(
       id: _id('job'),
       postingId: p.id,
@@ -694,6 +996,9 @@ class CareerSimStore extends ChangeNotifier {
       salary: o.salary,
       salaryPeriod: o.salaryPeriod,
       startDay: profile.day,
+      payFrequency: o.payFrequency,
+      hoursPerWeek: o.hoursPerWeek,
+      contract: EmploymentContract(signedName: signed, signedDay: profile.day, terms: MarketRules.contractTerms(o, '')),
     );
     profile.employment.add(e);
     if (o.stage.index > profile.stage.index) profile.stage = o.stage;
@@ -720,6 +1025,20 @@ class CareerSimStore extends ChangeNotifier {
     return w == null ? null : CareerCatalog.assignment(w, r.assignmentId);
   }
 
+  /// Onboarding items still to do (only for contracts signed in GradeGlow).
+  List<String> onboardingLeft(Employment e) => e.contract == null
+      ? const <String>[]
+      : <String>[for (final (String id, String _, String _) in MarketRules.onboarding(e)) if (!e.onboarding.contains(id)) id];
+
+  Future<void> completeOnboarding(String itemId) async {
+    final Employment? e = profile.currentJob;
+    if (e == null) throw CareerActionException('You are not employed.');
+    if (!MarketRules.onboarding(e).any(((String, String, String) x) => x.$1 == itemId)) throw CareerActionException('Unknown onboarding item.');
+    e.onboarding.add(itemId);
+    if (onboardingLeft(e).isEmpty) _log('Onboarding complete at ${e.employer}.', 'work');
+    await _commit();
+  }
+
   bool internshipFinished(Employment e) {
     final WorkplaceDef? w = workplaceOf(e);
     return e.stage == CareerStage.intern && w != null && e.evaluated.length >= w.internshipLength;
@@ -729,6 +1048,7 @@ class CareerSimStore extends ChangeNotifier {
     final Employment? e = profile.currentJob;
     if (e == null) throw CareerActionException('You are not employed yet.');
     if (e.open != null) throw CareerActionException('Finish your current assignment first.');
+    if (onboardingLeft(e).isNotEmpty) throw CareerActionException('Finish your onboarding checklist first.');
     final WorkplaceDef? w = workplaceOf(e);
     if (w == null || w.assignments.isEmpty) throw CareerActionException('This workplace has no assignments.');
     if (internshipFinished(e)) throw CareerActionException('Your internship assignments are complete. Request your final evaluation.');
@@ -768,13 +1088,41 @@ class CareerSimStore extends ChangeNotifier {
           : (d?.skills.take(2).map((SkillDef x) => x.id).toList() ?? <String>[]);
       _award(skills, CareerRules.assignmentPoints);
     }
-    final (int pay, int bonus) = PayRules.assignmentPay(e, ev);
-    _pay(pay, 'Week\'s pay: ${e.title} at ${e.employer}', 'salary');
-    if (bonus > 0) _pay(bonus, 'Performance bonus: ${s.title}', 'bonus');
     _log('Supervisor evaluation: ${s.title} — ${ev.rating} (${ev.overall}).', 'work');
+    // One approved work week; a paycheck is processed when the period is complete.
+    e.unpaidWeeks += 1;
+    _runPayroll(e);
+    if (e.evaluated.length % reviewEvery == 0) _review(e);
     await _commit();
     return ev;
   }
+
+  static const int reviewEvery = 4;
+
+  /// Pays every complete pay period. Paycheck ids are unique per employment
+  /// and period, so a period can never be paid twice.
+  void _runPayroll(Employment e) {
+    final int weeks = PayRules.weeksPerPeriod(e.payFrequency);
+    while (e.unpaidWeeks >= weeks) {
+      final int period = profile.paychecks.where((Paycheck c) => c.employmentId == e.id).length + 1;
+      final Paycheck c = PayRules.paycheck(e, period, profile.day);
+      if (profile.paychecks.any((Paycheck x) => x.id == c.id)) break;
+      profile.paychecks.add(c);
+      e.unpaidWeeks -= weeks;
+      _pay(c.netCents, 'Paycheck ${c.period}: ${e.title} at ${e.employer}', 'salary', paycheckId: c.id);
+      _log('Virtual paycheck processed: ${usd(c.netCents)} net.', 'work');
+    }
+  }
+
+  void _review(Employment e) {
+    final PerformanceReview r = MarketRules.review(profile, e, CareerCatalog.department(e.deptId), profile.day);
+    e.reviews.add(r);
+    if (r.newSalary != e.salary) e.salary = r.newSalary;
+    _log('Performance review ${r.cycle}: ${r.outcome}${r.raisePercent > 0 ? ' — ${r.raisePercent}% raise' : ''}.', 'milestone');
+  }
+
+  /// Weeks of approved work until the next paycheck.
+  int weeksToPayday(Employment e) => PayRules.weeksPerPeriod(e.payFrequency) - e.unpaidWeeks;
 
   Future<PromotionReview> requestPromotion() async {
     final Employment? e = profile.currentJob;
@@ -785,14 +1133,13 @@ class CareerSimStore extends ChangeNotifier {
     if (review.approved) {
       final CareerStage to = review.to!;
       final WorkplaceDef? w = workplaceOf(e);
-      final int salary = (e.salary * 1.12 / 100).round() * 100;
+      final int salary = PayRules.raised(e.salary, e.salaryPeriod, 1.12);
       final String title = w?.titleFor(to, e.title) ?? e.title;
       e.promotions.add(PromotionRecord(from: e.stage, to: to, day: profile.day, title: title, salary: salary));
       e.stage = to;
       e.title = title;
       e.salary = salary;
       if (to.index > profile.stage.index) profile.stage = to;
-      _pay(PayRules.promotionBonus(salary, e.salaryPeriod), 'Promotion bonus: $title', 'bonus');
       _log('Promoted to $title.', 'milestone');
       await _commit();
     } else if (review.to != null) {

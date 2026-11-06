@@ -9,6 +9,7 @@ import '../model/content_models.dart';
 import '../store/career_sim_store.dart';
 import 'common.dart';
 import 'department_screens.dart';
+import 'employment_screens.dart';
 import 'interview_screen.dart';
 import 'job_screens.dart';
 import 'task_views.dart';
@@ -26,6 +27,9 @@ class CareerCentreScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
+          const CareerStatusCard(),
+          const CareerSections(),
+          const SizedBox(height: 12),
           if (d == null)
             SectionCard(
               title: 'Choose your department',
@@ -42,7 +46,7 @@ class CareerCentreScreen extends StatelessWidget {
             title: 'Application materials',
             child: Column(children: <Widget>[
               ListTile(
-                key: const ValueKey<String>('open_resume'),
+                key: const ValueKey<String>('materials_resume'),
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.badge_rounded),
                 title: const Text('Resume'),
@@ -108,7 +112,7 @@ class CareerCentreScreen extends StatelessWidget {
             title: 'Opportunities and applications',
             child: Column(children: <Widget>[
               ListTile(
-                key: const ValueKey<String>('open_jobs'),
+                key: const ValueKey<String>('materials_jobs'),
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.work_rounded),
                 title: const Text('Internships, graduate and entry-level roles'),
@@ -116,7 +120,7 @@ class CareerCentreScreen extends StatelessWidget {
                 onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const JobBoardScreen())),
               ),
               ListTile(
-                key: const ValueKey<String>('open_tracker'),
+                key: const ValueKey<String>('materials_tracker'),
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.track_changes_rounded),
                 title: const Text('Application tracker'),
@@ -217,16 +221,29 @@ class _ResumeScreenState extends State<ResumeScreen> {
     super.dispose();
   }
 
-  Resume _draft(CareerSimStore store) => Resume(
-        fullName: _name.text,
-        email: _email.text,
-        headline: _headline.text,
-        summary: _summary.text,
-        education: _education,
-        experience: store.verifiedExperience(),
-        skills: _skills,
-        projectIds: _projects.toList(),
-      );
+  /// Real experience from the student's own (uploaded) resume is kept, and
+  /// experience verified by GradeGlow employment is added after it.
+  Resume _draft(CareerSimStore store) {
+    final Resume cur = store.profile.resume;
+    final List<ResumeEntry> verified = store.verifiedExperience();
+    return Resume(
+      fullName: _name.text,
+      email: _email.text,
+      headline: _headline.text,
+      summary: _summary.text,
+      education: _education,
+      experience: <ResumeEntry>[
+        ...cur.experience.where((ResumeEntry e) => !verified.any((ResumeEntry v) => v.heading == e.heading) && !e.heading.contains(' · ')),
+        ...verified,
+      ],
+      skills: _skills,
+      projectIds: _projects.toList(),
+      phone: cur.phone,
+      projects: cur.projects,
+      certifications: cur.certifications,
+      achievements: cur.achievements,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -170,13 +170,19 @@ enum JobType {
   internship,
   graduate,
   entryLevel,
-  junior;
+  junior,
+  midLevel,
+  senior,
+  management;
 
   String get label => switch (this) {
         JobType.internship => 'Internship',
         JobType.graduate => 'Graduate programme',
         JobType.entryLevel => 'Entry-level',
         JobType.junior => 'Junior',
+        JobType.midLevel => 'Mid-level',
+        JobType.senior => 'Senior',
+        JobType.management => 'Management',
       };
 }
 
@@ -230,7 +236,63 @@ class JobPosting {
     this.salaryPeriod = 'year',
     this.shortlistMark = 65,
     this.practicalRequired = true,
+    this.level = '',
+    this.department = '',
+    this.hoursPerWeek = 40,
+    this.positions = 1,
+    this.workMode = 'On-site',
+    this.requiredEducation = '',
+    this.preferred = const <String>[],
+    this.keywords = const <String>[],
+    this.preferredKeywords = const <String>[],
+    this.educationFields = const <String>[],
+    this.questions = const <ApplicationQuestion>[],
+    this.roleQuestions = const <InterviewQuestion>[],
+    this.payFrequency = 'biweekly',
+    this.benefits = const <String>[],
+    this.simulationNote = '',
+    this.majors = const <String>[],
   });
+
+  /// Internship, Entry-level, Junior, Mid-level, Senior or Management.
+  final String level;
+
+  /// Department inside the employer (e.g. "Mobile Engineering").
+  final String department;
+  final int hoursPerWeek;
+  final int positions;
+
+  /// On-site, Hybrid or Remote.
+  final String workMode;
+  final String requiredEducation;
+
+  /// Preferred qualifications (nice to have).
+  final List<String> preferred;
+
+  /// Skills and terms the resume is checked for (required).
+  final List<String> keywords;
+  final List<String> preferredKeywords;
+
+  /// Fields of study that match the education requirement.
+  final List<String> educationFields;
+
+  /// Employer application questions, graded by rubric.
+  final List<ApplicationQuestion> questions;
+
+  /// Role-specific interview questions asked before the department's plan.
+  final List<InterviewQuestion> roleQuestions;
+
+  /// weekly, biweekly or monthly.
+  final String payFrequency;
+  final List<String> benefits;
+
+  /// Shown on regulated (clinical/legal) roles: the simulation is not a licence.
+  final String simulationNote;
+
+  /// Majors this role recruits from (empty = the whole department).
+  final List<String> majors;
+
+  String get levelLabel => level.isNotEmpty ? level : type.label;
 
   final String id;
   final String deptId;
@@ -255,6 +317,16 @@ class JobPosting {
 
   /// The interview's practical (code, clinical, exercise) must be passed.
   final bool practicalRequired;
+}
+
+/// A question on the employer's application form.
+class ApplicationQuestion {
+  const ApplicationQuestion({required this.id, required this.prompt, required this.rubric, this.minWords = 40});
+
+  final String id;
+  final String prompt;
+  final List<Concept> rubric;
+  final int minWords;
 }
 
 enum Competency {

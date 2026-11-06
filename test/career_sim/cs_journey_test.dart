@@ -246,10 +246,21 @@ void main() {
     expect(decided.status, ApplicationStatus.offerReceived);
     expect(find.textContaining('Offer: Software Engineering Intern'), findsOneWidget);
 
-    // 15–16. Accept → workplace.
+    // 15–16. Accept → sign the contract → onboarding → workplace.
     await tapKey(t, 'accept_offer');
+    expect(find.text('Simulated employment contract'), findsOneWidget);
+    await tapKey(t, 'contract_agree');
+    await t.enterText(k('contract_signature'), store.profile.resume.fullName);
+    await t.pump();
+    await tapKey(t, 'sign_contract');
     expect(store.profile.stage, CareerStage.intern);
+    expect(store.profile.currentJob!.contract!.signedName, store.profile.resume.fullName);
     expect(find.textContaining('Payments Platform squad'), findsWidgets);
+    for (final String id in <String>['handbook', 'policy', 'tools', 'manager', 'goals']) {
+      await tapKey(t, 'onb_$id');
+      await tapKey(t, 'onb_done_$id');
+    }
+    expect(store.onboardingLeft(store.profile.currentJob!), isEmpty);
 
     // 17–19. Assignment → submit → supervisor evaluation.
     await tapKey(t, 'request_assignment');

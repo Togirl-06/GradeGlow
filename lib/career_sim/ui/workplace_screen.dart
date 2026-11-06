@@ -10,6 +10,8 @@ import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../store/career_sim_store.dart';
 import 'common.dart';
+import 'employment_screens.dart';
+import 'money_find_screens.dart';
 import 'job_screens.dart';
 import 'task_views.dart';
 
@@ -49,6 +51,8 @@ class WorkplaceScreen extends StatelessWidget {
         children: <Widget>[
           Text(e.title, style: TextStyle(color: VuV2Colors.ink, fontSize: 22, fontWeight: FontWeight.w900)),
           Text('${e.stage.label} · ${money(e.salary, e.salaryPeriod)} · since day ${e.startDay}', style: TextStyle(color: VuV2Colors.mute)),
+          const SizedBox(height: 6),
+          Text(PayRules.notice, key: const ValueKey<String>('workplace_notice'), style: TextStyle(color: VuV2Colors.mute, fontSize: 11.5)),
           const SizedBox(height: 4),
           Row(children: <Widget>[
             Expanded(child: Text('Today is day ${store.day}', style: TextStyle(color: VuV2Colors.mute))),
@@ -68,6 +72,7 @@ class WorkplaceScreen extends StatelessWidget {
                 ],
               ),
             ),
+          if (store.onboardingLeft(e).isNotEmpty) OnboardingCard(employment: e),
           SectionCard(
             title: 'Performance',
             trailing: const ValidatedBadge(label: 'Supervisor rubric'),
@@ -128,6 +133,42 @@ class WorkplaceScreen extends StatelessWidget {
                         ],
                       ),
           ),
+          SectionCard(
+            title: 'Company overview',
+            subtitle: CareerCatalog.posting(e.postingId)?.company.industry,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              Text(CareerCatalog.posting(e.postingId)?.company.about ?? e.employer, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+              const SizedBox(height: 6),
+              Text('Team: ${CareerCatalog.posting(e.postingId)?.company.team ?? ''}', style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+              const SizedBox(height: 6),
+              Text('Responsibilities', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+              BulletList(CareerCatalog.posting(e.postingId)?.responsibilities ?? const <String>[]),
+            ]),
+          ),
+          SectionCard(
+            title: 'Messages',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              for (final CareerEvent m in p.log.reversed.where((CareerEvent x) => x.kind == 'work' || x.kind == 'milestone').take(5))
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text('Day ${m.day} · ${m.text}', style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
+                ),
+              if (!p.log.any((CareerEvent x) => x.kind == 'work')) Text('No messages yet.', style: TextStyle(color: VuV2Colors.mute)),
+            ]),
+          ),
+          SectionCard(
+            title: 'Earnings',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              Text('Virtual balance ${usd(p.balanceCents)} · paid ${PayRules.frequencyLabel(e.payFrequency).toLowerCase()} · next paycheck after ${store.weeksToPayday(e)} more approved week(s)',
+                  style: TextStyle(color: VuV2Colors.ink)),
+              TextButton(
+                key: const ValueKey<String>('workplace_earnings'),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const MoneyScreen())),
+                child: const Text('Open My Earnings'),
+              ),
+            ]),
+          ),
+          if (e.reviews.isNotEmpty) ReviewCard(review: e.reviews.last),
           if (e.stage != CareerStage.intern)
             SectionCard(
               title: 'Promotion',
@@ -250,7 +291,7 @@ class _OpenAssignment extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: Icon(Icons.assignment_rounded, color: overdue ? VuV2Colors.danger : null),
       title: Text(s.title),
-      subtitle: Text('Issued day ${record.issuedDay} · due day ${record.dueDay}${overdue ? ' · OVERDUE' : ''}'),
+      subtitle: Text('${const <String>['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][record.issuedDay % 5]} (day ${record.issuedDay}) · due day ${record.dueDay}${overdue ? ' · OVERDUE' : ''}'),
       trailing: const Icon(Icons.chevron_right_rounded),
       onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const AssignmentScreen())),
     );
@@ -288,11 +329,21 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           padding: const EdgeInsets.all(16),
           children: <Widget>[
             EvaluationCard(evaluation: ev),
-            for (final MoneyEntry m in store.profile.ledger.reversed.take(2).where((MoneyEntry m) => m.day == store.day && m.kind != 'lab'))
+            const SizedBox(height: 8),
+            Text('Approved: 1 work week (${e?.hoursPerWeek ?? 40} hours).', style: TextStyle(color: VuV2Colors.ink)),
+            if (e != null && store.profile.paychecks.isNotEmpty && store.profile.paychecks.last.employmentId == e.id && store.profile.paychecks.last.day == store.day)
               Padding(
                 padding: const EdgeInsets.only(top: 6),
-                child: Text('+${pounds(m.amount)} · ${m.text} (simulated pay)', key: ValueKey<String>('pay_${m.kind}'), style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700)),
-              ),
+                child: Text(
+                  'Paycheck ${store.profile.paychecks.last.period} processed: gross ${usd(store.profile.paychecks.last.grossCents)}, '
+                  'simulated deductions ${usd(store.profile.paychecks.last.deductionCents)}, net ${usd(store.profile.paychecks.last.netCents)} (virtual).',
+                  key: const ValueKey<String>('pay_salary'),
+                  style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700),
+                ),
+              )
+            else if (e != null)
+              Text('Next paycheck after ${store.weeksToPayday(e)} more approved week(s).', key: const ValueKey<String>('pay_pending'), style: TextStyle(color: VuV2Colors.mute)),
+            if (e != null && e.reviews.isNotEmpty && e.reviews.last.day == store.day) ReviewCard(review: e.reviews.last),
             const SizedBox(height: 12),
             FilledButton(key: const ValueKey<String>('back_to_work'), onPressed: () => Navigator.of(context).pop(), child: const Text('Back to the workplace')),
           ],

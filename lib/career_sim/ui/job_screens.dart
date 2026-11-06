@@ -4,12 +4,16 @@ import 'package:provider/provider.dart';
 import '../../vu_v2/design/vu_v2_theme.dart';
 import '../content/catalog.dart';
 import '../engine/career_rules.dart';
+import '../engine/pay_rules.dart';
 import '../engine/text_rubric.dart';
 import '../model/career_models.dart';
 import '../model/content_models.dart';
 import '../model/tasks.dart';
+import '../resume/resume_analysis.dart';
 import '../store/career_sim_store.dart';
 import 'common.dart';
+import 'employment_screens.dart';
+import 'resume_screens.dart';
 import 'interview_screen.dart';
 import 'task_views.dart';
 import 'workplace_screen.dart';
@@ -23,22 +27,54 @@ class JobBoardScreen extends StatefulWidget {
 
 class _JobBoardScreenState extends State<JobBoardScreen> {
   bool _mine = true;
+  String _level = '';
+  final TextEditingController _q = TextEditingController();
+
+  static const List<String> levels = <String>['Internship', 'Entry-level', 'Junior', 'Mid-level', 'Senior', 'Management'];
+
+  @override
+  void dispose() {
+    _q.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final CareerSimStore store = context.watch<CareerSimStore>();
     final String dept = store.profile.deptId;
-    final List<JobPosting> list = _mine && dept.isNotEmpty ? CareerCatalog.postingsFor(dept) : CareerCatalog.postings;
+    final List<String> words = _q.text.toLowerCase().split(RegExp(r'\s+')).where((String w) => w.isNotEmpty).toList();
+    final List<JobPosting> list = (_mine && dept.isNotEmpty ? CareerCatalog.postingsFor(dept) : CareerCatalog.postings).where((JobPosting j) {
+      if (_level.isNotEmpty && j.levelLabel != _level && !(j.type == JobType.graduate && _level == 'Entry-level')) return false;
+      final String text = '${j.title} ${j.company.name} ${j.department} ${j.keywords.join(' ')} ${j.location}'.toLowerCase();
+      return words.every(text.contains);
+    }).toList();
     return Scaffold(
       appBar: AppBar(title: const Text('Opportunities')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: <Widget>[
+          Text(PayRules.notice, style: TextStyle(color: VuV2Colors.mute, fontSize: 12)),
+          const SizedBox(height: 8),
+          TextField(
+            key: const ValueKey<String>('jobs_search'),
+            controller: _q,
+            onChanged: (_) => setState(() {}),
+            decoration: const InputDecoration(prefixIcon: Icon(Icons.search_rounded), hintText: 'Search title, company or skill', border: OutlineInputBorder(), isDense: true),
+          ),
+          const SizedBox(height: 8),
           Wrap(
             spacing: 8,
+            runSpacing: 6,
             children: <Widget>[
               ChoiceChip(key: const ValueKey<String>('filter_mine'), label: const Text('My field'), selected: _mine, onSelected: (_) => setState(() => _mine = true)),
               ChoiceChip(key: const ValueKey<String>('filter_all'), label: const Text('All fields'), selected: !_mine, onSelected: (_) => setState(() => _mine = false)),
+              for (final String l in levels)
+                FilterChip(
+                  key: ValueKey<String>('level_$l'),
+                  label: Text(l),
+                  selected: _level == l,
+                  onSelected: (bool on) => setState(() => _level = on ? l : ''),
+                ),
             ],
           ),
           const SizedBox(height: 12),
@@ -61,15 +97,17 @@ class _PostingCard extends StatelessWidget {
     final bool open = PostingSchedule.isOpen(job, day);
     final Department? d = CareerCatalog.department(job.deptId);
     final int readiness = d == null ? 0 : CareerRules.readiness(store.profile, d, job: job).score;
+    final ResumeUpload? cv = store.profile.resumeUpload(store.profile.defaultResumeId);
+    final int? match = cv == null ? null : jobMatch(cv.parsed, job, fullText: cv.text).score;
     final JobApplication? app = store.activeApplicationFor(job.id);
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         key: ValueKey<String>('posting_${job.id}'),
         title: Text(job.title, style: const TextStyle(fontWeight: FontWeight.w700)),
-        subtitle: Text('${job.company.name} · ${job.type.label} · ${job.location}\n'
+        subtitle: Text('${job.company.name} · ${job.levelLabel} · ${job.location}${job.positions > 1 ? ' · ${job.positions} openings' : ''}\n'
             '${money(job.salaryMin, job.salaryPeriod)}${job.salaryMax > job.salaryMin ? ' – ${money(job.salaryMax, job.salaryPeriod)}' : ''}\n'
-            '${open ? 'Closes day ${PostingSchedule.deadline(job, day)}' : 'Closed · reopens day ${PostingSchedule.reopens(job, day)}'} · your readiness $readiness'),
+            '${open ? 'Closes day ${PostingSchedule.deadline(job, day)}' : 'Closed · reopens day ${PostingSchedule.reopens(job, day)}'} · ${match == null ? 'readiness $readiness' : 'resume match $match%'}'),
         isThreeLine: true,
         trailing: app == null ? const Icon(Icons.chevron_right_rounded) : StatusChip(app.status.label, color: statusColor(app.status)),
         onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => JobDetailScreen(postingId: job.id))),
@@ -109,9 +147,39 @@ class JobDetailScreen extends StatelessWidget {
                 color: open ? null : VuV2Colors.danger),
           ]),
           const SizedBox(height: 12),
+          if (j.simulationNote.isNotEmpty)
+            Container(
+              key: const ValueKey<String>('simulation_note'),
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(color: const Color(0xFFF59E0B).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
+              child: Text(j.simulationNote, style: TextStyle(color: VuV2Colors.ink, fontSize: 12.5)),
+            ),
+          SectionCard(
+            title: 'Job details',
+            child: Column(children: <Widget>[
+              _Row('Company', '${j.company.name} (simulated employer)'),
+              if (j.department.isNotEmpty) _Row('Department', j.department),
+              _Row('Employment type', j.salaryPeriod == 'hour' ? 'Hourly, ${j.hoursPerWeek} h/week' : 'Full-time'),
+              _Row('Experience level', j.levelLabel),
+              _Row('Working hours', '${j.hoursPerWeek} hours per week'),
+              _Row('Location', j.location),
+              _Row('Salary (virtual USD)', '${money(j.salaryMin, j.salaryPeriod)}${j.salaryMax > j.salaryMin ? ' – ${money(j.salaryMax, j.salaryPeriod)}' : ''}'),
+              if (j.salaryPeriod != 'year') _Row('Annual equivalent', usdWhole(PayRules.annual(j.salaryMin, j.salaryPeriod, hoursPerWeek: j.hoursPerWeek))),
+              _Row('Paid', PayRules.frequencyLabel(j.payFrequency)),
+              _Row('Application deadline', 'Day ${PostingSchedule.deadline(j, store.day)}'),
+              _Row('Positions available', '${j.positions}'),
+              if (j.requiredEducation.isNotEmpty) _Row('Required education', j.requiredEducation),
+            ]),
+          ),
           SectionCard(title: 'About the role', child: Text(j.description, style: TextStyle(color: VuV2Colors.ink, height: 1.4))),
           SectionCard(title: 'Responsibilities', child: BulletList(j.responsibilities)),
+          if (j.keywords.isNotEmpty) SectionCard(title: 'Required skills', child: Wrap(spacing: 6, runSpacing: 6, children: <Widget>[for (final String k in j.keywords) StatusChip(k)])),
+          if (j.preferredKeywords.isNotEmpty || j.preferred.isNotEmpty)
+            SectionCard(title: 'Preferred qualifications', child: BulletList(<String>[...j.preferredKeywords, ...j.preferred])),
           SectionCard(title: 'Qualifications', child: BulletList(j.qualifications)),
+          ResumeMatchCard(job: j),
+          if (j.benefits.isNotEmpty) SectionCard(title: 'Benefits (simulated)', child: BulletList(j.benefits)),
           SectionCard(
             title: 'Requirements',
             subtitle: 'Experience: ${j.experience}',
@@ -161,6 +229,21 @@ class JobDetailScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _Row extends StatelessWidget {
+  const _Row(this.label, this.value);
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          SizedBox(width: 150, child: Text(label, style: TextStyle(color: VuV2Colors.mute, fontSize: 13))),
+          Expanded(child: Text(value, style: TextStyle(color: VuV2Colors.ink, fontSize: 13.5, fontWeight: FontWeight.w600))),
+        ]),
+      );
 }
 
 class _Check extends StatelessWidget {
@@ -265,14 +348,26 @@ class ApplicationScreen extends StatefulWidget {
 
 class _ApplicationScreenState extends State<ApplicationScreen> {
   final TextEditingController _letter = TextEditingController();
+  final Map<String, TextEditingController> _answers = <String, TextEditingController>{};
+  final TextEditingController _negotiation = TextEditingController();
   Set<String> _portfolio = <String>{};
+  String _resumeId = '';
   bool _init = false;
 
   @override
   void dispose() {
     _letter.dispose();
+    _negotiation.dispose();
+    for (final TextEditingController c in _answers.values) {
+      c.dispose();
+    }
     super.dispose();
   }
+
+  Map<String, String> get _answerMap => <String, String>{for (final MapEntry<String, TextEditingController> e in _answers.entries) e.key: e.value.text};
+
+  Future<void> _save(CareerSimStore store, JobApplication a) =>
+      store.saveDraft(a.id, coverLetter: _letter.text, portfolioIds: _portfolio.toList(), resumeId: _resumeId, answers: _answerMap);
 
   @override
   Widget build(BuildContext context) {
@@ -284,6 +379,10 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
       _init = true;
       _letter.text = a.coverLetter;
       _portfolio = a.portfolioIds.toSet();
+      _resumeId = a.resumeId;
+      for (final ApplicationQuestion q in j.questions) {
+        _answers[q.id] = TextEditingController(text: a.answers[q.id] ?? '');
+      }
     }
     return Scaffold(
       appBar: AppBar(title: Text(j.title)),
@@ -332,8 +431,42 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
       case ApplicationStatus.draft:
         final List<PortfolioItem> items = store.profile.portfolio;
         final double resume = CareerRules.resumeCompleteness(store.profile.resume);
+        final ResumeUpload? chosen = store.profile.resumeUpload(_resumeId);
+        final JobMatch match = chosen != null ? jobMatch(chosen.parsed, j, fullText: chosen.text) : jobMatch(parsedFromResume(store.profile.resume), j);
         return <Widget>[
-          if (resume < 0.7)
+          SectionCard(
+            title: '1. Resume',
+            subtitle: 'Choose the resume to send. Employers compare it with the job requirements.',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              for (final ResumeUpload u in store.profile.resumeUploads)
+                RadioListTile<String>(
+                  key: ValueKey<String>('pick_resume_${u.id}'),
+                  contentPadding: EdgeInsets.zero,
+                  value: u.id,
+                  groupValue: _resumeId,
+                  onChanged: (String? v) => setState(() => _resumeId = v ?? ''),
+                  title: Text(u.fileName),
+                  subtitle: Text('Uploaded day ${u.uploadedDay}${u.reviewed ? ' · checked' : ' · not yet checked'}'),
+                ),
+              RadioListTile<String>(
+                key: const ValueKey<String>('pick_resume_profile'),
+                contentPadding: EdgeInsets.zero,
+                value: '',
+                groupValue: _resumeId,
+                onChanged: (String? v) => setState(() => _resumeId = ''),
+                title: const Text('My GradeGlow profile resume'),
+                subtitle: Text('${(resume * 100).round()}% complete'),
+              ),
+              TextButton.icon(
+                key: const ValueKey<String>('app_upload_resume'),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeHubScreen())),
+                icon: const Icon(Icons.upload_file_rounded),
+                label: const Text('Upload or manage resumes'),
+              ),
+              LabeledBar(label: 'Match with this job', value: match.score, detail: match.missing.isEmpty ? 'All listed skills found.' : 'Missing: ${match.missing.take(5).join(', ')}'),
+            ]),
+          ),
+          if (resume < 0.7 && chosen == null)
             SectionCard(
               title: 'Resume ${(resume * 100).round()}% complete',
               subtitle: 'Employers reject incomplete resumes at screening. Finish it in the Career Centre.',
@@ -343,7 +476,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
                   .toList()),
             ),
           SectionCard(
-            title: 'Cover letter',
+            title: '2. Cover letter',
             subtitle: 'At least 80 words to submit; 120+ to meet the screening rubric.',
             child: WrittenField(
               fieldKey: const ValueKey<String>('cover_letter_field'),
@@ -353,6 +486,24 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
               label: 'Dear hiring manager…',
             ),
           ),
+          if (j.questions.isNotEmpty)
+            SectionCard(
+              title: '3. Employer questions',
+              subtitle: 'Answer in your own words (at least 20 words each; specific examples score higher).',
+              child: Column(children: <Widget>[
+                for (final ApplicationQuestion q in j.questions)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: WrittenField(
+                      fieldKey: ValueKey<String>('answer_${q.id}'),
+                      controller: _answers[q.id]!,
+                      rubric: q.rubric,
+                      minWords: 20,
+                      label: q.prompt,
+                    ),
+                  ),
+              ]),
+            ),
           SectionCard(
             title: 'Attach portfolio',
             child: items.isEmpty
@@ -369,6 +520,16 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
                       ),
                   ]),
           ),
+          SectionCard(
+            title: 'Review before you submit',
+            child: Column(children: <Widget>[
+              _Row('Resume', chosen?.fileName ?? 'GradeGlow profile resume'),
+              _Row('Resume match', '${match.score}%'),
+              _Row('Cover letter', '${wordCount(_letter.text)} words'),
+              _Row('Employer questions', '${_answerMap.values.where((String t) => wordCount(t) >= 20).length} of ${j.questions.length} answered'),
+              _Row('Portfolio attached', '${_portfolio.length} item(s)'),
+            ]),
+          ),
           Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
             BusyButton(
               key: const ValueKey<String>('save_draft'),
@@ -376,8 +537,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
               icon: Icons.save_rounded,
               outlined: true,
               onPressed: () async {
-                await runCareerAction<void>(context, () => store.saveDraft(a.id, coverLetter: _letter.text, portfolioIds: _portfolio.toList()),
-                    success: 'Draft saved.');
+                await runCareerAction<void>(context, () => _save(store, a), success: 'Draft saved.');
               },
             ),
             BusyButton(
@@ -386,7 +546,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
               icon: Icons.send_rounded,
               onPressed: () async {
                 final bool? ok = await runCareerAction<bool>(context, () async {
-                  await store.saveDraft(a.id, coverLetter: _letter.text, portfolioIds: _portfolio.toList());
+                  await _save(store, a);
                   await store.submitApplication(a.id);
                   return true;
                 }, success: 'Application submitted to ${j.company.name}.');
@@ -402,7 +562,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
         return <Widget>[
           SectionCard(
             title: a.status == ApplicationStatus.submitted ? 'Application received' : 'Employer review in progress',
-            subtitle: 'The employer screens your training, skills, portfolio, resume and cover letter. Decision on day $due.',
+            subtitle: 'The employer screens your resume against the job requirements, your cover letter and answers, and your practical work. Decision on day $due.',
             child: const Align(alignment: Alignment.centerLeft, child: NextDayButton()),
           ),
         ];
@@ -427,7 +587,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
         ];
       case ApplicationStatus.interviewScheduled:
         final bool today = store.interviewAvailable(a);
-        final InterviewPlan? plan = CareerCatalog.interviewPlan(j.interviewPlanId);
+        final InterviewPlan? plan = store.interviewPlanFor(a);
         return <Widget>[
           SectionCard(
             title: today ? 'Your interview is today' : 'Interview on day ${a.interviewDay}',
@@ -487,23 +647,64 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(money(o.salary, o.salaryPeriod), style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
-                const SizedBox(height: 4),
-                Text('Stage: ${o.stage.label} · start day ${o.startDay}', style: TextStyle(color: VuV2Colors.mute)),
+                Text(money(o.salary, o.salaryPeriod), key: const ValueKey<String>('offer_salary'), style: TextStyle(color: VuV2Colors.ink, fontSize: 20, fontWeight: FontWeight.w900)),
+                const SizedBox(height: 6),
+                OfferDetails(offer: o),
                 const SizedBox(height: 8),
                 Text('Responsibilities', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
                 BulletList(o.responsibilities),
+                if (o.benefits.isNotEmpty) ...<Widget>[
+                  Text('Benefits (simulated)', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+                  BulletList(o.benefits),
+                ],
+                if (o.expectations.isNotEmpty) ...<Widget>[
+                  Text('Performance expectations', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+                  BulletList(o.expectations),
+                ],
                 const SizedBox(height: 8),
+                if (a.negotiation != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text('Employer reply: ${a.negotiation!.reply}', key: const ValueKey<String>('negotiation_reply'), style: TextStyle(color: VuV2Colors.ink)),
+                  )
+                else
+                  ExpansionTile(
+                    key: const ValueKey<String>('negotiate_open'),
+                    tilePadding: EdgeInsets.zero,
+                    title: const Text('Request a (simulated) negotiation'),
+                    children: <Widget>[
+                      TextField(
+                        key: const ValueKey<String>('negotiate_field'),
+                        controller: _negotiation,
+                        minLines: 3,
+                        maxLines: 8,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Thank them, give evidence of your value and market research, and make a specific request.',
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: BusyButton(
+                          key: const ValueKey<String>('negotiate'),
+                          label: 'Send request',
+                          icon: Icons.forum_rounded,
+                          tonal: true,
+                          onPressed: () async {
+                            await runCareerAction<OfferNegotiation>(context, () => store.negotiateOffer(a.id, _negotiation.text));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
                   BusyButton(
                     key: const ValueKey<String>('accept_offer'),
-                    label: 'Accept offer',
+                    label: 'Accept and sign contract',
                     icon: Icons.handshake_rounded,
                     onPressed: () async {
-                      final Employment? e = await runCareerAction<Employment>(context, () => store.acceptOffer(a.id), success: 'Welcome to ${o.employer}!');
-                      if (e != null && context.mounted) {
-                        await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WorkplaceScreen()));
-                      }
+                      await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ContractScreen(applicationId: a.id)));
                     },
                   ),
                   BusyButton(
@@ -533,6 +734,26 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
           ),
         ];
       case ApplicationStatus.rejected:
+        return <Widget>[
+          SectionCard(
+            title: 'Not successful this time',
+            subtitle: 'Use the feedback below, strengthen your resume and practical evidence, and apply again when the role reopens.',
+            child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
+              FilledButton.tonalIcon(
+                key: const ValueKey<String>('improve_resume'),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResumeHubScreen())),
+                icon: const Icon(Icons.description_rounded),
+                label: const Text('Improve my resume'),
+              ),
+              FilledButton.tonalIcon(
+                key: const ValueKey<String>('similar_jobs'),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const JobBoardScreen())),
+                icon: const Icon(Icons.work_outline_rounded),
+                label: const Text('See other jobs'),
+              ),
+            ]),
+          ),
+        ];
       case ApplicationStatus.offerDeclined:
       case ApplicationStatus.withdrawn:
         return <Widget>[];
@@ -600,6 +821,21 @@ class InterviewReportCard extends StatelessWidget {
             LabeledBar(label: 'Problem solving', value: record.problemSolving),
             LabeledBar(label: 'Workplace readiness', value: record.readiness),
             if (record.feedback.isNotEmpty) BulletList(record.feedback),
+            if (record.turns.length >= 2) ...<Widget>[
+              Builder(builder: (BuildContext context) {
+                final List<InterviewTurn> sorted = List<InterviewTurn>.from(record.turns)..sort((InterviewTurn a, InterviewTurn b) => b.score.compareTo(a.score));
+                final InterviewTurn best = sorted.first;
+                final InterviewTurn worst = sorted.last;
+                return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Text('Strongest answer (${best.score})', style: TextStyle(color: VuV2Colors.success, fontWeight: FontWeight.w700)),
+                  Text(best.prompt, style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
+                  const SizedBox(height: 4),
+                  Text('Weakest answer (${worst.score})', style: TextStyle(color: VuV2Colors.danger, fontWeight: FontWeight.w700)),
+                  Text(worst.prompt, style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
+                  if (worst.notes.isNotEmpty) Text('To improve: ${worst.notes.join(' ')}', style: TextStyle(color: VuV2Colors.mute, fontSize: 12.5)),
+                ]);
+              }),
+            ],
             ExpansionTile(
               tilePadding: EdgeInsets.zero,
               title: Text('Question by question (${record.turns.length})'),
