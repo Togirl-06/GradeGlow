@@ -36,7 +36,7 @@ Future<void> loadFonts() async {
     '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
     '/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf',
   ];
-  for (final String fam in <String>['FlutterTest', 'Ahem', 'Roboto', '.SF UI Text', '.SF Pro Text', 'Inter', 'Poppins', 'packages/cupertino_icons/CupertinoIcons']) {
+  for (final String fam in <String>['ShotSans', 'FlutterTest', 'Ahem', 'Roboto', '.SF UI Text', '.SF Pro Text', 'Inter', 'Poppins', 'packages/cupertino_icons/CupertinoIcons']) {
     await load(fam, sans);
   }
   await load('monospace', <String>['/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf']);
@@ -51,7 +51,13 @@ Future<void> pumpShot(WidgetTester t, CareerSimStore s, Widget home, {Size size 
   await loadFonts();
   t.view.physicalSize = size;
   t.view.devicePixelRatio = 1;
-  final ThemeData theme = vuV2DarkTheme();
+  // A dedicated family so every weight resolves to a real font, never the
+  // square-glyph test font.
+  final ThemeData raw = vuV2DarkTheme();
+  final ThemeData theme = raw.copyWith(
+    textTheme: raw.textTheme.apply(fontFamily: 'ShotSans'),
+    primaryTextTheme: raw.primaryTextTheme.apply(fontFamily: 'ShotSans'),
+  );
   VuV2Colors.syncTo(theme);
   await t.pumpWidget(ChangeNotifierProvider<CareerSimStore>.value(
     value: s,
