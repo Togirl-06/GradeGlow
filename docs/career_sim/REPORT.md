@@ -287,3 +287,16 @@ teaching material, not clinical guidance.
 1. Review the PR from `career-sim` (it also contains the `sim-rebuild` work and supersedes PR #4).
 2. Deploy the code runner and run `firebase deploy --only functions,firestore:rules`.
 3. Try the Career tab on a phone.
+
+## Visual redesign
+
+The career, workplace, code lab and hospital screens now follow the supplied mockup:
+- dark navy panels and violet accents;
+- a campus hero with school tiles;
+- a tabbed Career Center with a job board;
+- a sidebar workplace with a salary, a gauge and an earnings chart;
+- a three-pane code lab;
+- an illustrated patient room with info and action panels;
+- a sidebar patient record.
+
+The shared widgets are in `lib/career_sim/ui/gg_kit.dart`. Illustrations are drawn in code (no photos). `test/screenshots/` renders 14 screens on every CI run.
