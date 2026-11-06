@@ -1,0 +1,1439 @@
+Resolving dependencies...
+Downloading packages...
+  _flutterfire_internals 1.3.59 (1.3.79 available)
+  archive 4.5.2 (4.6.0 available)
+  audioplayers 6.7.0 (6.8.1 available)
+  audioplayers_android 5.2.1 (5.3.0 available)
+  audioplayers_darwin 6.4.0 (6.5.0 available)
+  audioplayers_linux 4.2.1 (4.3.0 available)
+  audioplayers_platform_interface 7.1.1 (7.2.0 available)
+  audioplayers_web 5.2.1 (5.3.0 available)
+  audioplayers_windows 4.3.1 (4.4.1 available)
+  cli_util 0.4.2 (0.6.0 available)
+  clock 1.1.2 (1.1.3 available)
+  cloud_firestore 5.6.12 (7.1.0 available)
+  cloud_firestore_platform_interface 6.6.12 (8.1.0 available)
+  cloud_firestore_web 4.4.12 (5.8.0 available)
+  code_assets 1.1.0 (2.2.0 available)
+  cross_file 0.3.5+2 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  dbus 0.7.15 (0.8.0 available)
+  file_picker 9.2.3 (13.3.2 available)
+  file_selector_linux 0.9.4 (0.9.4+1 available)
+  file_selector_macos 0.9.5 (0.9.5+2 available)
+  file_selector_windows 0.9.3+5 (0.9.3+6 available)
+  firebase_auth 5.7.0 (7.0.1 available)
+  firebase_auth_platform_interface 7.7.3 (9.1.2 available)
+  firebase_auth_web 5.15.3 (6.3.2 available)
+  firebase_core 3.15.2 (5.1.0 available)
+  firebase_core_platform_interface 6.0.3 (8.1.1 available)
+  firebase_core_web 2.24.1 (4.1.0 available)
+  firebase_crashlytics 4.3.10 (6.0.1 available)
+  firebase_crashlytics_platform_interface 3.8.10 (3.9.2 available)
+  firebase_storage 12.4.10 (14.0.1 available)
+  firebase_storage_platform_interface 5.2.10 (6.0.9 available)
+  firebase_storage_web 3.10.17 (3.11.15 available)
+  flutter_dotenv 5.2.1 (6.0.1 available)
+  flutter_local_notifications 18.0.1 (23.0.0 available)
+  flutter_local_notifications_linux 5.0.0 (9.0.0 available)
+  flutter_local_notifications_platform_interface 8.0.0 (13.0.0 available)
+  flutter_plugin_android_lifecycle 2.0.34 (2.0.35 available)
+  flutter_svg 2.3.0 (2.3.2 available)
+  flutter_timezone 4.1.1 (5.1.1 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.18 available)
+  google_sign_in_ios 5.9.0 (6.4.0 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.3 available)
+  hooks 2.0.0 (2.2.0 available)
+  html 0.15.6 (0.15.7 available)
+  image 4.11.0 (4.12.0 available)
+  image_picker 1.2.2 (1.2.4 available)
+  image_picker_android 0.8.13+17 (0.8.13+25 available)
+  image_picker_ios 0.8.13+6 (0.8.13+15 available)
+  image_picker_platform_interface 2.11.1 (2.11.2 available)
+  intl 0.20.2 (0.20.3 available)
+  jni 1.0.0 (1.1.2 available)
+  jni_flutter 1.0.1 (1.0.4+1 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  mime 2.0.0 (2.1.0 available)
+  objective_c 9.4.1 (9.6.3 available)
+  package_config 2.2.0 (3.0.0 available)
+  path_provider 2.1.5 (2.1.6 available)
+  path_provider_linux 2.2.1 (2.2.2 available)
+  path_provider_platform_interface 2.1.2 (2.1.3 available)
+  permission_handler 12.0.3 (13.0.2 available)
+  permission_handler_android 13.0.1 (14.1.1 available)
+  permission_handler_apple 9.4.9 (9.6.5 available)
+  permission_handler_html 0.1.3+5 (0.1.4+1 available)
+  permission_handler_platform_interface 4.3.0 (4.4.1 available)
+  permission_handler_windows 0.2.1 (0.2.4 available)
+  petitparser 7.0.2 (7.1.0 available)
+  platform 3.1.6 (3.2.0 available)
+  posix 6.5.0 (6.5.4 available)
+  pub_semver 2.2.0 (2.2.1 available)
+  record 6.2.1 (7.1.2 available)
+  record_android 1.5.2 (2.2.0 available)
+  record_ios 1.2.1 (2.1.1 available)
+  record_linux 1.3.1 (2.1.3 available)
+  record_macos 1.2.2 (2.1.1 available)
+  record_platform_interface 1.6.0 (2.1.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  record_web 1.3.0 (2.1.3 available)
+  record_windows 1.0.7 (2.3.0 available)
+  shared_preferences 2.5.5 (2.5.6 available)
+  shared_preferences_android 2.4.26 (2.5.4 available)
+  shared_preferences_foundation 2.5.6 (2.6.1 available)
+  sign_in_with_apple 6.1.4 (8.2.0 available)
+  sign_in_with_apple_platform_interface 1.1.0 (2.0.0 available)
+  sign_in_with_apple_web 2.1.1 (3.0.0 available)
+  speech_to_text 7.4.0 (7.5.0 available)
+  speech_to_text_platform_interface 2.4.0 (2.5.0 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  synchronized 3.4.1 (3.6.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  timezone 0.9.4 (0.11.2 available)
+  url_launcher 6.3.2 (6.3.3 available)
+  url_launcher_android 6.3.32 (6.3.33 available)
+  url_launcher_ios 6.4.1 (6.4.2 available)
+  url_launcher_linux 3.2.2 (3.2.3 available)
+  url_launcher_macos 3.2.5 (3.2.6 available)
+  url_launcher_windows 3.1.5 (3.1.6 available)
+  uuid 4.5.3 (4.6.0 available)
+  vector_graphics 1.2.2 (1.2.6 available)
+  vector_graphics_compiler 1.2.5 (1.3.4 available)
+  vm_service 15.1.0 (15.4.0 available)
+  web 1.1.1 (1.1.2 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 7.0.1 (7.1.0 available)
+  yaml 3.1.3 (3.1.4 available)
+Got dependencies!
+108 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart
+00:00 +0: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: velocity topic gets Motion Tracking Laboratory
+00:00 +1: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: acceleration topic gets Vehicle Acceleration Test
+00:00 +2: /home/runner/work/GradeGlow/GradeGlow/test/physics_topic_lab_test.dart: dynamic topics get unique lab names
+00:00 +3: /home/runner/work/GradeGlow/GradeGlow/test/api_error_messages_test.dart: hides Dart null-check crashes from the tutor banner
+00:03 +4: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: sends problem key, language, code and mode with the ID token
+00:03 +5: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: never accepts locally: unsupported language, signed out, network failure
+00:03 +6: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: server errors are surfaced, not turned into results
+00:03 +7: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:03 +8: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit shows the server verdict (Wrong Answer is not Accepted)
+00:03 +9: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Submit passes only when the server says Accepted
+00:03 +10: /home/runner/work/GradeGlow/GradeGlow/test/coding/code_judge_service_test.dart: Run never records a grade; a missing runner records nothing
+00:03 +11: /home/runner/work/GradeGlow/GradeGlow/test/vu_v2_mastery_loop_test.dart: mastery requires professor, lab, and knowledge check
+00:06 +12: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:06 +13: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +14: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +15: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +16: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +17: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +18: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +19: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:08 +20: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +21: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +22: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +23: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +24: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +25: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +26: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +27: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+00:09 +28: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 16 pixels on the right.
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#74a53 DISPOSED OVERFLOWING:
+  needs compositing
+  creator: MultiChildRenderObjectElement#e73b4(DEFUNCT) ←
+    SingleChildRenderObjectElement#f17a4(DEFUNCT) ← SingleChildRenderObjectElement#21943(DEFUNCT) ←
+    SingleChildRenderObjectElement#01bfa(DEFUNCT) ← StatelessElement#27058(DEFUNCT) ←
+    StatelessElement#f9d47(DEFUNCT) ← StatelessElement#a8690(DEFUNCT) ←
+    MultiChildRenderObjectElement#4764a(DEFUNCT) ← SingleChildRenderObjectElement#a2f14(DEFUNCT) ←
+    _SingleChildViewportElement#59e4a(DEFUNCT) ← SingleChildRenderObjectElement#ac048(DEFUNCT) ←
+    SingleChildRenderObjectElement#b8ff9(DEFUNCT) ← ⋯
+  parentData: offset=Offset(15.0, 9.0) (can use size)
+  constraints: BoxConstraints(w=328.0, 0.0<=h<=Infinity)
+  size: Size(328.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 216 pixels on the right.
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///home/runner/work/GradeGlow/GradeGlow/lib/career_sim/hospital/ui/hospital_screens.dart:232:22
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#244f9 relayoutBoundary=up16 OVERFLOWING:
+  creator: Row ← _AppBarTitleBox ← Semantics ← DefaultTextStyle ← MediaQuery ← Builder ←
+    LayoutId-[<_ToolbarSlot.middle>] ← CustomMultiChildLayout ← NavigationToolbar ← DefaultTextStyle ←
+    IconTheme ← Builder ← ⋯
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=358.0, 0.0<=h<=Infinity)
+  size: Size(358.0, 24.0)
+  direction: horizontal
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY WIDGET INSPECTOR ╞══════════════════════════════════════════════════════════
+The following assertion was thrown:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:5062:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:5076:6)
+#2      Element.visitAncestorElements (package:flutter/src/widgets/framework.dart:5187:12)
+#3      _describeRelevantUserCode (package:flutter/src/widgets/widget_inspector.dart:4342:13)
+#4      _parseDiagnosticsNode (package:flutter/src/widgets/widget_inspector.dart:4261:12)
+#5      debugTransformDebugCreator (package:flutter/src/widgets/widget_inspector.dart:4240:21)
+#6      _FlutterErrorDetailsNode.builder (package:flutter/src/foundation/assertions.dart:1300:31)
+#7      DiagnosticableNode.getProperties (package:flutter/src/foundation/diagnostics.dart:2943:68)
+#8      TextTreeRenderer._debugRender (package:flutter/src/foundation/diagnostics.dart:1270:63)
+#9      TextTreeRenderer.render (package:flutter/src/foundation/diagnostics.dart:1137:14)
+#10     FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1030:13)
+#11     TestWidgetsFlutterBinding._runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1780:24)
+#12     FlutterError.reportError (package:flutter/src/foundation/assertions.dart:1193:14)
+#13     DebugOverflowIndicatorMixin._reportOverflow (package:flutter/src/rendering/debug_overflow_indicator.dart:259:18)
+#14     DebugOverflowIndicatorMixin.paintOverflowIndicator (package:flutter/src/rendering/debug_overflow_indicator.dart:329:7)
+#15     RenderFlex.paint.<anonymous closure> (package:flutter/src/rendering/flex.dart:1449:7)
+#16     RenderFlex.paint (package:flutter/src/rendering/flex.dart:1457:6)
+#17     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#18     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#19     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#20     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#21     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#22     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#23     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#24     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#25     RenderBoxContainerDefaultsMixin.defaultPaint (package:flutter/src/rendering/box.dart:3390:15)
+#26     RenderCustomMultiChildLayoutBox.paint (package:flutter/src/rendering/custom_layout.dart:422:5)
+#27     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#28     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#29     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#30     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#31     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#32     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#33     PaintingContext.pushClipRect.<anonymous closure> (package:flutter/src/rendering/object.dart:592:83)
+#34     ClipContext._clipAndPaint (package:flutter/src/painting/clip.dart:33:12)
+#35     ClipContext.clipRectAndPaint (package:flutter/src/painting/clip.dart:90:5)
+#36     PaintingContext.pushClipRect (package:flutter/src/rendering/object.dart:592:7)
+#37     RenderClipRect.paint (package:flutter/src/rendering/proxy_box.dart:1644:25)
+#38     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#39     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#40     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#41     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#42     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#43     RenderBoxContainerDefaultsMixin.defaultPaint (package:flutter/src/rendering/box.dart:3390:15)
+#44     RenderFlex.paint (package:flutter/src/rendering/flex.dart:1402:7)
+#45     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#46     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#47     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#48     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#49     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#50     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#51     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#52     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#53     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#54     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#55     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#56     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#57     _RenderInkFeatures.paint (package:flutter/src/material/material.dart:634:11)
+#58     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#59     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#60     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#61     RenderPhysicalModel.paint.<anonymous closure> (package:flutter/src/rendering/proxy_box.dart:2252:15)
+#62     PaintingContext.pushClipRRect (package:flutter/src/rendering/object.dart:626:14)
+#63     RenderPhysicalModel.paint (package:flutter/src/rendering/proxy_box.dart:2239:21)
+#64     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#65     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#66     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#67     PaintingContext.pushLayer (package:flutter/src/rendering/object.dart:522:12)
+#68     RenderAnnotatedRegion.paint (package:flutter/src/rendering/proxy_box.dart:4811:13)
+#69     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#70     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#71     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#72     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#73     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#74     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#75     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#76     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#77     RenderBoxContainerDefaultsMixin.defaultPaint (package:flutter/src/rendering/box.dart:3390:15)
+#78     RenderCustomMultiChildLayoutBox.paint (package:flutter/src/rendering/custom_layout.dart:422:5)
+#79     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#80     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#81     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#82     _RenderInkFeatures.paint (package:flutter/src/material/material.dart:634:11)
+#83     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#84     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#85     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#86     RenderPhysicalModel.paint.<anonymous closure> (package:flutter/src/rendering/proxy_box.dart:2252:15)
+#87     PaintingContext.pushClipRRect (package:flutter/src/rendering/object.dart:626:14)
+#88     RenderPhysicalModel.paint (package:flutter/src/rendering/proxy_box.dart:2239:21)
+#89     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#90     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#91     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#92     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#93     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#94     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#95     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#96     PaintingContext._repaintCompositedChild (package:flutter/src/rendering/object.dart:180:11)
+#97     PaintingContext.repaintCompositedChild (package:flutter/src/rendering/object.dart:125:5)
+#98     PipelineOwner.flushPaint (package:flutter/src/rendering/object.dart:1325:31)
+#99     PipelineOwner.flushPaint (package:flutter/src/rendering/object.dart:1335:15)
+#100    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2438:31)
+#101    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#102    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#103    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#104    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#107    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#108    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#109    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#112    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#113    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#114    pumpShot (file:///home/runner/work/GradeGlow/GradeGlow/test/screenshots/shot.dart:56:11)
+<asynchronous suspension>
+#115    main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart:88:5)
+<asynchronous suspension>
+#116    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#117    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+This exception was caught while trying to describe the user-relevant code of another error.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY WIDGET INSPECTOR ╞══════════════════════════════════════════════════════════
+The following assertion was thrown:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:5062:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:5076:6)
+#2      Element.visitAncestorElements (package:flutter/src/widgets/framework.dart:5187:12)
+#3      _describeRelevantUserCode (package:flutter/src/widgets/widget_inspector.dart:4342:13)
+#4      _parseDiagnosticsNode (package:flutter/src/widgets/widget_inspector.dart:4261:12)
+#5      debugTransformDebugCreator (package:flutter/src/widgets/widget_inspector.dart:4240:21)
+#6      _FlutterErrorDetailsNode.builder (package:flutter/src/foundation/assertions.dart:1300:31)
+#7      DiagnosticableNode.emptyBodyDescription (package:flutter/src/foundation/diagnostics.dart:2939:45)
+#8      TextTreeRenderer._debugRender (package:flutter/src/foundation/diagnostics.dart:1307:14)
+#9      TextTreeRenderer.render (package:flutter/src/foundation/diagnostics.dart:1137:14)
+#10     FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1030:13)
+#11     TestWidgetsFlutterBinding._runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1780:24)
+#12     FlutterError.reportError (package:flutter/src/foundation/assertions.dart:1193:14)
+#13     DebugOverflowIndicatorMixin._reportOverflow (package:flutter/src/rendering/debug_overflow_indicator.dart:259:18)
+#14     DebugOverflowIndicatorMixin.paintOverflowIndicator (package:flutter/src/rendering/debug_overflow_indicator.dart:329:7)
+#15     RenderFlex.paint.<anonymous closure> (package:flutter/src/rendering/flex.dart:1449:7)
+#16     RenderFlex.paint (package:flutter/src/rendering/flex.dart:1457:6)
+#17     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#18     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#19     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#20     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#21     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#22     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#23     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#24     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#25     RenderBoxContainerDefaultsMixin.defaultPaint (package:flutter/src/rendering/box.dart:3390:15)
+#26     RenderCustomMultiChildLayoutBox.paint (package:flutter/src/rendering/custom_layout.dart:422:5)
+#27     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#28     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#29     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#30     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#31     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#32     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#33     PaintingContext.pushClipRect.<anonymous closure> (package:flutter/src/rendering/object.dart:592:83)
+#34     ClipContext._clipAndPaint (package:flutter/src/painting/clip.dart:33:12)
+#35     ClipContext.clipRectAndPaint (package:flutter/src/painting/clip.dart:90:5)
+#36     PaintingContext.pushClipRect (package:flutter/src/rendering/object.dart:592:7)
+#37     RenderClipRect.paint (package:flutter/src/rendering/proxy_box.dart:1644:25)
+#38     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#39     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#40     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#41     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#42     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#43     RenderBoxContainerDefaultsMixin.defaultPaint (package:flutter/src/rendering/box.dart:3390:15)
+#44     RenderFlex.paint (package:flutter/src/rendering/flex.dart:1402:7)
+#45     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#46     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#47     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#48     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#49     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#50     RenderShiftedBox.paint (package:flutter/src/rendering/shifted_box.dart:98:15)
+#51     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#52     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#53     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#54     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#55     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#56     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#57     _RenderInkFeatures.paint (package:flutter/src/material/material.dart:634:11)
+#58     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#59     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#60     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#61     RenderPhysicalModel.paint.<anonymous closure> (package:flutter/src/rendering/proxy_box.dart:2252:15)
+#62     PaintingContext.pushClipRRect (package:flutter/src/rendering/object.dart:626:14)
+#63     RenderPhysicalModel.paint (package:flutter/src/rendering/proxy_box.dart:2239:21)
+#64     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#65     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#66     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#67     PaintingContext.pushLayer (package:flutter/src/rendering/object.dart:522:12)
+#68     RenderAnnotatedRegion.paint (package:flutter/src/rendering/proxy_box.dart:4811:13)
+#69     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#70     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#71     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#72     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#73     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#74     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#75     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#76     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#77     RenderBoxContainerDefaultsMixin.defaultPaint (package:flutter/src/rendering/box.dart:3390:15)
+#78     RenderCustomMultiChildLayoutBox.paint (package:flutter/src/rendering/custom_layout.dart:422:5)
+#79     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#80     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#81     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#82     _RenderInkFeatures.paint (package:flutter/src/material/material.dart:634:11)
+#83     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#84     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#85     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#86     RenderPhysicalModel.paint.<anonymous closure> (package:flutter/src/rendering/proxy_box.dart:2252:15)
+#87     PaintingContext.pushClipRRect (package:flutter/src/rendering/object.dart:626:14)
+#88     RenderPhysicalModel.paint (package:flutter/src/rendering/proxy_box.dart:2239:21)
+#89     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#90     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#91     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#92     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#93     PaintingContext.paintChild (package:flutter/src/rendering/object.dart:265:13)
+#94     RenderProxyBoxMixin.paint (package:flutter/src/rendering/proxy_box.dart:143:13)
+#95     RenderObject._paintWithContext (package:flutter/src/rendering/object.dart:3580:7)
+#96     PaintingContext._repaintCompositedChild (package:flutter/src/rendering/object.dart:180:11)
+#97     PaintingContext.repaintCompositedChild (package:flutter/src/rendering/object.dart:125:5)
+#98     PipelineOwner.flushPaint (package:flutter/src/rendering/object.dart:1325:31)
+#99     PipelineOwner.flushPaint (package:flutter/src/rendering/object.dart:1335:15)
+#100    AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2438:31)
+#101    RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#102    SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#103    SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#104    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#107    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#108    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#109    WidgetTester.pumpWidget.<anonymous closure> (package:flutter_test/src/widget_tester.dart:598:22)
+#112    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#113    WidgetTester.pumpWidget (package:flutter_test/src/widget_tester.dart:595:27)
+#114    pumpShot (file:///home/runner/work/GradeGlow/GradeGlow/test/screenshots/shot.dart:56:11)
+<asynchronous suspension>
+#115    main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart:88:5)
+<asynchronous suspension>
+#116    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#117    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+This exception was caught while trying to describe the user-relevant code of another error.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (4) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +28 -1: /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots [E]
+  Test failed. See exception logs above.
+  The test description was: screenshots
+  
+00:10 +28 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra: 15 distinct scenarios, 5 per level
+00:10 +29 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b1: model answers score 100, wrong answers fail
+00:10 +30 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b2: model answers score 100, wrong answers fail
+00:10 +31 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b3: model answers score 100, wrong answers fail
+00:10 +32 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b4: model answers score 100, wrong answers fail
+00:10 +33 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_b5: model answers score 100, wrong answers fail
+00:10 +34 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i1: model answers score 100, wrong answers fail
+00:10 +35 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i2: model answers score 100, wrong answers fail
+00:10 +36 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i3: model answers score 100, wrong answers fail
+00:10 +37 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i4: model answers score 100, wrong answers fail
+00:10 +38 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_i5: model answers score 100, wrong answers fail
+00:10 +39 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a1: model answers score 100, wrong answers fail
+00:10 +40 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a2: model answers score 100, wrong answers fail
+00:10 +41 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a3: model answers score 100, wrong answers fail
+00:10 +42 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a4: model answers score 100, wrong answers fail
+00:11 +43 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_algebra/alg_a5: model answers score 100, wrong answers fail
+00:11 +44 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus: 15 distinct scenarios, 5 per level
+00:11 +45 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_b1: model answers score 100, wrong answers fail
+00:11 +46 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_b2: model answers score 100, wrong answers fail
+00:11 +47 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_b3: model answers score 100, wrong answers fail
+00:11 +48 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_b4: model answers score 100, wrong answers fail
+00:11 +49 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_b5: model answers score 100, wrong answers fail
+00:11 +50 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_i1: model answers score 100, wrong answers fail
+00:11 +51 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_i2: model answers score 100, wrong answers fail
+00:11 +52 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_i3: model answers score 100, wrong answers fail
+00:11 +53 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_i4: model answers score 100, wrong answers fail
+00:11 +54 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_i5: model answers score 100, wrong answers fail
+00:11 +55 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_a1: model answers score 100, wrong answers fail
+00:11 +56 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_a2: model answers score 100, wrong answers fail
+00:11 +57 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_a3: model answers score 100, wrong answers fail
+00:11 +58 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_a4: model answers score 100, wrong answers fail
+00:11 +59 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_calculus/calc_a5: model answers score 100, wrong answers fail
+00:11 +60 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg: 15 distinct scenarios, 5 per level
+00:11 +61 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_b1: model answers score 100, wrong answers fail
+00:11 +62 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_b2: model answers score 100, wrong answers fail
+00:11 +63 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_b3: model answers score 100, wrong answers fail
+00:11 +64 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_b4: model answers score 100, wrong answers fail
+00:11 +65 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_b5: model answers score 100, wrong answers fail
+00:11 +66 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_i1: model answers score 100, wrong answers fail
+00:11 +67 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_i2: model answers score 100, wrong answers fail
+00:11 +68 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_i3: model answers score 100, wrong answers fail
+00:11 +69 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_i4: model answers score 100, wrong answers fail
+00:11 +70 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_i5: model answers score 100, wrong answers fail
+00:11 +71 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_a1: model answers score 100, wrong answers fail
+00:11 +72 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_a2: model answers score 100, wrong answers fail
+00:11 +73 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_a3: model answers score 100, wrong answers fail
+00:11 +74 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_a4: model answers score 100, wrong answers fail
+00:11 +75 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_linalg/lin_a5: model answers score 100, wrong answers fail
+00:11 +76 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats: 15 distinct scenarios, 5 per level
+00:11 +77 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_b1: model answers score 100, wrong answers fail
+00:11 +78 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_b2: model answers score 100, wrong answers fail
+00:11 +79 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_b3: model answers score 100, wrong answers fail
+00:11 +80 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_b4: model answers score 100, wrong answers fail
+00:11 +81 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_b5: model answers score 100, wrong answers fail
+00:11 +82 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_i1: model answers score 100, wrong answers fail
+00:11 +83 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_i2: model answers score 100, wrong answers fail
+00:11 +84 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_i3: model answers score 100, wrong answers fail
+00:11 +85 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_i4: model answers score 100, wrong answers fail
+00:11 +86 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_i5: model answers score 100, wrong answers fail
+00:11 +87 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_a1: model answers score 100, wrong answers fail
+00:11 +88 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_a2: model answers score 100, wrong answers fail
+00:11 +89 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_a3: model answers score 100, wrong answers fail
+00:11 +90 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_a4: model answers score 100, wrong answers fail
+00:11 +91 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_stats/st_a5: model answers score 100, wrong answers fail
+00:11 +92 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de: 15 distinct scenarios, 5 per level
+00:11 +93 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_b1: model answers score 100, wrong answers fail
+00:11 +94 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_b2: model answers score 100, wrong answers fail
+00:11 +95 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_b3: model answers score 100, wrong answers fail
+00:11 +96 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_b4: model answers score 100, wrong answers fail
+00:11 +97 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_b5: model answers score 100, wrong answers fail
+00:11 +98 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_i1: model answers score 100, wrong answers fail
+00:11 +99 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_i2: model answers score 100, wrong answers fail
+00:11 +100 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_i3: model answers score 100, wrong answers fail
+00:11 +101 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_i4: model answers score 100, wrong answers fail
+00:11 +102 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_i5: model answers score 100, wrong answers fail
+00:11 +103 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_a1: model answers score 100, wrong answers fail
+00:11 +104 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_a2: model answers score 100, wrong answers fail
+00:11 +105 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_a3: model answers score 100, wrong answers fail
+00:11 +106 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_a4: model answers score 100, wrong answers fail
+00:11 +107 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_de/de_a5: model answers score 100, wrong answers fail
+00:11 +108 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied: 15 distinct scenarios, 5 per level
+00:11 +109 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_b1: model answers score 100, wrong answers fail
+00:11 +110 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_b2: model answers score 100, wrong answers fail
+00:11 +111 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_b3: model answers score 100, wrong answers fail
+00:11 +112 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_b4: model answers score 100, wrong answers fail
+00:11 +113 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_b5: model answers score 100, wrong answers fail
+00:11 +114 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_i1: model answers score 100, wrong answers fail
+00:11 +115 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_i2: model answers score 100, wrong answers fail
+00:11 +116 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_i3: model answers score 100, wrong answers fail
+00:11 +117 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: every maths scenario ma_lab_applied/ap_i4: model answers score 100, wrong answers fail
+00:11 +118 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +119 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +120 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +121 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +122 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +123 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +124 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +125 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +126 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: employment journey: cs — mk_flutter_dev with jordan_rivera_cs_libreoffice.pdf
+00:11 +127 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +128 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +129 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +130 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +131 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +132 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +133 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +134 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +135 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +136 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:11 +137 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:12 +138 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/math_labs_test.dart: Algebra lab: tools, line-by-line marking, revision, saved result, next challenge
+00:12 +139 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/market_journey_test.dart: contract, onboarding and a workstation assignment through the screens
+00:13 +140 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:17 +141 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:17 +142 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 36 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButtonFormField<String>-[<'level_filter'>]
+  DropdownButtonFormField:file:///home/runner/work/GradeGlow/GradeGlow/lib/career_sim/ui/job_screens.dart:54:9
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#8dd7e OVERFLOWING:
+  creator: Row ← Padding ← SizedBox ← DefaultTextStyle ← _Decorator ← Semantics ← InputDecorator ←
+    Listener ← _GestureSemantics ← RawGestureDetector ← GestureDetector ← MouseRegion ← ⋯
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(w=142.0, h=24.0)
+  size: Size(142.0, 24.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 68 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButtonFormField<String>-[<'mode_filter'>]
+  DropdownButtonFormField:file:///home/runner/work/GradeGlow/GradeGlow/lib/career_sim/ui/job_screens.dart:66:9
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#68a94 OVERFLOWING:
+  creator: Row ← Padding ← SizedBox ← DefaultTextStyle ← _Decorator ← Semantics ← InputDecorator ←
+    Listener ← _GestureSemantics ← RawGestureDetector ← GestureDetector ← MouseRegion ← ⋯
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(w=142.0, h=24.0)
+  size: Size(142.0, 24.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:18 +143 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:19 +144 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+00:20 +145 -1: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:20 +145 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Business & Economics: every module, project and certification screen opens
+00:20 +145 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored [E]
+  Test failed. See exception logs above.
+  The test description was: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+  
+00:21 +146 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:21 +147 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:21 +148 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:21 +149 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:21 +150 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Mathematics & Statistics: every module, project and certification screen opens
+00:21 +151 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/store_test.dart: rule violations are refused with a message and change nothing
+00:21 +152 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: English & Communication: every module, project and certification screen opens
+00:21 +153 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: English & Communication: every module, project and certification screen opens
+00:21 +154 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/store_test.dart: internship completion with good performance yields a return offer the student must accept
+00:21 +155 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: Natural Sciences: every module, project and certification screen opens
+00:22 +156 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m1/complexity: correct answers pass through the screen and are saved
+00:22 +157 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +158 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +159 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +160 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +161 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +162 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +163 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +164 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +165 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +166 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +167 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +168 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +169 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +170 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +171 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +172 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +173 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +174 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +175 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +176 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +177 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +178 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +179 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +180 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +181 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +182 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +183 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +184 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +185 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +186 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +187 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +188 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +189 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +190 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +191 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +192 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +193 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +194 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +195 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/debug_loop: correct answers pass through the screen and are saved
+00:22 +196 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: hospital progress is saved after every action and survives a restart
+00:22 +197 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: cs/cs_m3/edge_cases: correct answers pass through the screen and are saved
+00:22 +198 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:22 +199 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:23 +200 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:23 +201 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:23 +202 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:23 +203 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:23 +204 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:23 +205 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:24 +206 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:24 +207 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/hospital_test.dart: walk into a room, use equipment, get stopped for an unsafe action, document and debrief
+00:24 +208 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m3/heart_label: correct answers pass through the screen and are saved
+00:24 +209 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: medicine/md_m3/blood_flow: correct answers pass through the screen and are saved
+00:25 +210 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: law/law_m1/issues: correct answers pass through the screen and are saved
+00:25 +211 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: law/law_m2/offer_or_not: correct answers pass through the screen and are saved
+00:25 +212 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: law/law_m3/hale_trial: correct answers pass through the screen and are saved
+00:25 +213 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: law/law_m3/hale_trial: correct answers pass through the screen and are saved
+00:25 +214 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: every 3D question names real structures, and the anatomy lab has 3D scenarios at each level
+00:25 +215 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: engineering/en_m_mech/gears: correct answers pass through the screen and are saved
+00:25 +216 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: engineering/en_m_mech/gears: correct answers pass through the screen and are saved
+00:25 +217 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: 3D scene tests (node): every structure can be tapped and sides are right
+00:25 +218 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: 3D scene tests (node): every structure can be tapped and sides are right
+00:25 +219 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: engineering/en_m_civil/beam: correct answers pass through the screen and are saved
+00:26 +220 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:26 +221 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:26 +222 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:26 +223 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:26 +224 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:26 +225 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:26 +226 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +227 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +228 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +229 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +230 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +231 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +232 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +233 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +234 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:27 +235 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:28 +236 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:28 +237 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:28 +238 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/anatomy3d_test.dart: anatomy lab: identify organs from the list where 3D is unavailable, and pass
+00:28 +239 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: communication/co_m_edit/edit: correct answers pass through the screen and are saved
+00:28 +240 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: communication/co_m_news/fact_check: correct answers pass through the screen and are saved
+00:28 +241 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/cell_label: correct answers pass through the screen and are saved
+00:28 +242 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/aseptic: correct answers pass through the screen and are saved
+00:28 +243 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_bio/dilution: correct answers pass through the screen and are saved
+00:28 +244 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/titration: correct answers pass through the screen and are saved
+00:28 +245 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_chem/lab_safety: correct answers pass through the screen and are saved
+00:28 +246 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: sciences/sc_m_phys/kinematics: correct answers pass through the screen and are saved
+00:29 +247 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: submitting an incomplete answer is refused with a message
+00:29 +248 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 7.6 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButtonFormField<String>-[<'level_filter'>]
+  DropdownButtonFormField:file:///home/runner/work/GradeGlow/GradeGlow/lib/career_sim/ui/job_screens.dart:54:9
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#85140 OVERFLOWING:
+  creator: Row ← Padding ← SizedBox ← DefaultTextStyle ← _Decorator ← Semantics ← InputDecorator ←
+    Listener ← _GestureSemantics ← RawGestureDetector ← GestureDetector ← MouseRegion ← ⋯
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(w=170.0, h=24.0)
+  size: Size(170.0, 24.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 40 pixels on the right.
+
+The relevant error-causing widget was:
+  DropdownButtonFormField<String>-[<'mode_filter'>]
+  DropdownButtonFormField:file:///home/runner/work/GradeGlow/GradeGlow/lib/career_sim/ui/job_screens.dart:66:9
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#f17f2 OVERFLOWING:
+  creator: Row ← Padding ← SizedBox ← DefaultTextStyle ← _Decorator ← Semantics ← InputDecorator ←
+    Listener ← _GestureSemantics ← RawGestureDetector ← GestureDetector ← MouseRegion ← ⋯
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(w=170.0, h=24.0)
+  size: Size(170.0, 24.0)
+  direction: horizontal
+  mainAxisAlignment: spaceBetween
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:29 +249 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +250 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +251 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +252 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +253 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +254 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +255 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +256 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +257 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +258 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +259 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +260 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +261 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +262 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +263 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +264 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +265 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +266 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +267 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +268 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +269 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +270 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +271 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +272 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +273 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +274 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +275 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +276 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +277 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +278 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +279 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +280 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +281 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +282 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +283 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +284 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +285 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +286 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +287 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +288 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +289 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +290 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +291 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +292 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +293 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +294 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +295 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +296 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +297 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +298 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +299 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +300 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +301 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +302 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +303 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +304 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +305 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +306 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +307 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +308 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +309 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +310 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +311 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +312 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +313 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +314 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +315 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +316 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +317 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +318 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +319 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +320 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +321 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +322 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +323 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +324 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +325 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +326 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +327 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +328 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +329 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +330 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +331 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +332 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +333 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +334 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +335 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +336 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +337 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +338 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +339 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +340 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +341 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +342 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +343 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +344 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +345 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +346 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +347 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +348 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +349 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +350 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +351 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +352 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +353 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +354 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +355 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +356 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +357 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +358 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +359 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +360 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +361 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +362 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +363 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +364 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +365 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +366 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +367 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +368 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +369 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +370 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +371 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +372 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +373 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +374 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +375 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +376 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +377 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +378 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +379 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +380 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +381 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +382 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +383 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +384 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +385 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +386 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +387 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +388 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +389 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +390 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +391 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +392 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +393 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +394 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +395 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +396 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +397 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +398 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +399 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +400 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +401 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +402 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +403 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +404 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +405 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +406 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +407 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +408 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +409 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +410 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +411 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +412 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +413 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +414 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +415 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +416 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +417 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +418 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +419 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +420 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +421 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +422 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +423 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +424 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +425 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +426 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +427 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +428 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +429 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +430 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +431 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:29 +432 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +433 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +434 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +435 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +436 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +437 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +438 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +439 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +440 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +441 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +442 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +443 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +444 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +445 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +446 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +447 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +448 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:30 +449 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:31 +450 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +451 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +452 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +453 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +454 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +455 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +456 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +457 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +458 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +459 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +460 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +461 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +462 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +463 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +464 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +465 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +466 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:32 +467 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:33 +468 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+00:36 +469 -2: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: 'Multiple exceptions (2) were detected during the running of the current test, and at
+least one was unexpected.'
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart:177:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart line 177
+The test description was:
+  job board, every posting and the Career Centre open
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:36 +469 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:36 +469 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open [E]
+  Test failed. See exception logs above.
+  The test description was: job board, every posting and the Career Centre open
+  
+00:36 +470 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:36 +471 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_dsa
+00:37 +472 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +473 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +474 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +475 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +476 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +477 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +478 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +479 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +480 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +481 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +482 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +483 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +484 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +485 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +486 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +487 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +488 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +489 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +490 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +491 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +492 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_database
+00:37 +493 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +494 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +495 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +496 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +497 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +498 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +499 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +500 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +501 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_os
+00:38 +502 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: every CAD drawing scenario: the model passes and an empty sheet fails
+00:38 +503 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cs_lab_project
+00:39 +504 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:39 +505 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:39 +506 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:40 +507 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:40 +508 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:40 +509 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:41 +510 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/drawing_test.dart: CAD lab: draw, dimension, fill the title block and pass
+00:41 +511 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_anatomy
+00:42 +512 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_assessment
+00:42 +513 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_assessment
+00:42 +514 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: passing a lab scenario pays a training stipend once
+00:42 +515 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_emergency
+00:42 +516 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: approved work weeks are paid per pay period, exactly once
+00:42 +517 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_bookkeeping
+00:42 +518 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: wallet on the dashboard opens My Earnings, labelled as virtual
+00:43 +519 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: wallet on the dashboard opens My Earnings, labelled as virtual
+00:43 +520 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_statements
+00:43 +521 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: Find searches labs, lessons, jobs and screens and opens a result
+00:43 +522 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: Find searches labs, lessons, jobs and screens and opens a result
+00:43 +523 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_calculus
+00:43 +524 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/pay_test.dart: labs screen search filters across all majors
+00:44 +525 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_linalg
+00:44 +526 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_stats
+00:44 +527 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_de
+00:44 +528 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/lab_export_test.dart: export lab answer keys
+00:44 +529 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ma_lab_applied
+00:44 +530 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_research
+00:45 +531 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +532 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +533 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +534 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +535 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +536 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +537 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +538 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +539 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +540 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +541 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +542 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +543 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +544 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +545 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +546 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +547 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +548 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +549 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +550 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_analysis
+00:45 +551 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/resume_test.dart: every marketplace role is complete and paid in USD
+00:45 +552 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_drafting
+00:45 +553 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_consultation
+00:46 +554 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_negotiation
+00:46 +555 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_courtroom
+00:46 +556 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: law_lab_fullcase
+00:46 +557 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:47 +558 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:47 +559 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:47 +560 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:47 +561 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:48 +562 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:48 +563 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:48 +564 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:48 +565 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:49 +566 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:49 +567 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Database lab: tools work, every SQL task graded, result saved
+00:49 +568 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ce_lab_transport
+00:49 +569 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Programming lab: run with input, submit runs every test case
+00:49 +570 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Programming lab: run with input, submit runs every test case
+00:49 +571 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ee_lab_construction
+00:49 +572 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+00:50 +573 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+00:50 +574 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+00:50 +575 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+00:50 +576 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+00:51 +577 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: OS lab: Gantt chart, page replacement and trace; leave and resume
+00:51 +578 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: che_lab_fundamentals
+00:51 +579 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Algorithms lab: binary search trace
+00:51 +580 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: che_lab_reaction
+00:51 +581 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+00:51 +582 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+00:51 +583 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+00:52 +584 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing admission: identity check catches the wrong MRN; interview and note
+00:52 +585 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: che_lab_safety
+00:52 +586 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing vitals and medication safety through the monitor and MAR
+00:52 +587 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing vitals and medication safety through the monitor and MAR
+00:52 +588 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Nursing vitals and medication safety through the monitor and MAR
+00:52 +589 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: acc_lab_cost
+00:53 +590 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:53 +591 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:53 +592 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:53 +593 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:53 +594 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:54 +595 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:54 +596 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:54 +597 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:54 +598 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:54 +599 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:55 +600 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:55 +601 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:55 +602 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:55 +603 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:55 +604 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:56 +605 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:56 +606 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:56 +607 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:56 +608 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:56 +609 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Accounting: journal posts to the ledger; reconciliation; statements
+00:56 +610 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: bi_lab_research
+00:57 +611 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+00:57 +612 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+00:57 +613 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+00:57 +614 -3: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _AncestorWidgetFinder:<Found 0 widgets with type "AppBar" that are ancestors of widgets
+with text "Career Centre": []>
+   Which: means none were found but one was expected
+nav_career
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart:331:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart line 331
+The test description was:
+  Dashboard navigation reaches every section
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:57 +614 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_projects
+00:57 +614 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section [E]
+  Test failed. See exception logs above.
+  The test description was: Dashboard navigation reaches every section
+  
+00:57 +615 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_projects
+00:57 +616 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_analytics
+00:58 +617 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ba_lab_capstone
+00:58 +618 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_atomic
+00:58 +619 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_molecular
+00:58 +620 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/design_variety_test.dart: design scenarios use a different worked case at each level
+00:58 +621 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/design_variety_test.dart: design scenarios use a different worked case at each level
+00:58 +622 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_stoichiometry
+00:58 +623 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_stoichiometry
+00:58 +624 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_acids
+00:59 +625 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_titration
+00:59 +626 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_analytical
+00:59 +627 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +628 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +629 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +630 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +631 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +632 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +633 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +634 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +635 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +636 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +637 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +638 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ch_lab_capstone
+00:59 +639 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/rules_test.dart: readiness, screening and hiring readiness counts the labs of the student's own major track
+00:59 +640 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +641 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +642 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +643 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +644 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +645 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +646 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +647 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +648 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +649 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +650 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +651 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_network
+00:59 +652 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_monitoring
+01:00 +653 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_vuln
+01:00 +654 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_forensics
+01:00 +655 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_ir
+01:00 +656 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: cy_lab_awareness
+01:00 +657 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_cleaning
+01:00 +658 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_analysis
+01:01 +659 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_viz
+01:01 +660 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_stats
+01:01 +661 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_predictive
+01:01 +662 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ds_lab_capstone
+01:01 +663 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_micro
+01:01 +664 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_macro
+01:02 +665 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_structures
+01:02 +666 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_data
+01:02 +667 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_policy
+01:02 +668 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ec_lab_international
+01:02 +669 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_grammar
+01:03 +670 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_reading
+01:03 +671 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_academic
+01:03 +672 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_professional
+01:03 +673 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: eg_lab_speaking
+01:03 +674 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:03 +675 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:03 +676 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:03 +677 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:04 +678 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: app opens login screen
+01:04 +679 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_validation
+01:04 +680 -4: /home/runner/work/GradeGlow/GradeGlow/test/widget_test.dart: demo sign in shows home
+01:04 +681 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_canvas
+01:04 +682 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_finance
+01:05 +683 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_pitchprep
+01:05 +684 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_pitch
+01:05 +685 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_startup
+01:05 +686 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: en_lab_startup
+01:05 +687 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_math
+01:05 +688 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_fsa
+01:05 +689 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_investment
+01:06 +690 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_portfolio
+01:06 +691 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_corporate
+01:06 +692 -4: /home/runner/work/GradeGlow/GradeGlow/test/recording_limits_test.dart: max recording duration is 4 hours
+01:06 +693 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_risk
+01:06 +694 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_risk
+01:06 +695 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_risk
+01:06 +696 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: fi_lab_capstone
+01:06 +697 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_recruitment
+01:06 +698 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_interviews
+01:06 +699 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_onboarding
+01:07 +700 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_performance
+01:07 +701 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_relations
+01:07 +702 -4: /home/runner/work/GradeGlow/GradeGlow/test/virtual_lecture_topic_routing_test.dart: VirtualLectureTopicProfile unit circle routes to trigonometry
+01:07 +703 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_workforce
+01:07 +704 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_workforce
+01:07 +705 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_workforce
+01:07 +706 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: hr_lab_capstone
+01:07 +707 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_manufacturing
+01:08 +708 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_quality
+01:08 +709 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_or
+01:08 +710 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_supply
+01:08 +711 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_supply
+01:08 +712 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_supply
+01:08 +713 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_improvement
+01:08 +714 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ie_lab_simulation
+01:08 +715 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_helpdesk
+01:08 +716 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_hardware
+01:09 +717 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_hardware
+01:09 +718 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_hardware
+01:09 +719 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_hardware
+01:09 +720 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_netadmin
+01:09 +721 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_sysadmin
+01:09 +722 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: it_lab_itsm
+01:09 +723 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_research
+01:09 +724 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_trade
+01:09 +725 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_strategy
+01:10 +726 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_supply
+01:10 +727 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +728 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +729 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +730 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +731 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +732 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +733 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_negotiation
+01:10 +734 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_culture
+01:10 +735 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ib_lab_capstone
+01:10 +736 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_research
+01:11 +737 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_brand
+01:11 +738 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_content
+01:11 +739 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_ads
+01:11 +740 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_social
+01:11 +741 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_analytics
+01:11 +742 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:11 +743 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:11 +744 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:11 +745 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:11 +746 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:11 +747 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mk_lab_campaign
+01:11 +748 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_exam
+01:11 +749 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_diagnostics
+01:12 +750 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_reasoning
+01:12 +751 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: md_lab_research
+01:12 +752 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_ui
+01:12 +753 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_ui
+01:12 +754 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_ui
+01:12 +755 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_ui
+01:12 +756 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_ui
+01:12 +757 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_flutter
+01:12 +758 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_backend
+01:12 +759 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_testing
+01:13 +760 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_deploy
+01:13 +761 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: mob_lab_project
+01:13 +762 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_assessment
+01:13 +763 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_documentation
+01:13 +764 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_medsurg
+01:13 +765 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_paediatric
+01:13 +766 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_maternity
+01:13 +767 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: nu_lab_icu
+01:14 +768 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_mechanics
+01:14 +769 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_electricity
+01:14 +770 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_magnetism
+01:14 +771 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_waves
+01:14 +772 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_thermo
+01:14 +773 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_modern
+01:14 +774 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: ph_lab_experimental
+01:15 +775 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_requirements
+01:15 +776 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_design
+01:15 +777 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_development
+01:15 +778 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_git
+01:15 +779 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_testing
+01:15 +780 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: se_lab_maintenance
+01:15 +781 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_htmlcss
+01:15 +782 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_js
+01:15 +783 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_frontend
+01:16 +784 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_backend
+01:16 +785 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_a11y
+01:16 +786 -4: /home/runner/work/GradeGlow/GradeGlow/test/career_sim/every_lab_journey_test.dart: journey: web_lab_client
+01:16 +787 -4: Some tests failed.
+
+Failing tests:
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/cs_journey_test.dart: CS journey: learn → practise → project → apply → interview → hired → work → evaluated, then restored
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/labs_flow_test.dart: Dashboard navigation reaches every section
+  /home/runner/work/GradeGlow/GradeGlow/test/career_sim/screens_test.dart: job board, every posting and the Career Centre open
+  /home/runner/work/GradeGlow/GradeGlow/test/screenshots/screens_shot_test.dart: screenshots
