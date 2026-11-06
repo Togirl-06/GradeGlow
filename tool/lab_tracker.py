@@ -80,7 +80,7 @@ SCHOOLS = [
     ]),
     ("School of Medicine and Health Sciences", [
         ("medicine", "Medicine", [
-            ("Human Anatomy and Physiology", built("md_lab_anatomy", "in_progress", "2D diagrams, not the required 3D body", keep=True)),
+            ("Human Anatomy and Physiology", built("md_lab_anatomy", "tested", "3D body model (58 structures in 8 systems, layers, rotate/zoom, tap to identify) and 2D atlas; the 3D model is a schematic built from geometric shapes, not a scan")),
             ("Medical History and Patient Interview", built("md_lab_assessment", "in_progress", "1 patient case")),
             ("Physical Examination", None), ("Diagnostic Investigation", None), ("Clinical Reasoning and Diagnosis", None),
             ("Emergency Medicine", built("md_lab_emergency", "in_progress", "1 case (anaphylaxis)")),
@@ -225,7 +225,7 @@ SCHOOLS = [
 # Scenario counts of built labs (checked by test/career_sim/lab_blueprint_test.dart).
 SCENARIOS = {
     "cs_lab_fundamentals": 1, "cs_lab_dsa": 1, "cs_lab_database": 1, "cs_lab_os": 1, "cs_lab_project": 1,
-    "md_lab_anatomy": 1, "md_lab_assessment": 1, "md_lab_emergency": 1,
+    "md_lab_anatomy": 7, "md_lab_assessment": 1, "md_lab_emergency": 1,
     "nu_lab_admission": 1, "nu_lab_vitals": 1, "nu_lab_meds": 1, "nu_lab_procedures": 1, "nu_lab_emergency": 1, "nu_lab_shift": 1,
     "acc_lab_bookkeeping": 1, "acc_lab_reconciliation": 1, "acc_lab_statements": 1,
     "ma_lab_algebra": 15, "ma_lab_calculus": 15, "ma_lab_linalg": 15, "ma_lab_stats": 15, "ma_lab_de": 15, "ma_lab_applied": 15,

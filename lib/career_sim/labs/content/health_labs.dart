@@ -3,6 +3,7 @@ import '../../model/tasks.dart';
 import '../lab_models.dart';
 import 'gen_med_core.dart';
 import 'gen_nurse_core.dart';
+import '../anatomy3d/anatomy3d_scenarios.dart';
 
 // Nursing (GradeGlow Teaching Hospital) and Medicine (Clinical Skills Centre).
 // All patients are fictional. Scoring follows published guidance: NEWS2
@@ -515,6 +516,7 @@ final LabSpec medicineAnatomyLab = LabSpec(
       ],
     ),
     ...mdLabAnatomyExtra,
+    ...anatomy3DScenarios,
   ],
 );
 

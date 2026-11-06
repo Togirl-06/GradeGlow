@@ -18,6 +18,8 @@ import '../lab_grading.dart';
 import '../lab_models.dart';
 import '../math/math_steps.dart';
 import '../math/math_views.dart';
+import '../anatomy3d/anatomy3d.dart';
+import '../anatomy3d/anatomy3d_view.dart';
 import '../work/drawing_step.dart';
 import '../work/drawing_view.dart';
 import '../work/work_steps.dart';
@@ -62,6 +64,7 @@ class LabStepView extends StatelessWidget {
       DialogueStep() => DialogueView(lab: lab, step: s, onGraded: onGraded),
       SimulationStep() => SimulationView(lab: lab, step: s, onGraded: onGraded),
       DrawingStep() => DrawingView(lab: lab, step: s, onGraded: onGraded),
+      Anatomy3DStep() => Anatomy3DView(lab: lab, step: s, onGraded: onGraded),
       _ => const Text('Unsupported step.'),
     };
     return Column(

@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 1, Functionality completed: 0, Tested: 197, Verified complete: 0.
+**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 0, Functionality completed: 0, Tested: 198, Verified complete: 0.
 
 ## Majors
 
@@ -20,7 +20,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Information Technology | 5 | Tested |
 | School of Computer Science and Technology | Web Development | 6 | Tested |
 | School of Computer Science and Technology | Mobile Application Development | 6 | Tested |
-| School of Medicine and Health Sciences | Medicine | 7 | In progress |
+| School of Medicine and Health Sciences | Medicine | 7 | Tested |
 | School of Medicine and Health Sciences | Nursing | 12 | Tested |
 | School of Law | Law | 7 | Tested |
 | School of Engineering | Mechanical Engineering | 6 | Tested |
@@ -134,7 +134,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Human Anatomy and Physiology | Functionality in progress | 16 / 15 | `md_lab_anatomy` | 2D diagrams, not the required 3D body; +15 generated scenarios |
+| A. Human Anatomy and Physiology | Tested | 22 / 15 | `md_lab_anatomy` | 3D body model (58 structures in 8 systems, layers, rotate/zoom, tap to identify) and 2D atlas; the 3D model is a schematic built from geometric shapes, not a scan; +15 generated scenarios |
 | B. Medical History and Patient Interview | Tested | 16 / 15 | `md_lab_assessment` | 1 patient case; +15 generated scenarios |
 | C. Physical Examination | Tested | 15 / 15 | `md_lab_exam` | Examine simulated patients system by system: interpret cardiovascular, respiratory, abdomi |
 | D. Diagnostic Investigation | Tested | 15 / 15 | `md_lab_diagnostics` | Interpret arterial blood gases and blood results, understand test accuracy and predictive  |
