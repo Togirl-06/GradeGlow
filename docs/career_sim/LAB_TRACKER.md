@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 144, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 36, Verified complete: 0.
+**198 labs.** Not started: 132, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 48, Verified complete: 0.
 
 ## Majors
 
@@ -27,8 +27,8 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Engineering | Civil Engineering | 6 | Tested |
 | School of Engineering | Electrical Engineering | 6 | Tested |
 | School of Engineering | Chemical Engineering | 6 | Tested |
-| School of Engineering | Aerospace Engineering | 6 | Not started |
-| School of Engineering | Industrial Engineering | 6 | Not started |
+| School of Engineering | Aerospace Engineering | 6 | Tested |
+| School of Engineering | Industrial Engineering | 6 | Tested |
 | School of Business and Economics | Business Administration | 6 | Not started |
 | School of Business and Economics | Accounting | 8 | In progress |
 | School of Business and Economics | Finance | 7 | Not started |
@@ -219,23 +219,23 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Aerodynamics | Not started | 0 / 15 |  |  |
-| B. Aircraft Design | Not started | 0 / 15 |  |  |
-| C. Flight Mechanics | Not started | 0 / 15 |  |  |
-| D. Propulsion Systems | Not started | 0 / 15 |  |  |
-| E. Aircraft Systems | Not started | 0 / 15 |  |  |
-| F. Aerospace Design Project | Not started | 0 / 15 |  |  |
+| A. Aerodynamics | Tested | 15 / 15 | `ae_lab_aero` | Lift, drag, Reynolds number, stall speed and lift-to-drag ratio on real aircraft configura |
+| B. Aircraft Design | Tested | 15 / 15 | `ae_lab_design` | Wing loading, aspect ratio, range, centre of gravity and fuselage pressurisation for a new |
+| C. Flight Mechanics | Tested | 15 / 15 | `ae_lab_flight` | Turns, climb, glide, take-off and static stability — the performance numbers pilots fly by |
+| D. Propulsion Systems | Tested | 15 / 15 | `ae_lab_propulsion` | Jet thrust, propulsive efficiency, rocket Δv, gas-turbine cycles and mission fuel. |
+| E. Aircraft Systems | Tested | 15 / 15 | `ae_lab_systems` | Investigate in-service defects reported by flight crews and maintenance engineers. |
+| F. Aerospace Design Project | Tested | 15 / 15 | `ae_lab_project` | Concept design for a client: UAV endurance, a satellite power system, a heavy-lift drone,  |
 
 ### Industrial Engineering
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Manufacturing Systems | Not started | 0 / 15 |  |  |
-| B. Quality Engineering | Not started | 0 / 15 |  |  |
-| C. Operations Research | Not started | 0 / 15 |  |  |
-| D. Supply Chain | Not started | 0 / 15 |  |  |
-| E. Process Improvement | Not started | 0 / 15 |  |  |
-| F. Industrial Simulation Project | Not started | 0 / 15 |  |  |
+| A. Manufacturing Systems | Tested | 15 / 15 | `ie_lab_manufacturing` | Throughput, OEE, line balancing, machine capacity and lead time on a real production line. |
+| B. Quality Engineering | Tested | 15 / 15 | `ie_lab_quality` | Process capability, control charts, DPMO, acceptance sampling and rolled throughput yield. |
+| C. Operations Research | Tested | 15 / 15 | `ie_lab_or` | Order quantities, queues, product mix, transport allocation and project crashing. |
+| D. Supply Chain | Tested | 15 / 15 | `ie_lab_supply` | Safety stock, inventory turns, warehouse capacity, landed cost and fleet sizing. |
+| E. Process Improvement | Tested | 15 / 15 | `ie_lab_improvement` | Investigate performance problems on the shop floor and choose the improvement that fixes t |
+| F. Industrial Simulation Project | Tested | 15 / 15 | `ie_lab_simulation` | Run the plant: staffing, production planning, energy, automation payback and layout — and  |
 
 ### Business Administration
 

@@ -1,0 +1,74 @@
+{
+ "ae_lab_aero": {
+  "major": "aerospace_engineering",
+  "note": "Lift, drag, Reynolds number, stall speed and lift-to-drag ratio on real aircraft configura",
+  "scenarios": 15,
+  "title": "Aerodynamics"
+ },
+ "ae_lab_design": {
+  "major": "aerospace_engineering",
+  "note": "Wing loading, aspect ratio, range, centre of gravity and fuselage pressurisation for a new",
+  "scenarios": 15,
+  "title": "Aircraft Design"
+ },
+ "ae_lab_flight": {
+  "major": "aerospace_engineering",
+  "note": "Turns, climb, glide, take-off and static stability \u2014 the performance numbers pilots fly by",
+  "scenarios": 15,
+  "title": "Flight Mechanics"
+ },
+ "ae_lab_project": {
+  "major": "aerospace_engineering",
+  "note": "Concept design for a client: UAV endurance, a satellite power system, a heavy-lift drone, ",
+  "scenarios": 15,
+  "title": "Aerospace Design Project"
+ },
+ "ae_lab_propulsion": {
+  "major": "aerospace_engineering",
+  "note": "Jet thrust, propulsive efficiency, rocket \u0394v, gas-turbine cycles and mission fuel.",
+  "scenarios": 15,
+  "title": "Propulsion Systems"
+ },
+ "ae_lab_systems": {
+  "major": "aerospace_engineering",
+  "note": "Investigate in-service defects reported by flight crews and maintenance engineers.",
+  "scenarios": 15,
+  "title": "Aircraft Systems"
+ },
+ "ie_lab_improvement": {
+  "major": "industrial_engineering",
+  "note": "Investigate performance problems on the shop floor and choose the improvement that fixes t",
+  "scenarios": 15,
+  "title": "Process Improvement"
+ },
+ "ie_lab_manufacturing": {
+  "major": "industrial_engineering",
+  "note": "Throughput, OEE, line balancing, machine capacity and lead time on a real production line.",
+  "scenarios": 15,
+  "title": "Manufacturing Systems"
+ },
+ "ie_lab_or": {
+  "major": "industrial_engineering",
+  "note": "Order quantities, queues, product mix, transport allocation and project crashing.",
+  "scenarios": 15,
+  "title": "Operations Research"
+ },
+ "ie_lab_quality": {
+  "major": "industrial_engineering",
+  "note": "Process capability, control charts, DPMO, acceptance sampling and rolled throughput yield.",
+  "scenarios": 15,
+  "title": "Quality Engineering"
+ },
+ "ie_lab_simulation": {
+  "major": "industrial_engineering",
+  "note": "Run the plant: staffing, production planning, energy, automation payback and layout \u2014 and ",
+  "scenarios": 15,
+  "title": "Industrial Simulation Project"
+ },
+ "ie_lab_supply": {
+  "major": "industrial_engineering",
+  "note": "Safety stock, inventory turns, warehouse capacity, landed cost and fleet sizing.",
+  "scenarios": 15,
+  "title": "Supply Chain"
+ }
+}

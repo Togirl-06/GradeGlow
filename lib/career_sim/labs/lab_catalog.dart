@@ -2,6 +2,7 @@ import 'content/accounting_labs.dart';
 import 'content/cs_labs.dart';
 import 'content/health_labs.dart';
 import 'content/eng_chemical.dart';
+import 'content/gen_registry.dart';
 import 'content/eng_civil.dart';
 import 'content/eng_electrical.dart';
 import 'content/eng_mechanical.dart';
@@ -12,7 +13,7 @@ import 'lab_models.dart';
 
 /// Every practical lab, by major.
 abstract final class LabCatalog {
-  static final List<LabSpec> all = <LabSpec>[...csLabs, ...nursingLabs, ...medicineLabs, ...accountingLabs, ...mathLabs, ...lawLabs, ...mechanicalLabs, ...civilLabs, ...electricalLabs, ...chemicalLabs];
+  static final List<LabSpec> all = <LabSpec>[...csLabs, ...nursingLabs, ...medicineLabs, ...accountingLabs, ...mathLabs, ...lawLabs, ...mechanicalLabs, ...civilLabs, ...electricalLabs, ...chemicalLabs, ...generatedLabs];
 
   static final List<LabSpec> mathLabs = <LabSpec>[
     mathAlgebraLab,
@@ -34,7 +35,8 @@ abstract final class LabCatalog {
 
   static List<LabSpec> forMajor(String majorId) => all.where((LabSpec l) => l.majorId == majorId).toList();
 
-  static const Map<String, String> majorLabels = <String, String>{
+  static final Map<String, String> majorLabels = <String, String>{
+    ...generatedMajorLabels,
     'computer_science': 'Computer Science',
     'nursing': 'Nursing',
     'medicine': 'Medicine',
