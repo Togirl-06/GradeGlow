@@ -1,0 +1,677 @@
+Resolving dependencies...
+Downloading packages...
+  _flutterfire_internals 1.3.59 (1.3.79 available)
+  archive 4.5.2 (4.6.0 available)
+  audioplayers 6.7.0 (6.8.1 available)
+  audioplayers_android 5.2.1 (5.3.0 available)
+  audioplayers_darwin 6.4.0 (6.5.0 available)
+  audioplayers_linux 4.2.1 (4.3.0 available)
+  audioplayers_platform_interface 7.1.1 (7.2.0 available)
+  audioplayers_web 5.2.1 (5.3.0 available)
+  audioplayers_windows 4.3.1 (4.4.1 available)
+  cli_util 0.4.2 (0.6.0 available)
+  clock 1.1.2 (1.1.3 available)
+  cloud_firestore 5.6.12 (7.1.0 available)
+  cloud_firestore_platform_interface 6.6.12 (8.1.0 available)
+  cloud_firestore_web 4.4.12 (5.8.0 available)
+  code_assets 1.1.0 (2.1.0 available)
+  cross_file 0.3.5+2 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  dbus 0.7.15 (0.8.0 available)
+  file_picker 9.2.3 (13.3.2 available)
+  file_selector_linux 0.9.4 (0.9.4+1 available)
+  file_selector_macos 0.9.5 (0.9.5+2 available)
+  file_selector_windows 0.9.3+5 (0.9.3+6 available)
+  firebase_auth 5.7.0 (7.0.1 available)
+  firebase_auth_platform_interface 7.7.3 (9.1.2 available)
+  firebase_auth_web 5.15.3 (6.3.2 available)
+  firebase_core 3.15.2 (5.1.0 available)
+  firebase_core_platform_interface 6.0.3 (8.1.1 available)
+  firebase_core_web 2.24.1 (4.1.0 available)
+  firebase_crashlytics 4.3.10 (6.0.1 available)
+  firebase_crashlytics_platform_interface 3.8.10 (3.9.2 available)
+  firebase_storage 12.4.10 (14.0.1 available)
+  firebase_storage_platform_interface 5.2.10 (6.0.9 available)
+  firebase_storage_web 3.10.17 (3.11.15 available)
+  flutter_dotenv 5.2.1 (6.0.1 available)
+  flutter_local_notifications 18.0.1 (22.3.3 available)
+  flutter_local_notifications_linux 5.0.0 (8.0.2 available)
+  flutter_local_notifications_platform_interface 8.0.0 (12.2.0 available)
+  flutter_plugin_android_lifecycle 2.0.34 (2.0.35 available)
+  flutter_svg 2.3.0 (2.3.2 available)
+  flutter_timezone 4.1.1 (5.1.1 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.18 available)
+  google_sign_in_ios 5.9.0 (6.3.8 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.3 available)
+  hooks 2.0.0 (2.2.0 available)
+  html 0.15.6 (0.15.7 available)
+  image 4.11.0 (4.12.0 available)
+  image_picker 1.2.2 (1.2.4 available)
+  image_picker_android 0.8.13+17 (0.8.13+25 available)
+  image_picker_ios 0.8.13+6 (0.8.13+14 available)
+  image_picker_platform_interface 2.11.1 (2.11.2 available)
+  intl 0.20.2 (0.20.3 available)
+  jni 1.0.0 (1.1.1 available)
+  jni_flutter 1.0.1 (1.0.4+1 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  mime 2.0.0 (2.1.0 available)
+  objective_c 9.4.1 (9.6.2 available)
+  package_config 2.2.0 (3.0.0 available)
+  path_provider 2.1.5 (2.1.6 available)
+  path_provider_linux 2.2.1 (2.2.2 available)
+  path_provider_platform_interface 2.1.2 (2.1.3 available)
+  permission_handler 12.0.3 (13.0.2 available)
+  permission_handler_android 13.0.1 (14.1.1 available)
+  permission_handler_apple 9.4.9 (9.6.5 available)
+  permission_handler_html 0.1.3+5 (0.1.4+1 available)
+  permission_handler_platform_interface 4.3.0 (4.4.1 available)
+  permission_handler_windows 0.2.1 (0.2.3 available)
+  petitparser 7.0.2 (7.1.0 available)
+  platform 3.1.6 (3.2.0 available)
+  posix 6.5.0 (6.5.4 available)
+  pub_semver 2.2.0 (2.2.1 available)
+  record 6.2.1 (7.1.2 available)
+  record_android 1.5.2 (2.2.0 available)
+  record_ios 1.2.1 (2.1.1 available)
+  record_linux 1.3.1 (2.1.3 available)
+  record_macos 1.2.2 (2.1.1 available)
+  record_platform_interface 1.6.0 (2.1.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  record_web 1.3.0 (2.1.3 available)
+  record_windows 1.0.7 (2.3.0 available)
+  shared_preferences 2.5.5 (2.5.6 available)
+  shared_preferences_android 2.4.26 (2.5.4 available)
+  shared_preferences_foundation 2.5.6 (2.6.1 available)
+  sign_in_with_apple 6.1.4 (8.2.0 available)
+  sign_in_with_apple_platform_interface 1.1.0 (2.0.0 available)
+  sign_in_with_apple_web 2.1.1 (3.0.0 available)
+  speech_to_text 7.4.0 (7.5.0 available)
+  speech_to_text_platform_interface 2.4.0 (2.5.0 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  synchronized 3.4.1 (3.5.0 available)
+  test_api 0.7.12 (0.7.15 available)
+  timezone 0.9.4 (0.11.2 available)
+  url_launcher 6.3.2 (6.3.3 available)
+  url_launcher_android 6.3.32 (6.3.33 available)
+  url_launcher_ios 6.4.1 (6.4.2 available)
+  url_launcher_linux 3.2.2 (3.2.3 available)
+  url_launcher_macos 3.2.5 (3.2.6 available)
+  url_launcher_windows 3.1.5 (3.1.6 available)
+  uuid 4.5.3 (4.6.0 available)
+  vector_graphics 1.2.2 (1.2.6 available)
+  vector_graphics_compiler 1.2.5 (1.3.4 available)
+  vm_service 15.1.0 (15.4.0 available)
+  web 1.1.1 (1.1.2 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 7.0.1 (7.1.0 available)
+  yaml 3.1.3 (3.1.4 available)
+Got dependencies!
+108 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing GradeGlow...                                          
+
+   info • Use the null-aware marker '?' rather than a null check via an 'if'. Try using '?' • lib/career_sim/labs/content/case_kit.dart:67:31 • use_null_aware_elements
+   info • Use the null-aware marker '?' rather than a null check via an 'if'. Try using '?' • lib/career_sim/labs/content/design_kit.dart:116:31 • use_null_aware_elements
+   info • Use the null-aware marker '?' rather than a null check via an 'if'. Try using '?' • lib/career_sim/labs/content/design_kit.dart:161:31 • use_null_aware_elements
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_aerospace.dart:7:8 • unused_import
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_biology.dart:7:8 • unused_import
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:85:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:85:151 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:137 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:172 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:382 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:417 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:600 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:635 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:811 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:846 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:1044 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:86:1079 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:150:63 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:123 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:158 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:320 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:355 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:530 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:565 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:737 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:772 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:932 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:151:967 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:159:112 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:159:164 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:159:287 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:159:435 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:159:496 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:159:594 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:169:68 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:143 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:178 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:348 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:383 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:582 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:617 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:774 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:170:809 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:188:71 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:112 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:147 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:322 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:357 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:557 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:592 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:778 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:189:813 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:253:70 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:142 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:177 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:329 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:364 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:515 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:550 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:732 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:254:767 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:272:72 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:121 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:156 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:332 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:367 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:523 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:558 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:716 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:273:751 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:291:67 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:128 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:322 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:357 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:517 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:552 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:697 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:292:732 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:369:63 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:130 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:165 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:335 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:370 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:530 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:565 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:734 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:370:769 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:388:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:126 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:161 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:337 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:372 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:567 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:602 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:769 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_bizadmin.dart:389:804 • unnecessary_const
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_chemistry.dart:7:8 • unused_import
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_economics.dart:7:8 • unused_import
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_finance.dart:7:8 • unused_import
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:61:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:159 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:194 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:376 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:411 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:634 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:669 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:930 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:965 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:1166 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:62:1201 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:80:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:158 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:193 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:372 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:407 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:588 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:623 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:815 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:81:850 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:89:113 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:89:165 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:89:295 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:89:455 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:89:521 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:89:628 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:91:86 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:99:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:143 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:178 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:376 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:411 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:665 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:700 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:918 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:100:953 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:164:76 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:117 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:152 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:287 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:322 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:537 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:572 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:716 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:751 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:962 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:165:997 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:183:76 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:119 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:154 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:295 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:330 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:487 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:522 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:664 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:184:699 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:202:76 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:117 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:152 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:287 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:322 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:512 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:547 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:703 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:203:738 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:267:72 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:146 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:181 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:359 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:394 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:610 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:645 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:822 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:857 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:1069 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:268:1104 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:286:83 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:136 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:171 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:350 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:385 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:579 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:614 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:779 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:814 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:1005 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:287:1040 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:305:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:128 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:344 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:379 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:590 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:625 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:776 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:306:811 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:370:82 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:133 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:168 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:339 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:374 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:542 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:577 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:798 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:371:833 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:379:105 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:379:153 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:379:264 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:379:398 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:379:453 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:379:556 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:381:86 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:389:67 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:128 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:342 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:377 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:584 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:619 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:835 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:390:870 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:408:81 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:138 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:173 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:341 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:376 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:551 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:586 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:781 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:409:816 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:462:75 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:145 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:180 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:375 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:410 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:583 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:618 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:786 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:463:821 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:471:101 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:471:153 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:471:252 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:471:407 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:471:454 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:471:577 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:481:75 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:124 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:159 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:355 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:390 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:563 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:598 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:797 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:482:832 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:500:71 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:140 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:175 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:351 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:386 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:551 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:586 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:789 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:501:824 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:519:83 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:126 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:161 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:322 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:357 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:552 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:587 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:769 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:520:804 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:664:64 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:142 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:177 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:344 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:379 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:545 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:580 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:766 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:665:801 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:673:100 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:673:155 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:673:272 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:673:411 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:673:476 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:673:583 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:675:101 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:683:63 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:138 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:173 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:349 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:384 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:539 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:574 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:749 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:684:784 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:702:65 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:132 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:167 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:335 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:370 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:546 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:581 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:732 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_hr.dart:703:767 • unnecessary_const
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_industrial.dart:7:8 • unused_import
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:73:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:125 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:160 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:365 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:400 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:616 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:651 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:854 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:889 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:1130 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:74:1165 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:82:113 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:82:175 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:82:275 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:82:424 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:82:482 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:82:586 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:84:86 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:92:72 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:150 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:185 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:373 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:408 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:642 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:677 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:865 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:900 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:1078 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:93:1113 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:131:79 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:151 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:186 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:334 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:369 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:567 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:602 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:826 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:132:861 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:140:104 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:140:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:140:276 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:140:427 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:140:489 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:140:614 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:142:99 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:150:79 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:134 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:169 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:352 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:387 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:547 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:582 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:815 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:151:850 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:159:104 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:159:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:159:276 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:159:427 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:159:489 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:159:614 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:161:99 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:169:79 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:179 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:214 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:373 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:408 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:605 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:640 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:808 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:170:843 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:178:104 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:178:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:178:276 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:178:427 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:178:489 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:178:614 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:180:99 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:188:79 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:168 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:203 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:364 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:399 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:646 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:681 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:891 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:189:926 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:197:104 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:197:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:197:276 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:197:427 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:197:489 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:197:614 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:199:99 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:207:79 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:134 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:169 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:335 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:370 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:593 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:628 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:791 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:208:826 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:216:104 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:216:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:216:276 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:216:427 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:216:489 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:216:614 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:218:99 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:272:65 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:156 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:191 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:360 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:395 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:608 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:643 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:840 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:875 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:1040 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:273:1075 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:281:111 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:281:170 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:281:279 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:281:436 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:281:490 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:281:596 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:291:72 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:291:160 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:148 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:183 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:387 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:422 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:623 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:658 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:909 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:292:944 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:310:68 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:134 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:169 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:399 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:434 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:591 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:626 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:825 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:311:860 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:456:64 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:134 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:169 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:379 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:414 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:581 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:616 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:818 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:853 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:1014 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:457:1049 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:475:66 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:146 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:181 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:359 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:394 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:581 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:616 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:837 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:476:872 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:484:105 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:484:163 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:484:283 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:484:424 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:484:479 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:484:583 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:486:83 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:494:68 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:142 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:177 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:377 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:412 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:581 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:616 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:791 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:495:826 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:639:67 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:144 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:179 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:345 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:380 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:599 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:634 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:833 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:868 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:1050 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:640:1085 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:648:100 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:648:165 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:648:270 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:648:399 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:648:454 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:648:568 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:650:84 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:658:67 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:118 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:153 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:333 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:368 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:529 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:564 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:716 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:751 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:931 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:659:966 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:677:81 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:125 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:160 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:327 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:362 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:536 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:571 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:734 • unnecessary_const
+   info • Unnecessary 'const' keyword. Try removing the keyword • lib/career_sim/labs/content/gen_marketing.dart:678:769 • unnecessary_const
+warning • Unused import: '../math/math_steps.dart'. Try removing the import directive • lib/career_sim/labs/content/gen_physics.dart:7:8 • unused_import
+   info • Type could be non-nullable. Try changing the type to be non-nullable • lib/career_sim/labs/lab_grading.dart:112:20 • unnecessary_nullable_for_final_variable_declarations
+   info • Unnecessary use of string interpolation. Try replacing the string literal with the variable name • lib/career_sim/labs/lab_grading.dart:117:100 • unnecessary_string_interpolations
+   info • Constructors for public widgets should have a named 'key' parameter. Try adding a named parameter to the constructor • lib/career_sim/labs/math/math_views.dart:644:9 • use_key_in_widget_constructors
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check. Guard a 'State.context' use with a 'mounted' check on the State, and other BuildContext use with a 'mounted' check on the BuildContext • lib/career_sim/labs/ui/step_views.dart:203:48 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check. Guard a 'State.context' use with a 'mounted' check on the State, and other BuildContext use with a 'mounted' check on the BuildContext • lib/career_sim/labs/ui/step_views.dart:288:48 • use_build_context_synchronously
+warning • The declaration '_priorKnowledge' isn't referenced. Try removing the declaration of '_priorKnowledge' • lib/data/lecture_classroom_pedagogy.dart:447:25 • unused_element
+warning • The declaration '_definitionsSection' isn't referenced. Try removing the declaration of '_definitionsSection' • lib/data/physics/physics_textbook_chapter_engine.dart:388:17 • unused_element
+warning • The declaration '_workedExamples' isn't referenced. Try removing the declaration of '_workedExamples' • lib/data/physics/physics_textbook_chapter_engine.dart:515:17 • unused_element
+warning • The declaration '_commonErrors' isn't referenced. Try removing the declaration of '_commonErrors' • lib/data/physics/physics_textbook_chapter_engine.dart:584:17 • unused_element
+   info • Use the null-aware marker '?' rather than a null check via an 'if'. Try using '?' • lib/services/lab_runner/lab_runner.dart:267:7 • use_null_aware_elements
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart'. Try removing the import directive • lib/services/material_service.dart:1:8 • unnecessary_import
+warning • Returning a 'Future' without 'await' inside a try block. Try adding an 'await' • lib/services/notes_summarizer_service.dart:469:7 • unawaited_return_in_try_block
+warning • Returning a 'Future' without 'await' inside a try block. Try adding an 'await' • lib/services/notes_summarizer_service.dart:521:7 • unawaited_return_in_try_block
+warning • Returning a 'Future' without 'await' inside a try block. Try adding an 'await' • lib/services/notes_summarizer_service.dart:604:7 • unawaited_return_in_try_block
+warning • Returning a 'Future' without 'await' inside a try block. Try adding an 'await' • lib/services/notes_summarizer_service.dart:662:7 • unawaited_return_in_try_block
+warning • Returning a 'Future' without 'await' inside a try block. Try adding an 'await' • lib/services/notes_summarizer_service.dart:727:7 • unawaited_return_in_try_block
+warning • Returning a 'Future' without 'await' inside a try block. Try adding an 'await' • lib/services/notes_summarizer_service.dart:968:7 • unawaited_return_in_try_block
+warning • Unused import: '../utils/api_error_messages.dart'. Try removing the import directive • lib/services/practice_lab_service.dart:20:8 • unused_import
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/services/subscription_service.dart:100:36 • dead_code
+warning • The left operand can't be null, so the right operand is never executed. Try removing the operator and the right operand • lib/services/subscription_service.dart:100:39 • dead_null_aware_expression
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart'. Try removing the import directive • lib/utils/io_file_bytes.dart:1:8 • unnecessary_import
+   info • 'dart:html' is deprecated and shouldn't be used. Use package:web and dart:js_interop instead. Try replacing the use of the deprecated member with the replacement • lib/utils/open_checkout_web.dart:2:1 • deprecated_member_use
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart'. Try removing the import directive • lib/utils/pdf_text_extractor.dart:1:8 • unnecessary_import
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart'. Try removing the import directive • lib/utils/study_content_input_actions.dart:1:8 • unnecessary_import
+warning • The declaration '_ComingPanel' isn't referenced. Try removing the declaration of '_ComingPanel' • lib/vu_v2/learn/vu_v2_course_home_screen.dart:1124:7 • unused_element
+   info • The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart'. Try removing the import directive • lib/widgets/file_picker_gate.dart:1:8 • unnecessary_import
+warning • A value for optional parameter 'showContentsInline' isn't ever given. Try removing the unused parameter • lib/widgets/virtual_lecture/lecture_cinematic_shell.dart:133:42 • unused_element_parameter
+warning • A value for optional parameter 'compact' isn't ever given. Try removing the unused parameter • lib/widgets/virtual_lecture/lecture_cinematic_shell.dart:276:10 • unused_element_parameter
+warning • The declaration '_LectureHero' isn't referenced. Try removing the declaration of '_LectureHero' • lib/widgets/virtual_lecture/lecture_cinematic_shell.dart:418:7 • unused_element
+warning • A value for optional parameter 'compact' isn't ever given. Try removing the unused parameter • lib/widgets/virtual_lecture/lecture_cinematic_shell.dart:425:10 • unused_element_parameter
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • test/virtual_lecture_topic_routing_test.dart:58:33 • dead_code
+warning • The left operand can't be null, so the right operand is never executed. Try removing the operator and the right operand • test/virtual_lecture_topic_routing_test.dart:58:36 • dead_null_aware_expression
+   info • Don't invoke 'print' in production code. Try using a logging framework • tool/count_problems.dart:4:3 • avoid_print
+
+560 issues found. (ran in 17.3s)
