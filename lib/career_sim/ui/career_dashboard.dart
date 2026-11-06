@@ -255,8 +255,7 @@ class _TopBar extends StatelessWidget {
       child: Row(children: <Widget>[
         const Icon(Icons.school_rounded, color: Colors.white, size: 30),
         const SizedBox(width: 8),
-        Flexible(child: Text('GradeGlow', overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, fontSize: wide ? 22 : 18, fontWeight: FontWeight.w900))),
-        const Spacer(),
+        Expanded(child: Text('GradeGlow', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, fontSize: wide ? 22 : 18, fontWeight: FontWeight.w900))),
         if (wide) ...<Widget>[
           link('top_home', Icons.home_rounded, 'Home', () {}),
           link('top_labs', Icons.science_rounded, 'Labs', onLabs),
@@ -293,6 +292,14 @@ class _Hero extends StatelessWidget {
         height: wide ? 280 : 230,
         child: Stack(fit: StackFit.expand, children: <Widget>[
           const CustomPaint(painter: CampusPainter()),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: <Color>[const Color(0xFF0B1030).withValues(alpha: 0.85), const Color(0xFF0B1030).withValues(alpha: wide ? 0.0 : 0.35)],
+                stops: const <double>[0.0, 0.7],
+              ),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.all(wide ? 28 : 18),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -315,15 +322,15 @@ class _Schools extends StatelessWidget {
   const _Schools({required this.onOpen});
   final ValueChanged<String> onOpen;
 
-  static const List<(String, String, IconData, Color)> schools = <(String, String, IconData, Color)>[
-    ('cs', 'Computer Science & Technology', Icons.computer_rounded, Color(0xFF60A5FA)),
-    ('medicine', 'Medicine & Health Sciences', Icons.medical_services_rounded, Color(0xFF38BDF8)),
-    ('nursing', 'Nursing', Icons.monitor_heart_rounded, Color(0xFFF87171)),
-    ('law', 'Law', Icons.balance_rounded, Color(0xFFFBBF24)),
-    ('engineering', 'Engineering', Icons.settings_rounded, Color(0xFF818CF8)),
-    ('business', 'Business & Economics', Icons.insights_rounded, Color(0xFFF59E0B)),
-    ('mathematics', 'Mathematics & Sciences', Icons.science_rounded, Color(0xFFC084FC)),
-    ('communication', 'English & Communication', Icons.menu_book_rounded, Color(0xFF60A5FA)),
+  static const List<(String, String, String, IconData, Color)> schools = <(String, String, String, IconData, Color)>[
+    ('cs', 'Computer Science & Technology', 'Computer Science', Icons.computer_rounded, Color(0xFF60A5FA)),
+    ('medicine', 'Medicine & Health Sciences', 'Medicine', Icons.medical_services_rounded, Color(0xFF38BDF8)),
+    ('nursing', 'Nursing', 'Nursing', Icons.monitor_heart_rounded, Color(0xFFF87171)),
+    ('law', 'Law', 'Law', Icons.balance_rounded, Color(0xFFFBBF24)),
+    ('engineering', 'Engineering', 'Engineering', Icons.settings_rounded, Color(0xFF818CF8)),
+    ('business', 'Business & Economics', 'Business', Icons.insights_rounded, Color(0xFFF59E0B)),
+    ('mathematics', 'Mathematics & Sciences', 'Maths & Science', Icons.science_rounded, Color(0xFFC084FC)),
+    ('communication', 'English & Communication', 'English', Icons.menu_book_rounded, Color(0xFF60A5FA)),
   ];
 
   @override
@@ -332,7 +339,7 @@ class _Schools extends StatelessWidget {
       final int cols = c.maxWidth >= 720 ? 4 : 2;
       final double w = (c.maxWidth - 10 * (cols - 1)) / cols;
       return Wrap(spacing: 10, runSpacing: 10, children: <Widget>[
-        for (final (String id, String label, IconData icon, Color color) in schools)
+        for (final (String id, String full, String short, IconData icon, Color color) in schools)
           SizedBox(
             width: w,
             child: Material(
@@ -344,16 +351,17 @@ class _Schools extends StatelessWidget {
                 onTap: () => onOpen(id),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                  child: Row(children: <Widget>[
-                    Container(
-                      width: 46,
-                      height: 46,
-                      decoration: BoxDecoration(color: color.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(12)),
-                      child: Icon(icon, color: color, size: 28),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(label, maxLines: 2, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700, fontSize: 14))),
-                  ]),
+                  child: cols == 4
+                      ? Row(children: <Widget>[
+                          _badge(icon, color),
+                          const SizedBox(width: 10),
+                          Expanded(child: Text(full, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700, fontSize: 14))),
+                        ])
+                      : Column(children: <Widget>[
+                          _badge(icon, color),
+                          const SizedBox(height: 8),
+                          Text(short, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: const TextStyle(color: GG.ink, fontWeight: FontWeight.w700, fontSize: 14)),
+                        ]),
                 ),
               ),
             ),
@@ -362,6 +370,13 @@ class _Schools extends StatelessWidget {
     });
   }
 }
+
+Widget _badge(IconData icon, Color color) => Container(
+      width: 46,
+      height: 46,
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(12)),
+      child: Icon(icon, color: color, size: 28),
+    );
 
 class _Tile {
   const _Tile(this.key, this.icon, this.label, this.caption, this.onTap);
