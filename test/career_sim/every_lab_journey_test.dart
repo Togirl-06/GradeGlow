@@ -28,13 +28,14 @@ void main() {
       final LabRun run = store.labRun(lab.id)!;
       final LabScenario sc = lab.scenario(run.scenarioId)!;
       expect(sc.level, LabDifficulty.foundation, reason: 'students start at the beginner level');
-      for (final LabStep step in sc.steps) {
-        final Finder view = find.byType(LabStepView);
-        expect(view, findsOneWidget, reason: '${lab.id}: step ${step.id} should be on screen');
-        expect(find.descendant(of: view, matching: find.textContaining(step.title)), findsWidgets, reason: '${lab.id}: showing ${step.id}');
+      for (int i = 0; i < sc.steps.length; i++) {
+        final LabStep step = sc.steps[i];
+        expect(find.byType(LabStepView), findsOneWidget, reason: '${lab.id}: step ${step.id} should be on screen');
+        expect(find.textContaining('ticket ${i + 1} of ${sc.steps.length}: ${step.title}'), findsOneWidget, reason: '${lab.id}: showing ${step.id}');
         expect(t.takeException(), isNull, reason: '${lab.id}: ${step.id} rendered without errors');
         await store.recordLabStep(lab, step, TaskResult(taskId: step.id, score: 100, passed: true));
         await t.pumpAndSettle();
+        if (i < sc.steps.length - 1) await tap(t, k('step_next'));
       }
       await tap(t, k('to_evaluation'));
       expect(find.textContaining('Final result'), findsOneWidget);
