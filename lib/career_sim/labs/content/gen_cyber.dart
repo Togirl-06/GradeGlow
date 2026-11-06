@@ -562,4 +562,4 @@ final LabSpec cyLabAwarenessSpec = designLab(
   ]),
 );
 
-final List<LabSpec> cybersecurityGenLabs = <LabSpec>[cyLabNetworkSpec, cyLabMonitoringSpec, cyLabVulnSpec, cyLabForensicsSpec, cyLabIrSpec, cyLabAwarenessSpec];
+final List<LabSpec> cyberGenLabs = <LabSpec>[cyLabNetworkSpec, cyLabMonitoringSpec, cyLabVulnSpec, cyLabForensicsSpec, cyLabIrSpec, cyLabAwarenessSpec];

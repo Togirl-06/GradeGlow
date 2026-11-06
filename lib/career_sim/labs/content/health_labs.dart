@@ -1,6 +1,8 @@
 import '../../engine/text_rubric.dart';
 import '../../model/tasks.dart';
 import '../lab_models.dart';
+import 'gen_med_core.dart';
+import 'gen_nurse_core.dart';
 
 // Nursing (GradeGlow Teaching Hospital) and Medicine (Clinical Skills Centre).
 // All patients are fictional. Scoring follows published guidance: NEWS2
@@ -109,7 +111,7 @@ final LabSpec nursingAdmissionLab = LabSpec(
   difficulty: LabDifficulty.foundation,
   minutes: 30,
   patients: const <Patient>[amira],
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'admit_amira',
       title: 'Admissions Unit: Amira Hassan',
@@ -165,6 +167,7 @@ final LabSpec nursingAdmissionLab = LabSpec(
         ),
       ],
     ),
+    ...nuLabAdmissionExtra,
   ],
 );
 
@@ -181,7 +184,7 @@ final LabSpec nursingVitalsLab = LabSpec(
   difficulty: LabDifficulty.intermediate,
   minutes: 25,
   patients: const <Patient>[james],
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'obs_james',
       title: 'Surgical Ward 6: Bed 12',
@@ -198,6 +201,7 @@ final LabSpec nursingVitalsLab = LabSpec(
         VitalsStep(id: 'news_rounds', title: 'Observation rounds', instructions: 'For each round, read the monitor, calculate NEWS2 and choose the response.', patientId: 'james', skills: <String>['nu_escalate', 'nu_assess']),
       ],
     ),
+    ...nuLabVitalsExtra,
   ],
 );
 
@@ -256,6 +260,7 @@ final LabSpec nursingMedsLab = LabSpec(
         )),
       ],
     ),
+    ...nuLabMedsExtra,
   ],
 );
 
@@ -321,6 +326,7 @@ final LabSpec nursingProceduresLab = LabSpec(
         )),
       ],
     ),
+    ...nuLabProceduresExtra,
   ],
 );
 
@@ -392,6 +398,7 @@ final LabSpec nursingEmergencyLab = LabSpec(
         )),
       ],
     ),
+    ...nuLabEmergencyExtra,
   ],
 );
 
@@ -467,6 +474,7 @@ final LabSpec nursingShiftLab = LabSpec(
         )),
       ],
     ),
+    ...nuLabShiftExtra,
   ],
 );
 
@@ -488,7 +496,7 @@ final LabSpec medicineAnatomyLab = LabSpec(
   skills: const <String>['md_anatomy'],
   difficulty: LabDifficulty.foundation,
   minutes: 30,
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'atlas_test',
       title: 'Anatomy identification test',
@@ -506,6 +514,7 @@ final LabSpec medicineAnatomyLab = LabSpec(
         AnatomyIdStep(id: 'airway', title: 'Respiratory system', instructions: 'Name each highlighted structure.', diagramId: 'respiratory', regionIds: <String>['nasal', 'trachea', 'bronchi', 'lungs', 'diaphragm'], skills: <String>['md_anatomy']),
       ],
     ),
+    ...mdLabAnatomyExtra,
   ],
 );
 
@@ -605,6 +614,7 @@ final LabSpec medicineAssessmentLab = LabSpec(
         )),
       ],
     ),
+    ...mdLabAssessmentExtra,
   ],
 );
 
@@ -659,6 +669,7 @@ final LabSpec medicineEmergencyLab = LabSpec(
         )),
       ],
     ),
+    ...mdLabEmergencyExtra,
   ],
 );
 

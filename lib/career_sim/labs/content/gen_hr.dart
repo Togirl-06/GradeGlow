@@ -717,4 +717,4 @@ final LabSpec hrLabCapstoneSpec = designLab(
   ]),
 );
 
-final List<LabSpec> humanResourceManagementGenLabs = <LabSpec>[hrLabRecruitmentSpec, hrLabInterviewsSpec, hrLabOnboardingSpec, hrLabPerformanceSpec, hrLabRelationsSpec, hrLabWorkforceSpec, hrLabCapstoneSpec];
+final List<LabSpec> hrGenLabs = <LabSpec>[hrLabRecruitmentSpec, hrLabInterviewsSpec, hrLabOnboardingSpec, hrLabPerformanceSpec, hrLabRelationsSpec, hrLabWorkforceSpec, hrLabCapstoneSpec];

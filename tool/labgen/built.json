@@ -6,6 +6,13 @@
   "scenarios": 15,
   "title": "Auditing"
  },
+ "acc_lab_bookkeeping": {
+  "extends": true,
+  "major": "accounting",
+  "note": "",
+  "scenarios": 15,
+  "title": "Bookkeeping"
+ },
  "acc_lab_capstone": {
   "extends": false,
   "major": "accounting",
@@ -33,6 +40,20 @@
   "note": "Post journals to the ledger, extract and fix trial balances, calculate depreciation and ma",
   "scenarios": 15,
   "title": "General Ledger and Trial Balance"
+ },
+ "acc_lab_reconciliation": {
+  "extends": true,
+  "major": "accounting",
+  "note": "",
+  "scenarios": 15,
+  "title": "Bank Reconciliation"
+ },
+ "acc_lab_statements": {
+  "extends": true,
+  "major": "accounting",
+  "note": "",
+  "scenarios": 15,
+  "title": "Financial Statements"
  },
  "ae_lab_aero": {
   "extends": false,
@@ -748,12 +769,33 @@
   "scenarios": 15,
   "title": "Systems Administration"
  },
+ "md_lab_anatomy": {
+  "extends": true,
+  "major": "medicine",
+  "note": "",
+  "scenarios": 15,
+  "title": "Human Anatomy and Physiology"
+ },
+ "md_lab_assessment": {
+  "extends": true,
+  "major": "medicine",
+  "note": "",
+  "scenarios": 15,
+  "title": "Medical History and Patient Interview"
+ },
  "md_lab_diagnostics": {
   "extends": false,
   "major": "medicine",
   "note": "Interpret arterial blood gases and blood results, understand test accuracy and predictive ",
   "scenarios": 15,
   "title": "Diagnostic Investigation"
+ },
+ "md_lab_emergency": {
+  "extends": true,
+  "major": "medicine",
+  "note": "",
+  "scenarios": 15,
+  "title": "Emergency Medicine"
  },
  "md_lab_exam": {
   "extends": false,
@@ -867,6 +909,13 @@
   "scenarios": 15,
   "title": "Mobile UI Design"
  },
+ "nu_lab_admission": {
+  "extends": true,
+  "major": "nursing",
+  "note": "",
+  "scenarios": 15,
+  "title": "Patient Admission"
+ },
  "nu_lab_assessment": {
   "extends": false,
   "major": "nursing",
@@ -880,6 +929,13 @@
   "note": "Write SBAR handovers and progress notes, keep fluid balance charts, protect confidentialit",
   "scenarios": 15,
   "title": "Patient Documentation"
+ },
+ "nu_lab_emergency": {
+  "extends": true,
+  "major": "nursing",
+  "note": "",
+  "scenarios": 15,
+  "title": "Emergency Nursing"
  },
  "nu_lab_icu": {
   "extends": false,
@@ -895,6 +951,13 @@
   "scenarios": 15,
   "title": "Maternity Nursing"
  },
+ "nu_lab_meds": {
+  "extends": true,
+  "major": "nursing",
+  "note": "",
+  "scenarios": 15,
+  "title": "Medication Safety"
+ },
  "nu_lab_medsurg": {
   "extends": false,
   "major": "nursing",
@@ -908,6 +971,27 @@
   "note": "Care for children and families: weight-based dose and fluid calculations, febrile child as",
   "scenarios": 15,
   "title": "Paediatric Nursing"
+ },
+ "nu_lab_procedures": {
+  "extends": true,
+  "major": "nursing",
+  "note": "",
+  "scenarios": 15,
+  "title": "Nursing Procedures"
+ },
+ "nu_lab_shift": {
+  "extends": true,
+  "major": "nursing",
+  "note": "",
+  "scenarios": 15,
+  "title": "Full Hospital Shift"
+ },
+ "nu_lab_vitals": {
+  "extends": true,
+  "major": "nursing",
+  "note": "",
+  "scenarios": 15,
+  "title": "Vital Signs and Patient Monitoring"
  },
  "ph_lab_electricity": {
   "extends": false,

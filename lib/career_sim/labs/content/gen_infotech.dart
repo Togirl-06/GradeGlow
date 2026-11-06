@@ -504,4 +504,4 @@ final LabSpec itLabItsmSpec = designLab(
   ]),
 );
 
-final List<LabSpec> informationTechnologyGenLabs = <LabSpec>[itLabHelpdeskSpec, itLabHardwareSpec, itLabNetadminSpec, itLabSysadminSpec, itLabItsmSpec];
+final List<LabSpec> infotechGenLabs = <LabSpec>[itLabHelpdeskSpec, itLabHardwareSpec, itLabNetadminSpec, itLabSysadminSpec, itLabItsmSpec];

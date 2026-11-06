@@ -500,4 +500,4 @@ final LabSpec ieLabSimulationSpec = designLab(
   ]),
 );
 
-final List<LabSpec> industrialEngineeringGenLabs = <LabSpec>[ieLabManufacturingSpec, ieLabQualitySpec, ieLabOrSpec, ieLabSupplySpec, ieLabImprovementSpec, ieLabSimulationSpec];
+final List<LabSpec> industrialGenLabs = <LabSpec>[ieLabManufacturingSpec, ieLabQualitySpec, ieLabOrSpec, ieLabSupplySpec, ieLabImprovementSpec, ieLabSimulationSpec];

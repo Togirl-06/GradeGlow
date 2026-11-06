@@ -1,4 +1,5 @@
 import '../lab_models.dart';
+import 'gen_acc_core.dart';
 
 // Accounting (Professional Accounting Firm). The ledger, trial balance and
 // statements are computed live from the student's own entries.
@@ -49,7 +50,7 @@ final LabSpec accountingBookkeepingLab = LabSpec(
   skills: const <String>['bz_acct'],
   difficulty: LabDifficulty.foundation,
   minutes: 45,
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'riverside_month1',
       title: 'Riverside Bakery: month one',
@@ -94,6 +95,7 @@ final LabSpec accountingBookkeepingLab = LabSpec(
         ),
       ],
     ),
+    ...accLabBookkeepingExtra,
   ],
 );
 
@@ -110,7 +112,7 @@ final LabSpec accountingReconciliationLab = LabSpec(
   difficulty: LabDifficulty.intermediate,
   minutes: 30,
   prerequisites: const <String>['acc_lab_bookkeeping'],
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'sept_recon',
       title: 'Riverside Bakery: 30 September',
@@ -141,6 +143,7 @@ final LabSpec accountingReconciliationLab = LabSpec(
         ),
       ],
     ),
+    ...accLabReconciliationExtra,
   ],
 );
 
@@ -157,7 +160,7 @@ final LabSpec accountingStatementsLab = LabSpec(
   difficulty: LabDifficulty.intermediate,
   minutes: 30,
   prerequisites: const <String>['acc_lab_bookkeeping'],
-  scenarios: const <LabScenario>[
+  scenarios: <LabScenario>[
     LabScenario(
       id: 'year_end',
       title: 'Riverside Bakery: year-end accounts',
@@ -192,6 +195,7 @@ final LabSpec accountingStatementsLab = LabSpec(
         ),
       ],
     ),
+    ...accLabStatementsExtra,
   ],
 );
 

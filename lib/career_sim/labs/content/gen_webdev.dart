@@ -548,4 +548,4 @@ final LabSpec webLabClientSpec = designLab(
   ]),
 );
 
-final List<LabSpec> webDevelopmentGenLabs = <LabSpec>[webLabHtmlcssSpec, webLabJsSpec, webLabFrontendSpec, webLabBackendSpec, webLabA11YSpec, webLabClientSpec];
+final List<LabSpec> webdevGenLabs = <LabSpec>[webLabHtmlcssSpec, webLabJsSpec, webLabFrontendSpec, webLabBackendSpec, webLabA11YSpec, webLabClientSpec];

@@ -563,4 +563,4 @@ final LabSpec baLabCapstoneSpec = designLab(
   ]),
 );
 
-final List<LabSpec> businessAdministrationGenLabs = <LabSpec>[baLabOperationsSpec, baLabStrategySpec, baLabPeopleSpec, baLabProjectsSpec, baLabAnalyticsSpec, baLabCapstoneSpec];
+final List<LabSpec> bizadminGenLabs = <LabSpec>[baLabOperationsSpec, baLabStrategySpec, baLabPeopleSpec, baLabProjectsSpec, baLabAnalyticsSpec, baLabCapstoneSpec];

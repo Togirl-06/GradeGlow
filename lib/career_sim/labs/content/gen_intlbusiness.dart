@@ -726,4 +726,4 @@ final LabSpec ibLabCapstoneSpec = designLab(
   ]),
 );
 
-final List<LabSpec> internationalBusinessGenLabs = <LabSpec>[ibLabResearchSpec, ibLabTradeSpec, ibLabStrategySpec, ibLabSupplySpec, ibLabNegotiationSpec, ibLabCultureSpec, ibLabCapstoneSpec];
+final List<LabSpec> intlbusinessGenLabs = <LabSpec>[ibLabResearchSpec, ibLabTradeSpec, ibLabStrategySpec, ibLabSupplySpec, ibLabNegotiationSpec, ibLabCultureSpec, ibLabCapstoneSpec];

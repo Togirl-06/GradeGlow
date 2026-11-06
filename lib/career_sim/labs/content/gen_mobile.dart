@@ -589,4 +589,4 @@ final LabSpec mobLabProjectSpec = designLab(
   ]),
 );
 
-final List<LabSpec> mobileAppDevelopmentGenLabs = <LabSpec>[mobLabUiSpec, mobLabFlutterSpec, mobLabBackendSpec, mobLabTestingSpec, mobLabDeploySpec, mobLabProjectSpec];
+final List<LabSpec> mobileGenLabs = <LabSpec>[mobLabUiSpec, mobLabFlutterSpec, mobLabBackendSpec, mobLabTestingSpec, mobLabDeploySpec, mobLabProjectSpec];

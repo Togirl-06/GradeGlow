@@ -597,4 +597,4 @@ final LabSpec seLabMaintenanceSpec = designLab(
   ]),
 );
 
-final List<LabSpec> softwareEngineeringGenLabs = <LabSpec>[seLabRequirementsSpec, seLabDesignSpec, seLabDevelopmentSpec, seLabGitSpec, seLabTestingSpec, seLabMaintenanceSpec];
+final List<LabSpec> softwareEngGenLabs = <LabSpec>[seLabRequirementsSpec, seLabDesignSpec, seLabDevelopmentSpec, seLabGitSpec, seLabTestingSpec, seLabMaintenanceSpec];

@@ -240,4 +240,4 @@ final List<LabScenario> csLabProjectExtra = byLevel(<LabScenario>[
   ], person: _lead),
 ]);
 
-final List<LabSpec> computerScienceGenLabs = <LabSpec>[];
+final List<LabSpec> csCoreGenLabs = <LabSpec>[];

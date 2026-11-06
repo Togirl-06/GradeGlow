@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 13, Functionality completed: 0, Tested: 185, Verified complete: 0.
+**198 labs.** Not started: 0, Interface completed: 0, Functionality in progress: 2, Functionality completed: 0, Tested: 196, Verified complete: 0.
 
 ## Majors
 
@@ -21,7 +21,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Web Development | 6 | Tested |
 | School of Computer Science and Technology | Mobile Application Development | 6 | Tested |
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
-| School of Medicine and Health Sciences | Nursing | 12 | In progress |
+| School of Medicine and Health Sciences | Nursing | 12 | Tested |
 | School of Law | Law | 7 | Tested |
 | School of Engineering | Mechanical Engineering | 6 | In progress |
 | School of Engineering | Civil Engineering | 6 | Tested |
@@ -30,7 +30,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Engineering | Aerospace Engineering | 6 | Tested |
 | School of Engineering | Industrial Engineering | 6 | Tested |
 | School of Business and Economics | Business Administration | 6 | Tested |
-| School of Business and Economics | Accounting | 8 | In progress |
+| School of Business and Economics | Accounting | 8 | Tested |
 | School of Business and Economics | Finance | 7 | Tested |
 | School of Business and Economics | Economics | 6 | Tested |
 | School of Business and Economics | Entrepreneurship | 8 | Tested |
@@ -134,30 +134,30 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Human Anatomy and Physiology | Functionality in progress | 1 / 15 | `md_lab_anatomy` | 2D diagrams, not the required 3D body |
-| B. Medical History and Patient Interview | Functionality in progress | 1 / 15 | `md_lab_assessment` | 1 patient case |
+| A. Human Anatomy and Physiology | Functionality in progress | 16 / 15 | `md_lab_anatomy` | 2D diagrams, not the required 3D body; +15 generated scenarios |
+| B. Medical History and Patient Interview | Tested | 16 / 15 | `md_lab_assessment` | 1 patient case; +15 generated scenarios |
 | C. Physical Examination | Tested | 15 / 15 | `md_lab_exam` | Examine simulated patients system by system: interpret cardiovascular, respiratory, abdomi |
 | D. Diagnostic Investigation | Tested | 15 / 15 | `md_lab_diagnostics` | Interpret arterial blood gases and blood results, understand test accuracy and predictive  |
 | E. Clinical Reasoning and Diagnosis | Tested | 15 / 15 | `md_lab_reasoning` | Build differentials, calculate validated risk scores, recognise red flags and cognitive bi |
-| F. Emergency Medicine | Functionality in progress | 1 / 15 | `md_lab_emergency` | 1 case (anaphylaxis) |
+| F. Emergency Medicine | Tested | 16 / 15 | `md_lab_emergency` | 1 case (anaphylaxis); +15 generated scenarios |
 | G. Medical Research and Evidence | Tested | 15 / 15 | `md_lab_research` | Calculate treatment effects (ARR, RRR, NNT, odds ratios), appraise trials, frame clinical  |
 
 ### Nursing
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Patient Admission | Functionality in progress | 1 / 15 | `nu_lab_admission` | 1 patient |
-| B. Vital Signs and Patient Monitoring | Functionality in progress | 1 / 15 | `nu_lab_vitals` | NEWS2 scoring; 1 scenario |
+| A. Patient Admission | Tested | 16 / 15 | `nu_lab_admission` | 1 patient; +15 generated scenarios |
+| B. Vital Signs and Patient Monitoring | Tested | 16 / 15 | `nu_lab_vitals` | NEWS2 scoring; 1 scenario; +15 generated scenarios |
 | C. Patient Assessment | Tested | 15 / 15 | `nu_lab_assessment` | Assess patients systematically: score NEWS2 and choose the response, run an A–E assessment |
-| D. Medication Safety | Functionality in progress | 1 / 15 | `nu_lab_meds` | MAR checks; 1 scenario |
-| E. Nursing Procedures | Functionality in progress | 1 / 15 | `nu_lab_procedures` | 1 scenario |
+| D. Medication Safety | Tested | 16 / 15 | `nu_lab_meds` | MAR checks; 1 scenario; +15 generated scenarios |
+| E. Nursing Procedures | Tested | 16 / 15 | `nu_lab_procedures` | 1 scenario; +15 generated scenarios |
 | F. Patient Documentation | Tested | 15 / 15 | `nu_lab_documentation` | Write SBAR handovers and progress notes, keep fluid balance charts, protect confidentialit |
-| G. Emergency Nursing | Functionality in progress | 1 / 15 | `nu_lab_emergency` | 1 scenario |
+| G. Emergency Nursing | Tested | 16 / 15 | `nu_lab_emergency` | 1 scenario; +15 generated scenarios |
 | H. Medical-Surgical Nursing | Tested | 15 / 15 | `nu_lab_medsurg` | Run a surgical bay: calculate infusions and doses, manage post-operative care and wounds,  |
 | I. Paediatric Nursing | Tested | 15 / 15 | `nu_lab_paediatric` | Care for children and families: weight-based dose and fluid calculations, febrile child as |
 | J. Maternity Nursing | Tested | 15 / 15 | `nu_lab_maternity` | Support pregnancy, labour and the newborn: antenatal risk, labour progress, postpartum hae |
 | K. Intensive Care Nursing | Tested | 15 / 15 | `nu_lab_icu` | Care for critically ill patients: haemodynamic and neurological scores, ventilator alarms, |
-| L. Full Hospital Shift | Functionality in progress | 1 / 15 | `nu_lab_shift` | 1 shift |
+| L. Full Hospital Shift | Tested | 16 / 15 | `nu_lab_shift` | 1 shift; +15 generated scenarios |
 
 ### Law
 
@@ -252,11 +252,11 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Bookkeeping | Functionality in progress | 1 / 15 | `acc_lab_bookkeeping` | Journals posted to a ledger; 1 company |
+| A. Bookkeeping | Tested | 16 / 15 | `acc_lab_bookkeeping` | Journals posted to a ledger; 1 company; +15 generated scenarios |
 | B. Double-Entry Accounting | Tested | 15 / 15 | `acc_lab_double` | Apply debit and credit rules, check journals balance, keep the accounting equation true an |
 | C. General Ledger and Trial Balance | Tested | 15 / 15 | `acc_lab_ledger` | Post journals to the ledger, extract and fix trial balances, calculate depreciation and ma |
-| D. Bank Reconciliation | Functionality in progress | 1 / 15 | `acc_lab_reconciliation` | 1 reconciliation |
-| E. Financial Statements | Functionality in progress | 1 / 15 | `acc_lab_statements` | Income statement and balance sheet; no cash flow yet |
+| D. Bank Reconciliation | Tested | 16 / 15 | `acc_lab_reconciliation` | 1 reconciliation; +15 generated scenarios |
+| E. Financial Statements | Tested | 16 / 15 | `acc_lab_statements` | Income statement and balance sheet; no cash flow yet; +15 generated scenarios |
 | F. Cost and Management Accounting | Tested | 15 / 15 | `acc_lab_cost` | Run break-even and target-profit analysis, compute variances, price products and advise ma |
 | G. Auditing | Tested | 15 / 15 | `acc_lab_audit` | Plan an audit by risk, select samples, run analytics for anomalies and duplicates, respond |
 | H. Accounting Capstone | Tested | 15 / 15 | `acc_lab_capstone` | Close the books for a client and advise them: ratio analysis, cash-flow warnings, month-en |

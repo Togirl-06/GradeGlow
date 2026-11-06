@@ -577,7 +577,7 @@ def emit_major(m, fname):
   ]),
 );
 """)
-    list_name = camel(m.major) + 'GenLabs'
+    list_name = camel(fname) + 'GenLabs'
     lines.append(f"final List<LabSpec> {list_name} = <LabSpec>[{', '.join(names)}];")
     lines.append('')
     return '\n'.join(lines), list_name
@@ -652,7 +652,11 @@ def build(majors):
     reg += ["import '../lab_models.dart';", '', '/// Labs generated from tool/labgen/majors.', 'final List<LabSpec> generatedLabs = <LabSpec>[']
     reg += [f'  ...{ln},' for _, ln, _, _ in registry]
     reg += ['];', '', 'const Map<String, String> generatedMajorLabels = <String, String>{']
-    reg += [f"  {ds(mj)}: {ds(nm.split(' at ')[0])}," for _, _, mj, nm in registry]
+    seen_majors = set()
+    for _, _, mj, nm in registry:
+        if mj not in seen_majors:
+            seen_majors.add(mj)
+            reg.append(f"  {ds(mj)}: {ds(nm.split(' at ')[0])},")
     reg += ['};', '']
     with open(os.path.join(ROOT, 'lib/career_sim/labs/content/gen_registry.dart'), 'w') as f:
         f.write('\n'.join(reg))

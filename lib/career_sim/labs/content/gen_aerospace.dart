@@ -501,4 +501,4 @@ final LabSpec aeLabProjectSpec = designLab(
   ]),
 );
 
-final List<LabSpec> aerospaceEngineeringGenLabs = <LabSpec>[aeLabAeroSpec, aeLabDesignSpec, aeLabFlightSpec, aeLabPropulsionSpec, aeLabSystemsSpec, aeLabProjectSpec];
+final List<LabSpec> aerospaceGenLabs = <LabSpec>[aeLabAeroSpec, aeLabDesignSpec, aeLabFlightSpec, aeLabPropulsionSpec, aeLabSystemsSpec, aeLabProjectSpec];

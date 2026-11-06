@@ -532,4 +532,4 @@ final LabSpec dsLabCapstoneSpec = designLab(
   ]),
 );
 
-final List<LabSpec> dataScienceGenLabs = <LabSpec>[dsLabCleaningSpec, dsLabAnalysisSpec, dsLabVizSpec, dsLabStatsSpec, dsLabPredictiveSpec, dsLabCapstoneSpec];
+final List<LabSpec> datasciGenLabs = <LabSpec>[dsLabCleaningSpec, dsLabAnalysisSpec, dsLabVizSpec, dsLabStatsSpec, dsLabPredictiveSpec, dsLabCapstoneSpec];

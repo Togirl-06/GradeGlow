@@ -440,4 +440,4 @@ final LabSpec aiLabEthicsSpec = designLab(
   ]),
 );
 
-final List<LabSpec> artificialIntelligenceGenLabs = <LabSpec>[aiLabMlSpec, aiLabNnSpec, aiLabNlpSpec, aiLabGenaiSpec, aiLabEthicsSpec];
+final List<LabSpec> aiGenLabs = <LabSpec>[aiLabMlSpec, aiLabNnSpec, aiLabNlpSpec, aiLabGenaiSpec, aiLabEthicsSpec];
