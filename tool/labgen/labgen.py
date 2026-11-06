@@ -448,13 +448,41 @@ def emit_major(m, fname):
     return '\n'.join(lines), list_name
 
 
+DEPT_SKILLS = {}
+
+
+def _load_dept_skills():
+    """Skill ids each department defines (labs may only train their own department's skills)."""
+    if DEPT_SKILLS:
+        return DEPT_SKILLS
+    folder = os.path.join(ROOT, 'lib/career_sim/content')
+    for f in os.listdir(folder):
+        src = open(os.path.join(folder, f)).read()
+        for m in re.finditer(r"Department\(\s*id: '([a-z_]+)'(.*?)\n\);", src, re.S):
+            body = m.group(2)
+            ids = set(re.findall(r"SkillDef\('([a-z_]+)'", body))
+            ref = re.search(r"skills: (_[a-zA-Z]+)", body)
+            if ref:
+                lst = re.search(ref.group(1) + r" = <SkillDef>\[(.*?)\];", src, re.S)
+                if lst:
+                    ids |= set(re.findall(r"SkillDef\('([a-z_]+)'", lst.group(1)))
+            DEPT_SKILLS[m.group(1)] = ids
+    return DEPT_SKILLS
+
+
 def build(majors):
     """majors: list of (module name, Major). Returns built index."""
     built = {}
     registry = []
     for fname, m in majors:
+        allowed = _load_dept_skills().get(m.dept)
+        if not allowed:
+            raise ContentError(f'{m.major}: department {m.dept} not found or has no skills')
         for lab in m.labs:
             where = f'{m.major}/{lab.id}'
+            bad = [k for k in lab.skills if k not in allowed]
+            if bad:
+                raise ContentError(f'{where}: skills {bad} are not defined by department {m.dept} ({sorted(allowed)})')
             n = 0
             for p in lab.problems:
                 validate_design(p, f'{where}/{p.key}')

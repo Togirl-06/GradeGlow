@@ -35,6 +35,84 @@
   "scenarios": 15,
   "title": "Aircraft Systems"
  },
+ "ec_lab_data": {
+  "major": "economics",
+  "note": "Inflation baskets, real wages, GDP per capita, labour-market rates and compound growth.",
+  "scenarios": 15,
+  "title": "Economic Data Analysis"
+ },
+ "ec_lab_international": {
+  "major": "economics",
+  "note": "Tariffs, exchange rates, comparative advantage, purchasing power parity and the trade bala",
+  "scenarios": 15,
+  "title": "International Economics"
+ },
+ "ec_lab_macro": {
+  "major": "economics",
+  "note": "Fiscal multipliers, interest-rate decisions, real growth, Okun\u2019s law and public-debt dynam",
+  "scenarios": 15,
+  "title": "Macroeconomics"
+ },
+ "ec_lab_micro": {
+  "major": "economics",
+  "note": "Market equilibrium, elasticity, tax incidence, price ceilings and price floors with live s",
+  "scenarios": 15,
+  "title": "Microeconomics"
+ },
+ "ec_lab_policy": {
+  "major": "economics",
+  "note": "Carbon tax, minimum wage, congestion charging, green subsidies and tax rates \u2014 each with a",
+  "scenarios": 15,
+  "title": "Public Policy"
+ },
+ "ec_lab_structures": {
+  "major": "economics",
+  "note": "Monopoly, perfect competition, Cournot duopoly, price discrimination and merger concentrat",
+  "scenarios": 15,
+  "title": "Market Structures"
+ },
+ "fi_lab_capstone": {
+  "major": "finance",
+  "note": "A full investment decision for a client: project NPV, financing, sensitivity and the board",
+  "scenarios": 15,
+  "title": "Finance Capstone"
+ },
+ "fi_lab_corporate": {
+  "major": "finance",
+  "note": "WACC, capital structure, lease-or-buy, working capital and dividend policy for a growing f",
+  "scenarios": 15,
+  "title": "Corporate Finance"
+ },
+ "fi_lab_fsa": {
+  "major": "finance",
+  "note": "Liquidity, profitability, efficiency and leverage ratios from a client company\u2019s accounts.",
+  "scenarios": 15,
+  "title": "Financial Statement Analysis"
+ },
+ "fi_lab_investment": {
+  "major": "finance",
+  "note": "Net present value, payback, CAPM required returns, dividend valuation and bond pricing.",
+  "scenarios": 15,
+  "title": "Investment Analysis"
+ },
+ "fi_lab_math": {
+  "major": "finance",
+  "note": "Simple and compound interest, present value, annuities and loan schedules for real client ",
+  "scenarios": 15,
+  "title": "Financial Mathematics"
+ },
+ "fi_lab_portfolio": {
+  "major": "finance",
+  "note": "Two-asset portfolios, diversification, Sharpe ratio, rebalancing and drawdown \u2014 with simul",
+  "scenarios": 15,
+  "title": "Portfolio Management"
+ },
+ "fi_lab_risk": {
+  "major": "finance",
+  "note": "Investigate losses and near-misses: currency, interest-rate, credit, liquidity and operati",
+  "scenarios": 15,
+  "title": "Risk Management"
+ },
  "ie_lab_improvement": {
   "major": "industrial_engineering",
   "note": "Investigate performance problems on the shop floor and choose the improvement that fixes t",

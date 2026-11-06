@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 132, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 48, Verified complete: 0.
+**198 labs.** Not started: 119, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 61, Verified complete: 0.
 
 ## Majors
 
@@ -31,8 +31,8 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Engineering | Industrial Engineering | 6 | Tested |
 | School of Business and Economics | Business Administration | 6 | Not started |
 | School of Business and Economics | Accounting | 8 | In progress |
-| School of Business and Economics | Finance | 7 | Not started |
-| School of Business and Economics | Economics | 6 | Not started |
+| School of Business and Economics | Finance | 7 | Tested |
+| School of Business and Economics | Economics | 6 | Tested |
 | School of Business and Economics | Entrepreneurship | 8 | Not started |
 | School of Business and Economics | Marketing | 7 | Not started |
 | School of Business and Economics | Human Resources Management | 7 | Not started |
@@ -265,24 +265,24 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Financial Mathematics | Not started | 0 / 15 |  |  |
-| B. Financial Statement Analysis | Not started | 0 / 15 |  |  |
-| C. Investment Analysis | Not started | 0 / 15 |  |  |
-| D. Portfolio Management | Not started | 0 / 15 |  |  |
-| E. Corporate Finance | Not started | 0 / 15 |  |  |
-| F. Risk Management | Not started | 0 / 15 |  |  |
-| G. Finance Capstone | Not started | 0 / 15 |  |  |
+| A. Financial Mathematics | Tested | 15 / 15 | `fi_lab_math` | Simple and compound interest, present value, annuities and loan schedules for real client  |
+| B. Financial Statement Analysis | Tested | 15 / 15 | `fi_lab_fsa` | Liquidity, profitability, efficiency and leverage ratios from a client company’s accounts. |
+| C. Investment Analysis | Tested | 15 / 15 | `fi_lab_investment` | Net present value, payback, CAPM required returns, dividend valuation and bond pricing. |
+| D. Portfolio Management | Tested | 15 / 15 | `fi_lab_portfolio` | Two-asset portfolios, diversification, Sharpe ratio, rebalancing and drawdown — with simul |
+| E. Corporate Finance | Tested | 15 / 15 | `fi_lab_corporate` | WACC, capital structure, lease-or-buy, working capital and dividend policy for a growing f |
+| F. Risk Management | Tested | 15 / 15 | `fi_lab_risk` | Investigate losses and near-misses: currency, interest-rate, credit, liquidity and operati |
+| G. Finance Capstone | Tested | 15 / 15 | `fi_lab_capstone` | A full investment decision for a client: project NPV, financing, sensitivity and the board |
 
 ### Economics
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Microeconomics | Not started | 0 / 15 |  |  |
-| B. Macroeconomics | Not started | 0 / 15 |  |  |
-| C. Market Structures | Not started | 0 / 15 |  |  |
-| D. Economic Data Analysis | Not started | 0 / 15 |  |  |
-| E. Public Policy | Not started | 0 / 15 |  |  |
-| F. International Economics | Not started | 0 / 15 |  |  |
+| A. Microeconomics | Tested | 15 / 15 | `ec_lab_micro` | Market equilibrium, elasticity, tax incidence, price ceilings and price floors with live s |
+| B. Macroeconomics | Tested | 15 / 15 | `ec_lab_macro` | Fiscal multipliers, interest-rate decisions, real growth, Okun’s law and public-debt dynam |
+| C. Market Structures | Tested | 15 / 15 | `ec_lab_structures` | Monopoly, perfect competition, Cournot duopoly, price discrimination and merger concentrat |
+| D. Economic Data Analysis | Tested | 15 / 15 | `ec_lab_data` | Inflation baskets, real wages, GDP per capita, labour-market rates and compound growth. |
+| E. Public Policy | Tested | 15 / 15 | `ec_lab_policy` | Carbon tax, minimum wage, congestion charging, green subsidies and tax rates — each with a |
+| F. International Economics | Tested | 15 / 15 | `ec_lab_international` | Tariffs, exchange rates, comparative advantage, purchasing power parity and the trade bala |
 
 ### Entrepreneurship
 
