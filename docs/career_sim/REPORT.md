@@ -135,6 +135,24 @@ Holliday–Segar, CURB-65, Wells, CHA2DS2-VASc, UK GDPR breach timing, UK VAT
 basics) but has not been reviewed by a practising professional, and it is
 teaching material, not clinical guidance.
 
+## Navigation and simulated pay
+
+* **Simpler home page.** The Career tab is now one short page: earnings chip,
+  a "Find" search box, the next step, practical training, and large shortcut
+  tiles in three groups (Learn, Get hired, Work and earn). Long lists moved to
+  their own screens (Progress, Portfolio, Applications).
+* **Find** (`ui/money_find_screens.dart`) searches every lab (title, summary,
+  objectives), training module, open job and main screen; the student's own
+  field ranks first. Practical Labs has its own search box and lists the
+  student's major first.
+* **Simulated pay** (`engine/pay_rules.dart`). Passing a lab scenario the first
+  time pays £60 / £110 / £180 by level, scaled by score. Each evaluated work
+  assignment pays a week's salary, +10% at a supervisor score of 85+, and a
+  promotion pays two weeks at the new salary. It is kept as a ledger in the
+  saved profile (old profiles load with £0). "My Earnings" shows the balance and
+  history and says plainly that it is in-game money, not real money.
+  Nothing can be withdrawn or spent.
+
 ## Fixes to existing code found along the way
 
 * Debug Desk starters kept the old function names, so the judge could never

@@ -167,7 +167,7 @@ void main() {
     await back(t);
 
     // 7. Career Centre: resume and trainee status.
-    await tapKey(t, 'dash_career_centre');
+    await tapKey(t, 'nav_career');
     await tapKey(t, 'open_resume');
     await t.enterText(k('cv_email'), 'ada@example.com');
     await t.enterText(k('cv_headline'), 'Computer Science student — backend and algorithms');
