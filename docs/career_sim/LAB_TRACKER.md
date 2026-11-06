@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 15, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 165, Verified complete: 0.
+**198 labs.** Not started: 9, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 171, Verified complete: 0.
 
 ## Majors
 
@@ -148,15 +148,15 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 |---|---|---|---|---|
 | A. Patient Admission | Functionality in progress | 1 / 15 | `nu_lab_admission` | 1 patient |
 | B. Vital Signs and Patient Monitoring | Functionality in progress | 1 / 15 | `nu_lab_vitals` | NEWS2 scoring; 1 scenario |
-| C. Patient Assessment | Not started | 0 / 15 |  |  |
+| C. Patient Assessment | Tested | 15 / 15 | `nu_lab_assessment` | Assess patients systematically: score NEWS2 and choose the response, run an A–E assessment |
 | D. Medication Safety | Functionality in progress | 1 / 15 | `nu_lab_meds` | MAR checks; 1 scenario |
 | E. Nursing Procedures | Functionality in progress | 1 / 15 | `nu_lab_procedures` | 1 scenario |
-| F. Patient Documentation | Not started | 0 / 15 |  |  |
+| F. Patient Documentation | Tested | 15 / 15 | `nu_lab_documentation` | Write SBAR handovers and progress notes, keep fluid balance charts, protect confidentialit |
 | G. Emergency Nursing | Functionality in progress | 1 / 15 | `nu_lab_emergency` | 1 scenario |
-| H. Medical-Surgical Nursing | Not started | 0 / 15 |  |  |
-| I. Paediatric Nursing | Not started | 0 / 15 |  |  |
-| J. Maternity Nursing | Not started | 0 / 15 |  |  |
-| K. Intensive Care Nursing | Not started | 0 / 15 |  |  |
+| H. Medical-Surgical Nursing | Tested | 15 / 15 | `nu_lab_medsurg` | Run a surgical bay: calculate infusions and doses, manage post-operative care and wounds,  |
+| I. Paediatric Nursing | Tested | 15 / 15 | `nu_lab_paediatric` | Care for children and families: weight-based dose and fluid calculations, febrile child as |
+| J. Maternity Nursing | Tested | 15 / 15 | `nu_lab_maternity` | Support pregnancy, labour and the newborn: antenatal risk, labour progress, postpartum hae |
+| K. Intensive Care Nursing | Tested | 15 / 15 | `nu_lab_icu` | Care for critically ill patients: haemodynamic and neurological scores, ventilator alarms, |
 | L. Full Hospital Shift | Functionality in progress | 1 / 15 | `nu_lab_shift` | 1 shift |
 
 ### Law

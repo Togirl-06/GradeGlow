@@ -659,6 +659,42 @@
   "scenarios": 15,
   "title": "Mobile UI Design"
  },
+ "nu_lab_assessment": {
+  "major": "nursing",
+  "note": "Assess patients systematically: score NEWS2 and choose the response, run an A\u2013E assessment",
+  "scenarios": 15,
+  "title": "Patient Assessment"
+ },
+ "nu_lab_documentation": {
+  "major": "nursing",
+  "note": "Write SBAR handovers and progress notes, keep fluid balance charts, protect confidentialit",
+  "scenarios": 15,
+  "title": "Patient Documentation"
+ },
+ "nu_lab_icu": {
+  "major": "nursing",
+  "note": "Care for critically ill patients: haemodynamic and neurological scores, ventilator alarms,",
+  "scenarios": 15,
+  "title": "Intensive Care Nursing"
+ },
+ "nu_lab_maternity": {
+  "major": "nursing",
+  "note": "Support pregnancy, labour and the newborn: antenatal risk, labour progress, postpartum hae",
+  "scenarios": 15,
+  "title": "Maternity Nursing"
+ },
+ "nu_lab_medsurg": {
+  "major": "nursing",
+  "note": "Run a surgical bay: calculate infusions and doses, manage post-operative care and wounds, ",
+  "scenarios": 15,
+  "title": "Medical-Surgical Nursing"
+ },
+ "nu_lab_paediatric": {
+  "major": "nursing",
+  "note": "Care for children and families: weight-based dose and fluid calculations, febrile child as",
+  "scenarios": 15,
+  "title": "Paediatric Nursing"
+ },
  "ph_lab_electricity": {
   "major": "physics",
   "note": "Current limiting, parallel networks, internal resistance, resistivity and RC timing on the",
