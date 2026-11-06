@@ -124,7 +124,7 @@ List<FindResult> findIndex(CareerSimStore store) {
   return <FindResult>[
     FindResult('labs', 'Screen', 'Practical Labs', 'All hands-on lab work by major', Icons.science_rounded, () => const PracticalLabsScreen()),
     FindResult('money', 'Screen', 'My Earnings', 'Pay, balance and how to earn more', Icons.account_balance_wallet_rounded, () => const MoneyScreen()),
-    FindResult('jobs', 'Screen', 'Job Board', 'Open jobs and internships', Icons.work_outline_rounded, () => const JobBoardScreen()),
+    FindResult('jobs', 'Screen', 'Job Board', 'Opportunities: open jobs and internships', Icons.work_outline_rounded, () => const JobBoardScreen()),
     FindResult('career', 'Screen', 'Career Centre', 'Resume, cover letter, trainee status', Icons.business_center_rounded, () => const CareerCentreScreen()),
     FindResult('applications', 'Screen', 'My Applications', 'Applications, interviews and offers', Icons.track_changes_rounded, () => const ApplicationsTrackerScreen()),
     FindResult('workplace', 'Screen', 'My Workplace', 'Assignments from your supervisor', Icons.apartment_rounded, () => const WorkplaceScreen()),
