@@ -6,7 +6,7 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 32, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 148, Verified complete: 0.
+**198 labs.** Not started: 27, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 153, Verified complete: 0.
 
 ## Majors
 
@@ -17,7 +17,7 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 | School of Computer Science and Technology | Artificial Intelligence | 5 | Tested |
 | School of Computer Science and Technology | Data Science | 6 | Tested |
 | School of Computer Science and Technology | Cybersecurity | 6 | Tested |
-| School of Computer Science and Technology | Information Technology | 5 | Not started |
+| School of Computer Science and Technology | Information Technology | 5 | Tested |
 | School of Computer Science and Technology | Web Development | 6 | Not started |
 | School of Computer Science and Technology | Mobile Application Development | 6 | Not started |
 | School of Medicine and Health Sciences | Medicine | 7 | In progress |
@@ -102,11 +102,11 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. IT Help Desk | Not started | 0 / 15 |  |  |
-| B. Hardware Support | Not started | 0 / 15 |  |  |
-| C. Network Administration | Not started | 0 / 15 |  |  |
-| D. Systems Administration | Not started | 0 / 15 |  |  |
-| E. IT Service Management | Not started | 0 / 15 |  |  |
+| A. IT Help Desk | Tested | 15 / 15 | `it_lab_helpdesk` | Work the service desk: prioritise tickets, verify callers, troubleshoot remotely and write |
+| B. Hardware Support | Tested | 15 / 15 | `it_lab_hardware` | Size power supplies and UPS units, diagnose failed and overheating PCs, and repair and dis |
+| C. Network Administration | Tested | 15 / 15 | `it_lab_netadmin` | Monitor availability, plan VLANs and Wi-Fi, size access points and fix DNS faults on the c |
+| D. Systems Administration | Tested | 15 / 15 | `it_lab_sysadmin` | Automate account provisioning and audits, monitor disks and logs, plan patching and backup |
+| E. IT Service Management | Tested | 15 / 15 | `it_lab_itsm` | Run ITIL-style processes: classify work, staff the service desk, review changes, manage SL |
 
 ### Web Development
 

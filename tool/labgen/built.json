@@ -551,6 +551,36 @@
   "scenarios": 15,
   "title": "Supply Chain"
  },
+ "it_lab_hardware": {
+  "major": "information_technology",
+  "note": "Size power supplies and UPS units, diagnose failed and overheating PCs, and repair and dis",
+  "scenarios": 15,
+  "title": "Hardware Support"
+ },
+ "it_lab_helpdesk": {
+  "major": "information_technology",
+  "note": "Work the service desk: prioritise tickets, verify callers, troubleshoot remotely and write",
+  "scenarios": 15,
+  "title": "IT Help Desk"
+ },
+ "it_lab_itsm": {
+  "major": "information_technology",
+  "note": "Run ITIL-style processes: classify work, staff the service desk, review changes, manage SL",
+  "scenarios": 15,
+  "title": "IT Service Management"
+ },
+ "it_lab_netadmin": {
+  "major": "information_technology",
+  "note": "Monitor availability, plan VLANs and Wi-Fi, size access points and fix DNS faults on the c",
+  "scenarios": 15,
+  "title": "Network Administration"
+ },
+ "it_lab_sysadmin": {
+  "major": "information_technology",
+  "note": "Automate account provisioning and audits, monitor disks and logs, plan patching and backup",
+  "scenarios": 15,
+  "title": "Systems Administration"
+ },
  "mk_lab_ads": {
   "major": "marketing",
   "note": "Build paid campaigns: budget, bids, targeting and creative choices that hit acquisition ta",
