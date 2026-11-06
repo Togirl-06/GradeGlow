@@ -1059,7 +1059,7 @@ final List<JobPosting> marketPostings = <JobPosting>[
       responsibilities: <String>['Manage the design office', 'Own delivery and quality'], description: 'Manage engineering teams.'),
   // --- School of Business and Economics
   _role(id: 'biz_analyst', family: 'business', title: 'Business Analyst', level: 'Junior', salary: 66000, majors: <String>['business_administration', 'international_business'],
-      keywords: <String>['Excel', 'Data analysis', 'Requirements', 'Presentation'], preferredKeywords: <String>['SQL', 'Project management'],
+      keywords: <String>['Excel', 'Data analysis', 'Requirements gathering', 'Presentation'], preferredKeywords: <String>['SQL', 'Project management'],
       education: "Bachelor's in business, economics or a related field", educationFields: _bizEdu,
       responsibilities: <String>['Analyse business performance', 'Write business cases', 'Run meetings with stakeholders', 'Present recommendations'],
       description: 'Help leaders make decisions with clear analysis.'),
@@ -1190,7 +1190,8 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
     final LabSpec? l = LabCatalog.lab(id);
     if (l == null) continue;
     labs.add(l);
-    perLab.add(<LabScenario>[for (final LabDifficulty d in LabDifficulty.values) ...l.atLevel(d)]);
+    // Two tasks per level from each lab, so the work grows harder over time.
+    perLab.add(<LabScenario>[for (final LabDifficulty d in LabDifficulty.values) ...l.atLevel(d).take(2)]);
   }
   final List<AssignmentSpec> out = <AssignmentSpec>[];
   // Round-robin across labs so consecutive days bring different kinds of work.
@@ -1199,8 +1200,9 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
       if (round >= perLab[k].length) continue;
       final LabSpec l = labs[k];
       final LabScenario sc = perLab[k][round];
+      final bool lead = sc.level == LabDifficulty.advanced;
       out.add(AssignmentSpec(
-        id: 'mk_${f.id}_${sc.id}',
+        id: 'mk_${f.id}_${sc.id}${lead ? '_lead' : ''}',
         title: sc.title,
         ticket: '${sc.briefing.what} ${sc.briefing.why}'.trim(),
         acceptance: <String>[
@@ -1221,7 +1223,7 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
           LabDifficulty.intermediate => 3,
           LabDifficulty.advanced => 4,
         },
-        leadership: sc.level == LabDifficulty.advanced,
+        leadership: lead,
       ));
     }
   }

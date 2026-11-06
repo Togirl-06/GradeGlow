@@ -74,42 +74,6 @@ class WorkplaceScreen extends StatelessWidget {
             ),
           if (store.onboardingLeft(e).isNotEmpty) OnboardingCard(employment: e),
           SectionCard(
-            title: 'Company overview',
-            subtitle: CareerCatalog.posting(e.postingId)?.company.industry,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text(CareerCatalog.posting(e.postingId)?.company.about ?? e.employer, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
-              const SizedBox(height: 6),
-              Text('Team: ${CareerCatalog.posting(e.postingId)?.company.team ?? ''}', style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
-              const SizedBox(height: 6),
-              Text('Responsibilities', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
-              BulletList(CareerCatalog.posting(e.postingId)?.responsibilities ?? const <String>[]),
-            ]),
-          ),
-          SectionCard(
-            title: 'Messages',
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              for (final CareerEvent m in p.log.reversed.where((CareerEvent x) => x.kind == 'work' || x.kind == 'milestone').take(5))
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Text('Day ${m.day} · ${m.text}', style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
-                ),
-              if (!p.log.any((CareerEvent x) => x.kind == 'work')) Text('No messages yet.', style: TextStyle(color: VuV2Colors.mute)),
-            ]),
-          ),
-          SectionCard(
-            title: 'Earnings',
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text('Virtual balance ${usd(p.balanceCents)} · paid ${PayRules.frequencyLabel(e.payFrequency).toLowerCase()} · next paycheck after ${store.weeksToPayday(e)} more approved week(s)',
-                  style: TextStyle(color: VuV2Colors.ink)),
-              TextButton(
-                key: const ValueKey<String>('workplace_earnings'),
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const MoneyScreen())),
-                child: const Text('Open My Earnings'),
-              ),
-            ]),
-          ),
-          if (e.reviews.isNotEmpty) ReviewCard(review: e.reviews.last),
-          SectionCard(
             title: 'Performance',
             trailing: const ValidatedBadge(label: 'Supervisor rubric'),
             child: Column(children: <Widget>[
@@ -169,6 +133,42 @@ class WorkplaceScreen extends StatelessWidget {
                         ],
                       ),
           ),
+          SectionCard(
+            title: 'Company overview',
+            subtitle: CareerCatalog.posting(e.postingId)?.company.industry,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              Text(CareerCatalog.posting(e.postingId)?.company.about ?? e.employer, style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+              const SizedBox(height: 6),
+              Text('Team: ${CareerCatalog.posting(e.postingId)?.company.team ?? ''}', style: TextStyle(color: VuV2Colors.ink, height: 1.4)),
+              const SizedBox(height: 6),
+              Text('Responsibilities', style: TextStyle(color: VuV2Colors.ink, fontWeight: FontWeight.w700)),
+              BulletList(CareerCatalog.posting(e.postingId)?.responsibilities ?? const <String>[]),
+            ]),
+          ),
+          SectionCard(
+            title: 'Messages',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              for (final CareerEvent m in p.log.reversed.where((CareerEvent x) => x.kind == 'work' || x.kind == 'milestone').take(5))
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text('Day ${m.day} · ${m.text}', style: TextStyle(color: VuV2Colors.ink, fontSize: 13)),
+                ),
+              if (!p.log.any((CareerEvent x) => x.kind == 'work')) Text('No messages yet.', style: TextStyle(color: VuV2Colors.mute)),
+            ]),
+          ),
+          SectionCard(
+            title: 'Earnings',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              Text('Virtual balance ${usd(p.balanceCents)} · paid ${PayRules.frequencyLabel(e.payFrequency).toLowerCase()} · next paycheck after ${store.weeksToPayday(e)} more approved week(s)',
+                  style: TextStyle(color: VuV2Colors.ink)),
+              TextButton(
+                key: const ValueKey<String>('workplace_earnings'),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const MoneyScreen())),
+                child: const Text('Open My Earnings'),
+              ),
+            ]),
+          ),
+          if (e.reviews.isNotEmpty) ReviewCard(review: e.reviews.last),
           if (e.stage != CareerStage.intern)
             SectionCard(
               title: 'Promotion',

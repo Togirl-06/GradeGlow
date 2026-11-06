@@ -810,11 +810,11 @@ class CareerSimStore extends ChangeNotifier {
     if (a.status != ApplicationStatus.offerReceived || o == null) throw CareerActionException('There is no open offer.');
     if (profile.day > o.respondByDay) throw CareerActionException('This offer has expired.');
     if (profile.currentJob != null) throw CareerActionException('Resign from your current role before accepting.');
-    final String signed = (signature ?? profile.resume.fullName).trim();
-    if (signed.split(RegExp(r'\s+')).length < 2) throw CareerActionException('Type your full name to sign the contract.');
     final String name = profile.resume.fullName.trim();
-    if (signature != null && name.isNotEmpty && signed.toLowerCase() != name.toLowerCase()) {
-      throw CareerActionException('Sign with the name on your profile: $name.');
+    final String signed = (signature ?? (name.isEmpty ? 'Accepted in writing' : name)).trim();
+    if (signature != null) {
+      if (signed.split(RegExp(r'\s+')).length < 2) throw CareerActionException('Type your full name to sign the contract.');
+      if (name.isNotEmpty && signed.toLowerCase() != name.toLowerCase()) throw CareerActionException('Sign with the name on your profile: $name.');
     }
     final Employment e = Employment(
       id: _id('job'),
