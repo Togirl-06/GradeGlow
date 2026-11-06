@@ -153,6 +153,95 @@ teaching material, not clinical guidance.
   history and says plainly that it is in-game money, not real money.
   Nothing can be withdrawn or spent.
 
+## Employment journey with real resumes (virtual USD)
+
+* **Resume upload** (`lib/career_sim/resume/`). PDF and Word .docx files are
+  read on the device by a pure-Dart extractor (works on web and phones):
+  PDF objects and compressed object streams, Flate/ASCII85, ToUnicode CMaps
+  and WinAnsi fonts; DOCX body, tables and headers. The text is split into
+  an editable profile (name, contact, summary, education, experience,
+  skills, projects, certifications, achievements). Nothing is added that is
+  not in the file. Scanned (image-only) PDFs are refused with a message.
+  Files are stored at `users/{uid}/resumes/` in Firebase Storage. New rules
+  allow only the owner, PDF/DOCX and under 5 MB. Students can replace or
+  delete a resume.
+* **Resume analysis**: a rule-based quality score with strengths,
+  weaknesses and suggestions, and a per-job compatibility score that names
+  the matched and missing skills, checks education and experience, and
+  explains each point. Internships and entry roles count projects instead
+  of paid experience.
+* **Job marketplace** (`content/job_market.dart`): 67 roles from
+  internship to management. They cover every title in the brief, across
+  computing, health, law, engineering, business, mathematics, sciences and
+  communication, at 18 simulated employers. Each listing has a department,
+  employment type, level, hours, location and remote status, a USD salary,
+  a deadline, the number of positions, required education, required and
+  preferred skills, responsibilities and benefits. Clinical and legal roles
+  carry a no-licence notice.
+* **Application**: choose the uploaded or built resume, write a cover
+  letter, answer the employer's questions (graded by rubric), review and
+  submit. Screening weighs the resume match (40), resume quality (10),
+  letter and answers (25) and practical evidence from GradeGlow labs (25).
+  It shortlists or rejects with written gaps. Duplicate applications are
+  refused.
+* **Interview**: opens with a question about the candidate's own resume,
+  then the role's questions (the brief's examples for software, nursing,
+  finance and law, and others), then the department panel. Follow-ups adapt
+  to the answers. The report shows four competency scores and the strongest
+  and weakest answers.
+* **Offer → contract → onboarding**: the offer shows the salary, annual and
+  monthly gross, pay schedule, hours, start day, responsibilities, benefits
+  and expectations. One reasoned negotiation can raise it by up to 5%
+  within the band. Accepting means signing a simulated contract with the
+  profile name. A five-item onboarding checklist must be finished before
+  the first assignment.
+* **Work**: each role's assignments are real scenarios from that field's
+  practical labs, harder over time, with advanced tasks counting as
+  leadership. Nursing and medicine jobs also assign virtual-hospital
+  placements, including the full ward shift.
+* **Pay** (`engine/pay_rules.dart`): each evaluated assignment is one
+  approved work week. Paychecks are processed per period (weekly,
+  biweekly or a 4-week simulated month), with 10% simulated deductions and
+  net pay, and each period is paid only once (unique paycheck ids). My
+  Earnings shows the balance, totals, last paycheck, next payday and
+  history, with the required notice. Students not yet employed get a small
+  training stipend for passing labs.
+* **Reviews and promotion**: every four assignments, a review scores
+  quality, accuracy, problem-solving, communication, teamwork, reliability
+  and deadlines from the real work. Raises are 2% at 70+, and 5% at 85+
+  with 75+ on deadlines. The existing promotion criteria lead up each
+  role's ladder (Intern → … → Manager) with a 12% raise.
+* **Career Centre**: shows the employment status and the next action, plus
+  the ten sections from the brief.
+
+## Virtual hospital (`lib/career_sim/hospital/`)
+
+* 16 virtual patients in 13 departments: ED, ICU, ward, pediatrics,
+  maternity, theatre, med-surg, cardiology, neurology, oncology, pharmacy,
+  laboratory and radiology. There is also a reception triage board (six
+  arrivals) and a 7 AM ward shift with three patients on one clock.
+* Every action takes simulated minutes. Vital signs drift and deteriorate
+  by each case's cause-and-effect rules, and stabilise when the right
+  treatment is given. Nothing is random.
+* Rooms show:
+  * a drawn patient whose colour and expression change with their state;
+  * an animated bedside monitor with ECG and pleth traces, NEWS2 and alarms;
+  * free-text conversation answered only from the case history, the same
+    way each time;
+  * examinations, an equipment trolley and a chart: allergy record, history,
+    medications, vitals chart, results, and drawn X-ray and CT images;
+  * orders, treatments, SBAR escalation, a working diagnosis or nursing
+    priority, and notes.
+* Unsafe actions are stopped and explained. Examples: a penicillin given
+  despite an allergy, sedating asthma, or insulin during a hypo. Medicines
+  require allergy and identity checks first. Nursing and medicine have
+  different scopes and requirements.
+* The debrief covers eight rubric categories, the patient's outcome,
+  appropriate, missed and late actions, and teaching points. A critical
+  safety error is shown on its own and blocks a pass, whatever the total
+  score.
+* Every action is saved; the engine replays the log to resume exactly.
+
 ## Fixes to existing code found along the way
 
 * Debug Desk starters kept the old function names, so the judge could never
@@ -162,6 +251,19 @@ teaching material, not clinical guidance.
   problem itself is unchanged.
 
 ## Not done / limitations
+
+* **Pay, screening and interview results are computed on the device.**
+  Firestore and Storage rules keep each student's records private, but there
+  is no server-side recalculation yet, so a determined user could edit their
+  own saved profile. Paycheck ids prevent double payment inside the app.
+* **The interviewer, patients and supervisor are rule-based**, not free-form
+  AI: their replies come from rubrics and case scripts, so they are consistent
+  and cannot invent medical facts, but they only understand phrasings their
+  keyword lists cover.
+* **Hospital scenarios have not been reviewed by a practising clinician.**
+* Resume reading works on text-based PDFs and .docx; multi-column layouts can
+  come out in a different order, and scanned PDFs are refused.
+
 
 * **Server code runner not deployed.** Labs and career coding tasks now run on
   the device, so they work without it. Arena submissions that need the server
