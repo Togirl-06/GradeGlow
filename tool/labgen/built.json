@@ -532,5 +532,41 @@
   "note": "Wavelength, refraction, lenses, diffraction gratings and standing waves on strings.",
   "scenarios": 15,
   "title": "Waves and Optics"
+ },
+ "se_lab_design": {
+  "major": "software_engineering",
+  "note": "Estimate capacity, choose components and justify architecture decisions for real systems.",
+  "scenarios": 15,
+  "title": "System Design and Architecture"
+ },
+ "se_lab_development": {
+  "major": "software_engineering",
+  "note": "Implement features from development tickets in Python or JavaScript, run them and pass aut",
+  "scenarios": 15,
+  "title": "Software Development"
+ },
+ "se_lab_git": {
+  "major": "software_engineering",
+  "note": "Branch, commit, pull request, review and resolve conflicts in a simulated team workflow.",
+  "scenarios": 15,
+  "title": "Git and Collaboration"
+ },
+ "se_lab_maintenance": {
+  "major": "software_engineering",
+  "note": "Work on an existing codebase with technical debt: fix legacy bugs, extend features safely ",
+  "scenarios": 15,
+  "title": "Software Maintenance"
+ },
+ "se_lab_requirements": {
+  "major": "software_engineering",
+  "note": "Work with simulated clients to gather, classify and document requirements as user stories ",
+  "scenarios": 15,
+  "title": "Requirements Engineering"
+ },
+ "se_lab_testing": {
+  "major": "software_engineering",
+  "note": "Investigate deliberately faulty programs, write the fix, and pass the tests; triage bugs a",
+  "scenarios": 15,
+  "title": "Software Testing and Quality Assurance"
  }
 }

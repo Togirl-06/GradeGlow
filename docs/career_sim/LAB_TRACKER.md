@@ -6,14 +6,14 @@ A lab is **Tested** only when its tools, grading and saving work, automated test
 15 scenarios (5 beginner, 5 intermediate, 5 advanced) or a set of project briefs. **Verified complete**
 also needs a manual run of the student journey. Fewer scenarios means **Functionality in progress**.
 
-**198 labs.** Not started: 55, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 125, Verified complete: 0.
+**198 labs.** Not started: 49, Interface completed: 0, Functionality in progress: 18, Functionality completed: 0, Tested: 131, Verified complete: 0.
 
 ## Majors
 
 | School | Major | Labs | Status |
 |---|---|---|---|
 | School of Computer Science and Technology | Computer Science | 5 | In progress |
-| School of Computer Science and Technology | Software Engineering | 6 | Not started |
+| School of Computer Science and Technology | Software Engineering | 6 | Tested |
 | School of Computer Science and Technology | Artificial Intelligence | 5 | Not started |
 | School of Computer Science and Technology | Data Science | 6 | Not started |
 | School of Computer Science and Technology | Cybersecurity | 6 | Not started |
@@ -59,12 +59,12 @@ also needs a manual run of the student journey. Fewer scenarios means **Function
 
 | Lab | Status | Scenarios | App id | Notes |
 |---|---|---|---|---|
-| A. Requirements Engineering | Not started | 0 / 15 |  |  |
-| B. System Design and Architecture | Not started | 0 / 15 |  |  |
-| C. Software Development | Not started | 0 / 15 |  |  |
-| D. Git and Collaboration | Not started | 0 / 15 |  |  |
-| E. Software Testing and Quality Assurance | Not started | 0 / 15 |  |  |
-| F. Software Maintenance | Not started | 0 / 15 |  |  |
+| A. Requirements Engineering | Tested | 15 / 15 | `se_lab_requirements` | Work with simulated clients to gather, classify and document requirements as user stories  |
+| B. System Design and Architecture | Tested | 15 / 15 | `se_lab_design` | Estimate capacity, choose components and justify architecture decisions for real systems. |
+| C. Software Development | Tested | 15 / 15 | `se_lab_development` | Implement features from development tickets in Python or JavaScript, run them and pass aut |
+| D. Git and Collaboration | Tested | 15 / 15 | `se_lab_git` | Branch, commit, pull request, review and resolve conflicts in a simulated team workflow. |
+| E. Software Testing and Quality Assurance | Tested | 15 / 15 | `se_lab_testing` | Investigate deliberately faulty programs, write the fix, and pass the tests; triage bugs a |
+| F. Software Maintenance | Tested | 15 / 15 | `se_lab_maintenance` | Work on an existing codebase with technical debt: fix legacy bugs, extend features safely  |
 
 ### Artificial Intelligence
 

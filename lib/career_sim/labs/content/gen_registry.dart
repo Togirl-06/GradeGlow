@@ -13,6 +13,7 @@ import 'gen_industrial.dart';
 import 'gen_intlbusiness.dart';
 import 'gen_marketing.dart';
 import 'gen_physics.dart';
+import 'gen_software_eng.dart';
 import '../lab_models.dart';
 
 /// Labs generated from tool/labgen/majors.
@@ -30,6 +31,7 @@ final List<LabSpec> generatedLabs = <LabSpec>[
   ...internationalBusinessGenLabs,
   ...marketingGenLabs,
   ...physicsGenLabs,
+  ...softwareEngineeringGenLabs,
 ];
 
 const Map<String, String> generatedMajorLabels = <String, String>{
@@ -46,4 +48,5 @@ const Map<String, String> generatedMajorLabels = <String, String>{
   'international_business': 'International Business',
   'marketing': 'Marketing',
   'physics': 'Physics',
+  'software_engineering': 'Software Engineering',
 };

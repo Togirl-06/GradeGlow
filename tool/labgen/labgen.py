@@ -119,9 +119,20 @@ class Case:
         self.forbidden, self.sources = list(forbidden), list(sources)
 
 
+class Code:
+    """A programming problem at three levels: variants = [(instructions, [(stdin, expected)], model_py, model_js, starter_py, starter_js)]."""
+    def __init__(self, key, title, brief, variants, skills=()):
+        self.key, self.title, self.brief, self.variants, self.skills = key, title, brief, variants, list(skills)
+
+
+def V3(instructions, cases, py, js=None, starter_py=None, starter_js=None):
+    return (instructions, cases, py, js, starter_py, starter_js)
+
+
 class Lab:
     def __init__(self, id, number, title, env, summary, objectives, skills, prefix, problems=(), investigations=(), cases=(),
-                 reference=(), minutes=30, difficulty='intermediate', portfolio=False, tools=()):
+                 reference=(), minutes=30, difficulty='intermediate', portfolio=False, tools=(), code=()):
+        self.code = list(code)
         self.id, self.number, self.title, self.env, self.summary = id, number, title, env, summary
         self.objectives, self.skills, self.prefix = objectives, skills, prefix
         self.problems, self.investigations, self.cases = list(problems), list(investigations), list(cases)
@@ -243,6 +254,42 @@ def validate_investigation(v, where):
     for a, b in v.must:
         if not (0 <= a < len(v.steps) and 0 <= b < len(v.steps) and a < b):
             raise ContentError(f'{where}: bad mustPrecede {(a, b)}')
+
+
+def _run(cmd, src, stdin):
+    import subprocess, tempfile
+    with tempfile.NamedTemporaryFile('w', suffix='.py' if cmd == 'python3' else '.js', delete=False) as f:
+        f.write(src)
+        path = f.name
+    try:
+        r = subprocess.run([cmd, path], input=stdin, capture_output=True, text=True, timeout=10)
+    finally:
+        os.unlink(path)
+    return r.stdout, r.stderr, r.returncode
+
+
+def _norm(s):
+    return '\n'.join(l.rstrip() for l in s.replace('\r\n', '\n').split('\n')).strip()
+
+
+def validate_code(c, where):
+    if len(c.variants) != 3:
+        raise ContentError(f'{where}: three variants needed')
+    for n, (instr, cases, py, js, spy, sjs) in enumerate(c.variants):
+        if len(cases) < 3:
+            raise ContentError(f'{where} v{n + 1}: at least 3 test cases')
+        for lang, src in (('python3', py), ('node', js)):
+            if src is None:
+                continue
+            for stdin, expected in cases:
+                out, err, code = _run(lang, src, stdin)
+                if code != 0 or _norm(out) != _norm(expected):
+                    raise ContentError(f'{where} v{n + 1} {lang}: model fails on input {stdin!r}: got {out!r} expected {expected!r} {err[-200:]}')
+        for lang, src in (('python3', spy), ('node', sjs)):
+            if src is None:
+                continue
+            if all(_run(lang, src, stdin)[0].strip() == _norm(expected) for stdin, expected in cases):
+                raise ContentError(f'{where} v{n + 1} {lang}: the starter already passes every test')
 
 
 def words(t):
@@ -420,6 +467,16 @@ def emit_major(m, fname):
             parts.append(f"...fromProblems({ds(lab.prefix + 'p')}, <DesignProblem>[\n" + ',\n'.join(e_design(p) for p in lab.problems) + ",\n  ], person: _lead)")
         if lab.investigations:
             parts.append(f"...fromInvestigations({ds(lab.prefix + 'v')}, <Investigation>[\n" + ',\n'.join(e_invest(v) for v in lab.investigations) + ",\n  ], person: _lead)")
+        if lab.code:
+            items = []
+            for c in lab.code:
+                vs = []
+                for instr, cases, py, js, spy, sjs in c.variants:
+                    pcs = ', '.join(f"ProgramCase({ds(i)}, {ds(o)})" for i, o in cases)
+                    extra = (f", starterPy: {ds(spy)}" if spy else '') + (f", starterJs: {ds(sjs)}" if sjs else '')
+                    vs.append(f"CodeVariant({ds(instr)}, <ProgramCase>[{pcs}]{extra})")
+                items.append(f"    CodeProblem(key: {ds(c.key)}, title: {ds(c.title)}, brief: {ds(c.brief)}, skills: {dlist([ds(k) for k in c.skills], 'String')}, variants: <CodeVariant>[\n      " + ',\n      '.join(vs) + ",\n    ])")
+            parts.append(f"...fromCode({ds(lab.prefix + 'k')}, <CodeProblem>[\n" + ',\n'.join(items) + ",\n  ], person: _lead)")
         if lab.cases:
             tools = f", tools: {dlist([ds(t) for t in lab.tools], 'String')}" if lab.tools else ''
             parts.append(f"...fromCases({ds(lab.prefix + 'c')}, <CaseFile>[\n" + ',\n'.join(e_case(c) for c in lab.cases) + f",\n  ], person: _lead{tools})")
@@ -487,7 +544,7 @@ def build(majors):
             if bad:
                 raise ContentError(f'{where}: skills {bad} are not defined by department {m.dept} ({sorted(allowed)})')
             n = 0
-            for fn, items in ((validate_design, lab.problems), (validate_investigation, lab.investigations), (validate_case, lab.cases)):
+            for fn, items in ((validate_design, lab.problems), (validate_investigation, lab.investigations), (validate_case, lab.cases), (validate_code, lab.code)):
                 for x in items:
                     try:
                         fn(x, f'{where}/{x.key}')
@@ -496,7 +553,7 @@ def build(majors):
                     n += 3
             if n != 15:
                 raise ContentError(f'{where}: {n} scenarios (need 15 = five problems, investigations or cases)')
-            keys = [x.key for x in lab.problems + lab.investigations + lab.cases]
+            keys = [x.key for x in lab.problems + lab.investigations + lab.cases + lab.code]
             if len(set(keys)) != len(keys):
                 raise ContentError(f'{where}: duplicate keys')
             if lab.id not in m.blueprint_titles:

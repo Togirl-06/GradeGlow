@@ -138,3 +138,61 @@ List<LabScenario> byLevel(List<LabScenario> all) {
   }
   return out;
 }
+
+// ------------------------------------------------------------ coding problems
+
+const String pyStdinStarter = 'import sys\n\nlines = sys.stdin.read().split("\\n")\n# Write your solution here\n';
+const String jsStdinStarter = 'const lines = require("fs").readFileSync(0, "utf8").split("\\n");\n// Write your solution here\n';
+
+class CodeVariant {
+  const CodeVariant(this.instructions, this.cases, {this.starterPy, this.starterJs});
+  final String instructions;
+  final List<ProgramCase> cases;
+
+  /// Starting code (e.g. a deliberately faulty program to repair).
+  final String? starterPy;
+  final String? starterJs;
+}
+
+/// One programming problem set at three levels (each a variant with its own tests).
+class CodeProblem {
+  const CodeProblem({required this.key, required this.title, required this.brief, required this.variants, this.skills = const <String>[]});
+  final String key;
+  final String title;
+  final String brief;
+  final List<CodeVariant> variants;
+  final List<String> skills;
+}
+
+List<LabScenario> codeScenarios(String prefix, CodeProblem p, {LabPerson? person}) => <LabScenario>[
+      for (int l = 0; l < 3; l++)
+        LabScenario(
+          id: '${prefix}_${p.key}_${l + 1}',
+          title: '${p.title}${<String>['', ' — extended', ' — production-ready'][l]}',
+          level: levels3[l],
+          people: <LabPerson>[if (person != null) person],
+          briefing: Briefing(
+            what: '${p.brief} ${p.variants[l].instructions}',
+            why: 'Working code that handles real inputs is what the team ships.',
+            information: const <String>['Programs read from standard input and print to standard output.', 'Hidden edge cases are part of the tests — do not hard-code answers.'],
+            tools: const <String>['Code editor (Python 3 or JavaScript)', 'Console to run with your own input', 'Automated tests'],
+            expected: 'A program that passes every test case.',
+          ),
+          steps: <LabStep>[
+            ProgramStep(
+              id: '${prefix}_${p.key}_${l + 1}_code',
+              title: p.title,
+              instructions: p.variants[l].instructions,
+              cases: p.variants[l].cases,
+              skills: p.skills,
+              starter: <String, String>{
+                'python3': p.variants[l].starterPy ?? pyStdinStarter,
+                'javascript': p.variants[l].starterJs ?? jsStdinStarter,
+              },
+            ),
+          ],
+        ),
+    ];
+
+List<LabScenario> fromCode(String prefix, List<CodeProblem> ps, {LabPerson? person}) =>
+    <LabScenario>[for (final CodeProblem p in ps) ...codeScenarios(prefix, p, person: person)];
