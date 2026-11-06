@@ -111,6 +111,7 @@ jobs:
           mkdir -p /tmp/r && cp ci_report.txt /tmp/r/report.txt
           cp analyze.txt ftest.txt ntest.txt /tmp/r/ 2>/dev/null || true
           cp build/coding_problems.json /tmp/r/ 2>/dev/null || true
+          cp build/screens/*.png /tmp/r/ 2>/dev/null || true
           cp pubspec.lock /tmp/r/pubspec.lock.txt 2>/dev/null || true
           git config user.name "gradeglow-ci"
           git config user.email "ci@users.noreply.github.com"
