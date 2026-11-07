@@ -1,0 +1,69 @@
+[36m[1mi  emulators:[22m[39m Starting emulators: firestore
+[36m[1mi  emulators:[22m[39m Detected demo project ID "demo-gradeglow", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+[33m[1m⚠ [22m[39m It appears you are running in a CI environment. You can avoid downloading the Firestore Emulator repeatedly by caching the /home/runner/.cache/firebase/emulators directory.
+[36m[1mi  firestore:[22m[39m downloading cloud-firestore-emulator-v1.19.8.jar...
+
+[36m[1mi  firestore:[22m[39m Firestore Emulator logging to [1mfirestore-debug.log[22m
+[32m[1m✔  firestore:[22m[39m Firestore Emulator UI websocket is running on 9150.
+[36m[1mi [22m[39m Running script: [1mnode --test firestore-tests/rules.test.js[22m
+TAP version 13
+# Subtest: the owner can read the verified career record
+ok 1 - the owner can read the verified career record
+  ---
+  duration_ms: 1352.987854
+  type: 'test'
+  ...
+# [2026-11-07T03:56:39.682Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a40d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L37, false for 'update' @ L37
+# [2026-11-07T03:56:39.718Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a40e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'update' @ L37
+# [2026-11-07T03:56:39.738Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a40f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'delete' @ L37
+# [2026-11-07T03:56:39.764Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a410 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L37, false for 'update' @ L37
+# Subtest: no client can write, change or delete the verified career record
+ok 2 - no client can write, change or delete the verified career record
+  ---
+  duration_ms: 122.831083
+  type: 'test'
+  ...
+# Subtest: other students cannot read it
+ok 3 - other students cannot read it
+  ---
+  duration_ms: 20.944803
+  type: 'test'
+  ...
+# [2026-11-07T03:56:39.857Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a414 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L37, false for 'update' @ L37
+# Subtest: the app's own career save still works
+ok 4 - the app's own career save still works
+  ---
+  duration_ms: 73.291718
+  type: 'test'
+  ...
+# [2026-11-07T03:56:39.927Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a415 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# evaluation error at L25:24 for 'update' @ L25, false for 'update' @ L25
+# [2026-11-07T03:56:39.955Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a416 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L37, false for 'update' @ L37
+# [2026-11-07T03:56:39.977Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x4896a417 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L32, false for 'create' @ L37, false for 'update' @ L32, false for 'update' @ L37
+# Subtest: existing protections are unchanged
+ok 5 - existing protections are unchanged
+  ---
+  duration_ms: 118.713023
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1857.947006
+[32m[1m✔ [22m[39m Script exited successfully (code 0)
+[36m[1mi  emulators:[22m[39m Shutting down emulators.
+[36m[1mi  firestore:[22m[39m Stopping Firestore Emulator
+[36m[1mi  hub:[22m[39m Stopping emulator hub
+[36m[1mi  logging:[22m[39m Stopping Logging Emulator
