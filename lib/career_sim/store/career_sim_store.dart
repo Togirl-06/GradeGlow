@@ -21,6 +21,7 @@ import '../labs/lab_catalog.dart';
 import '../labs/lab_grading.dart';
 import '../labs/lab_models.dart';
 import '../model/tasks.dart';
+import '../resume/resume_ocr.dart';
 import '../resume/resume_parser.dart';
 import '../server/career_server.dart';
 import 'career_repository.dart';
@@ -36,7 +37,7 @@ class CareerActionException implements Exception {
 /// Holds the student's career profile and applies every rule-checked change.
 /// Each change is saved to the device, and to Firestore when signed in.
 class CareerSimStore extends ChangeNotifier {
-  CareerSimStore({CareerRepository? repository, int Function()? clock, CodeJudgeService? judge, LabRunner? runner, this.ai, this.server})
+  CareerSimStore({CareerRepository? repository, int Function()? clock, CodeJudgeService? judge, LabRunner? runner, this.ai, this.server, this.ocr})
       : _repo = repository ?? DefaultCareerRepository(),
         _clock = clock ?? (() => DateTime.now().millisecondsSinceEpoch),
         _judge = judge,
@@ -57,6 +58,9 @@ class CareerSimStore extends ChangeNotifier {
 
   /// Optional AI for the lecturer / interviewer / supervisor roles.
   CareerAi? ai;
+
+  /// Reads scanned resumes and photos; null when no AI connection is set up.
+  ResumeOcr? ocr;
 
   /// Career server that verifies scores and keeps the real wallet. Null means
   /// local only (tests, or no Firebase).
@@ -735,6 +739,26 @@ class CareerSimStore extends ChangeNotifier {
   // ------------------------------------------------------------ resume files
 
   static const int maxResumeBytes = 5 * 1024 * 1024;
+
+  /// Reads a scanned resume or photo with OCR. The text still goes through
+  /// the same parser, and the student checks every field before using it.
+  Future<String> _readScan(ScannedResume scan) async {
+    final ResumeOcr? reader = ocr;
+    if (reader == null) {
+      throw CareerActionException('This looks like a scanned resume or a photo. Reading scans needs the GradeGlow AI service, which is not available here. Upload a PDF or .docx exported from Word or Google Docs instead.');
+    }
+    String raw;
+    try {
+      raw = await reader.transcribe(scan.pages);
+    } catch (_) {
+      throw CareerActionException('The scanned resume could not be read just now. Check your connection and try again, or upload a PDF or .docx.');
+    }
+    final String clean = normaliseText(raw);
+    if (clean.replaceAll(RegExp(r'\s'), '').length < 60) {
+      throw CareerActionException('Not enough text could be read from this scan. Use a sharper, well-lit scan or photo, or upload a PDF or .docx.');
+    }
+    return clean;
+  }
   static const int maxResumeUploads = 3;
 
   /// Reads an uploaded PDF/DOCX resume, extracts its text and profile fields,
@@ -742,23 +766,31 @@ class CareerSimStore extends ChangeNotifier {
   Future<ResumeUpload> uploadResume(String fileName, Uint8List bytes, {String? replaceId}) async {
     if (bytes.isEmpty) throw CareerActionException('The file is empty.');
     if (bytes.length > maxResumeBytes) throw CareerActionException('The file is larger than 5 MB. Export a smaller PDF or .docx.');
-    final String text;
+    String text;
+    String? scanFormat;
     try {
       text = extractResumeText(fileName, bytes);
     } on FormatException catch (e) {
       throw CareerActionException(e.message);
+    } on ScannedResume catch (scan) {
+      text = await _readScan(scan);
+      scanFormat = scan.format;
     } catch (_) {
       throw CareerActionException('This file could not be read. Export your resume again as PDF or .docx and retry.');
     }
     if (replaceId == null && profile.resumeUploads.length >= maxResumeUploads) {
       throw CareerActionException('You can keep $maxResumeUploads resumes. Delete or replace one first.');
     }
-    final String format = text.isNotEmpty && bytes[0] == 0x25 ? 'pdf' : 'docx';
+    final String format = scanFormat ?? (text.isNotEmpty && bytes[0] == 0x25 ? 'pdf' : 'docx');
     final String id = replaceId ?? _id('cv');
     String path = '';
     try {
-      path = await _repo.saveResumeFile(_uid, '$id.$format', bytes,
-          format == 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      final String ext = format == 'image' ? (bytes[0] == 0x89 ? 'png' : 'jpg') : format;
+      path = await _repo.saveResumeFile(_uid, '$id.$ext', bytes, switch (format) {
+        'pdf' => 'application/pdf',
+        'image' => ext == 'png' ? 'image/png' : 'image/jpeg',
+        _ => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
     } catch (_) {
       syncWarning = 'Your resume was read, but the file could not be stored in the cloud. It will still work for applications.';
     }
@@ -771,6 +803,7 @@ class CareerSimStore extends ChangeNotifier {
       text: text.length > 20000 ? text.substring(0, 20000) : text,
       parsed: parseResume(text),
       storagePath: path,
+      scanned: scanFormat != null,
     );
     final int at = profile.resumeUploads.indexWhere((ResumeUpload x) => x.id == id);
     if (at >= 0) {

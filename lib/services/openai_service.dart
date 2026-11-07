@@ -287,6 +287,31 @@ class OpenAiService {
     return content.trim();
   }
 
+  /// Exact transcription of document pages (scanned resumes): high detail,
+  /// no creativity. [instruction] says how to lay the text out.
+  Future<String> transcribeDocumentPages(List<(Uint8List, String)> pages, String instruction) async {
+    _requireKey();
+    final String content = await _chatDynamic(
+      <Map<String, dynamic>>[
+        <String, dynamic>{'role': 'system', 'content': instruction},
+        <String, dynamic>{
+          'role': 'user',
+          'content': <Map<String, dynamic>>[
+            <String, dynamic>{'type': 'text', 'text': 'Transcribe these ${pages.length} page(s).'},
+            for (final (Uint8List bytes, String mime) in pages)
+              <String, dynamic>{
+                'type': 'image_url',
+                'image_url': <String, dynamic>{'url': 'data:$mime;base64,${base64Encode(bytes)}', 'detail': 'high'},
+              },
+          ],
+        },
+      ],
+      temperature: 0,
+      maxTokens: 4000,
+    );
+    return content.trim();
+  }
+
   /// Vision-based study notes from slide/photo uploads.
   Future<Map<String, dynamic>> analyzeDocumentFromImage({
     required String title,

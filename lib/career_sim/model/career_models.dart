@@ -1260,6 +1260,7 @@ class ResumeUpload {
     required this.parsed,
     this.storagePath = '',
     this.reviewed = false,
+    this.scanned = false,
   });
 
   factory ResumeUpload.fromJson(Map<String, dynamic> j) => ResumeUpload(
@@ -1272,12 +1273,13 @@ class ResumeUpload {
         parsed: ParsedResume.fromJson(_map(j['parsed'])),
         storagePath: _str(j['storagePath']),
         reviewed: j['reviewed'] == true,
+        scanned: j['scanned'] == true,
       );
 
   final String id;
   final String fileName;
 
-  /// 'pdf' or 'docx'.
+  /// 'pdf', 'docx' or 'image' (a photo of a resume).
   final String format;
   final int sizeBytes;
   final int uploadedDay;
@@ -1292,6 +1294,9 @@ class ResumeUpload {
   /// The student has checked and confirmed the extracted fields.
   bool reviewed;
 
+  /// The text was read from a scan or photo (OCR) and may contain mistakes.
+  final bool scanned;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'fileName': fileName,
@@ -1302,6 +1307,7 @@ class ResumeUpload {
         'parsed': parsed.toJson(),
         'storagePath': storagePath,
         'reviewed': reviewed,
+        if (scanned) 'scanned': true,
       };
 }
 

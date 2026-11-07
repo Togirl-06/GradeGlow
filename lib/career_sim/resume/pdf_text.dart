@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:image/image.dart' as img;
 
 class PdfName {
   const PdfName(this.name);
@@ -581,4 +582,218 @@ String _contentText(Uint8List data, Map<String, _Font> fonts) {
   newline();
   final String text = lines.map((String l) => l.trimRight()).join('\n').replaceAll(RegExp(r'\n{3,}'), '\n\n');
   return text.trim();
+}
+
+// ---------------------------------------------------------------- scans
+
+/// A page picture taken from a scanned resume, ready to send for reading.
+class ResumeImage {
+  const ResumeImage(this.bytes, this.mime, this.width, this.height);
+  final Uint8List bytes;
+  final String mime;
+  final int width;
+  final int height;
+}
+
+/// Why a scanned page could not be turned into a picture.
+class ScanImageUnsupported implements Exception {
+  const ScanImageUnsupported(this.message);
+  final String message;
+  @override
+  String toString() => message;
+}
+
+/// The largest picture on each of the first [maxPages] pages of a scanned
+/// PDF, as JPEG no wider or taller than [maxSide] pixels. Handles JPEG
+/// (DCTDecode) scans and Flate-compressed grey, RGB and black-and-white
+/// scans, including PNG predictors. Fax (CCITT), JBIG2 and JPEG 2000 scans
+/// are reported with [ScanImageUnsupported].
+List<ResumeImage> extractPdfScanImages(Uint8List bytes, {int maxPages = 3, int maxSide = 2000}) {
+  if (bytes.length < 5 || latin1.decode(bytes.sublist(0, 5)) != '%PDF-') return const <ResumeImage>[];
+  final _Pdf pdf = _Pdf(bytes);
+  Map<String, Object?>? root;
+  for (final _Obj o in pdf.objs.values) {
+    final Object? v = o.value;
+    if (v is Map<String, Object?> && pdf.get(v['Type']) == const PdfName('Catalog')) {
+      root = v;
+      break;
+    }
+  }
+  final List<(Map<String, Object?>, Object?)> pages = <(Map<String, Object?>, Object?)>[];
+  void walk(Object? node, Object? res, int depth) {
+    final Map<String, Object?> n = pdf.dict(node);
+    if (n.isEmpty || depth > 50) return;
+    final Object? r = n['Resources'] ?? res;
+    if (pdf.get(n['Type']) == const PdfName('Pages') || n.containsKey('Kids')) {
+      final Object? kids = pdf.get(n['Kids']);
+      if (kids is List<Object?>) {
+        for (final Object? k in kids) {
+          walk(k, r, depth + 1);
+        }
+      }
+    } else {
+      pages.add((n, r));
+    }
+  }
+
+  if (root != null) walk(root['Pages'], null, 0);
+  final List<ResumeImage> out = <ResumeImage>[];
+  String? unsupported;
+  for (final (Map<String, Object?> _, Object? res) in pages.take(maxPages)) {
+    PdfRef? best;
+    int bestArea = 0;
+    void collect(Map<String, Object?> resources, int depth) {
+      for (final Object? x in pdf.dict(resources['XObject']).values) {
+        final Map<String, Object?> d = pdf.dict(x);
+        if (pdf.get(d['Subtype']) == const PdfName('Image') && x is PdfRef) {
+          final int area = ((pdf.get(d['Width']) as double? ?? 0) * (pdf.get(d['Height']) as double? ?? 0)).toInt();
+          if (area > bestArea) {
+            bestArea = area;
+            best = x;
+          }
+        } else if (pdf.get(d['Subtype']) == const PdfName('Form') && depth < 4) {
+          collect(pdf.dict(d['Resources']), depth + 1);
+        }
+      }
+    }
+
+    collect(pdf.dict(res), 0);
+    if (best == null) continue;
+    try {
+      final img.Image? picture = _scanPicture(pdf, best!);
+      if (picture == null) continue;
+      out.add(_toJpeg(picture, maxSide));
+    } on ScanImageUnsupported catch (e) {
+      unsupported = e.message;
+    }
+  }
+  if (out.isEmpty && unsupported != null) throw ScanImageUnsupported(unsupported);
+  return out;
+}
+
+/// A photo or scan uploaded as an image file (JPEG or PNG).
+ResumeImage? resumeImageFromFile(Uint8List bytes, {int maxSide = 2000}) {
+  final img.Image? picture = img.decodeImage(bytes);
+  return picture == null ? null : _toJpeg(picture, maxSide);
+}
+
+ResumeImage _toJpeg(img.Image picture, int maxSide) {
+  img.Image p = picture;
+  final int longest = p.width > p.height ? p.width : p.height;
+  if (longest > maxSide) {
+    p = p.width >= p.height ? img.copyResize(p, width: maxSide) : img.copyResize(p, height: maxSide);
+  }
+  return ResumeImage(Uint8List.fromList(img.encodeJpg(p, quality: 85)), 'image/jpeg', p.width, p.height);
+}
+
+img.Image? _scanPicture(_Pdf pdf, PdfRef ref) {
+  final _Obj? o = pdf.objs[ref.num];
+  if (o == null || o.stream == null || o.value is! Map<String, Object?>) return null;
+  final Map<String, Object?> d = o.value! as Map<String, Object?>;
+  final Object? f = pdf.get(d['Filter']);
+  final List<PdfName> filters = <PdfName>[
+    if (f is PdfName) f,
+    if (f is List<Object?>)
+      for (final Object? x in f)
+        if (pdf.get(x) case final PdfName n) n,
+  ];
+  Uint8List data = o.stream!;
+  for (final PdfName n in filters) {
+    switch (n.name) {
+      case 'FlateDecode' || 'Fl':
+        try {
+          data = Uint8List.fromList(const ZLibDecoder().decodeBytes(data));
+        } catch (_) {
+          return null;
+        }
+      case 'ASCII85Decode' || 'A85':
+        data = ascii85(data);
+      case 'DCTDecode' || 'DCT':
+        return img.decodeJpg(data);
+      case 'CCITTFaxDecode' || 'CCF' || 'JBIG2Decode':
+        throw const ScanImageUnsupported('This scan uses black-and-white fax compression, which GradeGlow cannot read yet. Scan it again in colour or greyscale, or upload a photo.');
+      case 'JPXDecode':
+        throw const ScanImageUnsupported('This scan uses JPEG 2000, which GradeGlow cannot read yet. Save it again as a normal PDF, or upload a photo.');
+      default:
+        return null;
+    }
+  }
+  final int w = (pdf.get(d['Width']) as double? ?? 0).toInt();
+  final int h = (pdf.get(d['Height']) as double? ?? 0).toInt();
+  if (w <= 0 || h <= 0 || w * h > 40000000) return null;
+  final bool mask = pdf.get(d['ImageMask']) == true;
+  final int bpc = mask ? 1 : (pdf.get(d['BitsPerComponent']) as double? ?? 8).toInt();
+  int colors;
+  final Object? cs = pdf.get(d['ColorSpace']);
+  if (mask || cs == const PdfName('DeviceGray') || cs == const PdfName('CalGray')) {
+    colors = 1;
+  } else if (cs == const PdfName('DeviceRGB') || cs == const PdfName('CalRGB')) {
+    colors = 3;
+  } else if (cs is List<Object?> && cs.isNotEmpty && pdf.get(cs.first) == const PdfName('ICCBased') && cs.length > 1) {
+    colors = (pdf.get(pdf.dict(cs[1])['N']) as double? ?? 3).toInt();
+  } else {
+    return null; // indexed, CMYK, Lab …: rare for resume scans
+  }
+  if (colors != 1 && colors != 3) return null;
+  if (bpc != 1 && bpc != 8) return null;
+  final Object? dp = pdf.get(d['DecodeParms']);
+  final Map<String, Object?> parms = pdf.dict(dp is List<Object?> ? (dp.isEmpty ? null : dp.first) : dp);
+  final int predictor = (pdf.get(parms['Predictor']) as double? ?? 1).toInt();
+  final int rowBytes = (w * colors * bpc + 7) ~/ 8;
+  if (predictor >= 10) data = _unPng(data, rowBytes, (colors * bpc + 7) ~/ 8, h);
+  if (data.length < rowBytes * h) return null;
+  // Decode [1 0] (or an image mask, where 0 paints) inverts grey levels.
+  final Object? dec = pdf.get(d['Decode']);
+  final bool invert = mask || (dec is List<Object?> && dec.length >= 2 && (pdf.get(dec[0]) as double? ?? 0) > (pdf.get(dec[1]) as double? ?? 1));
+  final img.Image out = img.Image(width: w, height: h);
+  for (int y = 0; y < h; y++) {
+    final int row = y * rowBytes;
+    for (int x = 0; x < w; x++) {
+      if (bpc == 1) {
+        final int bit = (data[row + (x >> 3)] >> (7 - (x & 7))) & 1;
+        final int v = (bit == 1) != invert ? 255 : 0;
+        out.setPixelRgb(x, y, v, v, v);
+      } else if (colors == 1) {
+        final int v = invert ? 255 - data[row + x] : data[row + x];
+        out.setPixelRgb(x, y, v, v, v);
+      } else {
+        final int i = row + x * 3;
+        out.setPixelRgb(x, y, data[i], data[i + 1], data[i + 2]);
+      }
+    }
+  }
+  return out;
+}
+
+/// Reverses PNG row filters (PDF Predictor 10–15).
+Uint8List _unPng(Uint8List data, int rowBytes, int bpp, int rows) {
+  final Uint8List out = Uint8List(rowBytes * rows);
+  int i = 0;
+  for (int y = 0; y < rows && i < data.length; y++) {
+    final int type = data[i++];
+    final int o = y * rowBytes;
+    for (int x = 0; x < rowBytes && i < data.length; x++, i++) {
+      final int a = x >= bpp ? out[o + x - bpp] : 0;
+      final int b = y > 0 ? out[o - rowBytes + x] : 0;
+      final int c = (x >= bpp && y > 0) ? out[o - rowBytes + x - bpp] : 0;
+      final int raw = data[i];
+      int v;
+      switch (type) {
+        case 1:
+          v = raw + a;
+        case 2:
+          v = raw + b;
+        case 3:
+          v = raw + ((a + b) >> 1);
+        case 4:
+          final int p = a + b - c;
+          final int pa = (p - a).abs(), pb = (p - b).abs(), pc = (p - c).abs();
+          v = raw + ((pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c));
+        default:
+          v = raw;
+      }
+      out[o + x] = v & 0xff;
+    }
+  }
+  return out;
 }

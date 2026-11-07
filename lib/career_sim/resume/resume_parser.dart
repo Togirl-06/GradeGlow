@@ -9,8 +9,22 @@ import '../model/career_models.dart';
 import 'docx_text.dart';
 import 'pdf_text.dart';
 
+/// A scanned resume or a photo: there is no text layer, only page pictures,
+/// which must be read (OCR) before the text can be parsed.
+class ScannedResume implements Exception {
+  const ScannedResume(this.pages, this.format);
+  final List<ResumeImage> pages;
+
+  /// 'pdf' or 'image'.
+  final String format;
+}
+
+bool _isJpeg(Uint8List b) => b.length > 3 && b[0] == 0xFF && b[1] == 0xD8 && b[2] == 0xFF;
+bool _isPng(Uint8List b) => b.length > 8 && b[0] == 0x89 && b[1] == 0x50 && b[2] == 0x4E && b[3] == 0x47;
+
 /// Reads the text of an uploaded resume file.
-/// Throws [FormatException] with a message the student can act on.
+/// Throws [FormatException] with a message the student can act on, or
+/// [ScannedResume] when the file is a scan or photo that needs reading.
 String extractResumeText(String fileName, Uint8List bytes) {
   final String lower = fileName.toLowerCase();
   final bool isPdf = bytes.length > 4 && bytes[0] == 0x25 && bytes[1] == 0x50 && bytes[2] == 0x44 && bytes[3] == 0x46;
@@ -20,14 +34,27 @@ String extractResumeText(String fileName, Uint8List bytes) {
     text = extractPdfText(bytes);
   } else if (isZip && (lower.endsWith('.docx') || !lower.endsWith('.pdf'))) {
     text = extractDocxText(bytes);
+  } else if (_isJpeg(bytes) || _isPng(bytes)) {
+    final ResumeImage? page = resumeImageFromFile(bytes);
+    if (page == null) throw const FormatException('This picture could not be opened. Take the photo again or upload a PDF or .docx.');
+    throw ScannedResume(<ResumeImage>[page], 'image');
   } else if (lower.endsWith('.doc')) {
     throw const FormatException('Old .doc files are not supported. Save it as .docx or PDF and upload again.');
   } else {
-    throw const FormatException('Upload a PDF or a Word .docx file.');
+    throw const FormatException('Upload a PDF, a Word .docx file, or a photo (JPG or PNG) of your resume.');
   }
   final String clean = normaliseText(text);
   if (clean.replaceAll(RegExp(r'\s'), '').length < 60) {
-    throw const FormatException('No readable text was found. If this is a scanned PDF, export your resume from Word or Google Docs as a PDF or .docx instead.');
+    if (isPdf) {
+      final List<ResumeImage> pages;
+      try {
+        pages = extractPdfScanImages(bytes);
+      } on ScanImageUnsupported catch (e) {
+        throw FormatException(e.message);
+      }
+      if (pages.isNotEmpty) throw ScannedResume(pages, 'pdf');
+    }
+    throw const FormatException('No readable text was found. Export your resume from Word or Google Docs as a PDF or .docx, or upload a clear photo of it.');
   }
   return clean;
 }

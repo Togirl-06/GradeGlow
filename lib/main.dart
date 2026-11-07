@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'career_sim/ai/career_ai.dart';
+import 'career_sim/resume/resume_ocr.dart';
 import 'career_sim/server/career_server.dart';
 import 'career_sim/store/career_sim_store.dart';
 
@@ -107,7 +108,7 @@ class _GradeGlowAppState extends State<GradeGlowApp> {
     _authService = AuthService();
     _userService = UserService(_authService);
     _openAiService = OpenAiService();
-    _careerSim = CareerSimStore(ai: OpenAiCareerAi(_openAiService), server: HttpCareerServer());
+    _careerSim = CareerSimStore(ai: OpenAiCareerAi(_openAiService), server: HttpCareerServer(), ocr: OpenAiResumeOcr(_openAiService));
     _questionService = QuestionService(_openAiService);
     _materialService = MaterialService(_authService, _questionService);
     _solutionService = SolutionService(_authService);

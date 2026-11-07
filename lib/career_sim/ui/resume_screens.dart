@@ -18,7 +18,7 @@ typedef ResumePicker = Future<(String, Uint8List)?> Function();
 Future<(String, Uint8List)?> pickResumeFile() async {
   final FilePickerResult? r = await FilePicker.platform.pickFiles(
     type: FileType.custom,
-    allowedExtensions: const <String>['pdf', 'docx'],
+    allowedExtensions: const <String>['pdf', 'docx', 'jpg', 'jpeg', 'png'],
     withData: true,
   );
   final PlatformFile? f = r == null || r.files.isEmpty ? null : r.files.first;
@@ -26,7 +26,7 @@ Future<(String, Uint8List)?> pickResumeFile() async {
   return (f.name, f.bytes!);
 }
 
-/// My Resume: upload real PDF/DOCX resumes, check what was read, see the
+/// My Resume: upload real PDF/DOCX resumes (or scans and photos), check what was read, see the
 /// quality score, and replace or delete files.
 class ResumeHubScreen extends StatelessWidget {
   const ResumeHubScreen({super.key});
@@ -55,7 +55,7 @@ class ResumeHubScreen extends StatelessWidget {
         children: <Widget>[
           SectionCard(
             title: 'Upload your resume',
-            subtitle: 'PDF or Word (.docx), up to 5 MB. The text is read on your device; the file is stored privately in your account and only you can open it.',
+            subtitle: 'PDF, Word (.docx) or a photo (JPG/PNG), up to 5 MB. Text files are read on your device; scans and photos are read by AI text recognition. The file is stored privately in your account and only you can open it.',
             child: Wrap(spacing: 8, runSpacing: 8, children: <Widget>[
               BusyButton(
                 key: const ValueKey<String>('upload_resume'),
@@ -203,6 +203,21 @@ class _ResumeReviewScreenState extends State<ResumeReviewScreen> {
         children: <Widget>[
           Text('Read from ${u.fileName}. Check each field and correct anything that was read wrongly — only what is in your file is shown.',
               style: TextStyle(color: GG.mute)),
+          if (u.scanned)
+            Container(
+              key: const ValueKey<String>('scan_notice'),
+              margin: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(color: GG.amber.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(10), border: Border.all(color: GG.amber.withValues(alpha: 0.5))),
+              child: Row(children: <Widget>[
+                Icon(Icons.document_scanner_rounded, color: GG.amber),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('This resume was read from a scan or photo by AI text recognition. Names, dates, emails and phone numbers can be misread — check every field carefully.',
+                      style: TextStyle(color: GG.ink)),
+                ),
+              ]),
+            ),
           const SizedBox(height: 12),
           SectionCard(
             title: 'Resume quality: ${q.score}/100',
