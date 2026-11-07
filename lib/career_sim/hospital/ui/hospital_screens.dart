@@ -7,6 +7,7 @@ import '../../store/career_sim_store.dart';
 import '../../ui/common.dart';
 import '../hospital_cases.dart';
 import '../hospital_engine.dart';
+import '../lab_panels.dart';
 import '../hospital_models.dart';
 import 'hospital_painters.dart';
 import '../../ui/gg_kit.dart';
@@ -1017,13 +1018,16 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
                   for (final MapEntry<String, String> r in results.entries)
                     if (!(testDef(r.key)?.imaging ?? false))
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                          SizedBox(width: 130, child: Text(testDef(r.key)?.label ?? r.key, style: const TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.w700, fontSize: 12.5))),
-                          Expanded(
-                            child: Text('${r.value}${(c.tests[r.key]?.abnormal ?? false) ? ' ↑' : ''}',
-                                key: ValueKey<String>('rec_${r.key}'), style: TextStyle(color: (c.tests[r.key]?.abnormal ?? false) ? const Color(0xFFDC2626) : const Color(0xFF0F172A), fontSize: 12.5)),
-                          ),
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                          Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                            SizedBox(width: 130, child: Text(testDef(r.key)?.label ?? r.key, style: const TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.w700, fontSize: 12.5))),
+                            Expanded(
+                              child: Text('${r.value}${(c.tests[r.key]?.abnormal ?? false) ? ' ↑' : ''}',
+                                  key: ValueKey<String>('rec_${r.key}'), style: TextStyle(color: (c.tests[r.key]?.abnormal ?? false) ? const Color(0xFFDC2626) : const Color(0xFF0F172A), fontSize: 12.5)),
+                            ),
+                          ]),
+                          if (labPanel(c, r.key) case final List<LabRow> rows) LabPanelTable(testId: r.key, rows: rows),
                         ]),
                       ),
                 ]),
@@ -1103,6 +1107,44 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
                 const SizedBox(height: 10),
               ],
             ]),
+    );
+  }
+}
+
+/// A lab report table: test, result, units, reference range and flag, with
+/// out-of-range values in red.
+class LabPanelTable extends StatelessWidget {
+  const LabPanelTable({super.key, required this.testId, required this.rows});
+  final String testId;
+  final List<LabRow> rows;
+
+  @override
+  Widget build(BuildContext context) {
+    const TextStyle head = TextStyle(color: Color(0xFF475569), fontSize: 11.5, fontWeight: FontWeight.w700);
+    const TextStyle cell = TextStyle(color: Color(0xFF0F172A), fontSize: 12.5);
+    const TextStyle bad = TextStyle(color: Color(0xFFDC2626), fontSize: 12.5, fontWeight: FontWeight.w800);
+    Widget pad(Widget w) => Padding(padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 4), child: w);
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Table(
+        key: ValueKey<String>('panel_$testId'),
+        columnWidths: const <int, TableColumnWidth>{0: FlexColumnWidth(2.4), 1: FlexColumnWidth(1.2), 2: FlexColumnWidth(1.4), 3: FlexColumnWidth(1.6), 4: FixedColumnWidth(34)},
+        border: const TableBorder(horizontalInside: BorderSide(color: Color(0xFFE2E8F0))),
+        children: <TableRow>[
+          TableRow(
+            decoration: const BoxDecoration(color: Color(0xFFF1F5F9)),
+            children: <Widget>[pad(const Text('Test', style: head)), pad(const Text('Result', style: head)), pad(const Text('Units', style: head)), pad(const Text('Reference', style: head)), pad(const Text('Flag', style: head))],
+          ),
+          for (final LabRow r in rows)
+            TableRow(children: <Widget>[
+              pad(Text(r.name, style: cell)),
+              pad(Text(r.shown, key: ValueKey<String>('rec_${testId}_${r.id}'), style: r.abnormal ? bad : cell)),
+              pad(Text(r.unit, style: const TextStyle(color: Color(0xFF475569), fontSize: 11.5))),
+              pad(Text(r.range, style: const TextStyle(color: Color(0xFF475569), fontSize: 11.5))),
+              pad(Text(switch (r.flag) { 'H' => 'H ↑', 'L' => 'L ↓', _ => '' }, style: bad)),
+            ]),
+        ],
+      ),
     );
   }
 }

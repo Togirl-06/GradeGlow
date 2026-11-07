@@ -9,6 +9,7 @@ import 'package:ai_study_buddy/career_sim/engine/text_rubric.dart';
 import 'package:ai_study_buddy/career_sim/hospital/hospital_cases.dart';
 import 'package:ai_study_buddy/career_sim/hospital/hospital_engine.dart';
 import 'package:ai_study_buddy/career_sim/hospital/hospital_models.dart';
+import 'package:ai_study_buddy/career_sim/hospital/lab_panels.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Map<String, dynamic> vitals(Vitals v) => <String, dynamic>{
@@ -56,7 +57,15 @@ void main() {
             'exams': c.exams,
             'tests': <String, dynamic>{
               for (final MapEntry<String, TestResult> t in c.tests.entries)
-                t.key: <String, dynamic>{'result': t.value.result, 'minutes': t.value.minutes, 'abnormal': t.value.abnormal},
+                t.key: <String, dynamic>{
+                  'result': t.value.result,
+                  'minutes': t.value.minutes,
+                  'abnormal': t.value.abnormal,
+                  if (labPanel(c, t.key) case final List<LabRow> rows)
+                    'panel': <Map<String, String>>[
+                      for (final LabRow r in rows) <String, String>{'name': r.name, 'value': r.shown, 'unit': r.unit, 'range': r.range, 'flag': r.flag},
+                    ],
+                },
             },
             'ecg': c.ecg,
             'actions': <Map<String, dynamic>>[

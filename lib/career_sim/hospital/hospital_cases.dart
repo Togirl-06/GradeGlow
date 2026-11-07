@@ -145,7 +145,7 @@ final List<PatientCase> hospitalCases = <PatientCase>[
       'circulation': 'Warm, capillary refill 2 seconds.',
     },
     tests: const <String, TestResult>{
-      'abg': TestResult('abg', 'pH 7.45, low CO₂, low O₂ — hyperventilating, not yet tiring.', minutes: 10),
+      'abg': TestResult('abg', 'pH 7.45, low CO₂, low O₂ — hyperventilating, not yet tiring.', minutes: 10, abnormal: true),
       'cxr': TestResult('cxr', 'Hyperinflated lungs; no pneumothorax.', minutes: 20, image: 'cxr_normal'),
     },
     actions: const <ActionDef>[
