@@ -13,6 +13,7 @@ import 'package:ai_study_buddy/career_sim/content/catalog.dart';
 import 'package:ai_study_buddy/career_sim/engine/pay_rules.dart';
 import 'package:ai_study_buddy/career_sim/engine/text_rubric.dart';
 import 'package:ai_study_buddy/career_sim/hospital/hospital_cases.dart';
+import 'package:ai_study_buddy/career_sim/hospital/hospital_engine.dart';
 import 'package:ai_study_buddy/career_sim/labs/lab_catalog.dart';
 import 'package:ai_study_buddy/career_sim/labs/lab_models.dart';
 import 'package:ai_study_buddy/career_sim/model/career_models.dart';

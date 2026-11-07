@@ -1,6 +1,7 @@
 // Numeric lab reports agree with each case's written result and are shown in
 // the patient record with ranges and flags.
 import 'package:ai_study_buddy/career_sim/hospital/hospital_cases.dart';
+import 'package:ai_study_buddy/career_sim/hospital/hospital_engine.dart';
 import 'package:ai_study_buddy/career_sim/hospital/hospital_models.dart';
 import 'package:ai_study_buddy/career_sim/hospital/lab_panels.dart';
 import 'package:ai_study_buddy/career_sim/hospital/ui/hospital_screens.dart';
