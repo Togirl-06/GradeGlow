@@ -1,0 +1,286 @@
+TAP version 13
+# Subtest: career simulator bug-fix starters fail the hidden tests; reference fixes pass
+ok 1 - career simulator bug-fix starters fail the hidden tests; reference fixes pass
+  ---
+  duration_ms: 515.523226
+  type: 'test'
+  ...
+# Subtest: screening matches the app
+ok 2 - screening matches the app
+  ---
+  duration_ms: 78.68526
+  type: 'test'
+  ...
+# Subtest: interview scores match the app
+ok 3 - interview scores match the app
+  ---
+  duration_ms: 86.425175
+  type: 'test'
+  ...
+# Subtest: hiring decisions and offers match the app
+ok 4 - hiring decisions and offers match the app
+  ---
+  duration_ms: 1.647489
+  type: 'test'
+  ...
+# Subtest: negotiation matches the app
+ok 5 - negotiation matches the app
+  ---
+  duration_ms: 7.756072
+  type: 'test'
+  ...
+# Subtest: paychecks, raises and stipends match the app
+ok 6 - paychecks, raises and stipends match the app
+  ---
+  duration_ms: 2.734219
+  type: 'test'
+  ...
+# Subtest: full journey (business): the server's wallet equals the app's
+ok 7 - full journey (business): the server's wallet equals the app's
+  ---
+  duration_ms: 2.783801
+  type: 'test'
+  ...
+# Subtest: full journey (communication): the server's wallet equals the app's
+ok 8 - full journey (communication): the server's wallet equals the app's
+  ---
+  duration_ms: 1.211253
+  type: 'test'
+  ...
+# Subtest: full journey (cs): the server's wallet equals the app's
+ok 9 - full journey (cs): the server's wallet equals the app's
+  ---
+  duration_ms: 1.901824
+  type: 'test'
+  ...
+# Subtest: full journey (engineering): the server's wallet equals the app's
+ok 10 - full journey (engineering): the server's wallet equals the app's
+  ---
+  duration_ms: 1.481969
+  type: 'test'
+  ...
+# Subtest: full journey (law): the server's wallet equals the app's
+ok 11 - full journey (law): the server's wallet equals the app's
+  ---
+  duration_ms: 1.40217
+  type: 'test'
+  ...
+# Subtest: full journey (mathematics): the server's wallet equals the app's
+ok 12 - full journey (mathematics): the server's wallet equals the app's
+  ---
+  duration_ms: 0.968099
+  type: 'test'
+  ...
+# Subtest: full journey (medicine): the server's wallet equals the app's
+ok 13 - full journey (medicine): the server's wallet equals the app's
+  ---
+  duration_ms: 1.506185
+  type: 'test'
+  ...
+# Subtest: full journey (nursing): the server's wallet equals the app's
+ok 14 - full journey (nursing): the server's wallet equals the app's
+  ---
+  duration_ms: 0.977356
+  type: 'test'
+  ...
+# Subtest: full journey (sciences): the server's wallet equals the app's
+ok 15 - full journey (sciences): the server's wallet equals the app's
+  ---
+  duration_ms: 1.041897
+  type: 'test'
+  ...
+# Subtest: an honest journey is hired at the server's salary, not the one sent
+ok 16 - an honest journey is hired at the server's salary, not the one sent
+  ---
+  duration_ms: 14.845168
+  type: 'test'
+  ...
+# Subtest: pay needs a job the server approved
+ok 17 - pay needs a job the server approved
+  ---
+  duration_ms: 1.003725
+  type: 'test'
+  ...
+# Subtest: no interview or offer without the server's own screening and scoring
+ok 18 - no interview or offer without the server's own screening and scoring
+  ---
+  duration_ms: 18.066356
+  type: 'test'
+  ...
+# Subtest: an interview transcript that skips or reorders questions is refused
+ok 19 - an interview transcript that skips or reorders questions is refused
+  ---
+  duration_ms: 4.617157
+  type: 'test'
+  ...
+# Subtest: paychecks are computed by the server, once per period
+ok 20 - paychecks are computed by the server, once per period
+  ---
+  duration_ms: 10.449545
+  type: 'test'
+  ...
+# Subtest: bursts of work reports are limited
+ok 21 - bursts of work reports are limited
+  ---
+  duration_ms: 4.008199
+  type: 'test'
+  ...
+# Subtest: raises only at review time, capped by the published rule
+ok 22 - raises only at review time, capped by the published rule
+  ---
+  duration_ms: 4.39387
+  type: 'test'
+  ...
+# Subtest: training stipends: known labs only, once each, never while employed
+ok 23 - training stipends: known labs only, once each, never while employed
+  ---
+  duration_ms: 4.187073
+  type: 'test'
+  ...
+# Subtest: unknown actions are refused
+ok 24 - unknown actions are refused
+  ---
+  duration_ms: 0.596886
+  type: 'test'
+  ...
+# Subtest: parses LeetCode-style inputs
+ok 25 - parses LeetCode-style inputs
+  ---
+  duration_ms: 5.097905
+  type: 'test'
+  ...
+# Subtest: python: correct solution is Accepted on hidden tests
+ok 26 - python: correct solution is Accepted on hidden tests
+  ---
+  duration_ms: 54.265588
+  type: 'test'
+  ...
+# Subtest: javascript: correct solution is Accepted
+ok 27 - javascript: correct solution is Accepted
+  ---
+  duration_ms: 45.915009
+  type: 'test'
+  ...
+# Subtest: starter code or padding is never Accepted (the old fake judge accepted long code)
+ok 28 - starter code or padding is never Accepted (the old fake judge accepted long code)
+  ---
+  duration_ms: 96.795675
+  type: 'test'
+  ...
+# Subtest: wrong answer on a hidden case reveals that one case only
+ok 29 - wrong answer on a hidden case reveals that one case only
+  ---
+  duration_ms: 48.363786
+  type: 'test'
+  ...
+# Subtest: runtime error, syntax error and missing function are reported
+ok 30 - runtime error, syntax error and missing function are reported
+  ---
+  duration_ms: 356.675527
+  type: 'test'
+  ...
+# Subtest: infinite loop is Time Limit Exceeded
+ok 31 - infinite loop is Time Limit Exceeded
+  ---
+  duration_ms: 6011.705685
+  type: 'test'
+  ...
+# Subtest: linked list, tree, in-place and any-order problems
+ok 32 - linked list, tree, in-place and any-order problems
+  ---
+  duration_ms: 181.100669
+  type: 'test'
+  ...
+# Subtest: student prints do not break grading
+ok 33 - student prints do not break grading
+  ---
+  duration_ms: 29.31904
+  type: 'test'
+  ...
+# Subtest: unsupported languages and unparseable problems are labeled, not faked
+ok 34 - unsupported languages and unparseable problems are labeled, not faked
+  ---
+  duration_ms: 0.719353
+  type: 'test'
+  ...
+# Subtest: runner outage is reported as such
+ok 35 - runner outage is reported as such
+  ---
+  duration_ms: 0.748519
+  type: 'test'
+  ...
+# Subtest: piston adapter sends limits and maps the response
+ok 36 - piston adapter sends limits and maps the response
+  ---
+  duration_ms: 0.450381
+  type: 'test'
+  ...
+# Subtest: records: points only on first Accepted, attempts always count
+ok 37 - records: points only on first Accepted, attempts always count
+  ---
+  duration_ms: 0.336348
+  type: 'test'
+  ...
+# Subtest: every problem the app lists can be graded by the server
+ok 38 - every problem the app lists can be graded by the server
+  ---
+  duration_ms: 9.711396
+  type: 'test'
+  ...
+# Subtest: GradeGlow-original problems: both references pass, starters fail
+ok 39 - GradeGlow-original problems: both references pass, starters fail
+  ---
+  duration_ms: 2103.39667
+  type: 'test'
+  ...
+# Subtest: lab answer keys match reference solutions
+ok 40 - lab answer keys match reference solutions
+  ---
+  duration_ms: 4896.957338
+  type: 'test'
+  ...
+# Subtest: bundled judge is up to date with functions/code_judge
+ok 41 - bundled judge is up to date with functions/code_judge
+  ---
+  duration_ms: 3.207604
+  type: 'test'
+  ...
+# Subtest: Python runs in Pyodide and is graded with the server's rules
+ok 42 - Python runs in Pyodide and is graded with the server's rules
+  ---
+  duration_ms: 2548.954263
+  type: 'test'
+  ...
+# Subtest: JavaScript runs and is graded
+ok 43 - JavaScript runs and is graded
+  ---
+  duration_ms: 3.495161
+  type: 'test'
+  ...
+# Subtest: bug-fix starters fail in the app runner exactly as on the server
+ok 44 - bug-fix starters fail in the app runner exactly as on the server
+  ---
+  duration_ms: 65.937613
+  type: 'test'
+  ...
+# Subtest: programs print output and read stdin
+ok 45 - programs print output and read stdin
+  ---
+  duration_ms: 5.494066
+  type: 'test'
+  ...
+# Subtest: SQL runs against a fresh SQLite database each time
+ok 46 - SQL runs against a fresh SQLite database each time
+  ---
+  duration_ms: 40.263702
+  type: 'test'
+  ...
+1..46
+# tests 46
+# suites 0
+# pass 46
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9195.701102
