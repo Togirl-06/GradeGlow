@@ -80,7 +80,7 @@ void main() {
     File('build/career_catalog.json').writeAsStringSync('$generated\n');
     final File committed = File('functions/career/catalog.json');
     expect(committed.existsSync(), isTrue, reason: 'copy build/career_catalog.json to functions/career/catalog.json');
-    expect(committed.readAsStringSync().trim(), generated.trim(),
+    expect(committed.readAsStringSync().replaceAll('\r\n', '\n').trim(), generated.replaceAll('\r\n', '\n').trim(),
         reason: 'functions/career/catalog.json is out of date: copy build/career_catalog.json over it');
   });
 

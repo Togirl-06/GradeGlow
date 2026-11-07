@@ -1,0 +1,4 @@
+# Generated files compared byte-for-byte by tests: keep LF on every OS.
+functions/career/catalog.json text eol=lf
+# Test fixtures (resumes, scans, transcripts) must not be altered on checkout.
+test/fixtures/** -text

@@ -42,7 +42,20 @@ Future<CareerSimStore> employedStore() async {
 void main() {
   setUp(() => HospitalUi.animate = false);
 
-  testWidgets('screenshots', (WidgetTester t) async {
+  // Runs first, before any real font is loaded: every screen must lay out
+  // without overflow even when text is much wider than usual (large text
+  // settings, other platforms' fonts).
+  testWidgets('screens fit with extra-wide text', (WidgetTester t) async {
+    wideGlyphs = true;
+    addTearDown(() => wideGlyphs = false);
+    await screens(t);
+  });
+
+  testWidgets('screenshots', screens);
+}
+
+Future<void> screens(WidgetTester t) async {
+  {
     final CareerSimStore fresh = CareerSimStore(repository: MemoryCareerRepository(), runner: FakeLabRunner(const <String, List<List<Object?>>>{}));
     await fresh.ensureLoaded(majorId: 'computer_science', displayName: 'Jordan Smith');
     await pumpShot(t, fresh, const Scaffold(body: CareerSimDashboard(studentName: 'Jordan Smith', majorLabel: 'Computer Science')));
@@ -88,5 +101,5 @@ void main() {
     await pumpShot(t, nurse, const PatientRoomScreen(caseId: 'ed_chest_pain'), size: const Size(390, 844));
     await save(t, '14_patient_room_phone');
     t.view.reset();
-  });
+  }
 }

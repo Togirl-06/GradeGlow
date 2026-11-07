@@ -48,14 +48,19 @@ Future<void> loadFonts() async {
 
 final GlobalKey _boundary = GlobalKey();
 
+/// When true, screens are laid out with the square-glyph test font instead of
+/// real fonts. Its glyphs are wider than real text, as on a machine without
+/// the Linux fonts (Windows, macOS), so it shows rows that cannot shrink.
+bool wideGlyphs = false;
+
 Future<void> pumpShot(WidgetTester t, CareerSimStore s, Widget home, {Size size = const Size(1440, 900)}) async {
-  await loadFonts();
+  if (!wideGlyphs) await loadFonts();
   t.view.physicalSize = size;
   t.view.devicePixelRatio = 1;
   // A dedicated family so every weight resolves to a real font, never the
   // square-glyph test font.
   final ThemeData raw = vuV2DarkTheme();
-  final ThemeData theme = raw.copyWith(
+  final ThemeData theme = wideGlyphs ? raw : raw.copyWith(
     textTheme: raw.textTheme.apply(fontFamily: 'ShotSans'),
     primaryTextTheme: raw.primaryTextTheme.apply(fontFamily: 'ShotSans'),
     appBarTheme: raw.appBarTheme.copyWith(titleTextStyle: raw.appBarTheme.titleTextStyle?.copyWith(fontFamily: 'ShotSans')),
@@ -76,6 +81,7 @@ Future<void> settle(WidgetTester t) async {
 
 Future<void> save(WidgetTester t, String name) async {
   await settle(t);
+  if (wideGlyphs) return;
   final RenderRepaintBoundary b = _boundary.currentContext!.findRenderObject()! as RenderRepaintBoundary;
   await t.runAsync(() async {
     final ui.Image img = await b.toImage();

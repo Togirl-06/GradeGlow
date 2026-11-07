@@ -312,7 +312,13 @@ class WorkplaceOverview extends StatelessWidget {
         const SizedBox(height: 10),
         const Text('Current salary', style: TextStyle(color: Color(0xFF64748B), fontSize: 11)),
         Row(children: <Widget>[
-          Text('${usd(monthlyCents)} / month', key: const ValueKey<String>('wp_salary'), style: const TextStyle(color: Color(0xFF0F172A), fontSize: 20, fontWeight: FontWeight.w900)),
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text('${usd(monthlyCents)} / month', key: const ValueKey<String>('wp_salary'), style: const TextStyle(color: Color(0xFF0F172A), fontSize: 20, fontWeight: FontWeight.w900)),
+            ),
+          ),
           const SizedBox(width: 8),
           if (e.reviews.any((PerformanceReview r) => r.raisePercent > 0) || e.promotions.isNotEmpty) const Icon(Icons.trending_up_rounded, color: GG.green),
         ]),

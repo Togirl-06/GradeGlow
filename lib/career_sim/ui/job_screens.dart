@@ -166,10 +166,16 @@ class _StatusColumn extends StatelessWidget {
         child: Row(children: <Widget>[
           const Icon(Icons.account_balance_wallet_rounded, color: GG.blue, size: 40),
           const SizedBox(width: 12),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            const Text('Your Earnings', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
-            Text(usd(store.profile.balanceCents), style: const TextStyle(color: GG.ink, fontSize: 24, fontWeight: FontWeight.w900)),
-          ]),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              const Text('Your Earnings', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w700)),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(usd(store.profile.balanceCents), style: const TextStyle(color: GG.ink, fontSize: 24, fontWeight: FontWeight.w900)),
+              ),
+            ]),
+          ),
         ]),
       ),
     ]);
