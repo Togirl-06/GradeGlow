@@ -44,6 +44,17 @@ Future<void> tap(WidgetTester t, String key) async {
 
 bool shown(String key) => k(key).evaluate().isNotEmpty;
 
+/// Long screens build lazily: scroll to the end so the controls exist.
+Future<void> toBottom(WidgetTester t) async {
+  for (int i = 0; i < 3; i++) {
+    final Finder f = find.byType(Scrollable);
+    if (f.evaluate().isEmpty) return;
+    final ScrollableState st = t.state<ScrollableState>(f.first);
+    st.position.jumpTo(st.position.maxScrollExtent);
+    await t.pumpAndSettle();
+  }
+}
+
 /// One answer that covers every rubric point of every open question the
 /// interviewer might ask, written as a behavioural (STAR) story.
 String interviewAnswer(InterviewPlan plan) {
@@ -111,7 +122,9 @@ void main() {
       final String answer = interviewAnswer(plan);
       await tap(t, 'start_interview');
       final Set<String> chosen = <String>{};
-      for (int i = 0; i < 40 && !shown('iv_ask'); i++) {
+      for (int i = 0; i < 40; i++) {
+        await toBottom(t);
+        if (shown('iv_ask')) break;
         final Finder practical = find.byWidgetPredicate((Widget x) => x is TaskView && (x.key is ValueKey<String>) && (x.key! as ValueKey<String>).value.startsWith('practical_'));
         if (practical.evaluate().isNotEmpty) {
           final TaskView v = t.widget<TaskView>(practical.first);
@@ -131,9 +144,12 @@ void main() {
         }
       }
       for (int i = 0; i < 3; i++) {
+        await toBottom(t);
         await tap(t, 'iv_suggest_$i');
       }
+      await toBottom(t);
       await tap(t, 'iv_finish');
+      await toBottom(t);
       expect(a.interview, isNotNull);
       expect(a.interview!.overall, greaterThanOrEqualTo(70), reason: a.interview!.turns.map((InterviewTurn x) => '${x.questionId}:${x.score}').join(' '));
       await tap(t, 'interview_done');

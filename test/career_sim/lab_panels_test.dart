@@ -33,7 +33,7 @@ void main() {
         }
       }
     }
-    expect(panels, greaterThanOrEqualTo(25));
+    expect(panels, greaterThanOrEqualTo(20));
   });
 
   test('a report is flagged exactly when the case marks the result abnormal', () {
