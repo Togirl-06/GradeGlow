@@ -252,15 +252,22 @@ teaching material, not clinical guidance.
 
 ## Not done / limitations
 
-* **Pay, screening and interview results are computed on the device.**
-  Firestore and Storage rules keep each student's records private, but there
-  is no server-side recalculation yet, so a determined user could edit their
-  own saved profile. Paycheck ids prevent double payment inside the app.
-* **The interviewer, patients and supervisor are rule-based**, not free-form
-  AI: their replies come from rubrics and case scripts, so they are consistent
-  and cannot invent medical facts, but they only understand phrasings their
-  keyword lists cover.
-* **Hospital scenarios have not been reviewed by a practising clinician.**
+* **Pay can be checked, but the app's own copy can still be edited.** The
+  `careerServer` function re-computes screening, interview scores, offers and
+  every paycheck from its own catalogue. It keeps the result in
+  `users/{uid}/career_server`, which no app can write (emulator-tested rules).
+  The app shows "Verified by the GradeGlow server" beside the balance. Its own
+  local copy is still editable, so only the verified figure should be trusted.
+* **AI understands, the rules decide.** When the rules don't recognise a
+  question, AI works out which topic a patient's or interviewer's question is
+  about. It also rewords scripted replies so they sound natural. Facts and
+  scores always come from the cases and rubrics. A reworded line that adds a
+  number is thrown away, and the rules answer alone whenever AI is
+  unavailable or fails.
+* **Hospital scenarios are waiting for clinician review.** A review pack (a
+  Claude Doc) lists all 16 cases, the triage board and the ward shift, each
+  with sign-off boxes. The app keeps its "not yet reviewed" notice until a
+  practising clinician signs it.
 * Resume reading works on text-based PDFs and .docx; multi-column layouts can
   come out in a different order, and scanned PDFs are refused.
 
@@ -268,13 +275,8 @@ teaching material, not clinical guidance.
 * **Server code runner not deployed.** Labs and career coding tasks now run on
   the device, so they work without it. Arena submissions that need the server
   still need `docs/sim_rebuild/CODE_RUNNER_SETUP.md`.
-* **The interviewer is rule-driven**, not a free-form AI conversation. Question
-  choice and scores come from rubrics, so they are reproducible. AI only adds
-  coaching afterwards.
 * **Written answers are scored by concept rubrics.** Keyword lists and fragments
   don't score, but a rubric is not a human marker.
-* **Career records are written by the app.** Unlike code results, they are not
-  computed on the server, so a determined user could edit their own saved profile.
 * Only the CS journey has a full end-to-end test. The other departments are
   covered by screen, task and rule tests, plus the generic internship → return
   offer test.
@@ -285,8 +287,11 @@ teaching material, not clinical guidance.
 ## Before merging
 
 1. Review the PR from `career-sim` (it also contains the `sim-rebuild` work and supersedes PR #4).
-2. Deploy the code runner and run `firebase deploy --only functions,firestore:rules`.
-3. Try the Career tab on a phone.
+2. Make sure `functions/.env` contains `OPENAI_API_KEY=...`. The AI patients and interviewer use the existing `openaiProxy`.
+3. Deploy the code runner, the career server and the rules: `firebase deploy --only functions,firestore:rules`.
+4. Sign in, apply for a job and check that the Earnings screen shows "Verified by the GradeGlow server".
+5. Send the clinician review pack to a practising nurse or doctor.
+6. Try the Career tab on a phone.
 
 ## Visual redesign
 
