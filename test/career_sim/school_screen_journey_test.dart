@@ -35,9 +35,11 @@ import 'market_journey_test.dart' show Case, answerFor, cases, coverLetter, fixt
 
 Future<void> tap(WidgetTester t, String key) async {
   final Finder f = k(key);
+  if (f.evaluate().isEmpty) await toBottom(t);
   expect(f, findsWidgets, reason: 'missing $key');
   await t.ensureVisible(f.first);
   await t.pumpAndSettle();
+  if (f.evaluate().isEmpty) await toBottom(t);
   await t.tap(f.first);
   await t.pumpAndSettle();
 }
@@ -122,6 +124,7 @@ void main() {
       final String answer = interviewAnswer(plan);
       await tap(t, 'start_interview');
       final Set<String> chosen = <String>{};
+      final Set<String> answered = <String>{};
       for (int i = 0; i < 40; i++) {
         await toBottom(t);
         if (shown('iv_ask')) break;
@@ -131,7 +134,13 @@ void main() {
           await v.onGraded(TaskResult(taskId: v.spec.id, score: 100, passed: true));
           await t.pumpAndSettle();
         } else if (shown('iv_send')) {
-          await t.enterText(k('iv_answer'), answer);
+          // Answer the question on screen: the first unanswered one shown.
+          final InterviewQuestion? q = plan.bank
+              .where((InterviewQuestion q) => !q.isChoice && q.practical == null && !answered.contains(q.id) && find.text(q.prompt).evaluate().isNotEmpty)
+              .fold<InterviewQuestion?>(null, (InterviewQuestion? found, InterviewQuestion q) => found ?? q);
+          if (q != null) answered.add(q.id);
+          await t.enterText(k('iv_answer'), q == null ? answer : answerFor(q.rubric, behavioural: q.behavioural));
+          await t.pumpAndSettle();
           await tap(t, 'iv_send');
         } else if (shown('iv_opt_0')) {
           final InterviewQuestion q = plan.bank.firstWhere(
