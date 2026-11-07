@@ -156,7 +156,7 @@ class CareerSimDashboard extends StatelessWidget {
                   child: Row(children: <Widget>[
                     Icon(Icons.search_rounded, color: GG.mute),
                     const SizedBox(width: 10),
-                    Text('Find a lab, lesson, job or screen', style: TextStyle(color: GG.mute)),
+                    Expanded(child: Text('Find a lab, lesson, job or screen', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.mute))),
                   ]),
                 ),
               ),
@@ -211,8 +211,7 @@ class CareerSimDashboard extends StatelessWidget {
             ]),
             const SizedBox(height: 8),
             Row(children: <Widget>[
-              Text('Recent activity', style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800)),
-              const Spacer(),
+              Expanded(child: Text('Recent activity', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: GG.ink, fontWeight: FontWeight.w800))),
               TextButton(key: const ValueKey<String>('nav_schools'), onPressed: () => _push(context, const DepartmentPickerScreen()), child: const Text('Change school')),
             ]),
             if (p.log.isEmpty) Text('Your record starts when you complete your first task.', style: TextStyle(color: GG.mute)),
@@ -288,11 +287,15 @@ class _Hero extends StatelessWidget {
     final bool wide = MediaQuery.sizeOf(context).width >= 760;
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
-      child: SizedBox(
-        height: wide ? 280 : 230,
-        child: Stack(fit: StackFit.expand, children: <Widget>[
-          const CustomPaint(painter: CampusPainter()),
-          DecoratedBox(
+      child: ConstrainedBox(
+        // At least this tall; taller when large text needs the room.
+        constraints: BoxConstraints(minHeight: wide ? 280 : 230),
+        child: SizedBox(
+          width: double.infinity,
+          child: Stack(children: <Widget>[
+          const Positioned.fill(child: CustomPaint(painter: CampusPainter())),
+          Positioned.fill(
+            child: DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: <Color>[const Color(0xFF0B1030).withValues(alpha: 0.85), const Color(0xFF0B1030).withValues(alpha: wide ? 0.0 : 0.35)],
@@ -300,9 +303,13 @@ class _Hero extends StatelessWidget {
               ),
             ),
           ),
+          ),
           Padding(
             padding: EdgeInsets.all(wide ? 28 : 18),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            child: Container(
+              constraints: BoxConstraints(minHeight: (wide ? 280 : 230) - (wide ? 56 : 36)),
+              alignment: Alignment.centerLeft,
+              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
               Text('Welcome to\nGradeGlow Virtual University', style: TextStyle(color: Colors.white, fontSize: wide ? 34 : 24, fontWeight: FontWeight.w900, height: 1.15)),
               const SizedBox(height: 8),
               Text('Learn. Practice. Get Hired. Earn.', style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: wide ? 18 : 15, fontWeight: FontWeight.w600)),
@@ -311,8 +318,10 @@ class _Hero extends StatelessWidget {
               const SizedBox(height: 14),
               GGButton(key: const ValueKey<String>('dash_explore'), label: 'Explore Your Majors  →', onPressed: onExplore),
             ]),
+            ),
           ),
         ]),
+        ),
       ),
     );
   }

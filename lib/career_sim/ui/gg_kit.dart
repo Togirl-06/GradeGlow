@@ -147,7 +147,7 @@ class GGButton extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: dense ? 14 : 18, vertical: dense ? 8 : 12),
                 child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   if (icon != null) ...<Widget>[Icon(icon, color: Colors.white, size: 18), const SizedBox(width: 6)],
-                  Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+                  Flexible(child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800))),
                 ]),
               ),
             ),
