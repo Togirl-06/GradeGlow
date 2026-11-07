@@ -268,8 +268,11 @@ teaching material, not clinical guidance.
   Claude Doc) lists all 16 cases, the triage board and the ward shift, each
   with sign-off boxes. The app keeps its "not yet reviewed" notice until a
   practising clinician signs it.
-* Resume reading works on text-based PDFs and .docx; multi-column layouts can
-  come out in a different order, and scanned PDFs are refused.
+* Resume reading works on text-based PDFs and .docx on the device. Scanned
+  PDFs (JPEG or greyscale/colour scans) and JPG/PNG photos are read by AI text
+  recognition, and the review screen asks the student to check every field.
+  Fax-compressed (CCITT/JBIG2) scans are refused with a clear message.
+  Multi-column layouts can come out in a different order.
 
 
 * **Server code runner not deployed.** Labs and career coding tasks now run on
@@ -277,12 +280,26 @@ teaching material, not clinical guidance.
   still need `docs/sim_rebuild/CODE_RUNNER_SETUP.md`.
 * **Written answers are scored by concept rubrics.** Keyword lists and fragments
   don't score, but a rubric is not a human marker.
-* Only the CS journey has a full end-to-end test. The other departments are
-  covered by screen, task and rule tests, plus the generic internship → return
-  offer test.
+* Every school has two start-to-finish tests, from a real resume file to a
+  paycheck. One drives the store (hire, four assignments, review and raise,
+  restart). The other drives the screens: upload, job board, application,
+  interview, contract, onboarding, assignments, then the first paycheck on
+  Earnings. In the screen test, the lab or hospital work behind an assignment
+  and the practical exercise inside an interview are completed through the
+  store, because they have their own screen tests.
 * Cell labelling is still 2D. The 3D anatomy model is a geometric schematic. Phones were not run on a device.
 * **No lab has been run end to end by a person** (status "Verified complete" is 0 of 198). Tests play the first scenario of every lab through the screens and drive each step type, but not all of the roughly 2,500 scenarios.
-* Workplaces reuse their assignment list once it has been completed.
+* Workplaces give every scenario of the job's labs as work (beginner tasks
+  first), and an employee never repeats a task until every one has been done.
+
+## Lab reports
+
+Blood tests in the virtual hospital show a lab report. It covers the CBC,
+metabolic panel, clotting, blood gas, lactate and troponin, with values,
+units, adult reference ranges and High/Low flags, and it agrees with each
+case's written result (checked by `lab_panels_test.dart`). eGFR is calculated
+from creatinine, age and sex (CKD-EPI 2021). The values are listed in the
+clinician review pack.
 
 ## Before merging
 
