@@ -230,6 +230,33 @@ function pistonRunner(baseUrl, { fetchImpl = globalThis.fetch, apiKey } = {}) {
   };
 }
 
+/**
+ * TEST ONLY: finds a real Python 3 on this machine. Tries $PYTHON, then
+ * python3, python and the Windows launcher `py -3`. The Windows Store
+ * "python" stub (which only prints an install hint) is not accepted.
+ * @returns {{cmd: string, args: string[]} | null}
+ */
+let pythonCache;
+function findPython() {
+  if (pythonCache !== undefined) return pythonCache;
+  const { spawnSync } = require("node:child_process");
+  const candidates = [];
+  if (process.env.PYTHON) candidates.push({ cmd: process.env.PYTHON, args: [] });
+  candidates.push({ cmd: "python3", args: [] }, { cmd: "python", args: [] }, { cmd: "py", args: ["-3"] });
+  pythonCache = null;
+  for (const c of candidates) {
+    const r = spawnSync(c.cmd, [...c.args, "-c", "import sys; print(sys.version_info[0])"], { encoding: "utf8", timeout: 10000 });
+    if (r.status === 0 && String(r.stdout).trim() === "3") {
+      pythonCache = c;
+      break;
+    }
+  }
+  return pythonCache;
+}
+
+const NO_PYTHON = "Python 3 was not found. These local tests run Python solutions directly: install Python 3 from python.org " +
+  "(tick \"Add python.exe to PATH\"), or set the PYTHON environment variable to its path. The live site does not need it.";
+
 /** TEST ONLY: unisolated local execution. */
 function localRunner() {
   const { spawnSync } = require("node:child_process");
@@ -238,8 +265,18 @@ function localRunner() {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gg-judge-"));
     const file = path.join(dir, job.fileName);
     fs.writeFileSync(file, job.source);
-    const cmd = job.language === "python" ? "python3" : process.execPath;
-    const r = spawnSync(cmd, [file], { input: job.stdin, timeout: LIMITS.runTimeoutMs, maxBuffer: LIMITS.maxStdoutBytes * 4, encoding: "utf8", cwd: dir });
+    let cmd = process.execPath;
+    let pre = [];
+    if (job.language === "python") {
+      const py = findPython();
+      if (!py) {
+        fs.rmSync(dir, { recursive: true, force: true });
+        throw new Error(NO_PYTHON);
+      }
+      cmd = py.cmd;
+      pre = py.args;
+    }
+    const r = spawnSync(cmd, [...pre, file], { input: job.stdin, timeout: LIMITS.runTimeoutMs, maxBuffer: LIMITS.maxStdoutBytes * 4, encoding: "utf8", cwd: dir });
     fs.rmSync(dir, { recursive: true, force: true });
     return {
       stdout: r.stdout || "", stderr: r.stderr || "", code: r.status, signal: r.signal,
@@ -248,7 +285,7 @@ function localRunner() {
   };
 }
 
-module.exports = { pistonRunner, localRunner, LIMITS };
+module.exports = { pistonRunner, localRunner, findPython, LIMITS };
 
   };
   defs["harness"] = function (module, exports, require) {
