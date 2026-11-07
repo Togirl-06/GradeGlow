@@ -1128,7 +1128,7 @@ class LabPanelTable extends StatelessWidget {
       padding: const EdgeInsets.only(top: 6),
       child: Table(
         key: ValueKey<String>('panel_$testId'),
-        columnWidths: const <int, TableColumnWidth>{0: FlexColumnWidth(2.4), 1: FlexColumnWidth(1.2), 2: FlexColumnWidth(1.4), 3: FlexColumnWidth(1.6), 4: FixedColumnWidth(34)},
+        columnWidths: const <int, TableColumnWidth>{0: FlexColumnWidth(2.4), 1: FlexColumnWidth(1.2), 2: FlexColumnWidth(1.4), 3: FlexColumnWidth(1.6), 4: FixedColumnWidth(50)},
         border: const TableBorder(horizontalInside: BorderSide(color: Color(0xFFE2E8F0))),
         children: <TableRow>[
           TableRow(
