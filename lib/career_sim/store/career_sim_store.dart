@@ -1207,7 +1207,7 @@ class CareerSimStore extends ChangeNotifier {
     final List<AssignmentSpec> pool = e.stage.atLeast(CareerStage.experienced)
         ? w.assignments
         : w.assignments.where((AssignmentSpec s) => !s.leadership).toList();
-    final AssignmentSpec s = pool[e.assignments.length % pool.length];
+    final AssignmentSpec s = nextAssignment(pool, e.assignments);
     final AssignmentRecord r = AssignmentRecord(
       assignmentId: s.id,
       issuedDay: profile.day,
@@ -1251,6 +1251,24 @@ class CareerSimStore extends ChangeNotifier {
   }
 
   static const int reviewEvery = 4;
+
+  /// The next task from [pool]: the first one this employee has never been
+  /// given. Only once every task has been done does work repeat, starting
+  /// with the one done longest ago.
+  static AssignmentSpec nextAssignment(List<AssignmentSpec> pool, List<AssignmentRecord> done) {
+    final Map<String, int> lastIssued = <String, int>{};
+    for (int i = 0; i < done.length; i++) {
+      lastIssued[done[i].assignmentId] = i;
+    }
+    for (final AssignmentSpec s in pool) {
+      if (!lastIssued.containsKey(s.id)) return s;
+    }
+    AssignmentSpec oldest = pool.first;
+    for (final AssignmentSpec s in pool) {
+      if (lastIssued[s.id]! < lastIssued[oldest.id]!) oldest = s;
+    }
+    return oldest;
+  }
 
   /// Pays every complete pay period. Paycheck ids are unique per employment
   /// and period, so a period can never be paid twice.

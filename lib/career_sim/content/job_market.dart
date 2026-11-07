@@ -1202,8 +1202,13 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
     final LabSpec? l = LabCatalog.lab(id);
     if (l == null) continue;
     labs.add(l);
-    // Two tasks per level from each lab, so the work grows harder over time.
-    perLab.add(<LabScenario>[for (final LabDifficulty d in LabDifficulty.values) ...l.atLevel(d).take(2)]);
+    // Two tasks per level from each lab first, so the work grows harder over
+    // time; then every remaining scenario, so a long job keeps bringing new
+    // work instead of repeating the same tickets.
+    perLab.add(<LabScenario>[
+      for (final LabDifficulty d in LabDifficulty.values) ...l.atLevel(d).take(2),
+      for (final LabDifficulty d in LabDifficulty.values) ...l.atLevel(d).skip(2),
+    ]);
   }
   final List<AssignmentSpec> hospitalWork = <AssignmentSpec>[
     for (final String id in f.hospital)
@@ -1229,7 +1234,8 @@ List<AssignmentSpec> _assignmentsFor(RoleFamily f) {
   ];
   final List<AssignmentSpec> out = <AssignmentSpec>[];
   // Round-robin across labs so consecutive days bring different kinds of work.
-  for (int round = 0; round < 6; round++) {
+  final int rounds = perLab.fold<int>(0, (int m, List<LabScenario> x) => math.max(m, x.length));
+  for (int round = 0; round < rounds; round++) {
     for (int k = 0; k < labs.length; k++) {
       if (round >= perLab[k].length) continue;
       final LabSpec l = labs[k];
